@@ -1,0 +1,653 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+          "DTD/xhtml1-strict.dtd">
+<html>
+  
+
+  <head>
+    
+    <title>googleapiclient.discovery.Resource</title>
+    <meta name="generator" content="pydoctor 20.12.1"> 
+        </meta>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.75" />
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="apidocs.css" />
+    <link rel="stylesheet" type="text/css" href="extra.css" />
+</head>
+
+  <body>
+
+    <transparent></transparent>
+
+    <nav class="navbar navbar-default">
+  
+  <div class="container">
+
+    <div class="navbar-header">
+      
+      <div class="navlinks">
+          <span class="navbar-brand">
+            <a href="https://github.com/tristanlatr/google-api-python-client" id="projecthome">Google API Python Client</a> <a href="index.html"> API Documentation </a>
+          </span>
+
+          <a href="moduleIndex.html">
+            Modules
+          </a>
+
+          <a href="classIndex.html">
+            Classes
+          </a>
+
+          <a href="nameIndex.html">
+            Names
+          </a>
+      </div>
+
+    </div>
+  </div>
+</nav>
+
+    <transparent></transparent>
+
+    <div class="container">
+
+      <div class="page-header">
+        <h1 class="class"><code><code><a href="googleapiclient.html">googleapiclient</a></code><wbr></wbr>.<code><a href="googleapiclient.discovery.html">discovery</a></code><wbr></wbr>.<code><a href="googleapiclient.discovery.Resource.html">Resource</a></code></code></h1>
+        <div id="showPrivate">
+          <button class="btn btn-link" onclick="togglePrivate()">Toggle Private API</button>
+        </div>
+      </div>
+
+      <div class="categoryHeader">
+        class documentation
+      </div>
+
+      <div class="extrasDocstring">
+        <p><code><span class="py-keyword">class</span> <span class="py-defname">Resource</span>(<a href="https://docs.python.org/3/library/functions.html#object" title="object">object</a>): <a href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L1276" class="sourceLink">(source)</a></code></p>
+        <p><a href="classIndex.html#googleapiclient.discovery.Resource">View In Hierarchy</a></p>
+      </div>
+
+      <div class="moduleDocstring">
+        <div>A class for interacting with a resource.</div>
+      </div>
+
+      <div id="splitTables">
+        <table class="children sortable" id="id11">
+  
+  
+  <tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#__init__">__init__</a></code></td>
+    <td><span>Build a Resource from the API description.</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#__getstate__">__getstate__</a></code></td>
+    <td><span>Trim the state down to something that can be pickled.</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#__setstate__">__setstate__</a></code></td>
+    <td><span>Reconstitute the state of the object from being pickled.</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#__enter__">__enter__</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#__exit__">__exit__</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#close">close</a></code></td>
+    <td><span>Close httplib2 connections.</span></td>
+  </tr><tr class="instancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#_dynamic_attrs">_dynamic_attrs</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#_http">_http</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#_baseUrl">_baseUrl</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#_model">_model</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#_developerKey">_developerKey</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#_requestBuilder">_requestBuilder</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#_resourceDesc">_resourceDesc</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#_rootDesc">_rootDesc</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#_schema">_schema</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_set_dynamic_attr">_set_dynamic_attr</a></code></td>
+    <td><span>Sets an instance attribute and tracks it in a list of dynamic attributes.</span></td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_set_service_methods">_set_service_methods</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_add_basic_methods">_add_basic_methods</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_add_nested_resources">_add_nested_resources</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_add_next_methods">_add_next_methods</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr>
+</table>
+        
+
+          
+      </div>
+
+      <div id="childList">
+
+        <div class="basemethod">
+  
+  
+  <a name="googleapiclient.discovery.Resource.__init__">
+    
+  </a>
+  <a name="__init__">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">__init__</span>(self, http, baseUrl, model, requestBuilder, developerKey, resourceDesc, rootDesc, schema):
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L1279">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div>Build a Resource from the API description.<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">http</span></td><td class="fieldArgDesc">httplib2.Http, Object to make http requests with.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">baseUrl</span></td><td class="fieldArgDesc">string, base URL for the API. All requests are relative to this
+URI.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">model</span></td><td class="fieldArgDesc">googleapiclient.Model, converts to and from the wire format.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">requestBuilder</span></td><td class="fieldArgDesc">class or callable that instantiates an
+googleapiclient.HttpRequest object.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">developerKey</span></td><td class="fieldArgDesc">string, key obtained from
+<a class="rst-reference external" href="https://code.google.com/apis/console" target="_top">https://code.google.com/apis/console</a></td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">resourceDesc</span></td><td class="fieldArgDesc">object, section of deserialized discovery document that
+describes a resource. Note that the top level discovery document
+is considered a resource.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">rootDesc</span></td><td class="fieldArgDesc">object, the entire deserialized discovery document.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">schema</span></td><td class="fieldArgDesc">object, mapping of schema names to schema descriptions.</td></tr></table></div>
+  </div>
+</div><div class="baseinstancevariable private">
+  
+  
+  <a name="googleapiclient.discovery.Resource._dynamic_attrs">
+    
+  </a>
+  <a name="_dynamic_attrs">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_dynamic_attrs</span>: <code><a href="https://docs.python.org/3/library/stdtypes.html#list">list</a></code> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L1307">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="baseinstancevariable private">
+  
+  
+  <a name="googleapiclient.discovery.Resource._http">
+    
+  </a>
+  <a name="_http">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_http</span> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L1309">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="baseinstancevariable private">
+  
+  
+  <a name="googleapiclient.discovery.Resource._baseUrl">
+    
+  </a>
+  <a name="_baseUrl">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_baseUrl</span> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L1310">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="baseinstancevariable private">
+  
+  
+  <a name="googleapiclient.discovery.Resource._model">
+    
+  </a>
+  <a name="_model">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_model</span> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L1311">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="baseinstancevariable private">
+  
+  
+  <a name="googleapiclient.discovery.Resource._developerKey">
+    
+  </a>
+  <a name="_developerKey">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_developerKey</span> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L1312">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="baseinstancevariable private">
+  
+  
+  <a name="googleapiclient.discovery.Resource._requestBuilder">
+    
+  </a>
+  <a name="_requestBuilder">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_requestBuilder</span> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L1313">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="baseinstancevariable private">
+  
+  
+  <a name="googleapiclient.discovery.Resource._resourceDesc">
+    
+  </a>
+  <a name="_resourceDesc">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_resourceDesc</span> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L1314">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="baseinstancevariable private">
+  
+  
+  <a name="googleapiclient.discovery.Resource._rootDesc">
+    
+  </a>
+  <a name="_rootDesc">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_rootDesc</span> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L1315">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="baseinstancevariable private">
+  
+  
+  <a name="googleapiclient.discovery.Resource._schema">
+    
+  </a>
+  <a name="_schema">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_schema</span> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L1316">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="googleapiclient.discovery.Resource._set_dynamic_attr">
+    
+  </a>
+  <a name="_set_dynamic_attr">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">_set_dynamic_attr</span>(self, attr_name, value):
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L1320">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div>Sets an instance attribute and tracks it in a list of dynamic attributes.<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">attr_name</span></td><td class="fieldArgDesc">string; The name of the attribute to be set</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">value</span></td><td class="fieldArgDesc">The value being set on the object and tracked in the dynamic cache.</td></tr></table></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="googleapiclient.discovery.Resource.__getstate__">
+    
+  </a>
+  <a name="__getstate__">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">__getstate__</span>(self):
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L1330">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p>Trim the state down to something that can be pickled.</p>
+<p>Uses the fact that the instance variable _dynamic_attrs holds attrs that
+will be wiped and restored on pickle serialization.</p>
+</div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="googleapiclient.discovery.Resource.__setstate__">
+    
+  </a>
+  <a name="__setstate__">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">__setstate__</span>(self, state):
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L1342">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p>Reconstitute the state of the object from being pickled.</p>
+<p>Uses the fact that the instance variable _dynamic_attrs holds attrs that
+will be wiped and restored on pickle serialization.</p>
+</div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="googleapiclient.discovery.Resource.__enter__">
+    
+  </a>
+  <a name="__enter__">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">__enter__</span>(self):
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L1353">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="googleapiclient.discovery.Resource.__exit__">
+    
+  </a>
+  <a name="__exit__">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">__exit__</span>(self, exc_type, exc, exc_tb):
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L1356">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="googleapiclient.discovery.Resource.close">
+    
+  </a>
+  <a name="close">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">close</span>(self):
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L1359">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div>Close httplib2 connections.</div>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="googleapiclient.discovery.Resource._set_service_methods">
+    
+  </a>
+  <a name="_set_service_methods">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">_set_service_methods</span>(self):
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L1366">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="googleapiclient.discovery.Resource._add_basic_methods">
+    
+  </a>
+  <a name="_add_basic_methods">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">_add_basic_methods</span>(self, resourceDesc, rootDesc, schema):
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L1371">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="googleapiclient.discovery.Resource._add_nested_resources">
+    
+  </a>
+  <a name="_add_nested_resources">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">_add_nested_resources</span>(self, resourceDesc, rootDesc, schema):
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L1416">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="googleapiclient.discovery.Resource._add_next_methods">
+    
+  </a>
+  <a name="_add_next_methods">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">_add_next_methods</span>(self, resourceDesc, schema):
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L1453">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div>
+
+      </div>
+      <address>
+        <a href="index.html">API Documentation</a> for Google API Python Client, generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a> 20.12.1 at 2021-03-19 02:02:03.
+      </address>
+
+    </div>
+
+    <transparent></transparent>
+
+    <script src="pydoctor.js" type="text/javascript"></script>
+
+  </body>
+</html>

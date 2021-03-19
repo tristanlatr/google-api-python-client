@@ -1,0 +1,678 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+          "DTD/xhtml1-strict.dtd">
+<html>
+  
+
+  <head>
+    
+    <title>googleapiclient.http.BatchHttpRequest</title>
+    <meta name="generator" content="pydoctor 20.12.1"> 
+        </meta>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.75" />
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="apidocs.css" />
+    <link rel="stylesheet" type="text/css" href="extra.css" />
+</head>
+
+  <body>
+
+    <transparent></transparent>
+
+    <nav class="navbar navbar-default">
+  
+  <div class="container">
+
+    <div class="navbar-header">
+      
+      <div class="navlinks">
+          <span class="navbar-brand">
+            <a href="https://github.com/tristanlatr/google-api-python-client" id="projecthome">Google API Python Client</a> <a href="index.html"> API Documentation </a>
+          </span>
+
+          <a href="moduleIndex.html">
+            Modules
+          </a>
+
+          <a href="classIndex.html">
+            Classes
+          </a>
+
+          <a href="nameIndex.html">
+            Names
+          </a>
+      </div>
+
+    </div>
+  </div>
+</nav>
+
+    <transparent></transparent>
+
+    <div class="container">
+
+      <div class="page-header">
+        <h1 class="class"><code><code><a href="googleapiclient.html">googleapiclient</a></code><wbr></wbr>.<code><a href="googleapiclient.http.html">http</a></code><wbr></wbr>.<code><a href="googleapiclient.http.BatchHttpRequest.html">BatchHttpRequest</a></code></code></h1>
+        <div id="showPrivate">
+          <button class="btn btn-link" onclick="togglePrivate()">Toggle Private API</button>
+        </div>
+      </div>
+
+      <div class="categoryHeader">
+        class documentation
+      </div>
+
+      <div class="extrasDocstring">
+        <p><code><span class="py-keyword">class</span> <span class="py-defname">BatchHttpRequest</span>(<a href="https://docs.python.org/3/library/functions.html#object" title="object">object</a>): <a href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/http.py#L1158" class="sourceLink">(source)</a></code></p>
+        <p><a href="classIndex.html#googleapiclient.http.BatchHttpRequest">View In Hierarchy</a></p>
+      </div>
+
+      <div class="moduleDocstring">
+        <div><p>Batches multiple HttpRequest objects into a single HTTP request.</p>
+<div class="rst-admonition rst-admonition-example">
+<p class="rst-first rst-admonition-title">Example</p>
+<p>from googleapiclient.http import BatchHttpRequest</p>
+<dl class="rst-docutils">
+<dt>def list_animals(request_id, response, exception):</dt>
+<dd><p class="rst-first">"""Do something with the animals list response."""
+if exception is not None:</p>
+<blockquote>
+# Do something with the exception.
+pass</blockquote>
+<dl class="rst-last rst-docutils">
+<dt>else:</dt>
+<dd># Do something with the response.
+pass</dd>
+</dl>
+</dd>
+<dt>def list_farmers(request_id, response, exception):</dt>
+<dd><p class="rst-first">"""Do something with the farmers list response."""
+if exception is not None:</p>
+<blockquote>
+# Do something with the exception.
+pass</blockquote>
+<dl class="rst-last rst-docutils">
+<dt>else:</dt>
+<dd># Do something with the response.
+pass</dd>
+</dl>
+</dd>
+</dl>
+<p>service = build('farm', 'v2')</p>
+<p>batch = BatchHttpRequest()</p>
+<p class="rst-last">batch.add(service.animals().list(), list_animals)
+batch.add(service.farmers().list(), list_farmers)
+batch.execute(http=http)</p>
+</div>
+</div>
+      </div>
+
+      <div id="splitTables">
+        <table class="children sortable" id="id42">
+  
+  
+  <tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#__init__">__init__</a></code></td>
+    <td><span>Constructor for a BatchHttpRequest.</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#add">add</a></code></td>
+    <td><span>Add a new request.</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#execute">execute</a></code></td>
+    <td><span>Execute all the requests as a single batched HTTP request.</span></td>
+  </tr><tr class="instancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#_batch_uri">_batch_uri</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#_callback">_callback</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#_requests">_requests</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#_callbacks">_callbacks</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#_order">_order</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#_last_auto_id">_last_auto_id</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#_base_id">_base_id</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#_responses">_responses</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#_refreshed_credentials">_refreshed_credentials</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_refresh_and_apply_credentials">_refresh_and_apply_credentials</a></code></td>
+    <td><span>Refresh the credentials and apply to the request.</span></td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_id_to_header">_id_to_header</a></code></td>
+    <td><span>Convert an id to a Content-ID header value.</span></td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_header_to_id">_header_to_id</a></code></td>
+    <td><span>Convert a Content-ID header value to an id.</span></td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_serialize_request">_serialize_request</a></code></td>
+    <td><span>Convert an HttpRequest object into a string.</span></td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_deserialize_response">_deserialize_response</a></code></td>
+    <td><span>Convert string into httplib2 response and content.</span></td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_new_id">_new_id</a></code></td>
+    <td><span>Create a new id.</span></td>
+  </tr><tr class="method private">
+    
+    <td>Method</td>
+    <td><code><a href="#_execute">_execute</a></code></td>
+    <td><span>Serialize batch request, send to server, process response.</span></td>
+  </tr>
+</table>
+        
+
+          
+      </div>
+
+      <div id="childList">
+
+        <div class="basemethod">
+  
+  
+  <a name="googleapiclient.http.BatchHttpRequest.__init__">
+    
+  </a>
+  <a name="__init__">
+    
+  </a>
+  <div class="functionHeader">
+    @util.positional(1)<br />
+    <span class="py-keyword">def</span> <span class="py-defname">__init__</span>(self, callback=None, batch_uri=None):
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/http.py#L1191">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div>Constructor for a BatchHttpRequest.<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">callback</span></td><td class="fieldArgDesc">callable, A callback to be called for each response, of the
+form callback(id, response, exception). The first parameter is the
+request id, and the second is the deserialized response object. The
+third is an googleapiclient.errors.HttpError exception object if an HTTP error
+occurred while processing the request, or None if no error occurred.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">batch_uri</span></td><td class="fieldArgDesc">string, URI to send batch requests to.</td></tr></table></div>
+  </div>
+</div><div class="baseinstancevariable private">
+  
+  
+  <a name="googleapiclient.http.BatchHttpRequest._batch_uri">
+    
+  </a>
+  <a name="_batch_uri">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_batch_uri</span> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/http.py#L1216">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="baseinstancevariable private">
+  
+  
+  <a name="googleapiclient.http.BatchHttpRequest._callback">
+    
+  </a>
+  <a name="_callback">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_callback</span> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/http.py#L1219">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="baseinstancevariable private">
+  
+  
+  <a name="googleapiclient.http.BatchHttpRequest._requests">
+    
+  </a>
+  <a name="_requests">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_requests</span>: <code><a href="https://docs.python.org/3/library/stdtypes.html#dict">dict</a></code> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/http.py#L1222">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="baseinstancevariable private">
+  
+  
+  <a name="googleapiclient.http.BatchHttpRequest._callbacks">
+    
+  </a>
+  <a name="_callbacks">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_callbacks</span>: <code><a href="https://docs.python.org/3/library/stdtypes.html#dict">dict</a></code> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/http.py#L1225">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="baseinstancevariable private">
+  
+  
+  <a name="googleapiclient.http.BatchHttpRequest._order">
+    
+  </a>
+  <a name="_order">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_order</span>: <code><a href="https://docs.python.org/3/library/stdtypes.html#list">list</a></code> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/http.py#L1228">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="baseinstancevariable private">
+  
+  
+  <a name="googleapiclient.http.BatchHttpRequest._last_auto_id">
+    
+  </a>
+  <a name="_last_auto_id">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_last_auto_id</span>: <code><a href="https://docs.python.org/3/library/functions.html#int">int</a></code> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/http.py#L1231">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="baseinstancevariable private">
+  
+  
+  <a name="googleapiclient.http.BatchHttpRequest._base_id">
+    
+  </a>
+  <a name="_base_id">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_base_id</span> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/http.py#L1234">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="baseinstancevariable private">
+  
+  
+  <a name="googleapiclient.http.BatchHttpRequest._responses">
+    
+  </a>
+  <a name="_responses">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_responses</span>: <code><a href="https://docs.python.org/3/library/stdtypes.html#dict">dict</a></code> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/http.py#L1237">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="baseinstancevariable private">
+  
+  
+  <a name="googleapiclient.http.BatchHttpRequest._refreshed_credentials">
+    
+  </a>
+  <a name="_refreshed_credentials">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_refreshed_credentials</span>: <code><a href="https://docs.python.org/3/library/stdtypes.html#dict">dict</a></code> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/http.py#L1240">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="googleapiclient.http.BatchHttpRequest._refresh_and_apply_credentials">
+    
+  </a>
+  <a name="_refresh_and_apply_credentials">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">_refresh_and_apply_credentials</span>(self, request, http):
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/http.py#L1242">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div>Refresh the credentials and apply to the request.<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">request</span></td><td class="fieldArgDesc">HttpRequest, the request.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">http</span></td><td class="fieldArgDesc">httplib2.Http, the global http object for the batch.</td></tr></table></div>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="googleapiclient.http.BatchHttpRequest._id_to_header">
+    
+  </a>
+  <a name="_id_to_header">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">_id_to_header</span>(self, id_):
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/http.py#L1272">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div>Convert an id to a Content-ID header value.<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id_</span></td><td class="fieldArgDesc">string, identifier of individual request.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td colspan="2">A Content-ID header with the <a href="#id3"><span class="rst-problematic" id="rst-id4">id_</span></a> encoded into it. A UUID is prepended to
+the value because Content-ID headers are supposed to be universally
+unique.</td></tr></table></div>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="googleapiclient.http.BatchHttpRequest._header_to_id">
+    
+  </a>
+  <a name="_header_to_id">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">_header_to_id</span>(self, header):
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/http.py#L1291">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p>Convert a Content-ID header value to an id.</p>
+<p>Presumes the Content-ID header conforms to the format that _id_to_header()
+returns.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">header</span></td><td class="fieldArgDesc">string, Content-ID header value.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td colspan="2">The extracted id value.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Raises</td></tr><tr><td class="fieldArgContainer"><code>BatchError if the header is not in the expected format.</code></td><td></td></tr></table></div>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="googleapiclient.http.BatchHttpRequest._serialize_request">
+    
+  </a>
+  <a name="_serialize_request">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">_serialize_request</span>(self, request):
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/http.py#L1314">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div>Convert an HttpRequest object into a string.<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">request</span></td><td class="fieldArgDesc">HttpRequest, the request to serialize.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td colspan="2">The request as a string in application/http format.</td></tr></table></div>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="googleapiclient.http.BatchHttpRequest._deserialize_response">
+    
+  </a>
+  <a name="_deserialize_response">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">_deserialize_response</span>(self, payload):
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/http.py#L1362">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div>Convert string into httplib2 response and content.<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">payload</span></td><td class="fieldArgDesc">string, headers and body as a string.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td colspan="2">A pair (resp, content), such as would be returned from httplib2.request.</td></tr></table></div>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="googleapiclient.http.BatchHttpRequest._new_id">
+    
+  </a>
+  <a name="_new_id">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">_new_id</span>(self):
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/http.py#L1390">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p>Create a new id.</p>
+<p>Auto incrementing number that avoids conflicts with ids already used.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td colspan="2">string, a new unique id.</td></tr></table></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="googleapiclient.http.BatchHttpRequest.add">
+    
+  </a>
+  <a name="add">
+    
+  </a>
+  <div class="functionHeader">
+    @util.positional(2)<br />
+    <span class="py-keyword">def</span> <span class="py-defname">add</span>(self, request, callback=None, request_id=None):
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/http.py#L1403">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p>Add a new request.</p>
+<p>Every callback added will be paired with a unique id, the request_id. That
+unique id will be passed back to the callback when the response comes back
+from the server. The default behavior is to have the library generate it's
+own unique id. If the caller passes in a request_id then they must ensure
+uniqueness for each request_id, and if they are not an exception is
+raised. Callers should either supply all request_ids or never supply a
+request id, to avoid such an error.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">request</span></td><td class="fieldArgDesc">HttpRequest, Request to add to the batch.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">callback</span></td><td class="fieldArgDesc">callable, A callback to be called for this response, of the
+form callback(id, response, exception). The first parameter is the
+request id, and the second is the deserialized response object. The
+third is an googleapiclient.errors.HttpError exception object if an HTTP error
+occurred while processing the request, or None if no errors occurred.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">request_id</span></td><td class="fieldArgDesc">string, A unique id for the request. The id will be passed
+to the callback with the response.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td colspan="2">None</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Raises</td></tr><tr><td class="fieldArgContainer"><code>BatchError if a media request is added to a batch.</code></td><td></td></tr><tr><td class="fieldArgContainer"><code>KeyError is the request_id is not unique.</code></td><td></td></tr></table></div>
+  </div>
+</div><div class="basemethod private">
+  
+  
+  <a name="googleapiclient.http.BatchHttpRequest._execute">
+    
+  </a>
+  <a name="_execute">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">_execute</span>(self, http, order, requests):
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/http.py#L1448">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div>Serialize batch request, send to server, process response.<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">http</span></td><td class="fieldArgDesc">httplib2.Http, an http object to be used to make the request with.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">order</span></td><td class="fieldArgDesc">list, list of request ids in the order they were added to the
+batch.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">requests</span></td><td class="fieldArgDesc">list, list of request objects to send.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Raises</td></tr><tr><td class="fieldArgContainer"><code>httplib2.HttpLib2Error if a transport error has occurred.</code></td><td></td></tr><tr><td class="fieldArgContainer"><code>googleapiclient.errors.BatchError if the response is the wrong format.</code></td><td></td></tr></table></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="googleapiclient.http.BatchHttpRequest.execute">
+    
+  </a>
+  <a name="execute">
+    
+  </a>
+  <div class="functionHeader">
+    @util.positional(1)<br />
+    <span class="py-keyword">def</span> <span class="py-defname">execute</span>(self, http=None):
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/http.py#L1521">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div>Execute all the requests as a single batched HTTP request.<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">http</span></td><td class="fieldArgDesc">httplib2.Http, an http object to be used in place of the one the
+HttpRequest request object was constructed with. If one isn't supplied
+then use a http object from the requests in this batch.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td colspan="2">None</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Raises</td></tr><tr><td class="fieldArgContainer"><code>httplib2.HttpLib2Error if a transport error has occurred.</code></td><td></td></tr><tr><td class="fieldArgContainer"><code>googleapiclient.errors.BatchError if the response is the wrong format.</code></td><td></td></tr></table></div>
+  </div>
+</div>
+
+      </div>
+      <address>
+        <a href="index.html">API Documentation</a> for Google API Python Client, generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a> 20.12.1 at 2021-03-19 02:02:03.
+      </address>
+
+    </div>
+
+    <transparent></transparent>
+
+    <script src="pydoctor.js" type="text/javascript"></script>
+
+  </body>
+</html>

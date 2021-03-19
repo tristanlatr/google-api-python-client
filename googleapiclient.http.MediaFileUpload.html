@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+          "DTD/xhtml1-strict.dtd">
+<html>
+  
+
+  <head>
+    
+    <title>googleapiclient.http.MediaFileUpload</title>
+    <meta name="generator" content="pydoctor 20.12.1"> 
+        </meta>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.75" />
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="apidocs.css" />
+    <link rel="stylesheet" type="text/css" href="extra.css" />
+</head>
+
+  <body>
+
+    <transparent></transparent>
+
+    <nav class="navbar navbar-default">
+  
+  <div class="container">
+
+    <div class="navbar-header">
+      
+      <div class="navlinks">
+          <span class="navbar-brand">
+            <a href="https://github.com/tristanlatr/google-api-python-client" id="projecthome">Google API Python Client</a> <a href="index.html"> API Documentation </a>
+          </span>
+
+          <a href="moduleIndex.html">
+            Modules
+          </a>
+
+          <a href="classIndex.html">
+            Classes
+          </a>
+
+          <a href="nameIndex.html">
+            Names
+          </a>
+      </div>
+
+    </div>
+  </div>
+</nav>
+
+    <transparent></transparent>
+
+    <div class="container">
+
+      <div class="page-header">
+        <h1 class="class"><code><code><a href="googleapiclient.html">googleapiclient</a></code><wbr></wbr>.<code><a href="googleapiclient.http.html">http</a></code><wbr></wbr>.<code><a href="googleapiclient.http.MediaFileUpload.html">MediaFileUpload</a></code></code></h1>
+        <div id="showPrivate">
+          <button class="btn btn-link" onclick="togglePrivate()">Toggle Private API</button>
+        </div>
+      </div>
+
+      <div class="categoryHeader">
+        class documentation
+      </div>
+
+      <div class="extrasDocstring">
+        <p><code><span class="py-keyword">class</span> <span class="py-defname">MediaFileUpload</span>(<a href="googleapiclient.http.MediaIoBaseUpload.html" title="googleapiclient.http.MediaIoBaseUpload">MediaIoBaseUpload</a>): <a href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/http.py#L552" class="sourceLink">(source)</a></code></p>
+        <p><a href="classIndex.html#googleapiclient.http.MediaFileUpload">View In Hierarchy</a></p>
+      </div>
+
+      <div class="moduleDocstring">
+        <div><p>A MediaUpload for a file.</p>
+<p>Construct a MediaFileUpload and pass as the media_body parameter of the
+method. For example, if we had a service that allowed uploading images:</p>
+<blockquote>
+<dl class="rst-docutils">
+<dt>media = MediaFileUpload('cow.png', mimetype='image/png',</dt>
+<dd>chunksize=1024*1024, resumable=True)</dd>
+<dt>farm.animals().insert(</dt>
+<dd>id='cow',
+name='cow.png',
+media_body=media).execute()</dd>
+</dl>
+</blockquote>
+<p>Depending on the platform you are working on, you may pass -1 as the
+chunksize, which indicates that the entire file should be uploaded in a single
+request. If the underlying platform supports streams, such as Python 2.6 or
+later, then this can be very efficient as it avoids multiple connections, and
+also avoids loading the entire file into memory before sending it. Note that
+Google App Engine has a 5MB limit on request size, so you should never set
+your chunksize larger than 5MB, or to -1.</p>
+</div>
+      </div>
+
+      <div id="splitTables">
+        <table class="children sortable" id="id33">
+  
+  
+  <tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#__init__">__init__</a></code></td>
+    <td><span>Constructor.</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#__del__">__del__</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#to_json">to_json</a></code></td>
+    <td><span>Creating a JSON representation of an instance of MediaFileUpload.</span></td>
+  </tr><tr class="staticmethod">
+    
+    <td>Static Method</td>
+    <td><code><a href="#from_json">from_json</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#_fd">_fd</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#_filename">_filename</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr>
+</table>
+        
+          <p class="inheritedFrom">
+            Inherited from <code><a href="googleapiclient.http.MediaIoBaseUpload.html">MediaIoBaseUpload</a></code>:
+          </p>
+          <table class="children sortable" id="id34">
+  
+  
+  <tr class="basemethod">
+    
+    <td>Method</td>
+    <td><code><a href="googleapiclient.http.MediaIoBaseUpload.html#chunksize">chunksize</a></code></td>
+    <td><span>Chunk size for resumable uploads.</span></td>
+  </tr><tr class="basemethod">
+    
+    <td>Method</td>
+    <td><code><a href="googleapiclient.http.MediaIoBaseUpload.html#mimetype">mimetype</a></code></td>
+    <td><span>Mime type of the body.</span></td>
+  </tr><tr class="basemethod">
+    
+    <td>Method</td>
+    <td><code><a href="googleapiclient.http.MediaIoBaseUpload.html#size">size</a></code></td>
+    <td><span>Size of upload.</span></td>
+  </tr><tr class="basemethod">
+    
+    <td>Method</td>
+    <td><code><a href="googleapiclient.http.MediaIoBaseUpload.html#resumable">resumable</a></code></td>
+    <td><span>Whether this upload is resumable.</span></td>
+  </tr><tr class="basemethod">
+    
+    <td>Method</td>
+    <td><code><a href="googleapiclient.http.MediaIoBaseUpload.html#getbytes">getbytes</a></code></td>
+    <td><span>Get bytes from the media.</span></td>
+  </tr><tr class="basemethod">
+    
+    <td>Method</td>
+    <td><code><a href="googleapiclient.http.MediaIoBaseUpload.html#has_stream">has_stream</a></code></td>
+    <td><span>Does the underlying upload support a streaming interface.</span></td>
+  </tr><tr class="basemethod">
+    
+    <td>Method</td>
+    <td><code><a href="googleapiclient.http.MediaIoBaseUpload.html#stream">stream</a></code></td>
+    <td><span>A stream interface to the data being uploaded.</span></td>
+  </tr><tr class="baseinstancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="googleapiclient.http.MediaIoBaseUpload.html#_mimetype">_mimetype</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="baseinstancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="googleapiclient.http.MediaIoBaseUpload.html#_chunksize">_chunksize</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="baseinstancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="googleapiclient.http.MediaIoBaseUpload.html#_resumable">_resumable</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="baseinstancevariable private">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="googleapiclient.http.MediaIoBaseUpload.html#_size">_size</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr>
+</table>
+          
+          <p class="inheritedFrom">
+            Inherited from <code><a href="googleapiclient.http.MediaUpload.html">MediaUpload</a></code> (via <code><a href="googleapiclient.http.MediaIoBaseUpload.html">MediaIoBaseUpload</a></code>):
+          </p>
+          <table class="children sortable" id="id35">
+  
+  
+  <tr class="baseclassmethod">
+    
+    <td>Class Method</td>
+    <td><code><a href="googleapiclient.http.MediaUpload.html#new_from_json">new_from_json</a></code></td>
+    <td><span>Utility class method to instantiate a MediaUpload subclass from a JSON representation produced by to_json().</span></td>
+  </tr><tr class="basemethod private">
+    
+    <td>Method</td>
+    <td><code><a href="googleapiclient.http.MediaUpload.html#_to_json">_to_json</a></code></td>
+    <td><span>Utility function for creating a JSON representation of a MediaUpload.</span></td>
+  </tr>
+</table>
+          
+
+          
+      </div>
+
+      <div id="childList">
+
+        <div class="basemethod">
+  
+  
+  <a name="googleapiclient.http.MediaFileUpload.__init__">
+    
+  </a>
+  <a name="__init__">
+    
+  </a>
+  <div class="functionHeader">
+    @util.positional(2)<br />
+    <span class="py-keyword">def</span> <span class="py-defname">__init__</span>(self, filename, mimetype=None, chunksize=DEFAULT_CHUNK_SIZE, resumable=False):
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/http.py#L574">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    <div class="interfaceinfo">overrides <code><a href="googleapiclient.http.MediaIoBaseUpload.html#__init__">googleapiclient.http.MediaIoBaseUpload.__init__</a></code></div>
+    
+    <div>Constructor.<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">filename</span></td><td class="fieldArgDesc">string, Name of the file.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">mimetype</span></td><td class="fieldArgDesc">string, Mime-type of the file. If None then a mime-type will be
+guessed from the file extension.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">chunksize</span></td><td class="fieldArgDesc">int, File will be uploaded in chunks of this many bytes. Only
+used if resumable=True. Pass in a value of -1 if the file is to be
+uploaded in a single chunk. Note that Google App Engine has a 5MB limit
+on request size, so you should never set your chunksize larger than 5MB,
+or to -1.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">resumable</span></td><td class="fieldArgDesc">bool, True if this is a resumable upload. False means upload
+in a single request.</td></tr></table></div>
+  </div>
+</div><div class="baseinstancevariable private">
+  
+  
+  <a name="googleapiclient.http.MediaFileUpload._fd">
+    
+  </a>
+  <a name="_fd">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_fd</span> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/http.py#L592">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    <div class="interfaceinfo">overrides <code><a href="googleapiclient.http.MediaIoBaseUpload.html#_fd">googleapiclient.http.MediaIoBaseUpload._fd</a></code></div>
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="baseinstancevariable private">
+  
+  
+  <a name="googleapiclient.http.MediaFileUpload._filename">
+    
+  </a>
+  <a name="_filename">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_filename</span> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/http.py#L593">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="googleapiclient.http.MediaFileUpload.__del__">
+    
+  </a>
+  <a name="__del__">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">__del__</span>(self):
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/http.py#L605">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="googleapiclient.http.MediaFileUpload.to_json">
+    
+  </a>
+  <a name="to_json">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">to_json</span>(self):
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/http.py#L609">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    <div class="interfaceinfo">overrides <code><a href="googleapiclient.http.MediaIoBaseUpload.html#to_json">googleapiclient.http.MediaIoBaseUpload.to_json</a></code></div>
+    
+    <div>Creating a JSON representation of an instance of MediaFileUpload.<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td colspan="2">string, a JSON representation of this instance, suitable to pass to
+from_json().</td></tr></table></div>
+  </div>
+</div><div class="basestaticmethod">
+  
+  
+  <a name="googleapiclient.http.MediaFileUpload.from_json">
+    
+  </a>
+  <a name="from_json">
+    
+  </a>
+  <div class="functionHeader">
+    @staticmethod<br />
+    <span class="py-keyword">def</span> <span class="py-defname">from_json</span>(s):
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/http.py#L618">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div>
+
+      </div>
+      <address>
+        <a href="index.html">API Documentation</a> for Google API Python Client, generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a> 20.12.1 at 2021-03-19 02:02:03.
+      </address>
+
+    </div>
+
+    <transparent></transparent>
+
+    <script src="pydoctor.js" type="text/javascript"></script>
+
+  </body>
+</html>

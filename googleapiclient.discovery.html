@@ -1,0 +1,1242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+          "DTD/xhtml1-strict.dtd">
+<html>
+  
+
+  <head>
+    
+    <title>googleapiclient.discovery</title>
+    <meta name="generator" content="pydoctor 20.12.1"> 
+        </meta>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.75" />
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="apidocs.css" />
+    <link rel="stylesheet" type="text/css" href="extra.css" />
+</head>
+
+  <body>
+
+    <transparent></transparent>
+
+    <nav class="navbar navbar-default">
+  
+  <div class="container">
+
+    <div class="navbar-header">
+      
+      <div class="navlinks">
+          <span class="navbar-brand">
+            <a href="https://github.com/tristanlatr/google-api-python-client" id="projecthome">Google API Python Client</a> <a href="index.html"> API Documentation </a>
+          </span>
+
+          <a href="moduleIndex.html">
+            Modules
+          </a>
+
+          <a href="classIndex.html">
+            Classes
+          </a>
+
+          <a href="nameIndex.html">
+            Names
+          </a>
+      </div>
+
+    </div>
+  </div>
+</nav>
+
+    <transparent></transparent>
+
+    <div class="container">
+
+      <div class="page-header">
+        <h1 class="module"><code><code><a href="googleapiclient.html">googleapiclient</a></code><wbr></wbr>.<code><a href="googleapiclient.discovery.html">discovery</a></code></code></h1>
+        <div id="showPrivate">
+          <button class="btn btn-link" onclick="togglePrivate()">Toggle Private API</button>
+        </div>
+      </div>
+
+      <div class="categoryHeader">
+        module documentation
+      </div>
+
+      <div class="extrasDocstring">
+        <a href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py" class="sourceLink">(source)</a>
+        <p></p>
+      </div>
+
+      <div class="moduleDocstring">
+        <div><p>Client for discovery based APIs.</p>
+<p>A client library for Google's discovery based APIs.</p>
+</div>
+      </div>
+
+      <div id="splitTables">
+        <table class="children sortable" id="id9">
+  
+  
+  <tr class="variable">
+    
+    <td>Variable</td>
+    <td><code><a href="#__author__">__author__</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="variable">
+    
+    <td>Variable</td>
+    <td><code><a href="#google_auth_httplib2">google_auth_httplib2</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="variable">
+    
+    <td>Variable</td>
+    <td><code><a href="#logger">logger</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="variable">
+    
+    <td>Variable</td>
+    <td><code><a href="#URITEMPLATE">URITEMPLATE</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="variable">
+    
+    <td>Variable</td>
+    <td><code><a href="#VARNAME">VARNAME</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="variable">
+    
+    <td>Variable</td>
+    <td><code><a href="#DISCOVERY_URI">DISCOVERY_URI</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="variable">
+    
+    <td>Variable</td>
+    <td><code><a href="#V2_DISCOVERY_URI">V2_DISCOVERY_URI</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="variable">
+    
+    <td>Variable</td>
+    <td><code><a href="#DEFAULT_METHOD_DOC">DEFAULT_METHOD_DOC</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="variable">
+    
+    <td>Variable</td>
+    <td><code><a href="#HTTP_PAYLOAD_METHODS">HTTP_PAYLOAD_METHODS</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="variable">
+    
+    <td>Variable</td>
+    <td><code><a href="#BODY_PARAMETER_DEFAULT_VALUE">BODY_PARAMETER_DEFAULT_VALUE</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="variable">
+    
+    <td>Variable</td>
+    <td><code><a href="#MEDIA_BODY_PARAMETER_DEFAULT_VALUE">MEDIA_BODY_PARAMETER_DEFAULT_VALUE</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="variable">
+    
+    <td>Variable</td>
+    <td><code><a href="#MEDIA_MIME_TYPE_PARAMETER_DEFAULT_VALUE">MEDIA_MIME_TYPE_PARAMETER_DEFAULT_VALUE</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="variable">
+    
+    <td>Variable</td>
+    <td><code><a href="#GOOGLE_API_USE_CLIENT_CERTIFICATE">GOOGLE_API_USE_CLIENT_CERTIFICATE</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="variable">
+    
+    <td>Variable</td>
+    <td><code><a href="#GOOGLE_API_USE_MTLS_ENDPOINT">GOOGLE_API_USE_MTLS_ENDPOINT</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="variable">
+    
+    <td>Variable</td>
+    <td><code><a href="#STACK_QUERY_PARAMETERS">STACK_QUERY_PARAMETERS</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="variable">
+    
+    <td>Variable</td>
+    <td><code><a href="#STACK_QUERY_PARAMETER_DEFAULT_VALUE">STACK_QUERY_PARAMETER_DEFAULT_VALUE</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="variable">
+    
+    <td>Variable</td>
+    <td><code><a href="#RESERVED_WORDS">RESERVED_WORDS</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="function">
+    
+    <td>Function</td>
+    <td><code><a href="#fix_method_name">fix_method_name</a></code></td>
+    <td><span>Fix method names to avoid '$' characters and reserved word conflicts.</span></td>
+  </tr><tr class="function">
+    
+    <td>Function</td>
+    <td><code><a href="#key2param">key2param</a></code></td>
+    <td><span>Converts key names into parameter names.</span></td>
+  </tr><tr class="function">
+    
+    <td>Function</td>
+    <td><code><a href="#build">build</a></code></td>
+    <td><span>Construct a Resource for interacting with an API.</span></td>
+  </tr><tr class="function">
+    
+    <td>Function</td>
+    <td><code><a href="#build_from_document">build_from_document</a></code></td>
+    <td><span>Create a Resource for interacting with an API.</span></td>
+  </tr><tr class="class">
+    
+    <td>Class</td>
+    <td><code><a href="googleapiclient.discovery.ResourceMethodParameters.html">ResourceMethodParameters</a></code></td>
+    <td><span>Represents the parameters associated with a method.</span></td>
+  </tr><tr class="function">
+    
+    <td>Function</td>
+    <td><code><a href="#createMethod">createMethod</a></code></td>
+    <td><span>Creates a method for attaching to a Resource.</span></td>
+  </tr><tr class="function">
+    
+    <td>Function</td>
+    <td><code><a href="#createNextMethod">createNextMethod</a></code></td>
+    <td><span>Creates any _next methods for attaching to a Resource.</span></td>
+  </tr><tr class="class">
+    
+    <td>Class</td>
+    <td><code><a href="googleapiclient.discovery.Resource.html">Resource</a></code></td>
+    <td><span>A class for interacting with a resource.</span></td>
+  </tr><tr class="variable private">
+    
+    <td>Variable</td>
+    <td><code><a href="#_MEDIA_SIZE_BIT_SHIFTS">_MEDIA_SIZE_BIT_SHIFTS</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="variable private">
+    
+    <td>Variable</td>
+    <td><code><a href="#_PAGE_TOKEN_NAMES">_PAGE_TOKEN_NAMES</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="class private">
+    
+    <td>Class</td>
+    <td><code><a href="googleapiclient.discovery._BytesGenerator.html">_BytesGenerator</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="function private">
+    
+    <td>Function</td>
+    <td><code><a href="#_discovery_service_uri_options">_discovery_service_uri_options</a></code></td>
+    <td><span>Returns Discovery URIs to be used for attemnting to build the API Resource.</span></td>
+  </tr><tr class="function private">
+    
+    <td>Function</td>
+    <td><code><a href="#_retrieve_discovery_doc">_retrieve_discovery_doc</a></code></td>
+    <td><span>Retrieves the discovery_doc from cache or the internet.</span></td>
+  </tr><tr class="function private">
+    
+    <td>Function</td>
+    <td><code><a href="#_cast">_cast</a></code></td>
+    <td><span>Convert value to a string based on JSON Schema type.</span></td>
+  </tr><tr class="function private">
+    
+    <td>Function</td>
+    <td><code><a href="#_media_size_to_long">_media_size_to_long</a></code></td>
+    <td><span>Convert a string media size, such as 10GB or 3TB into an integer.</span></td>
+  </tr><tr class="function private">
+    
+    <td>Function</td>
+    <td><code><a href="#_media_path_url_from_info">_media_path_url_from_info</a></code></td>
+    <td><span>Creates an absolute media path URL.</span></td>
+  </tr><tr class="function private">
+    
+    <td>Function</td>
+    <td><code><a href="#_fix_up_parameters">_fix_up_parameters</a></code></td>
+    <td><span>Updates parameters of an API method with values specific to this library.</span></td>
+  </tr><tr class="function private">
+    
+    <td>Function</td>
+    <td><code><a href="#_fix_up_media_upload">_fix_up_media_upload</a></code></td>
+    <td><span>Adds 'media_body' and 'media_mime_type' parameters if supported by method.</span></td>
+  </tr><tr class="function private">
+    
+    <td>Function</td>
+    <td><code><a href="#_fix_up_method_description">_fix_up_method_description</a></code></td>
+    <td><span>Updates a method description in a discovery document.</span></td>
+  </tr><tr class="function private">
+    
+    <td>Function</td>
+    <td><code><a href="#_urljoin">_urljoin</a></code></td>
+    <td><span>Custom urljoin replacement supporting : before / in url.</span></td>
+  </tr><tr class="function private">
+    
+    <td>Function</td>
+    <td><code><a href="#_findPageTokenName">_findPageTokenName</a></code></td>
+    <td><span>Search field names for one like a page token.</span></td>
+  </tr><tr class="function private">
+    
+    <td>Function</td>
+    <td><code><a href="#_methodProperties">_methodProperties</a></code></td>
+    <td><span>Get properties of a field in a method description.</span></td>
+  </tr>
+</table>
+        
+
+          
+      </div>
+
+      <div id="childList">
+
+        <div class="basevariable">
+  
+  
+  <a name="googleapiclient.discovery.__author__">
+    
+  </a>
+  <a name="__author__">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">__author__</span>: <code><a href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L23">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basevariable">
+  
+  
+  <a name="googleapiclient.discovery.google_auth_httplib2">
+    
+  </a>
+  <a name="google_auth_httplib2">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">google_auth_httplib2</span> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L57">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basevariable">
+  
+  
+  <a name="googleapiclient.discovery.logger">
+    
+  </a>
+  <a name="logger">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">logger</span> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L87">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basevariable">
+  
+  
+  <a name="googleapiclient.discovery.URITEMPLATE">
+    
+  </a>
+  <a name="URITEMPLATE">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">URITEMPLATE</span> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L89">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basevariable">
+  
+  
+  <a name="googleapiclient.discovery.VARNAME">
+    
+  </a>
+  <a name="VARNAME">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">VARNAME</span> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L90">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basevariable">
+  
+  
+  <a name="googleapiclient.discovery.DISCOVERY_URI">
+    
+  </a>
+  <a name="DISCOVERY_URI">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">DISCOVERY_URI</span>: <code><a href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L91">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basevariable">
+  
+  
+  <a name="googleapiclient.discovery.V2_DISCOVERY_URI">
+    
+  </a>
+  <a name="V2_DISCOVERY_URI">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">V2_DISCOVERY_URI</span>: <code><a href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L95">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basevariable">
+  
+  
+  <a name="googleapiclient.discovery.DEFAULT_METHOD_DOC">
+    
+  </a>
+  <a name="DEFAULT_METHOD_DOC">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">DEFAULT_METHOD_DOC</span>: <code><a href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L98">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basevariable">
+  
+  
+  <a name="googleapiclient.discovery.HTTP_PAYLOAD_METHODS">
+    
+  </a>
+  <a name="HTTP_PAYLOAD_METHODS">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">HTTP_PAYLOAD_METHODS</span> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L99">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basevariable private">
+  
+  
+  <a name="googleapiclient.discovery._MEDIA_SIZE_BIT_SHIFTS">
+    
+  </a>
+  <a name="_MEDIA_SIZE_BIT_SHIFTS">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_MEDIA_SIZE_BIT_SHIFTS</span>: <code><a href="https://docs.python.org/3/library/stdtypes.html#dict">dict</a>[<wbr></wbr><a href="https://docs.python.org/3/library/stdtypes.html#str">str</a>, <wbr></wbr><a href="https://docs.python.org/3/library/functions.html#int">int</a>]</code> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L101">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basevariable">
+  
+  
+  <a name="googleapiclient.discovery.BODY_PARAMETER_DEFAULT_VALUE">
+    
+  </a>
+  <a name="BODY_PARAMETER_DEFAULT_VALUE">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">BODY_PARAMETER_DEFAULT_VALUE</span>: <code><a href="https://docs.python.org/3/library/stdtypes.html#dict">dict</a>[<wbr></wbr><a href="https://docs.python.org/3/library/stdtypes.html#str">str</a>, <wbr></wbr><a href="https://docs.python.org/3/library/stdtypes.html#str">str</a>]</code> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L102">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basevariable">
+  
+  
+  <a name="googleapiclient.discovery.MEDIA_BODY_PARAMETER_DEFAULT_VALUE">
+    
+  </a>
+  <a name="MEDIA_BODY_PARAMETER_DEFAULT_VALUE">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">MEDIA_BODY_PARAMETER_DEFAULT_VALUE</span>: <code><a href="https://docs.python.org/3/library/stdtypes.html#dict">dict</a></code> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L103">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basevariable">
+  
+  
+  <a name="googleapiclient.discovery.MEDIA_MIME_TYPE_PARAMETER_DEFAULT_VALUE">
+    
+  </a>
+  <a name="MEDIA_MIME_TYPE_PARAMETER_DEFAULT_VALUE">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">MEDIA_MIME_TYPE_PARAMETER_DEFAULT_VALUE</span>: <code><a href="https://docs.python.org/3/library/stdtypes.html#dict">dict</a></code> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L111">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basevariable private">
+  
+  
+  <a name="googleapiclient.discovery._PAGE_TOKEN_NAMES">
+    
+  </a>
+  <a name="_PAGE_TOKEN_NAMES">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">_PAGE_TOKEN_NAMES</span>: <code><a href="https://docs.python.org/3/library/stdtypes.html#tuple">tuple</a>[<wbr></wbr><a href="https://docs.python.org/3/library/stdtypes.html#str">str</a>, <wbr></wbr>...]</code> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L119">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basevariable">
+  
+  
+  <a name="googleapiclient.discovery.GOOGLE_API_USE_CLIENT_CERTIFICATE">
+    
+  </a>
+  <a name="GOOGLE_API_USE_CLIENT_CERTIFICATE">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">GOOGLE_API_USE_CLIENT_CERTIFICATE</span>: <code><a href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L122">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basevariable">
+  
+  
+  <a name="googleapiclient.discovery.GOOGLE_API_USE_MTLS_ENDPOINT">
+    
+  </a>
+  <a name="GOOGLE_API_USE_MTLS_ENDPOINT">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">GOOGLE_API_USE_MTLS_ENDPOINT</span>: <code><a href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L123">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basevariable">
+  
+  
+  <a name="googleapiclient.discovery.STACK_QUERY_PARAMETERS">
+    
+  </a>
+  <a name="STACK_QUERY_PARAMETERS">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">STACK_QUERY_PARAMETERS</span> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L127">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basevariable">
+  
+  
+  <a name="googleapiclient.discovery.STACK_QUERY_PARAMETER_DEFAULT_VALUE">
+    
+  </a>
+  <a name="STACK_QUERY_PARAMETER_DEFAULT_VALUE">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">STACK_QUERY_PARAMETER_DEFAULT_VALUE</span>: <code><a href="https://docs.python.org/3/library/stdtypes.html#dict">dict</a>[<wbr></wbr><a href="https://docs.python.org/3/library/stdtypes.html#str">str</a>, <wbr></wbr><a href="https://docs.python.org/3/library/stdtypes.html#str">str</a>]</code> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L128">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basevariable">
+  
+  
+  <a name="googleapiclient.discovery.RESERVED_WORDS">
+    
+  </a>
+  <a name="RESERVED_WORDS">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">RESERVED_WORDS</span> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L131">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basefunction">
+  
+  
+  <a name="googleapiclient.discovery.fix_method_name">
+    
+  </a>
+  <a name="fix_method_name">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">fix_method_name</span>(name):
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L139">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div>Fix method names to avoid '$' characters and reserved word conflicts.<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">name</span></td><td class="fieldArgDesc">string, method name.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td colspan="2">The name with '_' appended if the name is a reserved word and '$' and '-'
+replaced with '_'.</td></tr></table></div>
+  </div>
+</div><div class="basefunction">
+  
+  
+  <a name="googleapiclient.discovery.key2param">
+    
+  </a>
+  <a name="key2param">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">key2param</span>(key):
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L156">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p>Converts key names into parameter names.</p>
+<p>For example, converting "max-results" -&gt; "max_results"</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">key</span></td><td class="fieldArgDesc">string, the method key name.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td colspan="2">A safe method name based on the key name.</td></tr></table></div>
+  </div>
+</div><div class="basefunction">
+  
+  
+  <a name="googleapiclient.discovery.build">
+    
+  </a>
+  <a name="build">
+    
+  </a>
+  <div class="functionHeader">
+    @positional(2)<br />
+    <span class="py-keyword">def</span> <span class="py-defname">build</span>(serviceName, version, http=None, discoveryServiceUrl=DISCOVERY_URI, developerKey=None, model=None, requestBuilder=HttpRequest, credentials=None, cache_discovery=True, cache=None, client_options=None, adc_cert_path=None, adc_key_path=None, num_retries=1, static_discovery=True):
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L180">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p>Construct a Resource for interacting with an API.</p>
+<p>Construct a Resource object for interacting with an API. The serviceName and
+version are the names from the Discovery service.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">serviceName</span></td><td class="fieldArgDesc">string, name of the service.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">version</span></td><td class="fieldArgDesc">string, the version of the service.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">http</span></td><td class="fieldArgDesc">httplib2.Http, An instance of httplib2.Http or something that acts
+like it that HTTP requests will be made through.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">discoveryServiceUrl</span></td><td class="fieldArgDesc">string, a URI Template that points to the location of
+the discovery service. It should have two parameters {api} and
+{apiVersion} that when filled in produce an absolute URI to the discovery
+document for that service.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">developerKey</span></td><td class="fieldArgDesc">string, key obtained from
+<a class="rst-reference external" href="https://code.google.com/apis/console" target="_top">https://code.google.com/apis/console</a>.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">model</span></td><td class="fieldArgDesc">googleapiclient.Model, converts to and from the wire format.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">requestBuilder</span></td><td class="fieldArgDesc">googleapiclient.http.HttpRequest, encapsulator for an HTTP
+request.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">credentials</span></td><td class="fieldArgDesc">oauth2client.Credentials or
+google.auth.credentials.Credentials, credentials to be used for
+authentication.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">cache_discovery</span></td><td class="fieldArgDesc">Boolean, whether or not to cache the discovery doc.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">cache</span></td><td class="fieldArgDesc">googleapiclient.discovery_cache.base.CacheBase, an optional
+cache object for the discovery documents.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">client_options</span></td><td class="fieldArgDesc">Mapping object or google.api_core.client_options, client
+options to set user options on the client.
+(1) The API endpoint should be set through client_options. If API endpoint
+is not set, <code><a href="#GOOGLE_API_USE_MTLS_ENDPOINT">GOOGLE_API_USE_MTLS_ENDPOINT</a></code> environment variable can be used
+to control which endpoint to use.
+(2) client_cert_source is not supported, client cert should be provided using
+client_encrypted_cert_source instead. In order to use the provided client
+cert, <code><a href="#GOOGLE_API_USE_CLIENT_CERTIFICATE">GOOGLE_API_USE_CLIENT_CERTIFICATE</a></code> environment variable must be
+set to <code>true</code>.
+More details on the environment variables are here:
+<a class="rst-reference external" href="https://google.aip.dev/auth/4114" target="_top">https://google.aip.dev/auth/4114</a></td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">adc_cert_path</span></td><td class="fieldArgDesc">str, client certificate file path to save the application
+default client certificate for mTLS. This field is required if you want to
+use the default client certificate. <code><a href="#GOOGLE_API_USE_CLIENT_CERTIFICATE">GOOGLE_API_USE_CLIENT_CERTIFICATE</a></code>
+environment variable must be set to <code>true</code> in order to use this field,
+otherwise this field doesn't nothing.
+More details on the environment variables are here:
+<a class="rst-reference external" href="https://google.aip.dev/auth/4114" target="_top">https://google.aip.dev/auth/4114</a></td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">adc_key_path</span></td><td class="fieldArgDesc">str, client encrypted private key file path to save the
+application default client encrypted private key for mTLS. This field is
+required if you want to use the default client certificate.
+<code><a href="#GOOGLE_API_USE_CLIENT_CERTIFICATE">GOOGLE_API_USE_CLIENT_CERTIFICATE</a></code> environment variable must be set to
+<code>true</code> in order to use this field, otherwise this field doesn't nothing.
+More details on the environment variables are here:
+<a class="rst-reference external" href="https://google.aip.dev/auth/4114" target="_top">https://google.aip.dev/auth/4114</a></td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">num_retries</span></td><td class="fieldArgDesc">Integer, number of times to retry discovery with
+randomized exponential backoff in case of intermittent/connection issues.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">static_discovery</span></td><td class="fieldArgDesc">Boolean, whether or not to use the static discovery docs
+included in the library.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td colspan="2">A Resource object with methods for interacting with the service.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Raises</td></tr><tr><td class="fieldArgContainer"><code>google.auth.exceptions.MutualTLSChannelError</code></td><td>if there are any problems
+setting up mutual TLS channel.</td></tr></table></div>
+  </div>
+</div><div class="basefunction private">
+  
+  
+  <a name="googleapiclient.discovery._discovery_service_uri_options">
+    
+  </a>
+  <a name="_discovery_service_uri_options">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">_discovery_service_uri_options</span>(discoveryServiceUrl, version):
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L314">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><blockquote>
+Returns Discovery URIs to be used for attemnting to build the API Resource.</blockquote>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">discoveryServiceUrl</span></td><td class="fieldArgDesc">string, the Original Discovery Service URL preferred by the customer.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">version</span></td><td class="fieldArgDesc">string, API Version requested</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td colspan="2">A list of URIs to be tried for the Service Discovery, in order.</td></tr></table></div>
+  </div>
+</div><div class="basefunction private">
+  
+  
+  <a name="googleapiclient.discovery._retrieve_discovery_doc">
+    
+  </a>
+  <a name="_retrieve_discovery_doc">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">_retrieve_discovery_doc</span>(url, http, cache_discovery, serviceName, version, cache=None, developerKey=None, num_retries=1, static_discovery=True):
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L338">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div>Retrieves the discovery_doc from cache or the internet.<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">url</span></td><td class="fieldArgDesc">string, the URL of the discovery document.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">http</span></td><td class="fieldArgDesc">httplib2.Http, An instance of httplib2.Http or something that acts
+like it through which HTTP requests will be made.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">cache_discovery</span></td><td class="fieldArgDesc">Boolean, whether or not to cache the discovery doc.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">serviceName</span></td><td class="fieldArgDesc">string, name of the service.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">version</span></td><td class="fieldArgDesc">string, the version of the service.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">cache</span></td><td class="fieldArgDesc">googleapiclient.discovery_cache.base.Cache, an optional cache
+object for the discovery documents.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">developerKey</span></td><td class="fieldArgDesc">string, Key for controlling API usage, generated
+from the API Console.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">num_retries</span></td><td class="fieldArgDesc">Integer, number of times to retry discovery with
+randomized exponential backoff in case of intermittent/connection issues.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">static_discovery</span></td><td class="fieldArgDesc">Boolean, whether or not to use the static discovery docs
+included in the library.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td colspan="2">A unicode string representation of the discovery document.</td></tr></table></div>
+  </div>
+</div><div class="basefunction">
+  
+  
+  <a name="googleapiclient.discovery.build_from_document">
+    
+  </a>
+  <a name="build_from_document">
+    
+  </a>
+  <div class="functionHeader">
+    @positional(1)<br />
+    <span class="py-keyword">def</span> <span class="py-defname">build_from_document</span>(service, base=None, future=None, http=None, developerKey=None, model=None, requestBuilder=HttpRequest, credentials=None, client_options=None, adc_cert_path=None, adc_key_path=None):
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L420">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p>Create a Resource for interacting with an API.</p>
+<p>Same as <code>build()</code>, but constructs the Resource object from a discovery
+document that is it given, as opposed to retrieving one over HTTP.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">service</span></td><td class="fieldArgDesc">string or object, the JSON discovery document describing the API.
+The value passed in may either be the JSON string or the deserialized
+JSON.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">base</span></td><td class="fieldArgDesc">string, base URI for all HTTP requests, usually the discovery URI.
+This parameter is no longer used as rootUrl and servicePath are included
+within the discovery document. (deprecated)</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">future</span></td><td class="fieldArgDesc">string, discovery document with future capabilities (deprecated).</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">http</span></td><td class="fieldArgDesc">httplib2.Http, An instance of httplib2.Http or something that acts
+like it that HTTP requests will be made through.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">developerKey</span></td><td class="fieldArgDesc">string, Key for controlling API usage, generated
+from the API Console.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">model</span></td><td class="fieldArgDesc">Model class instance that serializes and de-serializes requests and
+responses.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">requestBuilder</span></td><td class="fieldArgDesc">Takes an http request and packages it up to be executed.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">credentials</span></td><td class="fieldArgDesc">oauth2client.Credentials or
+google.auth.credentials.Credentials, credentials to be used for
+authentication.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">client_options</span></td><td class="fieldArgDesc">Mapping object or google.api_core.client_options, client
+options to set user options on the client.
+(1) The API endpoint should be set through client_options. If API endpoint
+is not set, <code><a href="#GOOGLE_API_USE_MTLS_ENDPOINT">GOOGLE_API_USE_MTLS_ENDPOINT</a></code> environment variable can be used
+to control which endpoint to use.
+(2) client_cert_source is not supported, client cert should be provided using
+client_encrypted_cert_source instead. In order to use the provided client
+cert, <code><a href="#GOOGLE_API_USE_CLIENT_CERTIFICATE">GOOGLE_API_USE_CLIENT_CERTIFICATE</a></code> environment variable must be
+set to <code>true</code>.
+More details on the environment variables are here:
+<a class="rst-reference external" href="https://google.aip.dev/auth/4114" target="_top">https://google.aip.dev/auth/4114</a></td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">adc_cert_path</span></td><td class="fieldArgDesc">str, client certificate file path to save the application
+default client certificate for mTLS. This field is required if you want to
+use the default client certificate. <code><a href="#GOOGLE_API_USE_CLIENT_CERTIFICATE">GOOGLE_API_USE_CLIENT_CERTIFICATE</a></code>
+environment variable must be set to <code>true</code> in order to use this field,
+otherwise this field doesn't nothing.
+More details on the environment variables are here:
+<a class="rst-reference external" href="https://google.aip.dev/auth/4114" target="_top">https://google.aip.dev/auth/4114</a></td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">adc_key_path</span></td><td class="fieldArgDesc">str, client encrypted private key file path to save the
+application default client encrypted private key for mTLS. This field is
+required if you want to use the default client certificate.
+<code><a href="#GOOGLE_API_USE_CLIENT_CERTIFICATE">GOOGLE_API_USE_CLIENT_CERTIFICATE</a></code> environment variable must be set to
+<code>true</code> in order to use this field, otherwise this field doesn't nothing.
+More details on the environment variables are here:
+<a class="rst-reference external" href="https://google.aip.dev/auth/4114" target="_top">https://google.aip.dev/auth/4114</a></td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td colspan="2">A Resource object with methods for interacting with the service.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Raises</td></tr><tr><td class="fieldArgContainer"><code>google.auth.exceptions.MutualTLSChannelError</code></td><td>if there are any problems
+setting up mutual TLS channel.</td></tr></table></div>
+  </div>
+</div><div class="basefunction private">
+  
+  
+  <a name="googleapiclient.discovery._cast">
+    
+  </a>
+  <a name="_cast">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">_cast</span>(value, schema_type):
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L648">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p>Convert value to a string based on JSON Schema type.</p>
+<p>See <a class="rst-reference external" href="http://tools.ietf.org/html/draft-zyp-json-schema-03" target="_top">http://tools.ietf.org/html/draft-zyp-json-schema-03</a> for more details on
+JSON Schema.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">value</span></td><td class="fieldArgDesc">any, the value to convert</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">schema_type</span></td><td class="fieldArgDesc">string, the type that value should be interpreted as</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td colspan="2">A string representation of 'value' based on the schema_type.</td></tr></table></div>
+  </div>
+</div><div class="basefunction private">
+  
+  
+  <a name="googleapiclient.discovery._media_size_to_long">
+    
+  </a>
+  <a name="_media_size_to_long">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">_media_size_to_long</span>(maxSize):
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L679">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div>Convert a string media size, such as 10GB or 3TB into an integer.<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">maxSize</span></td><td class="fieldArgDesc">string, size as a string, such as 2MB or 7GB.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td colspan="2">The size as an integer value.</td></tr></table></div>
+  </div>
+</div><div class="basefunction private">
+  
+  
+  <a name="googleapiclient.discovery._media_path_url_from_info">
+    
+  </a>
+  <a name="_media_path_url_from_info">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">_media_path_url_from_info</span>(root_desc, path_url):
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L698">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p>Creates an absolute media path URL.</p>
+<p>Constructed using the API root URI and service path from the discovery
+document and the relative path for the API method.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">root_desc</span></td><td class="fieldArgDesc">Dictionary; the entire original deserialized discovery document.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">path_url</span></td><td class="fieldArgDesc">String; the relative URL for the API method. Relative to the API
+root, which is specified in the discovery document.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td colspan="2">String; the absolute URI for media upload for the API method.</td></tr></table></div>
+  </div>
+</div><div class="basefunction private">
+  
+  
+  <a name="googleapiclient.discovery._fix_up_parameters">
+    
+  </a>
+  <a name="_fix_up_parameters">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">_fix_up_parameters</span>(method_desc, root_desc, http_method, schema):
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L719">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p>Updates parameters of an API method with values specific to this library.</p>
+<p>Specifically, adds whatever global parameters are specified by the API to the
+parameters for the individual method. Also adds parameters which don't
+appear in the discovery document, but are available to all discovery based
+APIs (these are listed in STACK_QUERY_PARAMETERS).</p>
+<p>SIDE EFFECTS: This updates the parameters dictionary object in the method
+description.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">method_desc</span></td><td class="fieldArgDesc">Dictionary with metadata describing an API method. Value comes
+from the dictionary of methods stored in the 'methods' key in the
+deserialized discovery document.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">root_desc</span></td><td class="fieldArgDesc">Dictionary; the entire original deserialized discovery document.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">http_method</span></td><td class="fieldArgDesc">String; the HTTP method used to call the API method described
+in method_desc.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">schema</span></td><td class="fieldArgDesc">Object, mapping of schema names to schema descriptions.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td colspan="2"><dl class="rst-docutils">
+<dt>The updated Dictionary stored in the 'parameters' key of the method</dt>
+<dd>description dictionary.</dd>
+</dl>
+</td></tr></table></div>
+  </div>
+</div><div class="basefunction private">
+  
+  
+  <a name="googleapiclient.discovery._fix_up_media_upload">
+    
+  </a>
+  <a name="_fix_up_media_upload">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">_fix_up_media_upload</span>(method_desc, root_desc, path_url, parameters):
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L763">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p>Adds 'media_body' and 'media_mime_type' parameters if supported by method.</p>
+<p>SIDE EFFECTS: If there is a 'mediaUpload' in the method description, adds
+'media_upload' key to parameters.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">method_desc</span></td><td class="fieldArgDesc">Dictionary with metadata describing an API method. Value comes
+from the dictionary of methods stored in the 'methods' key in the
+deserialized discovery document.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">root_desc</span></td><td class="fieldArgDesc">Dictionary; the entire original deserialized discovery document.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">path_url</span></td><td class="fieldArgDesc">String; the relative URL for the API method. Relative to the API
+root, which is specified in the discovery document.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">parameters</span></td><td class="fieldArgDesc">A dictionary describing method parameters for method described
+in method_desc.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><code>Triple `(`accept</code>, <code>max_size</code>, <code>media_path_url</code>) where</td><td class="fieldArgDesc"><ul class="rst-simple">
+<li>accept is a list of strings representing what content types are
+accepted for media upload. Defaults to empty list if not in the
+discovery document.</li>
+<li>max_size is a long representing the max size in bytes allowed for a
+media upload. Defaults to 0L if not in the discovery document.</li>
+<li>media_path_url is a String; the absolute URI for media upload for the
+API method. Constructed using the API root URI and service path from
+the discovery document and the relative path for the API method. If
+media upload is not supported, this is None.</li>
+</ul>
+</td></tr></table></div>
+  </div>
+</div><div class="basefunction private">
+  
+  
+  <a name="googleapiclient.discovery._fix_up_method_description">
+    
+  </a>
+  <a name="_fix_up_method_description">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">_fix_up_method_description</span>(method_desc, root_desc, schema):
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L804">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p>Updates a method description in a discovery document.</p>
+<p>SIDE EFFECTS: Changes the parameters dictionary in the method description with
+extra parameters which are used locally.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">method_desc</span></td><td class="fieldArgDesc">Dictionary with metadata describing an API method. Value comes
+from the dictionary of methods stored in the 'methods' key in the
+deserialized discovery document.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">root_desc</span></td><td class="fieldArgDesc">Dictionary; the entire original deserialized discovery document.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">schema</span></td><td class="fieldArgDesc">Object, mapping of schema names to schema descriptions.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td class="fieldArgContainer"><code>Tuple `(`path_url</code>, <code>http_method</code>, <code>method_id</code>, <code>accept</code>, <code>max_size</code>, <code>media_path_url</code>)`where`</td><td class="fieldArgDesc"><ul class="rst-simple">
+<li>path_url is a String; the relative URL for the API method. Relative to
+the API root, which is specified in the discovery document.</li>
+<li>http_method is a String; the HTTP method used to call the API method
+described in the method description.</li>
+<li>method_id is a String; the name of the RPC method associated with the
+API method, and is in the method description in the 'id' key.</li>
+<li>accept is a list of strings representing what content types are
+accepted for media upload. Defaults to empty list if not in the
+discovery document.</li>
+<li>max_size is a long representing the max size in bytes allowed for a
+media upload. Defaults to 0L if not in the discovery document.</li>
+<li>media_path_url is a String; the absolute URI for media upload for the
+API method. Constructed using the API root URI and service path from
+the discovery document and the relative path for the API method. If
+media upload is not supported, this is None.</li>
+</ul>
+</td></tr></table></div>
+  </div>
+</div><div class="basefunction private">
+  
+  
+  <a name="googleapiclient.discovery._urljoin">
+    
+  </a>
+  <a name="_urljoin">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">_urljoin</span>(base, url):
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L851">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div>Custom urljoin replacement supporting : before / in url.</div>
+  </div>
+</div><div class="basefunction">
+  
+  
+  <a name="googleapiclient.discovery.createMethod">
+    
+  </a>
+  <a name="createMethod">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">createMethod</span>(methodName, methodDesc, rootDesc, schema):
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L959">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div>Creates a method for attaching to a Resource.<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">methodName</span></td><td class="fieldArgDesc">string, name of the method to use.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">methodDesc</span></td><td class="fieldArgDesc">object, fragment of deserialized discovery document that
+describes the method.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">rootDesc</span></td><td class="fieldArgDesc">object, the entire deserialized discovery document.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">schema</span></td><td class="fieldArgDesc">object, mapping of schema names to schema descriptions.</td></tr></table></div>
+  </div>
+</div><div class="basefunction">
+  
+  
+  <a name="googleapiclient.discovery.createNextMethod">
+    
+  </a>
+  <a name="createNextMethod">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">createNextMethod</span>(methodName, pageTokenName='pageToken', nextPageTokenName='nextPageToken', isPageTokenParameter=True):
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L1218">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p>Creates any _next methods for attaching to a Resource.</p>
+<p>The _next methods allow for easy iteration through list() responses.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">methodName</span></td><td class="fieldArgDesc">string, name of the method to use.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">pageTokenName</span></td><td class="fieldArgDesc">string, name of request page token field.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">nextPageTokenName</span></td><td class="fieldArgDesc">string, name of response page token field.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">isPageTokenParameter</span></td><td class="fieldArgDesc">Boolean, True if request page token is a query
+parameter, False if request page token is a field of the request body.</td></tr></table></div>
+  </div>
+</div><div class="basefunction private">
+  
+  
+  <a name="googleapiclient.discovery._findPageTokenName">
+    
+  </a>
+  <a name="_findPageTokenName">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">_findPageTokenName</span>(fields):
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L1485">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div>Search field names for one like a page token.<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">fields</span></td><td class="fieldArgDesc">container of string, names of fields.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td colspan="2">First name that is either 'pageToken' or 'nextPageToken' if one exists,
+otherwise None.</td></tr></table></div>
+  </div>
+</div><div class="basefunction private">
+  
+  
+  <a name="googleapiclient.discovery._methodProperties">
+    
+  </a>
+  <a name="_methodProperties">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">_methodProperties</span>(methodDesc, schema, name):
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/discovery.py#L1500">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div>Get properties of a field in a method description.<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">methodDesc</span></td><td class="fieldArgDesc">object, fragment of deserialized discovery document that
+describes the method.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">schema</span></td><td class="fieldArgDesc">object, mapping of schema names to schema descriptions.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">name</span></td><td class="fieldArgDesc">string, name of top-level field in method description.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td colspan="2">Object representing fragment of deserialized discovery document
+corresponding to 'properties' field of object corresponding to named field
+in method description, if it exists, otherwise empty dict.</td></tr></table></div>
+  </div>
+</div>
+
+      </div>
+      <address>
+        <a href="index.html">API Documentation</a> for Google API Python Client, generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a> 20.12.1 at 2021-03-19 02:02:03.
+      </address>
+
+    </div>
+
+    <transparent></transparent>
+
+    <script src="pydoctor.js" type="text/javascript"></script>
+
+  </body>
+</html>

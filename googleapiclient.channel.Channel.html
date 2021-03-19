@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+          "DTD/xhtml1-strict.dtd">
+<html>
+  
+
+  <head>
+    
+    <title>googleapiclient.channel.Channel</title>
+    <meta name="generator" content="pydoctor 20.12.1"> 
+        </meta>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.75" />
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="apidocs.css" />
+    <link rel="stylesheet" type="text/css" href="extra.css" />
+</head>
+
+  <body>
+
+    <transparent></transparent>
+
+    <nav class="navbar navbar-default">
+  
+  <div class="container">
+
+    <div class="navbar-header">
+      
+      <div class="navlinks">
+          <span class="navbar-brand">
+            <a href="https://github.com/tristanlatr/google-api-python-client" id="projecthome">Google API Python Client</a> <a href="index.html"> API Documentation </a>
+          </span>
+
+          <a href="moduleIndex.html">
+            Modules
+          </a>
+
+          <a href="classIndex.html">
+            Classes
+          </a>
+
+          <a href="nameIndex.html">
+            Names
+          </a>
+      </div>
+
+    </div>
+  </div>
+</nav>
+
+    <transparent></transparent>
+
+    <div class="container">
+
+      <div class="page-header">
+        <h1 class="class"><code><code><a href="googleapiclient.html">googleapiclient</a></code><wbr></wbr>.<code><a href="googleapiclient.channel.html">channel</a></code><wbr></wbr>.<code><a href="googleapiclient.channel.Channel.html">Channel</a></code></code></h1>
+        <div id="showPrivate">
+          <button class="btn btn-link" onclick="togglePrivate()">Toggle Private API</button>
+        </div>
+      </div>
+
+      <div class="categoryHeader">
+        class documentation
+      </div>
+
+      <div class="extrasDocstring">
+        <p><code><span class="py-keyword">class</span> <span class="py-defname">Channel</span>(<a href="https://docs.python.org/3/library/functions.html#object" title="object">object</a>): <a href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/channel.py#L143" class="sourceLink">(source)</a></code></p>
+        <p><a href="classIndex.html#googleapiclient.channel.Channel">View In Hierarchy</a></p>
+      </div>
+
+      <div class="moduleDocstring">
+        <div><p>A Channel for notifications.</p>
+<p>Usually not constructed directly, instead it is returned from helper
+functions like new_webhook_channel().</p>
+</div>
+      </div>
+
+      <div id="splitTables">
+        <table class="children sortable" id="id8">
+  
+  
+  <tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#type">type</a></code></td>
+    <td><span>str, The type of delivery mechanism used by this channel. For
+example, 'web_hook'.</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#id">id</a></code></td>
+    <td><span>str, A UUID for the channel.</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#token">token</a></code></td>
+    <td><span>str, An arbitrary string associated with the channel that
+is delivered to the target address with each event delivered
+over this channel.</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#address">address</a></code></td>
+    <td><span>str, The address of the receiving entity where events are
+delivered. Specific to the channel type.</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#expiration">expiration</a></code></td>
+    <td><span>int, The time, in milliseconds from the epoch, when this
+channel will expire.</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#params">params</a></code></td>
+    <td><span>dict, A dictionary of string to string, with additional parameters
+controlling delivery channel behavior.</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#resource_id">resource_id</a></code></td>
+    <td><span>str, An opaque id that identifies the resource that is
+being watched. Stable across different API versions.</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#resource_uri">resource_uri</a></code></td>
+    <td><span>str, The canonicalized ID of the watched resource.</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#__init__">__init__</a></code></td>
+    <td><span>Create a new Channel.</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#body">body</a></code></td>
+    <td><span>Build a body from the Channel.</span></td>
+  </tr><tr class="method">
+    
+    <td>Method</td>
+    <td><code><a href="#update">update</a></code></td>
+    <td><span>Update a channel with information from the response of watch().</span></td>
+  </tr>
+</table>
+        
+
+          
+      </div>
+
+      <div id="childList">
+
+        <div class="baseinstancevariable">
+  
+  
+  <a name="googleapiclient.channel.Channel.type">
+    
+  </a>
+  <a name="type">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">type</span> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/channel.py#L149">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div>str, The type of delivery mechanism used by this channel. For
+example, 'web_hook'.</div>
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="googleapiclient.channel.Channel.id">
+    
+  </a>
+  <a name="id">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">id</span> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/channel.py#L151">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div>str, A UUID for the channel.</div>
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="googleapiclient.channel.Channel.token">
+    
+  </a>
+  <a name="token">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">token</span> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/channel.py#L152">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div>str, An arbitrary string associated with the channel that
+is delivered to the target address with each event delivered
+over this channel.</div>
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="googleapiclient.channel.Channel.address">
+    
+  </a>
+  <a name="address">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">address</span> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/channel.py#L155">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div>str, The address of the receiving entity where events are
+delivered. Specific to the channel type.</div>
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="googleapiclient.channel.Channel.expiration">
+    
+  </a>
+  <a name="expiration">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">expiration</span> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/channel.py#L157">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div>int, The time, in milliseconds from the epoch, when this
+channel will expire.</div>
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="googleapiclient.channel.Channel.params">
+    
+  </a>
+  <a name="params">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">params</span> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/channel.py#L159">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div>dict, A dictionary of string to string, with additional parameters
+controlling delivery channel behavior.</div>
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="googleapiclient.channel.Channel.resource_id">
+    
+  </a>
+  <a name="resource_id">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">resource_id</span> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/channel.py#L161">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div>str, An opaque id that identifies the resource that is
+being watched. Stable across different API versions.</div>
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="googleapiclient.channel.Channel.resource_uri">
+    
+  </a>
+  <a name="resource_uri">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">resource_uri</span> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/channel.py#L163">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div>str, The canonicalized ID of the watched resource.</div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="googleapiclient.channel.Channel.__init__">
+    
+  </a>
+  <a name="__init__">
+    
+  </a>
+  <div class="functionHeader">
+    @util.positional(5)<br />
+    <span class="py-keyword">def</span> <span class="py-defname">__init__</span>(self, type, id, token, address, expiration=None, params=None, resource_id='', resource_uri=''):
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/channel.py#L167">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p>Create a new Channel.</p>
+<p>In user code, this Channel constructor will not typically be called
+manually since there are functions for creating channels for each specific
+type with a more customized set of arguments to pass.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">type</span></td><td class="fieldArgDesc">str, The type of delivery mechanism used by this channel. For
+example, 'web_hook'.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">id</span></td><td class="fieldArgDesc">str, A UUID for the channel.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">token</span></td><td class="fieldArgDesc">str, An arbitrary string associated with the channel that
+is delivered to the target address with each event delivered
+over this channel.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">address</span></td><td class="fieldArgDesc">str,  The address of the receiving entity where events are
+delivered. Specific to the channel type.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">expiration</span></td><td class="fieldArgDesc">int, The time, in milliseconds from the epoch, when this
+channel will expire.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">params</span></td><td class="fieldArgDesc">dict, A dictionary of string to string, with additional parameters
+controlling delivery channel behavior.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">resource_id</span></td><td class="fieldArgDesc">str, An opaque id that identifies the resource that is
+being watched. Stable across different API versions.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">resource_uri</span></td><td class="fieldArgDesc">str, The canonicalized ID of the watched resource.</td></tr></table></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="googleapiclient.channel.Channel.body">
+    
+  </a>
+  <a name="body">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">body</span>(self):
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/channel.py#L211">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p>Build a body from the Channel.</p>
+<p>Constructs a dictionary that's appropriate for passing into watch()
+methods as the value of body argument.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td colspan="2">A dictionary representation of the channel.</td></tr></table></div>
+  </div>
+</div><div class="basemethod">
+  
+  
+  <a name="googleapiclient.channel.Channel.update">
+    
+  </a>
+  <a name="update">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">update</span>(self, resp):
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/channel.py#L237">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p>Update a channel with information from the response of watch().</p>
+<p>When a request is sent to watch() a resource, the response returned
+from the watch() request is a dictionary with updated channel information,
+such as the resource_id, which is needed when stopping a subscription.</p>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">resp</span></td><td class="fieldArgDesc">dict, The response from a watch() method.</td></tr></table></div>
+  </div>
+</div>
+
+      </div>
+      <address>
+        <a href="index.html">API Documentation</a> for Google API Python Client, generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a> 20.12.1 at 2021-03-19 02:02:03.
+      </address>
+
+    </div>
+
+    <transparent></transparent>
+
+    <script src="pydoctor.js" type="text/javascript"></script>
+
+  </body>
+</html>

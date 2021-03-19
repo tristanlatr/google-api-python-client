@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+          "DTD/xhtml1-strict.dtd">
+<html>
+  
+
+  <head>
+    
+    <title>googleapiclient.channel</title>
+    <meta name="generator" content="pydoctor 20.12.1"> 
+        </meta>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.75" />
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="apidocs.css" />
+    <link rel="stylesheet" type="text/css" href="extra.css" />
+</head>
+
+  <body>
+
+    <transparent></transparent>
+
+    <nav class="navbar navbar-default">
+  
+  <div class="container">
+
+    <div class="navbar-header">
+      
+      <div class="navlinks">
+          <span class="navbar-brand">
+            <a href="https://github.com/tristanlatr/google-api-python-client" id="projecthome">Google API Python Client</a> <a href="index.html"> API Documentation </a>
+          </span>
+
+          <a href="moduleIndex.html">
+            Modules
+          </a>
+
+          <a href="classIndex.html">
+            Classes
+          </a>
+
+          <a href="nameIndex.html">
+            Names
+          </a>
+      </div>
+
+    </div>
+  </div>
+</nav>
+
+    <transparent></transparent>
+
+    <div class="container">
+
+      <div class="page-header">
+        <h1 class="module"><code><code><a href="googleapiclient.html">googleapiclient</a></code><wbr></wbr>.<code><a href="googleapiclient.channel.html">channel</a></code></code></h1>
+        <div id="showPrivate">
+          <button class="btn btn-link" onclick="togglePrivate()">Toggle Private API</button>
+        </div>
+      </div>
+
+      <div class="categoryHeader">
+        module documentation
+      </div>
+
+      <div class="extrasDocstring">
+        <a href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/channel.py" class="sourceLink">(source)</a>
+        <p></p>
+      </div>
+
+      <div class="moduleDocstring">
+        <div><p>Channel notifications support.</p>
+<p>Classes and functions to support channel subscriptions and notifications
+on those channels.</p>
+<div class="rst-admonition rst-admonition-notes">
+<p class="rst-first rst-admonition-title">Notes</p>
+<ul class="rst-last rst-simple">
+<li>This code is based on experimental APIs and is subject to change.</li>
+<li>Notification does not do deduplication of notification ids, that's up to
+the receiver.</li>
+<li>Storing the Channel between calls is up to the caller.</li>
+</ul>
+</div>
+<p>Example setting up a channel:</p>
+<blockquote>
+<p># Create a new channel that gets notifications via webhook.
+channel = new_webhook_channel("<a class="rst-reference external" href="https://example.com/my_web_hook" target="_top">https://example.com/my_web_hook</a>")</p>
+<p># Store the channel, keyed by 'channel.id'. Store it before calling the
+# watch method because notifications may start arriving before the watch
+# method returns.
+...</p>
+<dl class="rst-docutils">
+<dt>resp = service.objects().watchAll(</dt>
+<dd>bucket="some_bucket_id", body=channel.body()).execute()</dd>
+</dl>
+<p>channel.update(resp)</p>
+<p># Store the channel, keyed by 'channel.id'. Store it after being updated
+# since the resource_id value will now be correct, and that's needed to
+# stop a subscription.
+...</p>
+</blockquote>
+<p>An example Webhook implementation using webapp2. Note that webapp2 puts
+headers in a case insensitive dictionary, as headers aren't guaranteed to
+always be upper case.</p>
+<blockquote>
+<p>id = self.request.headers[X_GOOG_CHANNEL_ID]</p>
+<p># Retrieve the channel by id.
+channel = ...</p>
+<p># Parse notification from the headers, including validating the id.
+n = notification_from_headers(channel, self.request.headers)</p>
+<p># Do app specific stuff with the notification here.
+if n.resource_state == 'sync':</p>
+<blockquote>
+# Code to handle sync state.</blockquote>
+<dl class="rst-docutils">
+<dt>elif n.resource_state == 'exists':</dt>
+<dd># Code to handle the exists state.</dd>
+<dt>elif n.resource_state == 'not_exists':</dt>
+<dd># Code to handle the not exists state.</dd>
+</dl>
+</blockquote>
+<p>Example of unsubscribing.</p>
+<blockquote>
+service.channels().stop(channel.body()).execute()</blockquote>
+</div>
+      </div>
+
+      <div id="splitTables">
+        <table class="children sortable" id="id6">
+  
+  
+  <tr class="variable">
+    
+    <td>Variable</td>
+    <td><code><a href="#EPOCH">EPOCH</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="variable">
+    
+    <td>Variable</td>
+    <td><code><a href="#CHANNEL_PARAMS">CHANNEL_PARAMS</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="variable">
+    
+    <td>Variable</td>
+    <td><code><a href="#X_GOOG_CHANNEL_ID">X_GOOG_CHANNEL_ID</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="variable">
+    
+    <td>Variable</td>
+    <td><code><a href="#X_GOOG_MESSAGE_NUMBER">X_GOOG_MESSAGE_NUMBER</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="variable">
+    
+    <td>Variable</td>
+    <td><code><a href="#X_GOOG_RESOURCE_STATE">X_GOOG_RESOURCE_STATE</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="variable">
+    
+    <td>Variable</td>
+    <td><code><a href="#X_GOOG_RESOURCE_URI">X_GOOG_RESOURCE_URI</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="variable">
+    
+    <td>Variable</td>
+    <td><code><a href="#X_GOOG_RESOURCE_ID">X_GOOG_RESOURCE_ID</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="class">
+    
+    <td>Class</td>
+    <td><code><a href="googleapiclient.channel.Notification.html">Notification</a></code></td>
+    <td><span>A Notification from a Channel.</span></td>
+  </tr><tr class="class">
+    
+    <td>Class</td>
+    <td><code><a href="googleapiclient.channel.Channel.html">Channel</a></code></td>
+    <td><span>A Channel for notifications.</span></td>
+  </tr><tr class="function">
+    
+    <td>Function</td>
+    <td><code><a href="#notification_from_headers">notification_from_headers</a></code></td>
+    <td><span>Parse a notification from the webhook request headers, validate the notification, and return a Notification object.</span></td>
+  </tr><tr class="function">
+    
+    <td>Function</td>
+    <td><code><a href="#new_webhook_channel">new_webhook_channel</a></code></td>
+    <td><span>Create a new webhook Channel.</span></td>
+  </tr><tr class="function private">
+    
+    <td>Function</td>
+    <td><code><a href="#_upper_header_keys">_upper_header_keys</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr>
+</table>
+        
+
+          
+      </div>
+
+      <div id="childList">
+
+        <div class="basevariable">
+  
+  
+  <a name="googleapiclient.channel.EPOCH">
+    
+  </a>
+  <a name="EPOCH">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">EPOCH</span> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/channel.py#L83">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basevariable">
+  
+  
+  <a name="googleapiclient.channel.CHANNEL_PARAMS">
+    
+  </a>
+  <a name="CHANNEL_PARAMS">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">CHANNEL_PARAMS</span>: <code><a href="https://docs.python.org/3/library/stdtypes.html#dict">dict</a>[<wbr></wbr><a href="https://docs.python.org/3/library/stdtypes.html#str">str</a>, <wbr></wbr><a href="https://docs.python.org/3/library/stdtypes.html#str">str</a>]</code> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/channel.py#L87">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basevariable">
+  
+  
+  <a name="googleapiclient.channel.X_GOOG_CHANNEL_ID">
+    
+  </a>
+  <a name="X_GOOG_CHANNEL_ID">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">X_GOOG_CHANNEL_ID</span>: <code><a href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/channel.py#L98">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basevariable">
+  
+  
+  <a name="googleapiclient.channel.X_GOOG_MESSAGE_NUMBER">
+    
+  </a>
+  <a name="X_GOOG_MESSAGE_NUMBER">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">X_GOOG_MESSAGE_NUMBER</span>: <code><a href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/channel.py#L99">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basevariable">
+  
+  
+  <a name="googleapiclient.channel.X_GOOG_RESOURCE_STATE">
+    
+  </a>
+  <a name="X_GOOG_RESOURCE_STATE">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">X_GOOG_RESOURCE_STATE</span>: <code><a href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/channel.py#L100">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basevariable">
+  
+  
+  <a name="googleapiclient.channel.X_GOOG_RESOURCE_URI">
+    
+  </a>
+  <a name="X_GOOG_RESOURCE_URI">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">X_GOOG_RESOURCE_URI</span>: <code><a href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/channel.py#L101">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basevariable">
+  
+  
+  <a name="googleapiclient.channel.X_GOOG_RESOURCE_ID">
+    
+  </a>
+  <a name="X_GOOG_RESOURCE_ID">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">X_GOOG_RESOURCE_ID</span>: <code><a href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/channel.py#L102">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basefunction private">
+  
+  
+  <a name="googleapiclient.channel._upper_header_keys">
+    
+  </a>
+  <a name="_upper_header_keys">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">_upper_header_keys</span>(headers):
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/channel.py#L105">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="basefunction">
+  
+  
+  <a name="googleapiclient.channel.notification_from_headers">
+    
+  </a>
+  <a name="notification_from_headers">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-keyword">def</span> <span class="py-defname">notification_from_headers</span>(channel, headers):
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/channel.py#L253">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div><dl class="rst-docutils">
+<dt>Parse a notification from the webhook request headers, validate</dt>
+<dd>the notification, and return a Notification object.</dd>
+</dl>
+<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">channel</span></td><td class="fieldArgDesc">Channel, The channel that the notification is associated with.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">headers</span></td><td class="fieldArgDesc">dict, A dictionary like object that contains the request headers
+from the webhook HTTP request.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Returns</td></tr><tr><td colspan="2">A Notification object.</td></tr><tr class="fieldStart"><td class="fieldName" colspan="2">Raises</td></tr><tr><td class="fieldArgContainer"><code>errors.InvalidNotificationError if the notification is invalid.</code></td><td></td></tr><tr><td class="fieldArgContainer"><code>ValueError if the X-GOOG-MESSAGE-NUMBER can't be converted to an int.</code></td><td></td></tr></table></div>
+  </div>
+</div><div class="basefunction">
+  
+  
+  <a name="googleapiclient.channel.new_webhook_channel">
+    
+  </a>
+  <a name="new_webhook_channel">
+    
+  </a>
+  <div class="functionHeader">
+    @util.positional(2)<br />
+    <span class="py-keyword">def</span> <span class="py-defname">new_webhook_channel</span>(url, token=None, expiration=None, params=None):
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/channel.py#L283">
+      
+      (source)
+    </a>
+  </div>
+  <div class="docstring functionBody">
+    
+    
+    <div>Create a new webhook Channel.<table class="fieldTable"><tr class="fieldStart"><td class="fieldName" colspan="2">Parameters</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">url</span></td><td class="fieldArgDesc">str, URL to post notifications to.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">token</span></td><td class="fieldArgDesc">str, An arbitrary string associated with the channel that
+is delivered to the target address with each notification delivered
+over this channel.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">expiration</span></td><td class="fieldArgDesc">datetime.datetime, A time in the future when the channel
+should expire. Can also be None if the subscription should use the
+default expiration. Note that different services may have different
+limits on how long a subscription lasts. Check the response from the
+watch() method to see the value the service has set for an expiration
+time.</td></tr><tr><td class="fieldArgContainer"><span class="fieldArg">params</span></td><td class="fieldArgDesc">dict, Extra parameters to pass on channel creation. Currently
+not used for webhook channels.</td></tr></table></div>
+  </div>
+</div>
+
+      </div>
+      <address>
+        <a href="index.html">API Documentation</a> for Google API Python Client, generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a> 20.12.1 at 2021-03-19 02:02:03.
+      </address>
+
+    </div>
+
+    <transparent></transparent>
+
+    <script src="pydoctor.js" type="text/javascript"></script>
+
+  </body>
+</html>
