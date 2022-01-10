@@ -90,6 +90,9 @@ h1, h2, h3 {
   <code><a href="#canceltestorderbycustomer">canceltestorderbycustomer(merchantId, orderId, body=None, x__xgafv=None)</a></code></p>
 <p class="firstline">Sandbox only. Cancels a test order for customer-initiated cancellation.</p>
 <p class="toc_element">
+  <code><a href="#captureOrder">captureOrder(merchantId, orderId, body=None, x__xgafv=None)</a></code></p>
+<p class="firstline">Capture funds from the customer for the current order total. This method should be called after the merchant verifies that they are able and ready to start shipping the order. This method blocks until a response is received from the payment processsor. If this method succeeds, the merchant is guaranteed to receive funds for the order after shipment. If the request fails, it can be retried or the order may be cancelled. This method cannot be called after the entire order is already shipped. A rejected error code is returned when the payment service provider has declined the charge. This indicates a problem between the PSP and either the merchant's or customer's account. Sometimes this error will be resolved by the customer. We recommend retrying these errors once per day or cancelling the order with reason `failedToCaptureFunds` if the items cannot be held.</p>
+<p class="toc_element">
   <code><a href="#close">close()</a></code></p>
 <p class="firstline">Close httplib2 connections.</p>
 <p class="toc_element">
@@ -168,7 +171,7 @@ Returns:
 
     {
   &quot;executionStatus&quot;: &quot;A String&quot;, # The status of the execution. Acceptable values are: - &quot;`duplicate`&quot; - &quot;`executed`&quot;
-  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;content#ordersAcknowledgeResponse&quot;.
+  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;`content#ordersAcknowledgeResponse`&quot;.
 }</pre>
 </div>
 
@@ -188,7 +191,7 @@ Returns:
   An object of the form:
 
     {
-  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;content#ordersAdvanceTestOrderResponse&quot;.
+  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;`content#ordersAdvanceTestOrderResponse`&quot;.
 }</pre>
 </div>
 
@@ -204,7 +207,7 @@ Args:
 
 {
   &quot;operationId&quot;: &quot;A String&quot;, # The ID of the operation. Unique across all operations for a given order.
-  &quot;reason&quot;: &quot;A String&quot;, # The reason for the cancellation. Acceptable values are: - &quot;`customerInitiatedCancel`&quot; - &quot;`invalidCoupon`&quot; - &quot;`malformedShippingAddress`&quot; - &quot;`noInventory`&quot; - &quot;`other`&quot; - &quot;`priceError`&quot; - &quot;`shippingPriceError`&quot; - &quot;`taxError`&quot; - &quot;`undeliverableShippingAddress`&quot; - &quot;`unsupportedPoBoxAddress`&quot;
+  &quot;reason&quot;: &quot;A String&quot;, # The reason for the cancellation. Acceptable values are: - &quot;`customerInitiatedCancel`&quot; - &quot;`invalidCoupon`&quot; - &quot;`malformedShippingAddress`&quot; - &quot;`noInventory`&quot; - &quot;`other`&quot; - &quot;`priceError`&quot; - &quot;`shippingPriceError`&quot; - &quot;`taxError`&quot; - &quot;`undeliverableShippingAddress`&quot; - &quot;`unsupportedPoBoxAddress`&quot; - &quot;`failedToCaptureFunds`&quot;
   &quot;reasonText&quot;: &quot;A String&quot;, # The explanation of the reason.
 }
 
@@ -218,7 +221,7 @@ Returns:
 
     {
   &quot;executionStatus&quot;: &quot;A String&quot;, # The status of the execution. Acceptable values are: - &quot;`duplicate`&quot; - &quot;`executed`&quot;
-  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;content#ordersCancelResponse&quot;.
+  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;`content#ordersCancelResponse`&quot;.
 }</pre>
 </div>
 
@@ -237,7 +240,7 @@ Args:
   &quot;operationId&quot;: &quot;A String&quot;, # The ID of the operation. Unique across all operations for a given order.
   &quot;productId&quot;: &quot;A String&quot;, # The ID of the product to cancel. This is the REST ID used in the products service. Either lineItemId or productId is required.
   &quot;quantity&quot;: 42, # The quantity to cancel.
-  &quot;reason&quot;: &quot;A String&quot;, # The reason for the cancellation. Acceptable values are: - &quot;`customerInitiatedCancel`&quot; - &quot;`invalidCoupon`&quot; - &quot;`malformedShippingAddress`&quot; - &quot;`noInventory`&quot; - &quot;`other`&quot; - &quot;`priceError`&quot; - &quot;`shippingPriceError`&quot; - &quot;`taxError`&quot; - &quot;`undeliverableShippingAddress`&quot; - &quot;`unsupportedPoBoxAddress`&quot;
+  &quot;reason&quot;: &quot;A String&quot;, # The reason for the cancellation. Acceptable values are: - &quot;`customerInitiatedCancel`&quot; - &quot;`invalidCoupon`&quot; - &quot;`malformedShippingAddress`&quot; - &quot;`noInventory`&quot; - &quot;`other`&quot; - &quot;`priceError`&quot; - &quot;`shippingPriceError`&quot; - &quot;`taxError`&quot; - &quot;`undeliverableShippingAddress`&quot; - &quot;`unsupportedPoBoxAddress`&quot; - &quot;`failedToCaptureFunds`&quot;
   &quot;reasonText&quot;: &quot;A String&quot;, # The explanation of the reason.
 }
 
@@ -251,7 +254,7 @@ Returns:
 
     {
   &quot;executionStatus&quot;: &quot;A String&quot;, # The status of the execution. Acceptable values are: - &quot;`duplicate`&quot; - &quot;`executed`&quot;
-  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;content#ordersCancelLineItemResponse&quot;.
+  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;`content#ordersCancelLineItemResponse`&quot;.
 }</pre>
 </div>
 
@@ -278,7 +281,33 @@ Returns:
   An object of the form:
 
     {
-  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;content#ordersCancelTestOrderByCustomerResponse&quot;.
+  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;`content#ordersCancelTestOrderByCustomerResponse`&quot;.
+}</pre>
+</div>
+
+<div class="method">
+    <code class="details" id="captureOrder">captureOrder(merchantId, orderId, body=None, x__xgafv=None)</code>
+  <pre>Capture funds from the customer for the current order total. This method should be called after the merchant verifies that they are able and ready to start shipping the order. This method blocks until a response is received from the payment processsor. If this method succeeds, the merchant is guaranteed to receive funds for the order after shipment. If the request fails, it can be retried or the order may be cancelled. This method cannot be called after the entire order is already shipped. A rejected error code is returned when the payment service provider has declined the charge. This indicates a problem between the PSP and either the merchant&#x27;s or customer&#x27;s account. Sometimes this error will be resolved by the customer. We recommend retrying these errors once per day or cancelling the order with reason `failedToCaptureFunds` if the items cannot be held.
+
+Args:
+  merchantId: string, Required. The ID of the account that manages the order. This cannot be a multi-client account. (required)
+  orderId: string, Required. The ID of the Order. (required)
+  body: object, The request body.
+    The object takes the form of:
+
+{ # Request message for the CaptureOrder method.
+}
+
+  x__xgafv: string, V1 error format.
+    Allowed values
+      1 - v1 error format
+      2 - v2 error format
+
+Returns:
+  An object of the form:
+
+    { # Response message for the CaptureOrder method.
+  &quot;executionStatus&quot;: &quot;A String&quot;, # The status of the execution. Only defined if the request was successful. Acceptable values are: * &quot;duplicate&quot; * &quot;executed&quot;
 }</pre>
 </div>
 
@@ -455,7 +484,7 @@ Returns:
   An object of the form:
 
     {
-  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;content#ordersCreateTestOrderResponse&quot;.
+  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;`content#ordersCreateTestOrderResponse`&quot;.
   &quot;orderId&quot;: &quot;A String&quot;, # The ID of the newly created test order.
 }</pre>
 </div>
@@ -488,7 +517,7 @@ Returns:
   An object of the form:
 
     {
-  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;content#ordersCreateTestReturnResponse&quot;.
+  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;`content#ordersCreateTestReturnResponse`&quot;.
   &quot;returnId&quot;: &quot;A String&quot;, # The ID of the newly created test order return.
 }</pre>
 </div>
@@ -588,7 +617,7 @@ Returns:
           &quot;actor&quot;: &quot;A String&quot;, # The actor that created the cancellation. Acceptable values are: - &quot;`customer`&quot; - &quot;`googleBot`&quot; - &quot;`googleCustomerService`&quot; - &quot;`googlePayments`&quot; - &quot;`googleSabre`&quot; - &quot;`merchant`&quot;
           &quot;creationDate&quot;: &quot;A String&quot;, # Date on which the cancellation has been created, in ISO 8601 format.
           &quot;quantity&quot;: 42, # The quantity that was canceled.
-          &quot;reason&quot;: &quot;A String&quot;, # The reason for the cancellation. Orders that are canceled with a noInventory reason will lead to the removal of the product from Buy on Google until you make an update to that product. This will not affect your Shopping ads. Acceptable values are: - &quot;`autoPostInternal`&quot; - &quot;`autoPostInvalidBillingAddress`&quot; - &quot;`autoPostNoInventory`&quot; - &quot;`autoPostPriceError`&quot; - &quot;`autoPostUndeliverableShippingAddress`&quot; - &quot;`couponAbuse`&quot; - &quot;`customerCanceled`&quot; - &quot;`customerInitiatedCancel`&quot; - &quot;`customerSupportRequested`&quot; - &quot;`failToPushOrderGoogleError`&quot; - &quot;`failToPushOrderMerchantError`&quot; - &quot;`failToPushOrderMerchantFulfillmentError`&quot; - &quot;`failToPushOrderToMerchant`&quot; - &quot;`failToPushOrderToMerchantOutOfStock`&quot; - &quot;`invalidCoupon`&quot; - &quot;`malformedShippingAddress`&quot; - &quot;`merchantDidNotShipOnTime`&quot; - &quot;`noInventory`&quot; - &quot;`orderTimeout`&quot; - &quot;`other`&quot; - &quot;`paymentAbuse`&quot; - &quot;`paymentDeclined`&quot; - &quot;`priceError`&quot; - &quot;`returnRefundAbuse`&quot; - &quot;`shippingPriceError`&quot; - &quot;`taxError`&quot; - &quot;`undeliverableShippingAddress`&quot; - &quot;`unsupportedPoBoxAddress`&quot;
+          &quot;reason&quot;: &quot;A String&quot;, # The reason for the cancellation. Orders that are canceled with a noInventory reason will lead to the removal of the product from Buy on Google until you make an update to that product. This will not affect your Shopping ads. Acceptable values are: - &quot;`autoPostInternal`&quot; - &quot;`autoPostInvalidBillingAddress`&quot; - &quot;`autoPostNoInventory`&quot; - &quot;`autoPostPriceError`&quot; - &quot;`autoPostUndeliverableShippingAddress`&quot; - &quot;`couponAbuse`&quot; - &quot;`customerCanceled`&quot; - &quot;`customerInitiatedCancel`&quot; - &quot;`customerSupportRequested`&quot; - &quot;`failToPushOrderGoogleError`&quot; - &quot;`failToPushOrderMerchantError`&quot; - &quot;`failToPushOrderMerchantFulfillmentError`&quot; - &quot;`failToPushOrderToMerchant`&quot; - &quot;`failToPushOrderToMerchantOutOfStock`&quot; - &quot;`invalidCoupon`&quot; - &quot;`malformedShippingAddress`&quot; - &quot;`merchantDidNotShipOnTime`&quot; - &quot;`noInventory`&quot; - &quot;`orderTimeout`&quot; - &quot;`other`&quot; - &quot;`paymentAbuse`&quot; - &quot;`paymentDeclined`&quot; - &quot;`priceError`&quot; - &quot;`returnRefundAbuse`&quot; - &quot;`shippingPriceError`&quot; - &quot;`taxError`&quot; - &quot;`undeliverableShippingAddress`&quot; - &quot;`unsupportedPoBoxAddress`&quot; - &quot;`failedToCaptureFunds`&quot;
           &quot;reasonText&quot;: &quot;A String&quot;, # The explanation of the reason.
         },
       ],
@@ -756,7 +785,7 @@ Returns:
   ],
   &quot;shipments&quot;: [ # Shipments of the order.
     {
-      &quot;carrier&quot;: &quot;A String&quot;, # The carrier handling the shipment. For supported carriers, Google includes the carrier name and tracking URL in emails to customers. For select supported carriers, Google also automatically updates the shipment status based on the provided shipment ID. *Note:* You can also use unsupported carriers, but emails to customers will not include the carrier name or tracking URL, and there will be no automatic order status updates. Supported carriers for US are: - &quot;`ups`&quot; (United Parcel Service) *automatic status updates* - &quot;`usps`&quot; (United States Postal Service) *automatic status updates* - &quot;`fedex`&quot; (FedEx) *automatic status updates * - &quot;`dhl`&quot; (DHL eCommerce) *automatic status updates* (US only) - &quot;`ontrac`&quot; (OnTrac) *automatic status updates * - &quot;`dhl express`&quot; (DHL Express) - &quot;`deliv`&quot; (Deliv) - &quot;`dynamex`&quot; (TForce) - &quot;`lasership`&quot; (LaserShip) - &quot;`mpx`&quot; (Military Parcel Xpress) - &quot;`uds`&quot; (United Delivery Service) - &quot;`efw`&quot; (Estes Forwarding Worldwide) - &quot;`jd logistics`&quot; (JD Logistics) - &quot;`yunexpress`&quot; (YunExpress) - &quot;`china post`&quot; (China Post) - &quot;`china ems`&quot; (China Post Express Mail Service) - &quot;`singapore post`&quot; (Singapore Post) - &quot;`pos malaysia`&quot; (Pos Malaysia) - &quot;`postnl`&quot; (PostNL) - &quot;`ptt`&quot; (PTT Turkish Post) - &quot;`eub`&quot; (ePacket) - &quot;`chukou1`&quot; (Chukou1 Logistics) - &quot;`bestex`&quot; (Best Express) - &quot;`canada post`&quot; (Canada Post) - &quot;`purolator`&quot; (Purolator) - &quot;`canpar`&quot; (Canpar) - &quot;`india post`&quot; (India Post) - &quot;`blue dart`&quot; (Blue Dart) - &quot;`delhivery`&quot; (Delhivery) - &quot;`dtdc`&quot; (DTDC) - &quot;`tpc india`&quot; (TPC India) Supported carriers for FR are: - &quot;`la poste`&quot; (La Poste) *automatic status updates * - &quot;`colissimo`&quot; (Colissimo by La Poste) *automatic status updates* - &quot;`ups`&quot; (United Parcel Service) *automatic status updates * - &quot;`chronopost`&quot; (Chronopost by La Poste) - &quot;`gls`&quot; (General Logistics Systems France) - &quot;`dpd`&quot; (DPD Group by GeoPost) - &quot;`bpost`&quot; (Belgian Post Group) - &quot;`colis prive`&quot; (Colis Privé) - &quot;`boxtal`&quot; (Boxtal) - &quot;`geodis`&quot; (GEODIS) - &quot;`tnt`&quot; (TNT) - &quot;`db schenker`&quot; (DB Schenker) - &quot;`aramex`&quot; (Aramex)
+      &quot;carrier&quot;: &quot;A String&quot;, # The carrier handling the shipment. For supported carriers, Google includes the carrier name and tracking URL in emails to customers. For select supported carriers, Google also automatically updates the shipment status based on the provided shipment ID. *Note:* You can also use unsupported carriers, but emails to customers will not include the carrier name or tracking URL, and there will be no automatic order status updates. Supported carriers for US are: - &quot;`ups`&quot; (United Parcel Service) *automatic status updates* - &quot;`usps`&quot; (United States Postal Service) *automatic status updates* - &quot;`fedex`&quot; (FedEx) *automatic status updates * - &quot;`dhl`&quot; (DHL eCommerce) *automatic status updates* (US only) - &quot;`ontrac`&quot; (OnTrac) *automatic status updates * - &quot;`dhl express`&quot; (DHL Express) - &quot;`deliv`&quot; (Deliv) - &quot;`dynamex`&quot; (TForce) - &quot;`lasership`&quot; (LaserShip) - &quot;`mpx`&quot; (Military Parcel Xpress) - &quot;`uds`&quot; (United Delivery Service) - &quot;`efw`&quot; (Estes Forwarding Worldwide) - &quot;`jd logistics`&quot; (JD Logistics) - &quot;`yunexpress`&quot; (YunExpress) - &quot;`china post`&quot; (China Post) - &quot;`china ems`&quot; (China Post Express Mail Service) - &quot;`singapore post`&quot; (Singapore Post) - &quot;`pos malaysia`&quot; (Pos Malaysia) - &quot;`postnl`&quot; (PostNL) - &quot;`ptt`&quot; (PTT Turkish Post) - &quot;`eub`&quot; (ePacket) - &quot;`chukou1`&quot; (Chukou1 Logistics) - &quot;`bestex`&quot; (Best Express) - &quot;`canada post`&quot; (Canada Post) - &quot;`purolator`&quot; (Purolator) - &quot;`canpar`&quot; (Canpar) - &quot;`india post`&quot; (India Post) - &quot;`blue dart`&quot; (Blue Dart) - &quot;`delhivery`&quot; (Delhivery) - &quot;`dtdc`&quot; (DTDC) - &quot;`tpc india`&quot; (TPC India) - &quot;`lso`&quot; (Lone Star Overnight) - &quot;`tww`&quot; (Team Worldwide) Supported carriers for FR are: - &quot;`la poste`&quot; (La Poste) *automatic status updates * - &quot;`colissimo`&quot; (Colissimo by La Poste) *automatic status updates* - &quot;`ups`&quot; (United Parcel Service) *automatic status updates * - &quot;`chronopost`&quot; (Chronopost by La Poste) - &quot;`gls`&quot; (General Logistics Systems France) - &quot;`dpd`&quot; (DPD Group by GeoPost) - &quot;`bpost`&quot; (Belgian Post Group) - &quot;`colis prive`&quot; (Colis Privé) - &quot;`boxtal`&quot; (Boxtal) - &quot;`geodis`&quot; (GEODIS) - &quot;`tnt`&quot; (TNT) - &quot;`db schenker`&quot; (DB Schenker) - &quot;`aramex`&quot; (Aramex)
       &quot;creationDate&quot;: &quot;A String&quot;, # Date on which the shipment has been created, in ISO 8601 format.
       &quot;deliveryDate&quot;: &quot;A String&quot;, # Date on which the shipment has been delivered, in ISO 8601 format. Present only if `status` is `delivered`
       &quot;id&quot;: &quot;A String&quot;, # The ID of the shipment.
@@ -805,7 +834,7 @@ Returns:
   An object of the form:
 
     {
-  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;content#ordersGetByMerchantOrderIdResponse&quot;.
+  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;`content#ordersGetByMerchantOrderIdResponse`&quot;.
   &quot;order&quot;: { # Order. Production access (all methods) requires the order manager role. Sandbox access does not. # The requested order.
     &quot;acknowledged&quot;: True or False, # Whether the order was acknowledged.
     &quot;annotations&quot;: [ # List of key-value pairs that are attached to a given order.
@@ -886,7 +915,7 @@ Returns:
             &quot;actor&quot;: &quot;A String&quot;, # The actor that created the cancellation. Acceptable values are: - &quot;`customer`&quot; - &quot;`googleBot`&quot; - &quot;`googleCustomerService`&quot; - &quot;`googlePayments`&quot; - &quot;`googleSabre`&quot; - &quot;`merchant`&quot;
             &quot;creationDate&quot;: &quot;A String&quot;, # Date on which the cancellation has been created, in ISO 8601 format.
             &quot;quantity&quot;: 42, # The quantity that was canceled.
-            &quot;reason&quot;: &quot;A String&quot;, # The reason for the cancellation. Orders that are canceled with a noInventory reason will lead to the removal of the product from Buy on Google until you make an update to that product. This will not affect your Shopping ads. Acceptable values are: - &quot;`autoPostInternal`&quot; - &quot;`autoPostInvalidBillingAddress`&quot; - &quot;`autoPostNoInventory`&quot; - &quot;`autoPostPriceError`&quot; - &quot;`autoPostUndeliverableShippingAddress`&quot; - &quot;`couponAbuse`&quot; - &quot;`customerCanceled`&quot; - &quot;`customerInitiatedCancel`&quot; - &quot;`customerSupportRequested`&quot; - &quot;`failToPushOrderGoogleError`&quot; - &quot;`failToPushOrderMerchantError`&quot; - &quot;`failToPushOrderMerchantFulfillmentError`&quot; - &quot;`failToPushOrderToMerchant`&quot; - &quot;`failToPushOrderToMerchantOutOfStock`&quot; - &quot;`invalidCoupon`&quot; - &quot;`malformedShippingAddress`&quot; - &quot;`merchantDidNotShipOnTime`&quot; - &quot;`noInventory`&quot; - &quot;`orderTimeout`&quot; - &quot;`other`&quot; - &quot;`paymentAbuse`&quot; - &quot;`paymentDeclined`&quot; - &quot;`priceError`&quot; - &quot;`returnRefundAbuse`&quot; - &quot;`shippingPriceError`&quot; - &quot;`taxError`&quot; - &quot;`undeliverableShippingAddress`&quot; - &quot;`unsupportedPoBoxAddress`&quot;
+            &quot;reason&quot;: &quot;A String&quot;, # The reason for the cancellation. Orders that are canceled with a noInventory reason will lead to the removal of the product from Buy on Google until you make an update to that product. This will not affect your Shopping ads. Acceptable values are: - &quot;`autoPostInternal`&quot; - &quot;`autoPostInvalidBillingAddress`&quot; - &quot;`autoPostNoInventory`&quot; - &quot;`autoPostPriceError`&quot; - &quot;`autoPostUndeliverableShippingAddress`&quot; - &quot;`couponAbuse`&quot; - &quot;`customerCanceled`&quot; - &quot;`customerInitiatedCancel`&quot; - &quot;`customerSupportRequested`&quot; - &quot;`failToPushOrderGoogleError`&quot; - &quot;`failToPushOrderMerchantError`&quot; - &quot;`failToPushOrderMerchantFulfillmentError`&quot; - &quot;`failToPushOrderToMerchant`&quot; - &quot;`failToPushOrderToMerchantOutOfStock`&quot; - &quot;`invalidCoupon`&quot; - &quot;`malformedShippingAddress`&quot; - &quot;`merchantDidNotShipOnTime`&quot; - &quot;`noInventory`&quot; - &quot;`orderTimeout`&quot; - &quot;`other`&quot; - &quot;`paymentAbuse`&quot; - &quot;`paymentDeclined`&quot; - &quot;`priceError`&quot; - &quot;`returnRefundAbuse`&quot; - &quot;`shippingPriceError`&quot; - &quot;`taxError`&quot; - &quot;`undeliverableShippingAddress`&quot; - &quot;`unsupportedPoBoxAddress`&quot; - &quot;`failedToCaptureFunds`&quot;
             &quot;reasonText&quot;: &quot;A String&quot;, # The explanation of the reason.
           },
         ],
@@ -1054,7 +1083,7 @@ Returns:
     ],
     &quot;shipments&quot;: [ # Shipments of the order.
       {
-        &quot;carrier&quot;: &quot;A String&quot;, # The carrier handling the shipment. For supported carriers, Google includes the carrier name and tracking URL in emails to customers. For select supported carriers, Google also automatically updates the shipment status based on the provided shipment ID. *Note:* You can also use unsupported carriers, but emails to customers will not include the carrier name or tracking URL, and there will be no automatic order status updates. Supported carriers for US are: - &quot;`ups`&quot; (United Parcel Service) *automatic status updates* - &quot;`usps`&quot; (United States Postal Service) *automatic status updates* - &quot;`fedex`&quot; (FedEx) *automatic status updates * - &quot;`dhl`&quot; (DHL eCommerce) *automatic status updates* (US only) - &quot;`ontrac`&quot; (OnTrac) *automatic status updates * - &quot;`dhl express`&quot; (DHL Express) - &quot;`deliv`&quot; (Deliv) - &quot;`dynamex`&quot; (TForce) - &quot;`lasership`&quot; (LaserShip) - &quot;`mpx`&quot; (Military Parcel Xpress) - &quot;`uds`&quot; (United Delivery Service) - &quot;`efw`&quot; (Estes Forwarding Worldwide) - &quot;`jd logistics`&quot; (JD Logistics) - &quot;`yunexpress`&quot; (YunExpress) - &quot;`china post`&quot; (China Post) - &quot;`china ems`&quot; (China Post Express Mail Service) - &quot;`singapore post`&quot; (Singapore Post) - &quot;`pos malaysia`&quot; (Pos Malaysia) - &quot;`postnl`&quot; (PostNL) - &quot;`ptt`&quot; (PTT Turkish Post) - &quot;`eub`&quot; (ePacket) - &quot;`chukou1`&quot; (Chukou1 Logistics) - &quot;`bestex`&quot; (Best Express) - &quot;`canada post`&quot; (Canada Post) - &quot;`purolator`&quot; (Purolator) - &quot;`canpar`&quot; (Canpar) - &quot;`india post`&quot; (India Post) - &quot;`blue dart`&quot; (Blue Dart) - &quot;`delhivery`&quot; (Delhivery) - &quot;`dtdc`&quot; (DTDC) - &quot;`tpc india`&quot; (TPC India) Supported carriers for FR are: - &quot;`la poste`&quot; (La Poste) *automatic status updates * - &quot;`colissimo`&quot; (Colissimo by La Poste) *automatic status updates* - &quot;`ups`&quot; (United Parcel Service) *automatic status updates * - &quot;`chronopost`&quot; (Chronopost by La Poste) - &quot;`gls`&quot; (General Logistics Systems France) - &quot;`dpd`&quot; (DPD Group by GeoPost) - &quot;`bpost`&quot; (Belgian Post Group) - &quot;`colis prive`&quot; (Colis Privé) - &quot;`boxtal`&quot; (Boxtal) - &quot;`geodis`&quot; (GEODIS) - &quot;`tnt`&quot; (TNT) - &quot;`db schenker`&quot; (DB Schenker) - &quot;`aramex`&quot; (Aramex)
+        &quot;carrier&quot;: &quot;A String&quot;, # The carrier handling the shipment. For supported carriers, Google includes the carrier name and tracking URL in emails to customers. For select supported carriers, Google also automatically updates the shipment status based on the provided shipment ID. *Note:* You can also use unsupported carriers, but emails to customers will not include the carrier name or tracking URL, and there will be no automatic order status updates. Supported carriers for US are: - &quot;`ups`&quot; (United Parcel Service) *automatic status updates* - &quot;`usps`&quot; (United States Postal Service) *automatic status updates* - &quot;`fedex`&quot; (FedEx) *automatic status updates * - &quot;`dhl`&quot; (DHL eCommerce) *automatic status updates* (US only) - &quot;`ontrac`&quot; (OnTrac) *automatic status updates * - &quot;`dhl express`&quot; (DHL Express) - &quot;`deliv`&quot; (Deliv) - &quot;`dynamex`&quot; (TForce) - &quot;`lasership`&quot; (LaserShip) - &quot;`mpx`&quot; (Military Parcel Xpress) - &quot;`uds`&quot; (United Delivery Service) - &quot;`efw`&quot; (Estes Forwarding Worldwide) - &quot;`jd logistics`&quot; (JD Logistics) - &quot;`yunexpress`&quot; (YunExpress) - &quot;`china post`&quot; (China Post) - &quot;`china ems`&quot; (China Post Express Mail Service) - &quot;`singapore post`&quot; (Singapore Post) - &quot;`pos malaysia`&quot; (Pos Malaysia) - &quot;`postnl`&quot; (PostNL) - &quot;`ptt`&quot; (PTT Turkish Post) - &quot;`eub`&quot; (ePacket) - &quot;`chukou1`&quot; (Chukou1 Logistics) - &quot;`bestex`&quot; (Best Express) - &quot;`canada post`&quot; (Canada Post) - &quot;`purolator`&quot; (Purolator) - &quot;`canpar`&quot; (Canpar) - &quot;`india post`&quot; (India Post) - &quot;`blue dart`&quot; (Blue Dart) - &quot;`delhivery`&quot; (Delhivery) - &quot;`dtdc`&quot; (DTDC) - &quot;`tpc india`&quot; (TPC India) - &quot;`lso`&quot; (Lone Star Overnight) - &quot;`tww`&quot; (Team Worldwide) Supported carriers for FR are: - &quot;`la poste`&quot; (La Poste) *automatic status updates * - &quot;`colissimo`&quot; (Colissimo by La Poste) *automatic status updates* - &quot;`ups`&quot; (United Parcel Service) *automatic status updates * - &quot;`chronopost`&quot; (Chronopost by La Poste) - &quot;`gls`&quot; (General Logistics Systems France) - &quot;`dpd`&quot; (DPD Group by GeoPost) - &quot;`bpost`&quot; (Belgian Post Group) - &quot;`colis prive`&quot; (Colis Privé) - &quot;`boxtal`&quot; (Boxtal) - &quot;`geodis`&quot; (GEODIS) - &quot;`tnt`&quot; (TNT) - &quot;`db schenker`&quot; (DB Schenker) - &quot;`aramex`&quot; (Aramex)
         &quot;creationDate&quot;: &quot;A String&quot;, # Date on which the shipment has been created, in ISO 8601 format.
         &quot;deliveryDate&quot;: &quot;A String&quot;, # Date on which the shipment has been delivered, in ISO 8601 format. Present only if `status` is `delivered`
         &quot;id&quot;: &quot;A String&quot;, # The ID of the shipment.
@@ -1096,12 +1125,12 @@ Args:
   merchantId: string, The ID of the account that should manage the order. This cannot be a multi-client account. (required)
   templateName: string, The name of the template to retrieve. (required)
     Allowed values
-      TEMPLATE1 - 
-      TEMPLATE2 - 
-      TEMPLATE1A - 
-      TEMPLATE1B - 
-      TEMPLATE3 - 
-      TEMPLATE4 - 
+      TEMPLATE1 - Get `template1`.
+      TEMPLATE2 - Get `template2`.
+      TEMPLATE1A - Get `template1A`.
+      TEMPLATE1B - Get `template1B`.
+      TEMPLATE3 - Get `template3`.
+      TEMPLATE4 - Get `template4`.
   country: string, The country of the template to retrieve. Defaults to `US`.
   x__xgafv: string, V1 error format.
     Allowed values
@@ -1112,7 +1141,7 @@ Returns:
   An object of the form:
 
     {
-  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;content#ordersGetTestOrderTemplateResponse&quot;.
+  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;`content#ordersGetTestOrderTemplateResponse`&quot;.
   &quot;template&quot;: { # The requested test order template.
     &quot;deliveryDetails&quot;: { # Overrides the predefined delivery details if provided.
       &quot;address&quot;: { # The delivery address
@@ -1298,7 +1327,7 @@ Returns:
 
     {
   &quot;executionStatus&quot;: &quot;A String&quot;, # The status of the execution. Acceptable values are: - &quot;`duplicate`&quot; - &quot;`executed`&quot;
-  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;content#ordersInStoreRefundLineItemResponse&quot;.
+  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;`content#ordersInStoreRefundLineItemResponse`&quot;.
 }</pre>
 </div>
 
@@ -1316,17 +1345,17 @@ Args:
   placedDateStart: string, Obtains orders placed after this date (inclusively), in ISO 8601 format.
   statuses: string, Obtains orders that match any of the specified statuses. Please note that `active` is a shortcut for `pendingShipment` and `partiallyShipped`, and `completed` is a shortcut for `shipped`, `partiallyDelivered`, `delivered`, `partiallyReturned`, `returned`, and `canceled`. (repeated)
     Allowed values
-      ACTIVE - 
-      COMPLETED - 
-      CANCELED - 
-      IN_PROGRESS - 
-      PENDING_SHIPMENT - 
-      PARTIALLY_SHIPPED - 
-      SHIPPED - 
-      PARTIALLY_DELIVERED - 
-      DELIVERED - 
-      PARTIALLY_RETURNED - 
-      RETURNED - 
+      ACTIVE - Return orders with status `active`. The `active` status includes `pendingShipment` and `partiallyShipped` orders.
+      COMPLETED - Return orders with status `completed`. The `completed` status includes `shipped`, `partiallyDelivered`, `delivered`, `partiallyReturned`, `returned`, and `canceled` orders.
+      CANCELED - Return orders with status `canceled`.
+      IN_PROGRESS - Return orders with status `inProgress`.
+      PENDING_SHIPMENT - Return orders with status `pendingShipment`.
+      PARTIALLY_SHIPPED - Return orders with status `partiallyShipped`.
+      SHIPPED - Return orders with status `shipped`.
+      PARTIALLY_DELIVERED - Return orders with status `partiallyDelivered`.
+      DELIVERED - Return orders with status `delivered`.
+      PARTIALLY_RETURNED - Return orders with status `partiallyReturned`.
+      RETURNED - Return orders with status `returned`.
   x__xgafv: string, V1 error format.
     Allowed values
       1 - v1 error format
@@ -1336,7 +1365,7 @@ Returns:
   An object of the form:
 
     {
-  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;content#ordersListResponse&quot;.
+  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;`content#ordersListResponse`&quot;.
   &quot;nextPageToken&quot;: &quot;A String&quot;, # The token for the retrieval of the next page of orders.
   &quot;resources&quot;: [
     { # Order. Production access (all methods) requires the order manager role. Sandbox access does not.
@@ -1419,7 +1448,7 @@ Returns:
               &quot;actor&quot;: &quot;A String&quot;, # The actor that created the cancellation. Acceptable values are: - &quot;`customer`&quot; - &quot;`googleBot`&quot; - &quot;`googleCustomerService`&quot; - &quot;`googlePayments`&quot; - &quot;`googleSabre`&quot; - &quot;`merchant`&quot;
               &quot;creationDate&quot;: &quot;A String&quot;, # Date on which the cancellation has been created, in ISO 8601 format.
               &quot;quantity&quot;: 42, # The quantity that was canceled.
-              &quot;reason&quot;: &quot;A String&quot;, # The reason for the cancellation. Orders that are canceled with a noInventory reason will lead to the removal of the product from Buy on Google until you make an update to that product. This will not affect your Shopping ads. Acceptable values are: - &quot;`autoPostInternal`&quot; - &quot;`autoPostInvalidBillingAddress`&quot; - &quot;`autoPostNoInventory`&quot; - &quot;`autoPostPriceError`&quot; - &quot;`autoPostUndeliverableShippingAddress`&quot; - &quot;`couponAbuse`&quot; - &quot;`customerCanceled`&quot; - &quot;`customerInitiatedCancel`&quot; - &quot;`customerSupportRequested`&quot; - &quot;`failToPushOrderGoogleError`&quot; - &quot;`failToPushOrderMerchantError`&quot; - &quot;`failToPushOrderMerchantFulfillmentError`&quot; - &quot;`failToPushOrderToMerchant`&quot; - &quot;`failToPushOrderToMerchantOutOfStock`&quot; - &quot;`invalidCoupon`&quot; - &quot;`malformedShippingAddress`&quot; - &quot;`merchantDidNotShipOnTime`&quot; - &quot;`noInventory`&quot; - &quot;`orderTimeout`&quot; - &quot;`other`&quot; - &quot;`paymentAbuse`&quot; - &quot;`paymentDeclined`&quot; - &quot;`priceError`&quot; - &quot;`returnRefundAbuse`&quot; - &quot;`shippingPriceError`&quot; - &quot;`taxError`&quot; - &quot;`undeliverableShippingAddress`&quot; - &quot;`unsupportedPoBoxAddress`&quot;
+              &quot;reason&quot;: &quot;A String&quot;, # The reason for the cancellation. Orders that are canceled with a noInventory reason will lead to the removal of the product from Buy on Google until you make an update to that product. This will not affect your Shopping ads. Acceptable values are: - &quot;`autoPostInternal`&quot; - &quot;`autoPostInvalidBillingAddress`&quot; - &quot;`autoPostNoInventory`&quot; - &quot;`autoPostPriceError`&quot; - &quot;`autoPostUndeliverableShippingAddress`&quot; - &quot;`couponAbuse`&quot; - &quot;`customerCanceled`&quot; - &quot;`customerInitiatedCancel`&quot; - &quot;`customerSupportRequested`&quot; - &quot;`failToPushOrderGoogleError`&quot; - &quot;`failToPushOrderMerchantError`&quot; - &quot;`failToPushOrderMerchantFulfillmentError`&quot; - &quot;`failToPushOrderToMerchant`&quot; - &quot;`failToPushOrderToMerchantOutOfStock`&quot; - &quot;`invalidCoupon`&quot; - &quot;`malformedShippingAddress`&quot; - &quot;`merchantDidNotShipOnTime`&quot; - &quot;`noInventory`&quot; - &quot;`orderTimeout`&quot; - &quot;`other`&quot; - &quot;`paymentAbuse`&quot; - &quot;`paymentDeclined`&quot; - &quot;`priceError`&quot; - &quot;`returnRefundAbuse`&quot; - &quot;`shippingPriceError`&quot; - &quot;`taxError`&quot; - &quot;`undeliverableShippingAddress`&quot; - &quot;`unsupportedPoBoxAddress`&quot; - &quot;`failedToCaptureFunds`&quot;
               &quot;reasonText&quot;: &quot;A String&quot;, # The explanation of the reason.
             },
           ],
@@ -1587,7 +1616,7 @@ Returns:
       ],
       &quot;shipments&quot;: [ # Shipments of the order.
         {
-          &quot;carrier&quot;: &quot;A String&quot;, # The carrier handling the shipment. For supported carriers, Google includes the carrier name and tracking URL in emails to customers. For select supported carriers, Google also automatically updates the shipment status based on the provided shipment ID. *Note:* You can also use unsupported carriers, but emails to customers will not include the carrier name or tracking URL, and there will be no automatic order status updates. Supported carriers for US are: - &quot;`ups`&quot; (United Parcel Service) *automatic status updates* - &quot;`usps`&quot; (United States Postal Service) *automatic status updates* - &quot;`fedex`&quot; (FedEx) *automatic status updates * - &quot;`dhl`&quot; (DHL eCommerce) *automatic status updates* (US only) - &quot;`ontrac`&quot; (OnTrac) *automatic status updates * - &quot;`dhl express`&quot; (DHL Express) - &quot;`deliv`&quot; (Deliv) - &quot;`dynamex`&quot; (TForce) - &quot;`lasership`&quot; (LaserShip) - &quot;`mpx`&quot; (Military Parcel Xpress) - &quot;`uds`&quot; (United Delivery Service) - &quot;`efw`&quot; (Estes Forwarding Worldwide) - &quot;`jd logistics`&quot; (JD Logistics) - &quot;`yunexpress`&quot; (YunExpress) - &quot;`china post`&quot; (China Post) - &quot;`china ems`&quot; (China Post Express Mail Service) - &quot;`singapore post`&quot; (Singapore Post) - &quot;`pos malaysia`&quot; (Pos Malaysia) - &quot;`postnl`&quot; (PostNL) - &quot;`ptt`&quot; (PTT Turkish Post) - &quot;`eub`&quot; (ePacket) - &quot;`chukou1`&quot; (Chukou1 Logistics) - &quot;`bestex`&quot; (Best Express) - &quot;`canada post`&quot; (Canada Post) - &quot;`purolator`&quot; (Purolator) - &quot;`canpar`&quot; (Canpar) - &quot;`india post`&quot; (India Post) - &quot;`blue dart`&quot; (Blue Dart) - &quot;`delhivery`&quot; (Delhivery) - &quot;`dtdc`&quot; (DTDC) - &quot;`tpc india`&quot; (TPC India) Supported carriers for FR are: - &quot;`la poste`&quot; (La Poste) *automatic status updates * - &quot;`colissimo`&quot; (Colissimo by La Poste) *automatic status updates* - &quot;`ups`&quot; (United Parcel Service) *automatic status updates * - &quot;`chronopost`&quot; (Chronopost by La Poste) - &quot;`gls`&quot; (General Logistics Systems France) - &quot;`dpd`&quot; (DPD Group by GeoPost) - &quot;`bpost`&quot; (Belgian Post Group) - &quot;`colis prive`&quot; (Colis Privé) - &quot;`boxtal`&quot; (Boxtal) - &quot;`geodis`&quot; (GEODIS) - &quot;`tnt`&quot; (TNT) - &quot;`db schenker`&quot; (DB Schenker) - &quot;`aramex`&quot; (Aramex)
+          &quot;carrier&quot;: &quot;A String&quot;, # The carrier handling the shipment. For supported carriers, Google includes the carrier name and tracking URL in emails to customers. For select supported carriers, Google also automatically updates the shipment status based on the provided shipment ID. *Note:* You can also use unsupported carriers, but emails to customers will not include the carrier name or tracking URL, and there will be no automatic order status updates. Supported carriers for US are: - &quot;`ups`&quot; (United Parcel Service) *automatic status updates* - &quot;`usps`&quot; (United States Postal Service) *automatic status updates* - &quot;`fedex`&quot; (FedEx) *automatic status updates * - &quot;`dhl`&quot; (DHL eCommerce) *automatic status updates* (US only) - &quot;`ontrac`&quot; (OnTrac) *automatic status updates * - &quot;`dhl express`&quot; (DHL Express) - &quot;`deliv`&quot; (Deliv) - &quot;`dynamex`&quot; (TForce) - &quot;`lasership`&quot; (LaserShip) - &quot;`mpx`&quot; (Military Parcel Xpress) - &quot;`uds`&quot; (United Delivery Service) - &quot;`efw`&quot; (Estes Forwarding Worldwide) - &quot;`jd logistics`&quot; (JD Logistics) - &quot;`yunexpress`&quot; (YunExpress) - &quot;`china post`&quot; (China Post) - &quot;`china ems`&quot; (China Post Express Mail Service) - &quot;`singapore post`&quot; (Singapore Post) - &quot;`pos malaysia`&quot; (Pos Malaysia) - &quot;`postnl`&quot; (PostNL) - &quot;`ptt`&quot; (PTT Turkish Post) - &quot;`eub`&quot; (ePacket) - &quot;`chukou1`&quot; (Chukou1 Logistics) - &quot;`bestex`&quot; (Best Express) - &quot;`canada post`&quot; (Canada Post) - &quot;`purolator`&quot; (Purolator) - &quot;`canpar`&quot; (Canpar) - &quot;`india post`&quot; (India Post) - &quot;`blue dart`&quot; (Blue Dart) - &quot;`delhivery`&quot; (Delhivery) - &quot;`dtdc`&quot; (DTDC) - &quot;`tpc india`&quot; (TPC India) - &quot;`lso`&quot; (Lone Star Overnight) - &quot;`tww`&quot; (Team Worldwide) Supported carriers for FR are: - &quot;`la poste`&quot; (La Poste) *automatic status updates * - &quot;`colissimo`&quot; (Colissimo by La Poste) *automatic status updates* - &quot;`ups`&quot; (United Parcel Service) *automatic status updates * - &quot;`chronopost`&quot; (Chronopost by La Poste) - &quot;`gls`&quot; (General Logistics Systems France) - &quot;`dpd`&quot; (DPD Group by GeoPost) - &quot;`bpost`&quot; (Belgian Post Group) - &quot;`colis prive`&quot; (Colis Privé) - &quot;`boxtal`&quot; (Boxtal) - &quot;`geodis`&quot; (GEODIS) - &quot;`tnt`&quot; (TNT) - &quot;`db schenker`&quot; (DB Schenker) - &quot;`aramex`&quot; (Aramex)
           &quot;creationDate&quot;: &quot;A String&quot;, # Date on which the shipment has been created, in ISO 8601 format.
           &quot;deliveryDate&quot;: &quot;A String&quot;, # Date on which the shipment has been delivered, in ISO 8601 format. Present only if `status` is `delivered`
           &quot;id&quot;: &quot;A String&quot;, # The ID of the shipment.
@@ -1687,7 +1716,7 @@ Returns:
 
     {
   &quot;executionStatus&quot;: &quot;A String&quot;, # The status of the execution. Acceptable values are: - &quot;`duplicate`&quot; - &quot;`executed`&quot;
-  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;content#ordersRefundItemResponse&quot;.
+  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;`content#ordersRefundItemResponse`&quot;.
 }</pre>
 </div>
 
@@ -1728,7 +1757,7 @@ Returns:
 
     {
   &quot;executionStatus&quot;: &quot;A String&quot;, # The status of the execution. Acceptable values are: - &quot;`duplicate`&quot; - &quot;`executed`&quot;
-  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;content#ordersRefundOrderResponse&quot;.
+  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;`content#ordersRefundOrderResponse`&quot;.
 }</pre>
 </div>
 
@@ -1761,7 +1790,7 @@ Returns:
 
     {
   &quot;executionStatus&quot;: &quot;A String&quot;, # The status of the execution. Acceptable values are: - &quot;`duplicate`&quot; - &quot;`executed`&quot;
-  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;content#ordersRejectReturnLineItemResponse&quot;.
+  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;`content#ordersRejectReturnLineItemResponse`&quot;.
 }</pre>
 </div>
 
@@ -1802,7 +1831,7 @@ Returns:
 
     {
   &quot;executionStatus&quot;: &quot;A String&quot;, # The status of the execution. Acceptable values are: - &quot;`duplicate`&quot; - &quot;`executed`&quot;
-  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;content#ordersReturnRefundLineItemResponse&quot;.
+  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;`content#ordersReturnRefundLineItemResponse`&quot;.
 }</pre>
 </div>
 
@@ -1838,7 +1867,7 @@ Returns:
 
     {
   &quot;executionStatus&quot;: &quot;A String&quot;, # The status of the execution. Acceptable values are: - &quot;`duplicate`&quot; - &quot;`executed`&quot;
-  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;content#ordersSetLineItemMetadataResponse&quot;.
+  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;`content#ordersSetLineItemMetadataResponse`&quot;.
 }</pre>
 </div>
 
@@ -1881,7 +1910,7 @@ Returns:
 
     {
   &quot;executionStatus&quot;: &quot;A String&quot;, # The status of the execution. Acceptable values are: - &quot;`duplicate`&quot; - &quot;`executed`&quot;
-  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;content#ordersShipLineItemsResponse&quot;.
+  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;`content#ordersShipLineItemsResponse`&quot;.
 }</pre>
 </div>
 
@@ -1913,7 +1942,7 @@ Returns:
 
     {
   &quot;executionStatus&quot;: &quot;A String&quot;, # The status of the execution. Acceptable values are: - &quot;`duplicate`&quot; - &quot;`executed`&quot;
-  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;content#ordersUpdateLineItemShippingDetailsResponse&quot;.
+  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;`content#ordersUpdateLineItemShippingDetailsResponse`&quot;.
 }</pre>
 </div>
 
@@ -1942,7 +1971,7 @@ Returns:
 
     {
   &quot;executionStatus&quot;: &quot;A String&quot;, # The status of the execution. Acceptable values are: - &quot;`duplicate`&quot; - &quot;`executed`&quot;
-  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;content#ordersUpdateMerchantOrderIdResponse&quot;.
+  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;`content#ordersUpdateMerchantOrderIdResponse`&quot;.
 }</pre>
 </div>
 
@@ -1982,7 +2011,7 @@ Returns:
 
     {
   &quot;executionStatus&quot;: &quot;A String&quot;, # The status of the execution. Acceptable values are: - &quot;`duplicate`&quot; - &quot;`executed`&quot;
-  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;content#ordersUpdateShipmentResponse&quot;.
+  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;`content#ordersUpdateShipmentResponse`&quot;.
 }</pre>
 </div>
 

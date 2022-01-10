@@ -110,7 +110,7 @@ h1, h2, h3 {
   <pre>Deletes a package and all of its versions and tags. The returned operation will complete once the package has been deleted.
 
 Args:
-  name: string, The name of the package to delete. (required)
+  name: string, Required. The name of the package to delete. (required)
   x__xgafv: string, V1 error format.
     Allowed values
       1 - v1 error format
@@ -145,7 +145,7 @@ Returns:
   <pre>Gets a package.
 
 Args:
-  name: string, The name of the package to retrieve. (required)
+  name: string, Required. The name of the package to retrieve. (required)
   x__xgafv: string, V1 error format.
     Allowed values
       1 - v1 error format
@@ -157,7 +157,7 @@ Returns:
     { # Packages are named collections of versions.
   &quot;createTime&quot;: &quot;A String&quot;, # The time when the package was created.
   &quot;displayName&quot;: &quot;A String&quot;, # The display name of the package.
-  &quot;name&quot;: &quot;A String&quot;, # The name of the package, for example: &quot;projects/p1/locations/us-central1/repositories/repo1/packages/pkg1&quot;.
+  &quot;name&quot;: &quot;A String&quot;, # The name of the package, for example: &quot;projects/p1/locations/us-central1/repositories/repo1/packages/pkg1&quot;. If the package ID part contains slashes, the slashes are escaped.
   &quot;updateTime&quot;: &quot;A String&quot;, # The time when the package was last updated. This includes publishing a new version of the package.
 }</pre>
 </div>
@@ -167,7 +167,7 @@ Returns:
   <pre>Lists packages.
 
 Args:
-  parent: string, The name of the parent resource whose packages will be listed. (required)
+  parent: string, Required. The name of the parent resource whose packages will be listed. (required)
   pageSize: integer, The maximum number of packages to return.
   pageToken: string, The next_page_token value returned from a previous list request, if any.
   x__xgafv: string, V1 error format.
@@ -184,7 +184,7 @@ Returns:
     { # Packages are named collections of versions.
       &quot;createTime&quot;: &quot;A String&quot;, # The time when the package was created.
       &quot;displayName&quot;: &quot;A String&quot;, # The display name of the package.
-      &quot;name&quot;: &quot;A String&quot;, # The name of the package, for example: &quot;projects/p1/locations/us-central1/repositories/repo1/packages/pkg1&quot;.
+      &quot;name&quot;: &quot;A String&quot;, # The name of the package, for example: &quot;projects/p1/locations/us-central1/repositories/repo1/packages/pkg1&quot;. If the package ID part contains slashes, the slashes are escaped.
       &quot;updateTime&quot;: &quot;A String&quot;, # The time when the package was last updated. This includes publishing a new version of the package.
     },
   ],

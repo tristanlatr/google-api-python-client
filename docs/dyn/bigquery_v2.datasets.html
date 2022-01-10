@@ -163,6 +163,7 @@ Returns:
     &quot;datasetId&quot;: &quot;A String&quot;, # [Required] A unique ID for this dataset, without the project name. The ID must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum length is 1,024 characters.
     &quot;projectId&quot;: &quot;A String&quot;, # [Optional] The ID of the project containing this dataset.
   },
+  &quot;defaultCollation&quot;: &quot;A String&quot;, # [Output-only] The default collation of the dataset.
   &quot;defaultEncryptionConfiguration&quot;: {
     &quot;kmsKeyName&quot;: &quot;A String&quot;, # [Optional] Describes the Cloud KMS encryption key that will be used to protect destination BigQuery table. The BigQuery Service Account associated with your project requires access to this encryption key.
   },
@@ -172,6 +173,7 @@ Returns:
   &quot;etag&quot;: &quot;A String&quot;, # [Output-only] A hash of the resource.
   &quot;friendlyName&quot;: &quot;A String&quot;, # [Optional] A descriptive name for the dataset.
   &quot;id&quot;: &quot;A String&quot;, # [Output-only] The fully-qualified unique name of the dataset in the format projectId:datasetId. The dataset name without the project name is given in the datasetId field. When creating a new dataset, leave this field blank, and instead specify the datasetId field.
+  &quot;isCaseInsensitive&quot;: True or False, # [Optional] Indicates if table names are case insensitive in the dataset.
   &quot;kind&quot;: &quot;bigquery#dataset&quot;, # [Output-only] The resource type.
   &quot;labels&quot;: { # The labels associated with this dataset. You can use these to organize and group your datasets. You can set this property when inserting or updating a dataset. See Creating and Updating Dataset Labels for more information.
     &quot;a_key&quot;: &quot;A String&quot;,
@@ -229,6 +231,7 @@ Args:
     &quot;datasetId&quot;: &quot;A String&quot;, # [Required] A unique ID for this dataset, without the project name. The ID must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum length is 1,024 characters.
     &quot;projectId&quot;: &quot;A String&quot;, # [Optional] The ID of the project containing this dataset.
   },
+  &quot;defaultCollation&quot;: &quot;A String&quot;, # [Output-only] The default collation of the dataset.
   &quot;defaultEncryptionConfiguration&quot;: {
     &quot;kmsKeyName&quot;: &quot;A String&quot;, # [Optional] Describes the Cloud KMS encryption key that will be used to protect destination BigQuery table. The BigQuery Service Account associated with your project requires access to this encryption key.
   },
@@ -238,6 +241,7 @@ Args:
   &quot;etag&quot;: &quot;A String&quot;, # [Output-only] A hash of the resource.
   &quot;friendlyName&quot;: &quot;A String&quot;, # [Optional] A descriptive name for the dataset.
   &quot;id&quot;: &quot;A String&quot;, # [Output-only] The fully-qualified unique name of the dataset in the format projectId:datasetId. The dataset name without the project name is given in the datasetId field. When creating a new dataset, leave this field blank, and instead specify the datasetId field.
+  &quot;isCaseInsensitive&quot;: True or False, # [Optional] Indicates if table names are case insensitive in the dataset.
   &quot;kind&quot;: &quot;bigquery#dataset&quot;, # [Output-only] The resource type.
   &quot;labels&quot;: { # The labels associated with this dataset. You can use these to organize and group your datasets. You can set this property when inserting or updating a dataset. See Creating and Updating Dataset Labels for more information.
     &quot;a_key&quot;: &quot;A String&quot;,
@@ -289,6 +293,7 @@ Returns:
     &quot;datasetId&quot;: &quot;A String&quot;, # [Required] A unique ID for this dataset, without the project name. The ID must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum length is 1,024 characters.
     &quot;projectId&quot;: &quot;A String&quot;, # [Optional] The ID of the project containing this dataset.
   },
+  &quot;defaultCollation&quot;: &quot;A String&quot;, # [Output-only] The default collation of the dataset.
   &quot;defaultEncryptionConfiguration&quot;: {
     &quot;kmsKeyName&quot;: &quot;A String&quot;, # [Optional] Describes the Cloud KMS encryption key that will be used to protect destination BigQuery table. The BigQuery Service Account associated with your project requires access to this encryption key.
   },
@@ -298,6 +303,7 @@ Returns:
   &quot;etag&quot;: &quot;A String&quot;, # [Output-only] A hash of the resource.
   &quot;friendlyName&quot;: &quot;A String&quot;, # [Optional] A descriptive name for the dataset.
   &quot;id&quot;: &quot;A String&quot;, # [Output-only] The fully-qualified unique name of the dataset in the format projectId:datasetId. The dataset name without the project name is given in the datasetId field. When creating a new dataset, leave this field blank, and instead specify the datasetId field.
+  &quot;isCaseInsensitive&quot;: True or False, # [Optional] Indicates if table names are case insensitive in the dataset.
   &quot;kind&quot;: &quot;bigquery#dataset&quot;, # [Output-only] The resource type.
   &quot;labels&quot;: { # The labels associated with this dataset. You can use these to organize and group your datasets. You can set this property when inserting or updating a dataset. See Creating and Updating Dataset Labels for more information.
     &quot;a_key&quot;: &quot;A String&quot;,
@@ -406,6 +412,7 @@ Args:
     &quot;datasetId&quot;: &quot;A String&quot;, # [Required] A unique ID for this dataset, without the project name. The ID must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum length is 1,024 characters.
     &quot;projectId&quot;: &quot;A String&quot;, # [Optional] The ID of the project containing this dataset.
   },
+  &quot;defaultCollation&quot;: &quot;A String&quot;, # [Output-only] The default collation of the dataset.
   &quot;defaultEncryptionConfiguration&quot;: {
     &quot;kmsKeyName&quot;: &quot;A String&quot;, # [Optional] Describes the Cloud KMS encryption key that will be used to protect destination BigQuery table. The BigQuery Service Account associated with your project requires access to this encryption key.
   },
@@ -415,6 +422,7 @@ Args:
   &quot;etag&quot;: &quot;A String&quot;, # [Output-only] A hash of the resource.
   &quot;friendlyName&quot;: &quot;A String&quot;, # [Optional] A descriptive name for the dataset.
   &quot;id&quot;: &quot;A String&quot;, # [Output-only] The fully-qualified unique name of the dataset in the format projectId:datasetId. The dataset name without the project name is given in the datasetId field. When creating a new dataset, leave this field blank, and instead specify the datasetId field.
+  &quot;isCaseInsensitive&quot;: True or False, # [Optional] Indicates if table names are case insensitive in the dataset.
   &quot;kind&quot;: &quot;bigquery#dataset&quot;, # [Output-only] The resource type.
   &quot;labels&quot;: { # The labels associated with this dataset. You can use these to organize and group your datasets. You can set this property when inserting or updating a dataset. See Creating and Updating Dataset Labels for more information.
     &quot;a_key&quot;: &quot;A String&quot;,
@@ -466,6 +474,7 @@ Returns:
     &quot;datasetId&quot;: &quot;A String&quot;, # [Required] A unique ID for this dataset, without the project name. The ID must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum length is 1,024 characters.
     &quot;projectId&quot;: &quot;A String&quot;, # [Optional] The ID of the project containing this dataset.
   },
+  &quot;defaultCollation&quot;: &quot;A String&quot;, # [Output-only] The default collation of the dataset.
   &quot;defaultEncryptionConfiguration&quot;: {
     &quot;kmsKeyName&quot;: &quot;A String&quot;, # [Optional] Describes the Cloud KMS encryption key that will be used to protect destination BigQuery table. The BigQuery Service Account associated with your project requires access to this encryption key.
   },
@@ -475,6 +484,7 @@ Returns:
   &quot;etag&quot;: &quot;A String&quot;, # [Output-only] A hash of the resource.
   &quot;friendlyName&quot;: &quot;A String&quot;, # [Optional] A descriptive name for the dataset.
   &quot;id&quot;: &quot;A String&quot;, # [Output-only] The fully-qualified unique name of the dataset in the format projectId:datasetId. The dataset name without the project name is given in the datasetId field. When creating a new dataset, leave this field blank, and instead specify the datasetId field.
+  &quot;isCaseInsensitive&quot;: True or False, # [Optional] Indicates if table names are case insensitive in the dataset.
   &quot;kind&quot;: &quot;bigquery#dataset&quot;, # [Output-only] The resource type.
   &quot;labels&quot;: { # The labels associated with this dataset. You can use these to organize and group your datasets. You can set this property when inserting or updating a dataset. See Creating and Updating Dataset Labels for more information.
     &quot;a_key&quot;: &quot;A String&quot;,
@@ -533,6 +543,7 @@ Args:
     &quot;datasetId&quot;: &quot;A String&quot;, # [Required] A unique ID for this dataset, without the project name. The ID must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum length is 1,024 characters.
     &quot;projectId&quot;: &quot;A String&quot;, # [Optional] The ID of the project containing this dataset.
   },
+  &quot;defaultCollation&quot;: &quot;A String&quot;, # [Output-only] The default collation of the dataset.
   &quot;defaultEncryptionConfiguration&quot;: {
     &quot;kmsKeyName&quot;: &quot;A String&quot;, # [Optional] Describes the Cloud KMS encryption key that will be used to protect destination BigQuery table. The BigQuery Service Account associated with your project requires access to this encryption key.
   },
@@ -542,6 +553,7 @@ Args:
   &quot;etag&quot;: &quot;A String&quot;, # [Output-only] A hash of the resource.
   &quot;friendlyName&quot;: &quot;A String&quot;, # [Optional] A descriptive name for the dataset.
   &quot;id&quot;: &quot;A String&quot;, # [Output-only] The fully-qualified unique name of the dataset in the format projectId:datasetId. The dataset name without the project name is given in the datasetId field. When creating a new dataset, leave this field blank, and instead specify the datasetId field.
+  &quot;isCaseInsensitive&quot;: True or False, # [Optional] Indicates if table names are case insensitive in the dataset.
   &quot;kind&quot;: &quot;bigquery#dataset&quot;, # [Output-only] The resource type.
   &quot;labels&quot;: { # The labels associated with this dataset. You can use these to organize and group your datasets. You can set this property when inserting or updating a dataset. See Creating and Updating Dataset Labels for more information.
     &quot;a_key&quot;: &quot;A String&quot;,
@@ -593,6 +605,7 @@ Returns:
     &quot;datasetId&quot;: &quot;A String&quot;, # [Required] A unique ID for this dataset, without the project name. The ID must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum length is 1,024 characters.
     &quot;projectId&quot;: &quot;A String&quot;, # [Optional] The ID of the project containing this dataset.
   },
+  &quot;defaultCollation&quot;: &quot;A String&quot;, # [Output-only] The default collation of the dataset.
   &quot;defaultEncryptionConfiguration&quot;: {
     &quot;kmsKeyName&quot;: &quot;A String&quot;, # [Optional] Describes the Cloud KMS encryption key that will be used to protect destination BigQuery table. The BigQuery Service Account associated with your project requires access to this encryption key.
   },
@@ -602,6 +615,7 @@ Returns:
   &quot;etag&quot;: &quot;A String&quot;, # [Output-only] A hash of the resource.
   &quot;friendlyName&quot;: &quot;A String&quot;, # [Optional] A descriptive name for the dataset.
   &quot;id&quot;: &quot;A String&quot;, # [Output-only] The fully-qualified unique name of the dataset in the format projectId:datasetId. The dataset name without the project name is given in the datasetId field. When creating a new dataset, leave this field blank, and instead specify the datasetId field.
+  &quot;isCaseInsensitive&quot;: True or False, # [Optional] Indicates if table names are case insensitive in the dataset.
   &quot;kind&quot;: &quot;bigquery#dataset&quot;, # [Output-only] The resource type.
   &quot;labels&quot;: { # The labels associated with this dataset. You can use these to organize and group your datasets. You can set this property when inserting or updating a dataset. See Creating and Updating Dataset Labels for more information.
     &quot;a_key&quot;: &quot;A String&quot;,

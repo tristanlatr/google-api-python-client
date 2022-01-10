@@ -111,7 +111,7 @@ h1, h2, h3 {
   <pre>Create a Service.
 
 Args:
-  parent: string, Required. Resource name of the parent workspace. The format is: projects/[PROJECT_ID_OR_NUMBER]  (required)
+  parent: string, Required. Resource name (https://cloud.google.com/monitoring/api/v3#project_name) of the parent workspace. The format is: projects/[PROJECT_ID_OR_NUMBER]  (required)
   body: object, The request body.
     The object takes the form of:
 
@@ -144,6 +144,9 @@ Args:
   &quot;name&quot;: &quot;A String&quot;, # Resource name for this Service. The format is: projects/[PROJECT_ID_OR_NUMBER]/services/[SERVICE_ID]
   &quot;telemetry&quot;: { # Configuration for how to query telemetry on a Service. # Configuration for how to query telemetry on a Service.
     &quot;resourceName&quot;: &quot;A String&quot;, # The full name of the resource that defines this service. Formatted as described in https://cloud.google.com/apis/design/resource_names.
+  },
+  &quot;userLabels&quot;: { # Labels which have been used to annotate the service. Label keys must start with a letter. Label keys and values may contain lowercase letters, numbers, underscores, and dashes. Label keys and values have a maximum length of 63 characters, and must be less than 128 bytes in size. Up to 64 label entries may be stored. For labels which do not have a semantic value, the empty string may be supplied for the label value.
+    &quot;a_key&quot;: &quot;A String&quot;,
   },
 }
 
@@ -185,6 +188,9 @@ Returns:
   &quot;name&quot;: &quot;A String&quot;, # Resource name for this Service. The format is: projects/[PROJECT_ID_OR_NUMBER]/services/[SERVICE_ID]
   &quot;telemetry&quot;: { # Configuration for how to query telemetry on a Service. # Configuration for how to query telemetry on a Service.
     &quot;resourceName&quot;: &quot;A String&quot;, # The full name of the resource that defines this service. Formatted as described in https://cloud.google.com/apis/design/resource_names.
+  },
+  &quot;userLabels&quot;: { # Labels which have been used to annotate the service. Label keys must start with a letter. Label keys and values may contain lowercase letters, numbers, underscores, and dashes. Label keys and values have a maximum length of 63 characters, and must be less than 128 bytes in size. Up to 64 label entries may be stored. For labels which do not have a semantic value, the empty string may be supplied for the label value.
+    &quot;a_key&quot;: &quot;A String&quot;,
   },
 }</pre>
 </div>
@@ -251,6 +257,9 @@ Returns:
   &quot;telemetry&quot;: { # Configuration for how to query telemetry on a Service. # Configuration for how to query telemetry on a Service.
     &quot;resourceName&quot;: &quot;A String&quot;, # The full name of the resource that defines this service. Formatted as described in https://cloud.google.com/apis/design/resource_names.
   },
+  &quot;userLabels&quot;: { # Labels which have been used to annotate the service. Label keys must start with a letter. Label keys and values may contain lowercase letters, numbers, underscores, and dashes. Label keys and values have a maximum length of 63 characters, and must be less than 128 bytes in size. Up to 64 label entries may be stored. For labels which do not have a semantic value, the empty string may be supplied for the label value.
+    &quot;a_key&quot;: &quot;A String&quot;,
+  },
 }</pre>
 </div>
 
@@ -259,7 +268,7 @@ Returns:
   <pre>List Services for this workspace.
 
 Args:
-  parent: string, Required. Resource name of the parent containing the listed services, either a project or a Monitoring Workspace. The formats are: projects/[PROJECT_ID_OR_NUMBER] workspaces/[HOST_PROJECT_ID_OR_NUMBER]  (required)
+  parent: string, Required. Resource name of the parent containing the listed services, either a project (https://cloud.google.com/monitoring/api/v3#project_name) or a Monitoring Workspace. The formats are: projects/[PROJECT_ID_OR_NUMBER] workspaces/[HOST_PROJECT_ID_OR_NUMBER]  (required)
   filter: string, A filter specifying what Services to return. The filter currently supports the following fields: - `identifier_case` - `app_engine.module_id` - `cloud_endpoints.service` (reserved for future use) - `mesh_istio.mesh_uid` - `mesh_istio.service_namespace` - `mesh_istio.service_name` - `cluster_istio.location` (deprecated) - `cluster_istio.cluster_name` (deprecated) - `cluster_istio.service_namespace` (deprecated) - `cluster_istio.service_name` (deprecated) identifier_case refers to which option in the identifier oneof is populated. For example, the filter identifier_case = &quot;CUSTOM&quot; would match all services with a value for the custom field. Valid options are &quot;CUSTOM&quot;, &quot;APP_ENGINE&quot;, &quot;MESH_ISTIO&quot;, plus &quot;CLUSTER_ISTIO&quot; (deprecated) and &quot;CLOUD_ENDPOINTS&quot; (reserved for future use).
   pageSize: integer, A non-negative number that is the maximum number of results to return. When 0, use default page size.
   pageToken: string, If this field is not empty then it must contain the nextPageToken value returned by a previous call to this method. Using this field causes the method to return additional results from the previous method call.
@@ -303,6 +312,9 @@ Returns:
       &quot;name&quot;: &quot;A String&quot;, # Resource name for this Service. The format is: projects/[PROJECT_ID_OR_NUMBER]/services/[SERVICE_ID]
       &quot;telemetry&quot;: { # Configuration for how to query telemetry on a Service. # Configuration for how to query telemetry on a Service.
         &quot;resourceName&quot;: &quot;A String&quot;, # The full name of the resource that defines this service. Formatted as described in https://cloud.google.com/apis/design/resource_names.
+      },
+      &quot;userLabels&quot;: { # Labels which have been used to annotate the service. Label keys must start with a letter. Label keys and values may contain lowercase letters, numbers, underscores, and dashes. Label keys and values have a maximum length of 63 characters, and must be less than 128 bytes in size. Up to 64 label entries may be stored. For labels which do not have a semantic value, the empty string may be supplied for the label value.
+        &quot;a_key&quot;: &quot;A String&quot;,
       },
     },
   ],
@@ -362,6 +374,9 @@ Args:
   &quot;telemetry&quot;: { # Configuration for how to query telemetry on a Service. # Configuration for how to query telemetry on a Service.
     &quot;resourceName&quot;: &quot;A String&quot;, # The full name of the resource that defines this service. Formatted as described in https://cloud.google.com/apis/design/resource_names.
   },
+  &quot;userLabels&quot;: { # Labels which have been used to annotate the service. Label keys must start with a letter. Label keys and values may contain lowercase letters, numbers, underscores, and dashes. Label keys and values have a maximum length of 63 characters, and must be less than 128 bytes in size. Up to 64 label entries may be stored. For labels which do not have a semantic value, the empty string may be supplied for the label value.
+    &quot;a_key&quot;: &quot;A String&quot;,
+  },
 }
 
   updateMask: string, A set of field paths defining which fields to use for the update.
@@ -402,6 +417,9 @@ Returns:
   &quot;name&quot;: &quot;A String&quot;, # Resource name for this Service. The format is: projects/[PROJECT_ID_OR_NUMBER]/services/[SERVICE_ID]
   &quot;telemetry&quot;: { # Configuration for how to query telemetry on a Service. # Configuration for how to query telemetry on a Service.
     &quot;resourceName&quot;: &quot;A String&quot;, # The full name of the resource that defines this service. Formatted as described in https://cloud.google.com/apis/design/resource_names.
+  },
+  &quot;userLabels&quot;: { # Labels which have been used to annotate the service. Label keys must start with a letter. Label keys and values may contain lowercase letters, numbers, underscores, and dashes. Label keys and values have a maximum length of 63 characters, and must be less than 128 bytes in size. Up to 64 label entries may be stored. For labels which do not have a semantic value, the empty string may be supplied for the label value.
+    &quot;a_key&quot;: &quot;A String&quot;,
   },
 }</pre>
 </div>

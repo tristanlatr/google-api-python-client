@@ -79,10 +79,10 @@ h1, h2, h3 {
 <p class="firstline">Close httplib2 connections.</p>
 <p class="toc_element">
   <code><a href="#create">create(parent, body=None, languageCode=None, x__xgafv=None)</a></code></p>
-<p class="firstline">Creates an intent in the specified agent.</p>
+<p class="firstline">Creates an intent in the specified agent. Note: You should always train a flow prior to sending it queries. See the [training documentation](https://cloud.google.com/dialogflow/cx/docs/concept/training).</p>
 <p class="toc_element">
   <code><a href="#delete">delete(name, x__xgafv=None)</a></code></p>
-<p class="firstline">Deletes the specified intent.</p>
+<p class="firstline">Deletes the specified intent. Note: You should always train a flow prior to sending it queries. See the [training documentation](https://cloud.google.com/dialogflow/cx/docs/concept/training).</p>
 <p class="toc_element">
   <code><a href="#get">get(name, languageCode=None, x__xgafv=None)</a></code></p>
 <p class="firstline">Retrieves the specified intent.</p>
@@ -94,7 +94,7 @@ h1, h2, h3 {
 <p class="firstline">Retrieves the next page of results.</p>
 <p class="toc_element">
   <code><a href="#patch">patch(name, body=None, languageCode=None, updateMask=None, x__xgafv=None)</a></code></p>
-<p class="firstline">Updates the specified intent.</p>
+<p class="firstline">Updates the specified intent. Note: You should always train a flow prior to sending it queries. See the [training documentation](https://cloud.google.com/dialogflow/cx/docs/concept/training).</p>
 <h3>Method Details</h3>
 <div class="method">
     <code class="details" id="close">close()</code>
@@ -103,7 +103,7 @@ h1, h2, h3 {
 
 <div class="method">
     <code class="details" id="create">create(parent, body=None, languageCode=None, x__xgafv=None)</code>
-  <pre>Creates an intent in the specified agent.
+  <pre>Creates an intent in the specified agent. Note: You should always train a flow prior to sending it queries. See the [training documentation](https://cloud.google.com/dialogflow/cx/docs/concept/training).
 
 Args:
   parent: string, Required. The agent to create an intent for. Format: `projects//locations//agents/`. (required)
@@ -111,10 +111,10 @@ Args:
     The object takes the form of:
 
 { # An intent represents a user&#x27;s intent to interact with a conversational agent. You can provide information for the Dialogflow API to use to match user input to an intent by adding training phrases (i.e., examples of user input) to your intent.
-  &quot;description&quot;: &quot;A String&quot;, # Optional. Human readable description for better understanding an intent like its scope, content, result etc. Maximum character limit: 140 characters.
+  &quot;description&quot;: &quot;A String&quot;, # Human readable description for better understanding an intent like its scope, content, result etc. Maximum character limit: 140 characters.
   &quot;displayName&quot;: &quot;A String&quot;, # Required. The human-readable name of the intent, unique within the agent.
   &quot;isFallback&quot;: True or False, # Indicates whether this is a fallback intent. Currently only default fallback intent is allowed in the agent, which is added upon agent creation. Adding training phrases to fallback intent is useful in the case of requests that are mistakenly matched, since training phrases assigned to fallback intents act as negative examples that triggers no-match event.
-  &quot;labels&quot;: { # Optional. The key/value metadata to label an intent. Labels can contain lowercase letters, digits and the symbols &#x27;-&#x27; and &#x27;_&#x27;. International characters are allowed, including letters from unicase alphabets. Keys must start with a letter. Keys and values can be no longer than 63 characters and no more than 128 bytes. Prefix &quot;sys-&quot; is reserved for Dialogflow defined labels. Currently allowed Dialogflow defined labels include: * sys-head * sys-contextual The above labels do not require value. &quot;sys-head&quot; means the intent is a head intent. &quot;sys-contextual&quot; means the intent is a contextual intent.
+  &quot;labels&quot;: { # The key/value metadata to label an intent. Labels can contain lowercase letters, digits and the symbols &#x27;-&#x27; and &#x27;_&#x27;. International characters are allowed, including letters from unicase alphabets. Keys must start with a letter. Keys and values can be no longer than 63 characters and no more than 128 bytes. Prefix &quot;sys-&quot; is reserved for Dialogflow defined labels. Currently allowed Dialogflow defined labels include: * sys-head * sys-contextual The above labels do not require value. &quot;sys-head&quot; means the intent is a head intent. &quot;sys-contextual&quot; means the intent is a contextual intent.
     &quot;a_key&quot;: &quot;A String&quot;,
   },
   &quot;name&quot;: &quot;A String&quot;, # The unique identifier of the intent. Required for the Intents.UpdateIntent method. Intents.CreateIntent populates the name automatically. Format: `projects//locations//agents//intents/`.
@@ -151,10 +151,10 @@ Returns:
   An object of the form:
 
     { # An intent represents a user&#x27;s intent to interact with a conversational agent. You can provide information for the Dialogflow API to use to match user input to an intent by adding training phrases (i.e., examples of user input) to your intent.
-  &quot;description&quot;: &quot;A String&quot;, # Optional. Human readable description for better understanding an intent like its scope, content, result etc. Maximum character limit: 140 characters.
+  &quot;description&quot;: &quot;A String&quot;, # Human readable description for better understanding an intent like its scope, content, result etc. Maximum character limit: 140 characters.
   &quot;displayName&quot;: &quot;A String&quot;, # Required. The human-readable name of the intent, unique within the agent.
   &quot;isFallback&quot;: True or False, # Indicates whether this is a fallback intent. Currently only default fallback intent is allowed in the agent, which is added upon agent creation. Adding training phrases to fallback intent is useful in the case of requests that are mistakenly matched, since training phrases assigned to fallback intents act as negative examples that triggers no-match event.
-  &quot;labels&quot;: { # Optional. The key/value metadata to label an intent. Labels can contain lowercase letters, digits and the symbols &#x27;-&#x27; and &#x27;_&#x27;. International characters are allowed, including letters from unicase alphabets. Keys must start with a letter. Keys and values can be no longer than 63 characters and no more than 128 bytes. Prefix &quot;sys-&quot; is reserved for Dialogflow defined labels. Currently allowed Dialogflow defined labels include: * sys-head * sys-contextual The above labels do not require value. &quot;sys-head&quot; means the intent is a head intent. &quot;sys-contextual&quot; means the intent is a contextual intent.
+  &quot;labels&quot;: { # The key/value metadata to label an intent. Labels can contain lowercase letters, digits and the symbols &#x27;-&#x27; and &#x27;_&#x27;. International characters are allowed, including letters from unicase alphabets. Keys must start with a letter. Keys and values can be no longer than 63 characters and no more than 128 bytes. Prefix &quot;sys-&quot; is reserved for Dialogflow defined labels. Currently allowed Dialogflow defined labels include: * sys-head * sys-contextual The above labels do not require value. &quot;sys-head&quot; means the intent is a head intent. &quot;sys-contextual&quot; means the intent is a contextual intent.
     &quot;a_key&quot;: &quot;A String&quot;,
   },
   &quot;name&quot;: &quot;A String&quot;, # The unique identifier of the intent. Required for the Intents.UpdateIntent method. Intents.CreateIntent populates the name automatically. Format: `projects//locations//agents//intents/`.
@@ -184,7 +184,7 @@ Returns:
 
 <div class="method">
     <code class="details" id="delete">delete(name, x__xgafv=None)</code>
-  <pre>Deletes the specified intent.
+  <pre>Deletes the specified intent. Note: You should always train a flow prior to sending it queries. See the [training documentation](https://cloud.google.com/dialogflow/cx/docs/concept/training).
 
 Args:
   name: string, Required. The name of the intent to delete. Format: `projects//locations//agents//intents/`. (required)
@@ -216,10 +216,10 @@ Returns:
   An object of the form:
 
     { # An intent represents a user&#x27;s intent to interact with a conversational agent. You can provide information for the Dialogflow API to use to match user input to an intent by adding training phrases (i.e., examples of user input) to your intent.
-  &quot;description&quot;: &quot;A String&quot;, # Optional. Human readable description for better understanding an intent like its scope, content, result etc. Maximum character limit: 140 characters.
+  &quot;description&quot;: &quot;A String&quot;, # Human readable description for better understanding an intent like its scope, content, result etc. Maximum character limit: 140 characters.
   &quot;displayName&quot;: &quot;A String&quot;, # Required. The human-readable name of the intent, unique within the agent.
   &quot;isFallback&quot;: True or False, # Indicates whether this is a fallback intent. Currently only default fallback intent is allowed in the agent, which is added upon agent creation. Adding training phrases to fallback intent is useful in the case of requests that are mistakenly matched, since training phrases assigned to fallback intents act as negative examples that triggers no-match event.
-  &quot;labels&quot;: { # Optional. The key/value metadata to label an intent. Labels can contain lowercase letters, digits and the symbols &#x27;-&#x27; and &#x27;_&#x27;. International characters are allowed, including letters from unicase alphabets. Keys must start with a letter. Keys and values can be no longer than 63 characters and no more than 128 bytes. Prefix &quot;sys-&quot; is reserved for Dialogflow defined labels. Currently allowed Dialogflow defined labels include: * sys-head * sys-contextual The above labels do not require value. &quot;sys-head&quot; means the intent is a head intent. &quot;sys-contextual&quot; means the intent is a contextual intent.
+  &quot;labels&quot;: { # The key/value metadata to label an intent. Labels can contain lowercase letters, digits and the symbols &#x27;-&#x27; and &#x27;_&#x27;. International characters are allowed, including letters from unicase alphabets. Keys must start with a letter. Keys and values can be no longer than 63 characters and no more than 128 bytes. Prefix &quot;sys-&quot; is reserved for Dialogflow defined labels. Currently allowed Dialogflow defined labels include: * sys-head * sys-contextual The above labels do not require value. &quot;sys-head&quot; means the intent is a head intent. &quot;sys-contextual&quot; means the intent is a contextual intent.
     &quot;a_key&quot;: &quot;A String&quot;,
   },
   &quot;name&quot;: &quot;A String&quot;, # The unique identifier of the intent. Required for the Intents.UpdateIntent method. Intents.CreateIntent populates the name automatically. Format: `projects//locations//agents//intents/`.
@@ -272,10 +272,10 @@ Returns:
     { # The response message for Intents.ListIntents.
   &quot;intents&quot;: [ # The list of intents. There will be a maximum number of items returned based on the page_size field in the request.
     { # An intent represents a user&#x27;s intent to interact with a conversational agent. You can provide information for the Dialogflow API to use to match user input to an intent by adding training phrases (i.e., examples of user input) to your intent.
-      &quot;description&quot;: &quot;A String&quot;, # Optional. Human readable description for better understanding an intent like its scope, content, result etc. Maximum character limit: 140 characters.
+      &quot;description&quot;: &quot;A String&quot;, # Human readable description for better understanding an intent like its scope, content, result etc. Maximum character limit: 140 characters.
       &quot;displayName&quot;: &quot;A String&quot;, # Required. The human-readable name of the intent, unique within the agent.
       &quot;isFallback&quot;: True or False, # Indicates whether this is a fallback intent. Currently only default fallback intent is allowed in the agent, which is added upon agent creation. Adding training phrases to fallback intent is useful in the case of requests that are mistakenly matched, since training phrases assigned to fallback intents act as negative examples that triggers no-match event.
-      &quot;labels&quot;: { # Optional. The key/value metadata to label an intent. Labels can contain lowercase letters, digits and the symbols &#x27;-&#x27; and &#x27;_&#x27;. International characters are allowed, including letters from unicase alphabets. Keys must start with a letter. Keys and values can be no longer than 63 characters and no more than 128 bytes. Prefix &quot;sys-&quot; is reserved for Dialogflow defined labels. Currently allowed Dialogflow defined labels include: * sys-head * sys-contextual The above labels do not require value. &quot;sys-head&quot; means the intent is a head intent. &quot;sys-contextual&quot; means the intent is a contextual intent.
+      &quot;labels&quot;: { # The key/value metadata to label an intent. Labels can contain lowercase letters, digits and the symbols &#x27;-&#x27; and &#x27;_&#x27;. International characters are allowed, including letters from unicase alphabets. Keys must start with a letter. Keys and values can be no longer than 63 characters and no more than 128 bytes. Prefix &quot;sys-&quot; is reserved for Dialogflow defined labels. Currently allowed Dialogflow defined labels include: * sys-head * sys-contextual The above labels do not require value. &quot;sys-head&quot; means the intent is a head intent. &quot;sys-contextual&quot; means the intent is a contextual intent.
         &quot;a_key&quot;: &quot;A String&quot;,
       },
       &quot;name&quot;: &quot;A String&quot;, # The unique identifier of the intent. Required for the Intents.UpdateIntent method. Intents.CreateIntent populates the name automatically. Format: `projects//locations//agents//intents/`.
@@ -322,7 +322,7 @@ Returns:
 
 <div class="method">
     <code class="details" id="patch">patch(name, body=None, languageCode=None, updateMask=None, x__xgafv=None)</code>
-  <pre>Updates the specified intent.
+  <pre>Updates the specified intent. Note: You should always train a flow prior to sending it queries. See the [training documentation](https://cloud.google.com/dialogflow/cx/docs/concept/training).
 
 Args:
   name: string, The unique identifier of the intent. Required for the Intents.UpdateIntent method. Intents.CreateIntent populates the name automatically. Format: `projects//locations//agents//intents/`. (required)
@@ -330,10 +330,10 @@ Args:
     The object takes the form of:
 
 { # An intent represents a user&#x27;s intent to interact with a conversational agent. You can provide information for the Dialogflow API to use to match user input to an intent by adding training phrases (i.e., examples of user input) to your intent.
-  &quot;description&quot;: &quot;A String&quot;, # Optional. Human readable description for better understanding an intent like its scope, content, result etc. Maximum character limit: 140 characters.
+  &quot;description&quot;: &quot;A String&quot;, # Human readable description for better understanding an intent like its scope, content, result etc. Maximum character limit: 140 characters.
   &quot;displayName&quot;: &quot;A String&quot;, # Required. The human-readable name of the intent, unique within the agent.
   &quot;isFallback&quot;: True or False, # Indicates whether this is a fallback intent. Currently only default fallback intent is allowed in the agent, which is added upon agent creation. Adding training phrases to fallback intent is useful in the case of requests that are mistakenly matched, since training phrases assigned to fallback intents act as negative examples that triggers no-match event.
-  &quot;labels&quot;: { # Optional. The key/value metadata to label an intent. Labels can contain lowercase letters, digits and the symbols &#x27;-&#x27; and &#x27;_&#x27;. International characters are allowed, including letters from unicase alphabets. Keys must start with a letter. Keys and values can be no longer than 63 characters and no more than 128 bytes. Prefix &quot;sys-&quot; is reserved for Dialogflow defined labels. Currently allowed Dialogflow defined labels include: * sys-head * sys-contextual The above labels do not require value. &quot;sys-head&quot; means the intent is a head intent. &quot;sys-contextual&quot; means the intent is a contextual intent.
+  &quot;labels&quot;: { # The key/value metadata to label an intent. Labels can contain lowercase letters, digits and the symbols &#x27;-&#x27; and &#x27;_&#x27;. International characters are allowed, including letters from unicase alphabets. Keys must start with a letter. Keys and values can be no longer than 63 characters and no more than 128 bytes. Prefix &quot;sys-&quot; is reserved for Dialogflow defined labels. Currently allowed Dialogflow defined labels include: * sys-head * sys-contextual The above labels do not require value. &quot;sys-head&quot; means the intent is a head intent. &quot;sys-contextual&quot; means the intent is a contextual intent.
     &quot;a_key&quot;: &quot;A String&quot;,
   },
   &quot;name&quot;: &quot;A String&quot;, # The unique identifier of the intent. Required for the Intents.UpdateIntent method. Intents.CreateIntent populates the name automatically. Format: `projects//locations//agents//intents/`.
@@ -371,10 +371,10 @@ Returns:
   An object of the form:
 
     { # An intent represents a user&#x27;s intent to interact with a conversational agent. You can provide information for the Dialogflow API to use to match user input to an intent by adding training phrases (i.e., examples of user input) to your intent.
-  &quot;description&quot;: &quot;A String&quot;, # Optional. Human readable description for better understanding an intent like its scope, content, result etc. Maximum character limit: 140 characters.
+  &quot;description&quot;: &quot;A String&quot;, # Human readable description for better understanding an intent like its scope, content, result etc. Maximum character limit: 140 characters.
   &quot;displayName&quot;: &quot;A String&quot;, # Required. The human-readable name of the intent, unique within the agent.
   &quot;isFallback&quot;: True or False, # Indicates whether this is a fallback intent. Currently only default fallback intent is allowed in the agent, which is added upon agent creation. Adding training phrases to fallback intent is useful in the case of requests that are mistakenly matched, since training phrases assigned to fallback intents act as negative examples that triggers no-match event.
-  &quot;labels&quot;: { # Optional. The key/value metadata to label an intent. Labels can contain lowercase letters, digits and the symbols &#x27;-&#x27; and &#x27;_&#x27;. International characters are allowed, including letters from unicase alphabets. Keys must start with a letter. Keys and values can be no longer than 63 characters and no more than 128 bytes. Prefix &quot;sys-&quot; is reserved for Dialogflow defined labels. Currently allowed Dialogflow defined labels include: * sys-head * sys-contextual The above labels do not require value. &quot;sys-head&quot; means the intent is a head intent. &quot;sys-contextual&quot; means the intent is a contextual intent.
+  &quot;labels&quot;: { # The key/value metadata to label an intent. Labels can contain lowercase letters, digits and the symbols &#x27;-&#x27; and &#x27;_&#x27;. International characters are allowed, including letters from unicase alphabets. Keys must start with a letter. Keys and values can be no longer than 63 characters and no more than 128 bytes. Prefix &quot;sys-&quot; is reserved for Dialogflow defined labels. Currently allowed Dialogflow defined labels include: * sys-head * sys-contextual The above labels do not require value. &quot;sys-head&quot; means the intent is a head intent. &quot;sys-contextual&quot; means the intent is a contextual intent.
     &quot;a_key&quot;: &quot;A String&quot;,
   },
   &quot;name&quot;: &quot;A String&quot;, # The unique identifier of the intent. Required for the Intents.UpdateIntent method. Intents.CreateIntent populates the name automatically. Format: `projects//locations//agents//intents/`.

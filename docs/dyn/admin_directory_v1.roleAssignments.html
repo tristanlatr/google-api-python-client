@@ -82,7 +82,7 @@ h1, h2, h3 {
 <p class="firstline">Deletes a role assignment.</p>
 <p class="toc_element">
   <code><a href="#get">get(customer, roleAssignmentId, x__xgafv=None)</a></code></p>
-<p class="firstline">Retrieve a role assignment.</p>
+<p class="firstline">Retrieves a role assignment.</p>
 <p class="toc_element">
   <code><a href="#insert">insert(customer, body=None, x__xgafv=None)</a></code></p>
 <p class="firstline">Creates a role assignment.</p>
@@ -114,7 +114,7 @@ Args:
 
 <div class="method">
     <code class="details" id="get">get(customer, roleAssignmentId, x__xgafv=None)</code>
-  <pre>Retrieve a role assignment.
+  <pre>Retrieves a role assignment.
 
 Args:
   customer: string, Immutable ID of the Google Workspace account. (required)
@@ -127,7 +127,7 @@ Args:
 Returns:
   An object of the form:
 
-    {
+    { # Defines an assignment of a role.
   &quot;assignedTo&quot;: &quot;A String&quot;, # The unique ID of the user this role is assigned to.
   &quot;etag&quot;: &quot;A String&quot;, # ETag of the resource.
   &quot;kind&quot;: &quot;admin#directory#roleAssignment&quot;, # The type of the API resource. This is always `admin#directory#roleAssignment`.
@@ -147,7 +147,7 @@ Args:
   body: object, The request body.
     The object takes the form of:
 
-{
+{ # Defines an assignment of a role.
   &quot;assignedTo&quot;: &quot;A String&quot;, # The unique ID of the user this role is assigned to.
   &quot;etag&quot;: &quot;A String&quot;, # ETag of the resource.
   &quot;kind&quot;: &quot;admin#directory#roleAssignment&quot;, # The type of the API resource. This is always `admin#directory#roleAssignment`.
@@ -165,7 +165,7 @@ Args:
 Returns:
   An object of the form:
 
-    {
+    { # Defines an assignment of a role.
   &quot;assignedTo&quot;: &quot;A String&quot;, # The unique ID of the user this role is assigned to.
   &quot;etag&quot;: &quot;A String&quot;, # ETag of the resource.
   &quot;kind&quot;: &quot;admin#directory#roleAssignment&quot;, # The type of the API resource. This is always `admin#directory#roleAssignment`.
@@ -197,7 +197,7 @@ Returns:
     {
   &quot;etag&quot;: &quot;A String&quot;, # ETag of the resource.
   &quot;items&quot;: [ # A list of RoleAssignment resources.
-    {
+    { # Defines an assignment of a role.
       &quot;assignedTo&quot;: &quot;A String&quot;, # The unique ID of the user this role is assigned to.
       &quot;etag&quot;: &quot;A String&quot;, # ETag of the resource.
       &quot;kind&quot;: &quot;admin#directory#roleAssignment&quot;, # The type of the API resource. This is always `admin#directory#roleAssignment`.

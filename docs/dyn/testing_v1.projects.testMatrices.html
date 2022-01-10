@@ -234,7 +234,7 @@ Args:
             },
           },
           &quot;appPackageId&quot;: &quot;A String&quot;, # The java package for the application under test. The default value is determined by examining the application&#x27;s manifest.
-          &quot;orchestratorOption&quot;: &quot;A String&quot;, # The option of whether running each test within its own invocation of instrumentation with Android Test Orchestrator or not. ** Orchestrator is only compatible with AndroidJUnitRunner version 1.0 or higher! ** Orchestrator offers the following benefits: - No shared state - Crashes are isolated - Logs are scoped per test See for more information about Android Test Orchestrator. If not set, the test will be run without the orchestrator.
+          &quot;orchestratorOption&quot;: &quot;A String&quot;, # The option of whether running each test within its own invocation of instrumentation with Android Test Orchestrator or not. ** Orchestrator is only compatible with AndroidJUnitRunner version 1.1 or higher! ** Orchestrator offers the following benefits: - No shared state - Crashes are isolated - Logs are scoped per test See for more information about Android Test Orchestrator. If not set, the test will be run without the orchestrator.
           &quot;shardingOption&quot;: { # Options for enabling sharding. # The option to run tests in multiple shards in parallel.
             &quot;manualSharding&quot;: { # Shards test cases into the specified groups of packages, classes, and/or methods. With manual sharding enabled, specifying test targets via environment_variables or in InstrumentationTest is invalid. # Shards test cases into the specified groups of packages, classes, and/or methods.
               &quot;testTargetsForShard&quot;: [ # Required. Group of packages, classes, and/or test methods to be run for each shard. When any physical devices are selected, the number of test_targets_for_shard must be &gt;= 1 and &lt;= 50. When no physical devices are selected, the number must be &gt;= 1 and &lt;= 500.
@@ -258,7 +258,7 @@ Args:
             &quot;A String&quot;,
           ],
         },
-        &quot;androidRoboTest&quot;: { # A test of an android application that explores the application on a virtual or physical Android Device, finding culprits and crashes as it goes. Next tag: 30 # An Android robo test.
+        &quot;androidRoboTest&quot;: { # A test of an android application that explores the application on a virtual or physical Android Device, finding culprits and crashes as it goes. # An Android robo test.
           &quot;appApk&quot;: { # A reference to a file, used for user inputs. # The APK for the application under test.
             &quot;gcsPath&quot;: &quot;A String&quot;, # A path to a file in Google Cloud Storage. Example: gs://build-app-1414623860166/app%40debug-unaligned.apk These paths are expected to be url encoded (percent encoding)
           },
@@ -269,8 +269,6 @@ Args:
           },
           &quot;appInitialActivity&quot;: &quot;A String&quot;, # The initial activity that should be used to start the app.
           &quot;appPackageId&quot;: &quot;A String&quot;, # The java package for the application under test. The default value is determined by examining the application&#x27;s manifest.
-          &quot;maxDepth&quot;: 42, # The max depth of the traversal stack Robo can explore. Needs to be at least 2 to make Robo explore the app beyond the first activity. Default is 50.
-          &quot;maxSteps&quot;: 42, # The max number of steps Robo can execute. Default is no limit.
           &quot;roboDirectives&quot;: [ # A set of directives Robo should apply during the crawl. This allows users to customize the crawl. For example, the username and password for a test account can be provided.
             { # Directs Robo to interact with a specific UI element if it is encountered during the crawl. Currently, Robo can perform text entry or element click.
               &quot;actionType&quot;: &quot;A String&quot;, # Required. The type of action that Robo should perform on the specified element.
@@ -278,6 +276,7 @@ Args:
               &quot;resourceName&quot;: &quot;A String&quot;, # Required. The android resource name of the target UI element. For example, in Java: R.string.foo in xml: @string/foo Only the &quot;foo&quot; part is needed. Reference doc: https://developer.android.com/guide/topics/resources/accessing-resources.html
             },
           ],
+          &quot;roboMode&quot;: &quot;A String&quot;, # The mode in which Robo should run. Most clients should allow the server to populate this field automatically.
           &quot;roboScript&quot;: { # A reference to a file, used for user inputs. # A JSON file with a sequence of actions Robo should perform as a prologue for the crawl.
             &quot;gcsPath&quot;: &quot;A String&quot;, # A path to a file in Google Cloud Storage. Example: gs://build-app-1414623860166/app%40debug-unaligned.apk These paths are expected to be url encoded (percent encoding)
           },
@@ -331,7 +330,7 @@ Args:
             },
           ],
           &quot;networkProfile&quot;: &quot;A String&quot;, # The network traffic profile used for running the test. Available network profiles can be queried by using the NETWORK_CONFIGURATION environment type when calling TestEnvironmentDiscoveryService.GetTestEnvironmentCatalog.
-          &quot;pullDirectories&quot;: [ # List of directories on the device to upload to Cloud Storage at the end of the test. Directories should either be in a shared directory (e.g. /private/var/mobile/Media) or within an accessible directory inside the app&#x27;s filesystem (e.g. /Documents) by specifying the bundle id.
+          &quot;pullDirectories&quot;: [ # List of directories on the device to upload to Cloud Storage at the end of the test. Directories should either be in a shared directory (such as /private/var/mobile/Media) or within an accessible directory inside the app&#x27;s filesystem (such as /Documents) by specifying the bundle ID.
             { # A file or directory to install on the device before the test starts.
               &quot;bundleId&quot;: &quot;A String&quot;, # The bundle id of the app where this file lives. iOS apps sandbox their own filesystem, so app files must specify which app installed on the device.
               &quot;content&quot;: { # A reference to a file, used for user inputs. # The source file
@@ -401,7 +400,7 @@ Args:
             },
           ],
           &quot;networkProfile&quot;: &quot;A String&quot;, # The network traffic profile used for running the test. Available network profiles can be queried by using the NETWORK_CONFIGURATION environment type when calling TestEnvironmentDiscoveryService.GetTestEnvironmentCatalog.
-          &quot;systrace&quot;: { # Systrace configuration for the run. If set a systrace will be taken, starting on test start and lasting for the configured duration. The systrace file thus obtained is put in the results bucket together with the other artifacts from the run.
+          &quot;systrace&quot;: { # Deprecated: Systrace uses Python 2 which has been sunset 2020-01-01. Support of Systrace may stop at any time, at which point no Systrace file will be provided in the results. Systrace configuration for the run. If set a systrace will be taken, starting on test start and lasting for the configured duration. The systrace file thus obtained is put in the results bucket together with the other artifacts from the run.
             &quot;durationSeconds&quot;: 42, # Systrace duration in seconds. Should be between 1 and 30 seconds. 0 disables systrace.
           },
         },
@@ -428,7 +427,7 @@ Args:
         },
       },
       &quot;appPackageId&quot;: &quot;A String&quot;, # The java package for the application under test. The default value is determined by examining the application&#x27;s manifest.
-      &quot;orchestratorOption&quot;: &quot;A String&quot;, # The option of whether running each test within its own invocation of instrumentation with Android Test Orchestrator or not. ** Orchestrator is only compatible with AndroidJUnitRunner version 1.0 or higher! ** Orchestrator offers the following benefits: - No shared state - Crashes are isolated - Logs are scoped per test See for more information about Android Test Orchestrator. If not set, the test will be run without the orchestrator.
+      &quot;orchestratorOption&quot;: &quot;A String&quot;, # The option of whether running each test within its own invocation of instrumentation with Android Test Orchestrator or not. ** Orchestrator is only compatible with AndroidJUnitRunner version 1.1 or higher! ** Orchestrator offers the following benefits: - No shared state - Crashes are isolated - Logs are scoped per test See for more information about Android Test Orchestrator. If not set, the test will be run without the orchestrator.
       &quot;shardingOption&quot;: { # Options for enabling sharding. # The option to run tests in multiple shards in parallel.
         &quot;manualSharding&quot;: { # Shards test cases into the specified groups of packages, classes, and/or methods. With manual sharding enabled, specifying test targets via environment_variables or in InstrumentationTest is invalid. # Shards test cases into the specified groups of packages, classes, and/or methods.
           &quot;testTargetsForShard&quot;: [ # Required. Group of packages, classes, and/or test methods to be run for each shard. When any physical devices are selected, the number of test_targets_for_shard must be &gt;= 1 and &lt;= 50. When no physical devices are selected, the number must be &gt;= 1 and &lt;= 500.
@@ -452,7 +451,7 @@ Args:
         &quot;A String&quot;,
       ],
     },
-    &quot;androidRoboTest&quot;: { # A test of an android application that explores the application on a virtual or physical Android Device, finding culprits and crashes as it goes. Next tag: 30 # An Android robo test.
+    &quot;androidRoboTest&quot;: { # A test of an android application that explores the application on a virtual or physical Android Device, finding culprits and crashes as it goes. # An Android robo test.
       &quot;appApk&quot;: { # A reference to a file, used for user inputs. # The APK for the application under test.
         &quot;gcsPath&quot;: &quot;A String&quot;, # A path to a file in Google Cloud Storage. Example: gs://build-app-1414623860166/app%40debug-unaligned.apk These paths are expected to be url encoded (percent encoding)
       },
@@ -463,8 +462,6 @@ Args:
       },
       &quot;appInitialActivity&quot;: &quot;A String&quot;, # The initial activity that should be used to start the app.
       &quot;appPackageId&quot;: &quot;A String&quot;, # The java package for the application under test. The default value is determined by examining the application&#x27;s manifest.
-      &quot;maxDepth&quot;: 42, # The max depth of the traversal stack Robo can explore. Needs to be at least 2 to make Robo explore the app beyond the first activity. Default is 50.
-      &quot;maxSteps&quot;: 42, # The max number of steps Robo can execute. Default is no limit.
       &quot;roboDirectives&quot;: [ # A set of directives Robo should apply during the crawl. This allows users to customize the crawl. For example, the username and password for a test account can be provided.
         { # Directs Robo to interact with a specific UI element if it is encountered during the crawl. Currently, Robo can perform text entry or element click.
           &quot;actionType&quot;: &quot;A String&quot;, # Required. The type of action that Robo should perform on the specified element.
@@ -472,6 +469,7 @@ Args:
           &quot;resourceName&quot;: &quot;A String&quot;, # Required. The android resource name of the target UI element. For example, in Java: R.string.foo in xml: @string/foo Only the &quot;foo&quot; part is needed. Reference doc: https://developer.android.com/guide/topics/resources/accessing-resources.html
         },
       ],
+      &quot;roboMode&quot;: &quot;A String&quot;, # The mode in which Robo should run. Most clients should allow the server to populate this field automatically.
       &quot;roboScript&quot;: { # A reference to a file, used for user inputs. # A JSON file with a sequence of actions Robo should perform as a prologue for the crawl.
         &quot;gcsPath&quot;: &quot;A String&quot;, # A path to a file in Google Cloud Storage. Example: gs://build-app-1414623860166/app%40debug-unaligned.apk These paths are expected to be url encoded (percent encoding)
       },
@@ -525,7 +523,7 @@ Args:
         },
       ],
       &quot;networkProfile&quot;: &quot;A String&quot;, # The network traffic profile used for running the test. Available network profiles can be queried by using the NETWORK_CONFIGURATION environment type when calling TestEnvironmentDiscoveryService.GetTestEnvironmentCatalog.
-      &quot;pullDirectories&quot;: [ # List of directories on the device to upload to Cloud Storage at the end of the test. Directories should either be in a shared directory (e.g. /private/var/mobile/Media) or within an accessible directory inside the app&#x27;s filesystem (e.g. /Documents) by specifying the bundle id.
+      &quot;pullDirectories&quot;: [ # List of directories on the device to upload to Cloud Storage at the end of the test. Directories should either be in a shared directory (such as /private/var/mobile/Media) or within an accessible directory inside the app&#x27;s filesystem (such as /Documents) by specifying the bundle ID.
         { # A file or directory to install on the device before the test starts.
           &quot;bundleId&quot;: &quot;A String&quot;, # The bundle id of the app where this file lives. iOS apps sandbox their own filesystem, so app files must specify which app installed on the device.
           &quot;content&quot;: { # A reference to a file, used for user inputs. # The source file
@@ -595,7 +593,7 @@ Args:
         },
       ],
       &quot;networkProfile&quot;: &quot;A String&quot;, # The network traffic profile used for running the test. Available network profiles can be queried by using the NETWORK_CONFIGURATION environment type when calling TestEnvironmentDiscoveryService.GetTestEnvironmentCatalog.
-      &quot;systrace&quot;: { # Systrace configuration for the run. If set a systrace will be taken, starting on test start and lasting for the configured duration. The systrace file thus obtained is put in the results bucket together with the other artifacts from the run.
+      &quot;systrace&quot;: { # Deprecated: Systrace uses Python 2 which has been sunset 2020-01-01. Support of Systrace may stop at any time, at which point no Systrace file will be provided in the results. Systrace configuration for the run. If set a systrace will be taken, starting on test start and lasting for the configured duration. The systrace file thus obtained is put in the results bucket together with the other artifacts from the run.
         &quot;durationSeconds&quot;: 42, # Systrace duration in seconds. Should be between 1 and 30 seconds. 0 disables systrace.
       },
     },
@@ -726,7 +724,7 @@ Returns:
             },
           },
           &quot;appPackageId&quot;: &quot;A String&quot;, # The java package for the application under test. The default value is determined by examining the application&#x27;s manifest.
-          &quot;orchestratorOption&quot;: &quot;A String&quot;, # The option of whether running each test within its own invocation of instrumentation with Android Test Orchestrator or not. ** Orchestrator is only compatible with AndroidJUnitRunner version 1.0 or higher! ** Orchestrator offers the following benefits: - No shared state - Crashes are isolated - Logs are scoped per test See for more information about Android Test Orchestrator. If not set, the test will be run without the orchestrator.
+          &quot;orchestratorOption&quot;: &quot;A String&quot;, # The option of whether running each test within its own invocation of instrumentation with Android Test Orchestrator or not. ** Orchestrator is only compatible with AndroidJUnitRunner version 1.1 or higher! ** Orchestrator offers the following benefits: - No shared state - Crashes are isolated - Logs are scoped per test See for more information about Android Test Orchestrator. If not set, the test will be run without the orchestrator.
           &quot;shardingOption&quot;: { # Options for enabling sharding. # The option to run tests in multiple shards in parallel.
             &quot;manualSharding&quot;: { # Shards test cases into the specified groups of packages, classes, and/or methods. With manual sharding enabled, specifying test targets via environment_variables or in InstrumentationTest is invalid. # Shards test cases into the specified groups of packages, classes, and/or methods.
               &quot;testTargetsForShard&quot;: [ # Required. Group of packages, classes, and/or test methods to be run for each shard. When any physical devices are selected, the number of test_targets_for_shard must be &gt;= 1 and &lt;= 50. When no physical devices are selected, the number must be &gt;= 1 and &lt;= 500.
@@ -750,7 +748,7 @@ Returns:
             &quot;A String&quot;,
           ],
         },
-        &quot;androidRoboTest&quot;: { # A test of an android application that explores the application on a virtual or physical Android Device, finding culprits and crashes as it goes. Next tag: 30 # An Android robo test.
+        &quot;androidRoboTest&quot;: { # A test of an android application that explores the application on a virtual or physical Android Device, finding culprits and crashes as it goes. # An Android robo test.
           &quot;appApk&quot;: { # A reference to a file, used for user inputs. # The APK for the application under test.
             &quot;gcsPath&quot;: &quot;A String&quot;, # A path to a file in Google Cloud Storage. Example: gs://build-app-1414623860166/app%40debug-unaligned.apk These paths are expected to be url encoded (percent encoding)
           },
@@ -761,8 +759,6 @@ Returns:
           },
           &quot;appInitialActivity&quot;: &quot;A String&quot;, # The initial activity that should be used to start the app.
           &quot;appPackageId&quot;: &quot;A String&quot;, # The java package for the application under test. The default value is determined by examining the application&#x27;s manifest.
-          &quot;maxDepth&quot;: 42, # The max depth of the traversal stack Robo can explore. Needs to be at least 2 to make Robo explore the app beyond the first activity. Default is 50.
-          &quot;maxSteps&quot;: 42, # The max number of steps Robo can execute. Default is no limit.
           &quot;roboDirectives&quot;: [ # A set of directives Robo should apply during the crawl. This allows users to customize the crawl. For example, the username and password for a test account can be provided.
             { # Directs Robo to interact with a specific UI element if it is encountered during the crawl. Currently, Robo can perform text entry or element click.
               &quot;actionType&quot;: &quot;A String&quot;, # Required. The type of action that Robo should perform on the specified element.
@@ -770,6 +766,7 @@ Returns:
               &quot;resourceName&quot;: &quot;A String&quot;, # Required. The android resource name of the target UI element. For example, in Java: R.string.foo in xml: @string/foo Only the &quot;foo&quot; part is needed. Reference doc: https://developer.android.com/guide/topics/resources/accessing-resources.html
             },
           ],
+          &quot;roboMode&quot;: &quot;A String&quot;, # The mode in which Robo should run. Most clients should allow the server to populate this field automatically.
           &quot;roboScript&quot;: { # A reference to a file, used for user inputs. # A JSON file with a sequence of actions Robo should perform as a prologue for the crawl.
             &quot;gcsPath&quot;: &quot;A String&quot;, # A path to a file in Google Cloud Storage. Example: gs://build-app-1414623860166/app%40debug-unaligned.apk These paths are expected to be url encoded (percent encoding)
           },
@@ -823,7 +820,7 @@ Returns:
             },
           ],
           &quot;networkProfile&quot;: &quot;A String&quot;, # The network traffic profile used for running the test. Available network profiles can be queried by using the NETWORK_CONFIGURATION environment type when calling TestEnvironmentDiscoveryService.GetTestEnvironmentCatalog.
-          &quot;pullDirectories&quot;: [ # List of directories on the device to upload to Cloud Storage at the end of the test. Directories should either be in a shared directory (e.g. /private/var/mobile/Media) or within an accessible directory inside the app&#x27;s filesystem (e.g. /Documents) by specifying the bundle id.
+          &quot;pullDirectories&quot;: [ # List of directories on the device to upload to Cloud Storage at the end of the test. Directories should either be in a shared directory (such as /private/var/mobile/Media) or within an accessible directory inside the app&#x27;s filesystem (such as /Documents) by specifying the bundle ID.
             { # A file or directory to install on the device before the test starts.
               &quot;bundleId&quot;: &quot;A String&quot;, # The bundle id of the app where this file lives. iOS apps sandbox their own filesystem, so app files must specify which app installed on the device.
               &quot;content&quot;: { # A reference to a file, used for user inputs. # The source file
@@ -893,7 +890,7 @@ Returns:
             },
           ],
           &quot;networkProfile&quot;: &quot;A String&quot;, # The network traffic profile used for running the test. Available network profiles can be queried by using the NETWORK_CONFIGURATION environment type when calling TestEnvironmentDiscoveryService.GetTestEnvironmentCatalog.
-          &quot;systrace&quot;: { # Systrace configuration for the run. If set a systrace will be taken, starting on test start and lasting for the configured duration. The systrace file thus obtained is put in the results bucket together with the other artifacts from the run.
+          &quot;systrace&quot;: { # Deprecated: Systrace uses Python 2 which has been sunset 2020-01-01. Support of Systrace may stop at any time, at which point no Systrace file will be provided in the results. Systrace configuration for the run. If set a systrace will be taken, starting on test start and lasting for the configured duration. The systrace file thus obtained is put in the results bucket together with the other artifacts from the run.
             &quot;durationSeconds&quot;: 42, # Systrace duration in seconds. Should be between 1 and 30 seconds. 0 disables systrace.
           },
         },
@@ -920,7 +917,7 @@ Returns:
         },
       },
       &quot;appPackageId&quot;: &quot;A String&quot;, # The java package for the application under test. The default value is determined by examining the application&#x27;s manifest.
-      &quot;orchestratorOption&quot;: &quot;A String&quot;, # The option of whether running each test within its own invocation of instrumentation with Android Test Orchestrator or not. ** Orchestrator is only compatible with AndroidJUnitRunner version 1.0 or higher! ** Orchestrator offers the following benefits: - No shared state - Crashes are isolated - Logs are scoped per test See for more information about Android Test Orchestrator. If not set, the test will be run without the orchestrator.
+      &quot;orchestratorOption&quot;: &quot;A String&quot;, # The option of whether running each test within its own invocation of instrumentation with Android Test Orchestrator or not. ** Orchestrator is only compatible with AndroidJUnitRunner version 1.1 or higher! ** Orchestrator offers the following benefits: - No shared state - Crashes are isolated - Logs are scoped per test See for more information about Android Test Orchestrator. If not set, the test will be run without the orchestrator.
       &quot;shardingOption&quot;: { # Options for enabling sharding. # The option to run tests in multiple shards in parallel.
         &quot;manualSharding&quot;: { # Shards test cases into the specified groups of packages, classes, and/or methods. With manual sharding enabled, specifying test targets via environment_variables or in InstrumentationTest is invalid. # Shards test cases into the specified groups of packages, classes, and/or methods.
           &quot;testTargetsForShard&quot;: [ # Required. Group of packages, classes, and/or test methods to be run for each shard. When any physical devices are selected, the number of test_targets_for_shard must be &gt;= 1 and &lt;= 50. When no physical devices are selected, the number must be &gt;= 1 and &lt;= 500.
@@ -944,7 +941,7 @@ Returns:
         &quot;A String&quot;,
       ],
     },
-    &quot;androidRoboTest&quot;: { # A test of an android application that explores the application on a virtual or physical Android Device, finding culprits and crashes as it goes. Next tag: 30 # An Android robo test.
+    &quot;androidRoboTest&quot;: { # A test of an android application that explores the application on a virtual or physical Android Device, finding culprits and crashes as it goes. # An Android robo test.
       &quot;appApk&quot;: { # A reference to a file, used for user inputs. # The APK for the application under test.
         &quot;gcsPath&quot;: &quot;A String&quot;, # A path to a file in Google Cloud Storage. Example: gs://build-app-1414623860166/app%40debug-unaligned.apk These paths are expected to be url encoded (percent encoding)
       },
@@ -955,8 +952,6 @@ Returns:
       },
       &quot;appInitialActivity&quot;: &quot;A String&quot;, # The initial activity that should be used to start the app.
       &quot;appPackageId&quot;: &quot;A String&quot;, # The java package for the application under test. The default value is determined by examining the application&#x27;s manifest.
-      &quot;maxDepth&quot;: 42, # The max depth of the traversal stack Robo can explore. Needs to be at least 2 to make Robo explore the app beyond the first activity. Default is 50.
-      &quot;maxSteps&quot;: 42, # The max number of steps Robo can execute. Default is no limit.
       &quot;roboDirectives&quot;: [ # A set of directives Robo should apply during the crawl. This allows users to customize the crawl. For example, the username and password for a test account can be provided.
         { # Directs Robo to interact with a specific UI element if it is encountered during the crawl. Currently, Robo can perform text entry or element click.
           &quot;actionType&quot;: &quot;A String&quot;, # Required. The type of action that Robo should perform on the specified element.
@@ -964,6 +959,7 @@ Returns:
           &quot;resourceName&quot;: &quot;A String&quot;, # Required. The android resource name of the target UI element. For example, in Java: R.string.foo in xml: @string/foo Only the &quot;foo&quot; part is needed. Reference doc: https://developer.android.com/guide/topics/resources/accessing-resources.html
         },
       ],
+      &quot;roboMode&quot;: &quot;A String&quot;, # The mode in which Robo should run. Most clients should allow the server to populate this field automatically.
       &quot;roboScript&quot;: { # A reference to a file, used for user inputs. # A JSON file with a sequence of actions Robo should perform as a prologue for the crawl.
         &quot;gcsPath&quot;: &quot;A String&quot;, # A path to a file in Google Cloud Storage. Example: gs://build-app-1414623860166/app%40debug-unaligned.apk These paths are expected to be url encoded (percent encoding)
       },
@@ -1017,7 +1013,7 @@ Returns:
         },
       ],
       &quot;networkProfile&quot;: &quot;A String&quot;, # The network traffic profile used for running the test. Available network profiles can be queried by using the NETWORK_CONFIGURATION environment type when calling TestEnvironmentDiscoveryService.GetTestEnvironmentCatalog.
-      &quot;pullDirectories&quot;: [ # List of directories on the device to upload to Cloud Storage at the end of the test. Directories should either be in a shared directory (e.g. /private/var/mobile/Media) or within an accessible directory inside the app&#x27;s filesystem (e.g. /Documents) by specifying the bundle id.
+      &quot;pullDirectories&quot;: [ # List of directories on the device to upload to Cloud Storage at the end of the test. Directories should either be in a shared directory (such as /private/var/mobile/Media) or within an accessible directory inside the app&#x27;s filesystem (such as /Documents) by specifying the bundle ID.
         { # A file or directory to install on the device before the test starts.
           &quot;bundleId&quot;: &quot;A String&quot;, # The bundle id of the app where this file lives. iOS apps sandbox their own filesystem, so app files must specify which app installed on the device.
           &quot;content&quot;: { # A reference to a file, used for user inputs. # The source file
@@ -1087,7 +1083,7 @@ Returns:
         },
       ],
       &quot;networkProfile&quot;: &quot;A String&quot;, # The network traffic profile used for running the test. Available network profiles can be queried by using the NETWORK_CONFIGURATION environment type when calling TestEnvironmentDiscoveryService.GetTestEnvironmentCatalog.
-      &quot;systrace&quot;: { # Systrace configuration for the run. If set a systrace will be taken, starting on test start and lasting for the configured duration. The systrace file thus obtained is put in the results bucket together with the other artifacts from the run.
+      &quot;systrace&quot;: { # Deprecated: Systrace uses Python 2 which has been sunset 2020-01-01. Support of Systrace may stop at any time, at which point no Systrace file will be provided in the results. Systrace configuration for the run. If set a systrace will be taken, starting on test start and lasting for the configured duration. The systrace file thus obtained is put in the results bucket together with the other artifacts from the run.
         &quot;durationSeconds&quot;: 42, # Systrace duration in seconds. Should be between 1 and 30 seconds. 0 disables systrace.
       },
     },
@@ -1225,7 +1221,7 @@ Returns:
             },
           },
           &quot;appPackageId&quot;: &quot;A String&quot;, # The java package for the application under test. The default value is determined by examining the application&#x27;s manifest.
-          &quot;orchestratorOption&quot;: &quot;A String&quot;, # The option of whether running each test within its own invocation of instrumentation with Android Test Orchestrator or not. ** Orchestrator is only compatible with AndroidJUnitRunner version 1.0 or higher! ** Orchestrator offers the following benefits: - No shared state - Crashes are isolated - Logs are scoped per test See for more information about Android Test Orchestrator. If not set, the test will be run without the orchestrator.
+          &quot;orchestratorOption&quot;: &quot;A String&quot;, # The option of whether running each test within its own invocation of instrumentation with Android Test Orchestrator or not. ** Orchestrator is only compatible with AndroidJUnitRunner version 1.1 or higher! ** Orchestrator offers the following benefits: - No shared state - Crashes are isolated - Logs are scoped per test See for more information about Android Test Orchestrator. If not set, the test will be run without the orchestrator.
           &quot;shardingOption&quot;: { # Options for enabling sharding. # The option to run tests in multiple shards in parallel.
             &quot;manualSharding&quot;: { # Shards test cases into the specified groups of packages, classes, and/or methods. With manual sharding enabled, specifying test targets via environment_variables or in InstrumentationTest is invalid. # Shards test cases into the specified groups of packages, classes, and/or methods.
               &quot;testTargetsForShard&quot;: [ # Required. Group of packages, classes, and/or test methods to be run for each shard. When any physical devices are selected, the number of test_targets_for_shard must be &gt;= 1 and &lt;= 50. When no physical devices are selected, the number must be &gt;= 1 and &lt;= 500.
@@ -1249,7 +1245,7 @@ Returns:
             &quot;A String&quot;,
           ],
         },
-        &quot;androidRoboTest&quot;: { # A test of an android application that explores the application on a virtual or physical Android Device, finding culprits and crashes as it goes. Next tag: 30 # An Android robo test.
+        &quot;androidRoboTest&quot;: { # A test of an android application that explores the application on a virtual or physical Android Device, finding culprits and crashes as it goes. # An Android robo test.
           &quot;appApk&quot;: { # A reference to a file, used for user inputs. # The APK for the application under test.
             &quot;gcsPath&quot;: &quot;A String&quot;, # A path to a file in Google Cloud Storage. Example: gs://build-app-1414623860166/app%40debug-unaligned.apk These paths are expected to be url encoded (percent encoding)
           },
@@ -1260,8 +1256,6 @@ Returns:
           },
           &quot;appInitialActivity&quot;: &quot;A String&quot;, # The initial activity that should be used to start the app.
           &quot;appPackageId&quot;: &quot;A String&quot;, # The java package for the application under test. The default value is determined by examining the application&#x27;s manifest.
-          &quot;maxDepth&quot;: 42, # The max depth of the traversal stack Robo can explore. Needs to be at least 2 to make Robo explore the app beyond the first activity. Default is 50.
-          &quot;maxSteps&quot;: 42, # The max number of steps Robo can execute. Default is no limit.
           &quot;roboDirectives&quot;: [ # A set of directives Robo should apply during the crawl. This allows users to customize the crawl. For example, the username and password for a test account can be provided.
             { # Directs Robo to interact with a specific UI element if it is encountered during the crawl. Currently, Robo can perform text entry or element click.
               &quot;actionType&quot;: &quot;A String&quot;, # Required. The type of action that Robo should perform on the specified element.
@@ -1269,6 +1263,7 @@ Returns:
               &quot;resourceName&quot;: &quot;A String&quot;, # Required. The android resource name of the target UI element. For example, in Java: R.string.foo in xml: @string/foo Only the &quot;foo&quot; part is needed. Reference doc: https://developer.android.com/guide/topics/resources/accessing-resources.html
             },
           ],
+          &quot;roboMode&quot;: &quot;A String&quot;, # The mode in which Robo should run. Most clients should allow the server to populate this field automatically.
           &quot;roboScript&quot;: { # A reference to a file, used for user inputs. # A JSON file with a sequence of actions Robo should perform as a prologue for the crawl.
             &quot;gcsPath&quot;: &quot;A String&quot;, # A path to a file in Google Cloud Storage. Example: gs://build-app-1414623860166/app%40debug-unaligned.apk These paths are expected to be url encoded (percent encoding)
           },
@@ -1322,7 +1317,7 @@ Returns:
             },
           ],
           &quot;networkProfile&quot;: &quot;A String&quot;, # The network traffic profile used for running the test. Available network profiles can be queried by using the NETWORK_CONFIGURATION environment type when calling TestEnvironmentDiscoveryService.GetTestEnvironmentCatalog.
-          &quot;pullDirectories&quot;: [ # List of directories on the device to upload to Cloud Storage at the end of the test. Directories should either be in a shared directory (e.g. /private/var/mobile/Media) or within an accessible directory inside the app&#x27;s filesystem (e.g. /Documents) by specifying the bundle id.
+          &quot;pullDirectories&quot;: [ # List of directories on the device to upload to Cloud Storage at the end of the test. Directories should either be in a shared directory (such as /private/var/mobile/Media) or within an accessible directory inside the app&#x27;s filesystem (such as /Documents) by specifying the bundle ID.
             { # A file or directory to install on the device before the test starts.
               &quot;bundleId&quot;: &quot;A String&quot;, # The bundle id of the app where this file lives. iOS apps sandbox their own filesystem, so app files must specify which app installed on the device.
               &quot;content&quot;: { # A reference to a file, used for user inputs. # The source file
@@ -1392,7 +1387,7 @@ Returns:
             },
           ],
           &quot;networkProfile&quot;: &quot;A String&quot;, # The network traffic profile used for running the test. Available network profiles can be queried by using the NETWORK_CONFIGURATION environment type when calling TestEnvironmentDiscoveryService.GetTestEnvironmentCatalog.
-          &quot;systrace&quot;: { # Systrace configuration for the run. If set a systrace will be taken, starting on test start and lasting for the configured duration. The systrace file thus obtained is put in the results bucket together with the other artifacts from the run.
+          &quot;systrace&quot;: { # Deprecated: Systrace uses Python 2 which has been sunset 2020-01-01. Support of Systrace may stop at any time, at which point no Systrace file will be provided in the results. Systrace configuration for the run. If set a systrace will be taken, starting on test start and lasting for the configured duration. The systrace file thus obtained is put in the results bucket together with the other artifacts from the run.
             &quot;durationSeconds&quot;: 42, # Systrace duration in seconds. Should be between 1 and 30 seconds. 0 disables systrace.
           },
         },
@@ -1419,7 +1414,7 @@ Returns:
         },
       },
       &quot;appPackageId&quot;: &quot;A String&quot;, # The java package for the application under test. The default value is determined by examining the application&#x27;s manifest.
-      &quot;orchestratorOption&quot;: &quot;A String&quot;, # The option of whether running each test within its own invocation of instrumentation with Android Test Orchestrator or not. ** Orchestrator is only compatible with AndroidJUnitRunner version 1.0 or higher! ** Orchestrator offers the following benefits: - No shared state - Crashes are isolated - Logs are scoped per test See for more information about Android Test Orchestrator. If not set, the test will be run without the orchestrator.
+      &quot;orchestratorOption&quot;: &quot;A String&quot;, # The option of whether running each test within its own invocation of instrumentation with Android Test Orchestrator or not. ** Orchestrator is only compatible with AndroidJUnitRunner version 1.1 or higher! ** Orchestrator offers the following benefits: - No shared state - Crashes are isolated - Logs are scoped per test See for more information about Android Test Orchestrator. If not set, the test will be run without the orchestrator.
       &quot;shardingOption&quot;: { # Options for enabling sharding. # The option to run tests in multiple shards in parallel.
         &quot;manualSharding&quot;: { # Shards test cases into the specified groups of packages, classes, and/or methods. With manual sharding enabled, specifying test targets via environment_variables or in InstrumentationTest is invalid. # Shards test cases into the specified groups of packages, classes, and/or methods.
           &quot;testTargetsForShard&quot;: [ # Required. Group of packages, classes, and/or test methods to be run for each shard. When any physical devices are selected, the number of test_targets_for_shard must be &gt;= 1 and &lt;= 50. When no physical devices are selected, the number must be &gt;= 1 and &lt;= 500.
@@ -1443,7 +1438,7 @@ Returns:
         &quot;A String&quot;,
       ],
     },
-    &quot;androidRoboTest&quot;: { # A test of an android application that explores the application on a virtual or physical Android Device, finding culprits and crashes as it goes. Next tag: 30 # An Android robo test.
+    &quot;androidRoboTest&quot;: { # A test of an android application that explores the application on a virtual or physical Android Device, finding culprits and crashes as it goes. # An Android robo test.
       &quot;appApk&quot;: { # A reference to a file, used for user inputs. # The APK for the application under test.
         &quot;gcsPath&quot;: &quot;A String&quot;, # A path to a file in Google Cloud Storage. Example: gs://build-app-1414623860166/app%40debug-unaligned.apk These paths are expected to be url encoded (percent encoding)
       },
@@ -1454,8 +1449,6 @@ Returns:
       },
       &quot;appInitialActivity&quot;: &quot;A String&quot;, # The initial activity that should be used to start the app.
       &quot;appPackageId&quot;: &quot;A String&quot;, # The java package for the application under test. The default value is determined by examining the application&#x27;s manifest.
-      &quot;maxDepth&quot;: 42, # The max depth of the traversal stack Robo can explore. Needs to be at least 2 to make Robo explore the app beyond the first activity. Default is 50.
-      &quot;maxSteps&quot;: 42, # The max number of steps Robo can execute. Default is no limit.
       &quot;roboDirectives&quot;: [ # A set of directives Robo should apply during the crawl. This allows users to customize the crawl. For example, the username and password for a test account can be provided.
         { # Directs Robo to interact with a specific UI element if it is encountered during the crawl. Currently, Robo can perform text entry or element click.
           &quot;actionType&quot;: &quot;A String&quot;, # Required. The type of action that Robo should perform on the specified element.
@@ -1463,6 +1456,7 @@ Returns:
           &quot;resourceName&quot;: &quot;A String&quot;, # Required. The android resource name of the target UI element. For example, in Java: R.string.foo in xml: @string/foo Only the &quot;foo&quot; part is needed. Reference doc: https://developer.android.com/guide/topics/resources/accessing-resources.html
         },
       ],
+      &quot;roboMode&quot;: &quot;A String&quot;, # The mode in which Robo should run. Most clients should allow the server to populate this field automatically.
       &quot;roboScript&quot;: { # A reference to a file, used for user inputs. # A JSON file with a sequence of actions Robo should perform as a prologue for the crawl.
         &quot;gcsPath&quot;: &quot;A String&quot;, # A path to a file in Google Cloud Storage. Example: gs://build-app-1414623860166/app%40debug-unaligned.apk These paths are expected to be url encoded (percent encoding)
       },
@@ -1516,7 +1510,7 @@ Returns:
         },
       ],
       &quot;networkProfile&quot;: &quot;A String&quot;, # The network traffic profile used for running the test. Available network profiles can be queried by using the NETWORK_CONFIGURATION environment type when calling TestEnvironmentDiscoveryService.GetTestEnvironmentCatalog.
-      &quot;pullDirectories&quot;: [ # List of directories on the device to upload to Cloud Storage at the end of the test. Directories should either be in a shared directory (e.g. /private/var/mobile/Media) or within an accessible directory inside the app&#x27;s filesystem (e.g. /Documents) by specifying the bundle id.
+      &quot;pullDirectories&quot;: [ # List of directories on the device to upload to Cloud Storage at the end of the test. Directories should either be in a shared directory (such as /private/var/mobile/Media) or within an accessible directory inside the app&#x27;s filesystem (such as /Documents) by specifying the bundle ID.
         { # A file or directory to install on the device before the test starts.
           &quot;bundleId&quot;: &quot;A String&quot;, # The bundle id of the app where this file lives. iOS apps sandbox their own filesystem, so app files must specify which app installed on the device.
           &quot;content&quot;: { # A reference to a file, used for user inputs. # The source file
@@ -1586,7 +1580,7 @@ Returns:
         },
       ],
       &quot;networkProfile&quot;: &quot;A String&quot;, # The network traffic profile used for running the test. Available network profiles can be queried by using the NETWORK_CONFIGURATION environment type when calling TestEnvironmentDiscoveryService.GetTestEnvironmentCatalog.
-      &quot;systrace&quot;: { # Systrace configuration for the run. If set a systrace will be taken, starting on test start and lasting for the configured duration. The systrace file thus obtained is put in the results bucket together with the other artifacts from the run.
+      &quot;systrace&quot;: { # Deprecated: Systrace uses Python 2 which has been sunset 2020-01-01. Support of Systrace may stop at any time, at which point no Systrace file will be provided in the results. Systrace configuration for the run. If set a systrace will be taken, starting on test start and lasting for the configured duration. The systrace file thus obtained is put in the results bucket together with the other artifacts from the run.
         &quot;durationSeconds&quot;: 42, # Systrace duration in seconds. Should be between 1 and 30 seconds. 0 disables systrace.
       },
     },

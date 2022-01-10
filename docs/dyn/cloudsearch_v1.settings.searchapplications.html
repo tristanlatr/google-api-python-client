@@ -162,10 +162,16 @@ Args:
     &quot;sortOrder&quot;: &quot;A String&quot;, # Ascending is the default sort order
   },
   &quot;displayName&quot;: &quot;A String&quot;, # Display name of the Search Application. The maximum length is 300 characters.
+  &quot;enableAuditLog&quot;: True or False, # Indicates whether audit logging is on/off for requests made for the search application in query APIs.
   &quot;name&quot;: &quot;A String&quot;, # Name of the Search Application. Format: searchapplications/{application_id}.
   &quot;operationIds&quot;: [ # Output only. IDs of the Long Running Operations (LROs) currently running for this schema. Output only field.
     &quot;A String&quot;,
   ],
+  &quot;queryInterpretationConfig&quot;: { # Default options to interpret user query. # The default options for query interpretation
+    &quot;forceDisableSupplementalResults&quot;: True or False, # Set this flag to disable supplemental results retrieval, setting a flag here will not retrieve supplemental results for queries associated with a given search application. If this flag is set to True, it will take precedence over the option set at Query level. For the default value of False, query level flag will set the correct interpretation for supplemental results.
+    &quot;forceVerbatimMode&quot;: True or False, # Enable this flag to turn off all internal optimizations like natural language (NL) interpretation of queries, supplemental results retrieval, and usage of synonyms including custom ones. If this flag is set to True, it will take precedence over the option set at Query level. For the default value of False, query level flag will set the correct interpretation for verbatim mode.
+  },
+  &quot;returnResultThumbnailUrls&quot;: True or False, # With each result we should return the URI for its thumbnail (when applicable)
   &quot;scoringConfig&quot;: { # Scoring configurations for a source while processing a Search or Suggest request. # Configuration for ranking results.
     &quot;disableFreshness&quot;: True or False, # Whether to use freshness as a ranking signal. By default, freshness is used as a ranking signal. Note that this setting is not available in the Admin UI.
     &quot;disablePersonalization&quot;: True or False, # Whether to personalize the results. By default, personal signals will be used to boost results.
@@ -173,7 +179,7 @@ Args:
   &quot;sourceConfig&quot;: [ # Configuration for a sources specified in data_source_restrictions.
     { # Configurations for a source while processing a Search or Suggest request.
       &quot;crowdingConfig&quot;: { # Set search results crowding limits. Crowding is a situation in which multiple results from the same source or host &quot;crowd out&quot; other results, diminishing the quality of search for users. To foster better search quality and source diversity in search results, you can set a condition to reduce repetitive results by source. # The crowding configuration for the source.
-        &quot;numResults&quot;: 42, # Maximum number of results allowed from a source. No limits will be set on results if this value is less than or equal to 0.
+        &quot;numResults&quot;: 42, # Maximum number of results allowed from a datasource in a result page as long as results from other sources are not exhausted. Value specified must not be negative. A default value is used if this value is equal to 0. To disable crowding, set the value greater than 100.
         &quot;numSuggestions&quot;: 42, # Maximum number of suggestions allowed from a source. No limits will be set on results if this value is less than or equal to 0.
       },
       &quot;scoringConfig&quot;: { # Set the scoring configuration. This allows modifying the ranking of results for a source. # The scoring configuration for the source.
@@ -317,10 +323,16 @@ Returns:
     &quot;sortOrder&quot;: &quot;A String&quot;, # Ascending is the default sort order
   },
   &quot;displayName&quot;: &quot;A String&quot;, # Display name of the Search Application. The maximum length is 300 characters.
+  &quot;enableAuditLog&quot;: True or False, # Indicates whether audit logging is on/off for requests made for the search application in query APIs.
   &quot;name&quot;: &quot;A String&quot;, # Name of the Search Application. Format: searchapplications/{application_id}.
   &quot;operationIds&quot;: [ # Output only. IDs of the Long Running Operations (LROs) currently running for this schema. Output only field.
     &quot;A String&quot;,
   ],
+  &quot;queryInterpretationConfig&quot;: { # Default options to interpret user query. # The default options for query interpretation
+    &quot;forceDisableSupplementalResults&quot;: True or False, # Set this flag to disable supplemental results retrieval, setting a flag here will not retrieve supplemental results for queries associated with a given search application. If this flag is set to True, it will take precedence over the option set at Query level. For the default value of False, query level flag will set the correct interpretation for supplemental results.
+    &quot;forceVerbatimMode&quot;: True or False, # Enable this flag to turn off all internal optimizations like natural language (NL) interpretation of queries, supplemental results retrieval, and usage of synonyms including custom ones. If this flag is set to True, it will take precedence over the option set at Query level. For the default value of False, query level flag will set the correct interpretation for verbatim mode.
+  },
+  &quot;returnResultThumbnailUrls&quot;: True or False, # With each result we should return the URI for its thumbnail (when applicable)
   &quot;scoringConfig&quot;: { # Scoring configurations for a source while processing a Search or Suggest request. # Configuration for ranking results.
     &quot;disableFreshness&quot;: True or False, # Whether to use freshness as a ranking signal. By default, freshness is used as a ranking signal. Note that this setting is not available in the Admin UI.
     &quot;disablePersonalization&quot;: True or False, # Whether to personalize the results. By default, personal signals will be used to boost results.
@@ -328,7 +340,7 @@ Returns:
   &quot;sourceConfig&quot;: [ # Configuration for a sources specified in data_source_restrictions.
     { # Configurations for a source while processing a Search or Suggest request.
       &quot;crowdingConfig&quot;: { # Set search results crowding limits. Crowding is a situation in which multiple results from the same source or host &quot;crowd out&quot; other results, diminishing the quality of search for users. To foster better search quality and source diversity in search results, you can set a condition to reduce repetitive results by source. # The crowding configuration for the source.
-        &quot;numResults&quot;: 42, # Maximum number of results allowed from a source. No limits will be set on results if this value is less than or equal to 0.
+        &quot;numResults&quot;: 42, # Maximum number of results allowed from a datasource in a result page as long as results from other sources are not exhausted. Value specified must not be negative. A default value is used if this value is equal to 0. To disable crowding, set the value greater than 100.
         &quot;numSuggestions&quot;: 42, # Maximum number of suggestions allowed from a source. No limits will be set on results if this value is less than or equal to 0.
       },
       &quot;scoringConfig&quot;: { # Set the scoring configuration. This allows modifying the ranking of results for a source. # The scoring configuration for the source.
@@ -412,10 +424,16 @@ Returns:
         &quot;sortOrder&quot;: &quot;A String&quot;, # Ascending is the default sort order
       },
       &quot;displayName&quot;: &quot;A String&quot;, # Display name of the Search Application. The maximum length is 300 characters.
+      &quot;enableAuditLog&quot;: True or False, # Indicates whether audit logging is on/off for requests made for the search application in query APIs.
       &quot;name&quot;: &quot;A String&quot;, # Name of the Search Application. Format: searchapplications/{application_id}.
       &quot;operationIds&quot;: [ # Output only. IDs of the Long Running Operations (LROs) currently running for this schema. Output only field.
         &quot;A String&quot;,
       ],
+      &quot;queryInterpretationConfig&quot;: { # Default options to interpret user query. # The default options for query interpretation
+        &quot;forceDisableSupplementalResults&quot;: True or False, # Set this flag to disable supplemental results retrieval, setting a flag here will not retrieve supplemental results for queries associated with a given search application. If this flag is set to True, it will take precedence over the option set at Query level. For the default value of False, query level flag will set the correct interpretation for supplemental results.
+        &quot;forceVerbatimMode&quot;: True or False, # Enable this flag to turn off all internal optimizations like natural language (NL) interpretation of queries, supplemental results retrieval, and usage of synonyms including custom ones. If this flag is set to True, it will take precedence over the option set at Query level. For the default value of False, query level flag will set the correct interpretation for verbatim mode.
+      },
+      &quot;returnResultThumbnailUrls&quot;: True or False, # With each result we should return the URI for its thumbnail (when applicable)
       &quot;scoringConfig&quot;: { # Scoring configurations for a source while processing a Search or Suggest request. # Configuration for ranking results.
         &quot;disableFreshness&quot;: True or False, # Whether to use freshness as a ranking signal. By default, freshness is used as a ranking signal. Note that this setting is not available in the Admin UI.
         &quot;disablePersonalization&quot;: True or False, # Whether to personalize the results. By default, personal signals will be used to boost results.
@@ -423,7 +441,7 @@ Returns:
       &quot;sourceConfig&quot;: [ # Configuration for a sources specified in data_source_restrictions.
         { # Configurations for a source while processing a Search or Suggest request.
           &quot;crowdingConfig&quot;: { # Set search results crowding limits. Crowding is a situation in which multiple results from the same source or host &quot;crowd out&quot; other results, diminishing the quality of search for users. To foster better search quality and source diversity in search results, you can set a condition to reduce repetitive results by source. # The crowding configuration for the source.
-            &quot;numResults&quot;: 42, # Maximum number of results allowed from a source. No limits will be set on results if this value is less than or equal to 0.
+            &quot;numResults&quot;: 42, # Maximum number of results allowed from a datasource in a result page as long as results from other sources are not exhausted. Value specified must not be negative. A default value is used if this value is equal to 0. To disable crowding, set the value greater than 100.
             &quot;numSuggestions&quot;: 42, # Maximum number of suggestions allowed from a source. No limits will be set on results if this value is less than or equal to 0.
           },
           &quot;scoringConfig&quot;: { # Set the scoring configuration. This allows modifying the ranking of results for a source. # The scoring configuration for the source.
@@ -557,10 +575,16 @@ Args:
     &quot;sortOrder&quot;: &quot;A String&quot;, # Ascending is the default sort order
   },
   &quot;displayName&quot;: &quot;A String&quot;, # Display name of the Search Application. The maximum length is 300 characters.
+  &quot;enableAuditLog&quot;: True or False, # Indicates whether audit logging is on/off for requests made for the search application in query APIs.
   &quot;name&quot;: &quot;A String&quot;, # Name of the Search Application. Format: searchapplications/{application_id}.
   &quot;operationIds&quot;: [ # Output only. IDs of the Long Running Operations (LROs) currently running for this schema. Output only field.
     &quot;A String&quot;,
   ],
+  &quot;queryInterpretationConfig&quot;: { # Default options to interpret user query. # The default options for query interpretation
+    &quot;forceDisableSupplementalResults&quot;: True or False, # Set this flag to disable supplemental results retrieval, setting a flag here will not retrieve supplemental results for queries associated with a given search application. If this flag is set to True, it will take precedence over the option set at Query level. For the default value of False, query level flag will set the correct interpretation for supplemental results.
+    &quot;forceVerbatimMode&quot;: True or False, # Enable this flag to turn off all internal optimizations like natural language (NL) interpretation of queries, supplemental results retrieval, and usage of synonyms including custom ones. If this flag is set to True, it will take precedence over the option set at Query level. For the default value of False, query level flag will set the correct interpretation for verbatim mode.
+  },
+  &quot;returnResultThumbnailUrls&quot;: True or False, # With each result we should return the URI for its thumbnail (when applicable)
   &quot;scoringConfig&quot;: { # Scoring configurations for a source while processing a Search or Suggest request. # Configuration for ranking results.
     &quot;disableFreshness&quot;: True or False, # Whether to use freshness as a ranking signal. By default, freshness is used as a ranking signal. Note that this setting is not available in the Admin UI.
     &quot;disablePersonalization&quot;: True or False, # Whether to personalize the results. By default, personal signals will be used to boost results.
@@ -568,7 +592,7 @@ Args:
   &quot;sourceConfig&quot;: [ # Configuration for a sources specified in data_source_restrictions.
     { # Configurations for a source while processing a Search or Suggest request.
       &quot;crowdingConfig&quot;: { # Set search results crowding limits. Crowding is a situation in which multiple results from the same source or host &quot;crowd out&quot; other results, diminishing the quality of search for users. To foster better search quality and source diversity in search results, you can set a condition to reduce repetitive results by source. # The crowding configuration for the source.
-        &quot;numResults&quot;: 42, # Maximum number of results allowed from a source. No limits will be set on results if this value is less than or equal to 0.
+        &quot;numResults&quot;: 42, # Maximum number of results allowed from a datasource in a result page as long as results from other sources are not exhausted. Value specified must not be negative. A default value is used if this value is equal to 0. To disable crowding, set the value greater than 100.
         &quot;numSuggestions&quot;: 42, # Maximum number of suggestions allowed from a source. No limits will be set on results if this value is less than or equal to 0.
       },
       &quot;scoringConfig&quot;: { # Set the scoring configuration. This allows modifying the ranking of results for a source. # The scoring configuration for the source.

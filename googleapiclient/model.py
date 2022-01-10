@@ -20,20 +20,18 @@ for converting between the wire format and the Python
 object representation.
 """
 from __future__ import absolute_import
-import six
 
 __author__ = "jcgregorio@google.com (Joe Gregorio)"
 
 import json
 import logging
 import platform
-import pkg_resources
+import urllib
 
-from six.moves.urllib.parse import urlencode
-
+from googleapiclient import version as googleapiclient_version
 from googleapiclient.errors import HttpError
 
-_LIBRARY_VERSION = pkg_resources.get_distribution("google-api-python-client").version
+_LIBRARY_VERSION = googleapiclient_version.__version__
 _PY_VERSION = platform.python_version()
 
 LOGGER = logging.getLogger(__name__)
@@ -112,11 +110,11 @@ class BaseModel(Model):
         if dump_request_response:
             LOGGER.info("--request-start--")
             LOGGER.info("-headers-start-")
-            for h, v in six.iteritems(headers):
+            for h, v in headers.items():
                 LOGGER.info("%s: %s", h, v)
             LOGGER.info("-headers-end-")
             LOGGER.info("-path-parameters-start-")
-            for h, v in six.iteritems(path_params):
+            for h, v in path_params.items():
                 LOGGER.info("%s: %s", h, v)
             LOGGER.info("-path-parameters-end-")
             LOGGER.info("body: %s", body)
@@ -175,22 +173,22 @@ class BaseModel(Model):
         if self.alt_param is not None:
             params.update({"alt": self.alt_param})
         astuples = []
-        for key, value in six.iteritems(params):
+        for key, value in params.items():
             if type(value) == type([]):
                 for x in value:
                     x = x.encode("utf-8")
                     astuples.append((key, x))
             else:
-                if isinstance(value, six.text_type) and callable(value.encode):
+                if isinstance(value, str) and callable(value.encode):
                     value = value.encode("utf-8")
                 astuples.append((key, value))
-        return "?" + urlencode(astuples)
+        return "?" + urllib.parse.urlencode(astuples)
 
     def _log_response(self, resp, content):
         """Logs debugging information about the response if requested."""
         if dump_request_response:
             LOGGER.info("--response-start--")
-            for h, v in six.iteritems(resp):
+            for h, v in resp.items():
                 LOGGER.info("%s: %s", h, v)
             if content:
                 LOGGER.info(content)
@@ -279,9 +277,13 @@ class JsonModel(BaseModel):
             content = content.decode("utf-8")
         except AttributeError:
             pass
-        body = json.loads(content)
-        if self._data_wrapper and isinstance(body, dict) and "data" in body:
-            body = body["data"]
+        try:
+            body = json.loads(content)
+        except json.decoder.JSONDecodeError:
+            body = content
+        else:
+            if self._data_wrapper and "data" in body:
+                body = body["data"]
         return body
 
     @property
@@ -385,7 +387,7 @@ def makepatch(original, modified):
       body=makepatch(original, item)).execute()
   """
     patch = {}
-    for key, original_value in six.iteritems(original):
+    for key, original_value in original.items():
         modified_value = modified.get(key, None)
         if modified_value is None:
             # Use None to signal that the element is deleted

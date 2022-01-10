@@ -103,6 +103,7 @@ Returns:
       &quot;buyerPitchStatement&quot;: &quot;A String&quot;, # A pitch statement for the buyer
       &quot;directContact&quot;: &quot;A String&quot;, # Direct contact for the publisher profile.
       &quot;exchange&quot;: &quot;A String&quot;, # Exchange where this publisher profile is from. E.g. AdX, Rubicon etc...
+      &quot;forecastInventory&quot;: &quot;A String&quot;,
       &quot;googlePlusLink&quot;: &quot;A String&quot;, # Link to publisher&#x27;s Google+ page.
       &quot;isParent&quot;: True or False, # True, if this is the parent profile, which represents all domains owned by the publisher.
       &quot;isPublished&quot;: True or False, # True, if this profile is published. Deprecated for state.
@@ -113,10 +114,10 @@ Returns:
       &quot;overview&quot;: &quot;A String&quot;, # Publisher provided overview.
       &quot;profileId&quot;: 42, # The pair of (seller.account_id, profile_id) uniquely identifies a publisher profile for a given publisher.
       &quot;programmaticContact&quot;: &quot;A String&quot;, # Programmatic contact for the publisher profile.
-      &quot;publisherAppIds&quot;: [ # The list of app IDs represented in this pubisher profile. Empty if this is a parent profile. Deprecated in favor of publisher_app.
+      &quot;publisherAppIds&quot;: [ # The list of app IDs represented in this publisher profile. Empty if this is a parent profile. Deprecated in favor of publisher_app.
         &quot;A String&quot;,
       ],
-      &quot;publisherApps&quot;: [ # The list of apps represented in this pubisher profile. Empty if this is a parent profile.
+      &quot;publisherApps&quot;: [ # The list of apps represented in this publisher profile. Empty if this is a parent profile.
         {
           &quot;appStore&quot;: &quot;A String&quot;,
           &quot;externalAppId&quot;: &quot;A String&quot;,

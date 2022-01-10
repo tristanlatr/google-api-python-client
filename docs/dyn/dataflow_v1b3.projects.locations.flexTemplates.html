@@ -106,15 +106,22 @@ Args:
         &quot;additionalUserLabels&quot;: { # Additional user labels to be specified for the job. Keys and values must follow the restrictions specified in the [labeling restrictions](https://cloud.google.com/compute/docs/labeling-resources#restrictions) page. An object containing a list of &quot;key&quot;: value pairs. Example: { &quot;name&quot;: &quot;wrench&quot;, &quot;mass&quot;: &quot;1kg&quot;, &quot;count&quot;: &quot;3&quot; }.
           &quot;a_key&quot;: &quot;A String&quot;,
         },
+        &quot;autoscalingAlgorithm&quot;: &quot;A String&quot;, # The algorithm to use for autoscaling
+        &quot;diskSizeGb&quot;: 42, # Worker disk size, in gigabytes.
+        &quot;dumpHeapOnOom&quot;: True or False, # If true, save a heap dump before killing a thread or process which is GC thrashing or out of memory. The location of the heap file will either be echoed back to the user, or the user will be given the opportunity to download the heap file.
         &quot;enableStreamingEngine&quot;: True or False, # Whether to enable Streaming Engine for the job.
         &quot;flexrsGoal&quot;: &quot;A String&quot;, # Set FlexRS goal for the job. https://cloud.google.com/dataflow/docs/guides/flexrs
         &quot;ipConfiguration&quot;: &quot;A String&quot;, # Configuration for VM IPs.
         &quot;kmsKeyName&quot;: &quot;A String&quot;, # Name for the Cloud KMS key for the job. Key format is: projects//locations//keyRings//cryptoKeys/
+        &quot;launcherMachineType&quot;: &quot;A String&quot;, # The machine type to use for launching the job. The default is n1-standard-1.
         &quot;machineType&quot;: &quot;A String&quot;, # The machine type to use for the job. Defaults to the value from the template if not specified.
         &quot;maxWorkers&quot;: 42, # The maximum number of Google Compute Engine instances to be made available to your pipeline during execution, from 1 to 1000.
         &quot;network&quot;: &quot;A String&quot;, # Network to which VMs will be assigned. If empty or unspecified, the service will use the network &quot;default&quot;.
         &quot;numWorkers&quot;: 42, # The initial number of Google Compute Engine instances for the job.
+        &quot;saveHeapDumpsToGcsPath&quot;: &quot;A String&quot;, # Cloud Storage bucket (directory) to upload heap dumps to the given location. Enabling this implies that heap dumps should be generated on OOM (dump_heap_on_oom is set to true).
+        &quot;sdkContainerImage&quot;: &quot;A String&quot;, # Docker registry location of container image to use for the &#x27;worker harness. Default is the container for the version of the SDK. Note this field is only valid for portable pipelines.
         &quot;serviceAccountEmail&quot;: &quot;A String&quot;, # The email address of the service account to run the job as.
+        &quot;stagingLocation&quot;: &quot;A String&quot;, # The Cloud Storage path for staging local files. Must be a valid Cloud Storage URL, beginning with `gs://`.
         &quot;subnetwork&quot;: &quot;A String&quot;, # Subnetwork to which VMs will be assigned, if desired. You can specify a subnetwork using either a complete URL or an abbreviated path. Expected to be of the form &quot;https://www.googleapis.com/compute/v1/projects/HOST_PROJECT_ID/regions/REGION/subnetworks/SUBNETWORK&quot; or &quot;regions/REGION/subnetworks/SUBNETWORK&quot;. If the subnetwork is located in a Shared VPC network, you must use the complete URL.
         &quot;tempLocation&quot;: &quot;A String&quot;, # The Cloud Storage path to use for temporary files. Must be a valid Cloud Storage URL, beginning with `gs://`.
         &quot;workerRegion&quot;: &quot;A String&quot;, # The Compute Engine region (https://cloud.google.com/compute/docs/regions-zones/regions-zones) in which worker processing should occur, e.g. &quot;us-west1&quot;. Mutually exclusive with worker_zone. If neither worker_region nor worker_zone is specified, default to the control plane&#x27;s region.
@@ -127,6 +134,9 @@ Args:
         &quot;name&quot;: &quot;A String&quot;, # Required. The name of the template.
         &quot;parameters&quot;: [ # The parameters for the template.
           { # Metadata for a specific parameter.
+            &quot;customMetadata&quot;: { # Optional. Additional metadata for describing this parameter.
+              &quot;a_key&quot;: &quot;A String&quot;,
+            },
             &quot;helpText&quot;: &quot;A String&quot;, # Required. The help text to display for the parameter.
             &quot;isOptional&quot;: True or False, # Optional. Whether the parameter is optional. Defaults to false.
             &quot;label&quot;: &quot;A String&quot;, # Required. The label to display for the parameter.
@@ -143,7 +153,7 @@ Args:
         &quot;version&quot;: &quot;A String&quot;, # Optional. The SDK version.
       },
     },
-    &quot;containerSpecGcsPath&quot;: &quot;A String&quot;, # Gcs path to a file with json serialized ContainerSpec as content.
+    &quot;containerSpecGcsPath&quot;: &quot;A String&quot;, # Cloud Storage path to a file with json serialized ContainerSpec as content.
     &quot;environment&quot;: { # The environment values to be set at runtime for flex template. # The runtime environment for the FlexTemplate job
       &quot;additionalExperiments&quot;: [ # Additional experiment flags for the job.
         &quot;A String&quot;,
@@ -151,15 +161,22 @@ Args:
       &quot;additionalUserLabels&quot;: { # Additional user labels to be specified for the job. Keys and values must follow the restrictions specified in the [labeling restrictions](https://cloud.google.com/compute/docs/labeling-resources#restrictions) page. An object containing a list of &quot;key&quot;: value pairs. Example: { &quot;name&quot;: &quot;wrench&quot;, &quot;mass&quot;: &quot;1kg&quot;, &quot;count&quot;: &quot;3&quot; }.
         &quot;a_key&quot;: &quot;A String&quot;,
       },
+      &quot;autoscalingAlgorithm&quot;: &quot;A String&quot;, # The algorithm to use for autoscaling
+      &quot;diskSizeGb&quot;: 42, # Worker disk size, in gigabytes.
+      &quot;dumpHeapOnOom&quot;: True or False, # If true, save a heap dump before killing a thread or process which is GC thrashing or out of memory. The location of the heap file will either be echoed back to the user, or the user will be given the opportunity to download the heap file.
       &quot;enableStreamingEngine&quot;: True or False, # Whether to enable Streaming Engine for the job.
       &quot;flexrsGoal&quot;: &quot;A String&quot;, # Set FlexRS goal for the job. https://cloud.google.com/dataflow/docs/guides/flexrs
       &quot;ipConfiguration&quot;: &quot;A String&quot;, # Configuration for VM IPs.
       &quot;kmsKeyName&quot;: &quot;A String&quot;, # Name for the Cloud KMS key for the job. Key format is: projects//locations//keyRings//cryptoKeys/
+      &quot;launcherMachineType&quot;: &quot;A String&quot;, # The machine type to use for launching the job. The default is n1-standard-1.
       &quot;machineType&quot;: &quot;A String&quot;, # The machine type to use for the job. Defaults to the value from the template if not specified.
       &quot;maxWorkers&quot;: 42, # The maximum number of Google Compute Engine instances to be made available to your pipeline during execution, from 1 to 1000.
       &quot;network&quot;: &quot;A String&quot;, # Network to which VMs will be assigned. If empty or unspecified, the service will use the network &quot;default&quot;.
       &quot;numWorkers&quot;: 42, # The initial number of Google Compute Engine instances for the job.
+      &quot;saveHeapDumpsToGcsPath&quot;: &quot;A String&quot;, # Cloud Storage bucket (directory) to upload heap dumps to the given location. Enabling this implies that heap dumps should be generated on OOM (dump_heap_on_oom is set to true).
+      &quot;sdkContainerImage&quot;: &quot;A String&quot;, # Docker registry location of container image to use for the &#x27;worker harness. Default is the container for the version of the SDK. Note this field is only valid for portable pipelines.
       &quot;serviceAccountEmail&quot;: &quot;A String&quot;, # The email address of the service account to run the job as.
+      &quot;stagingLocation&quot;: &quot;A String&quot;, # The Cloud Storage path for staging local files. Must be a valid Cloud Storage URL, beginning with `gs://`.
       &quot;subnetwork&quot;: &quot;A String&quot;, # Subnetwork to which VMs will be assigned, if desired. You can specify a subnetwork using either a complete URL or an abbreviated path. Expected to be of the form &quot;https://www.googleapis.com/compute/v1/projects/HOST_PROJECT_ID/regions/REGION/subnetworks/SUBNETWORK&quot; or &quot;regions/REGION/subnetworks/SUBNETWORK&quot;. If the subnetwork is located in a Shared VPC network, you must use the complete URL.
       &quot;tempLocation&quot;: &quot;A String&quot;, # The Cloud Storage path to use for temporary files. Must be a valid Cloud Storage URL, beginning with `gs://`.
       &quot;workerRegion&quot;: &quot;A String&quot;, # The Compute Engine region (https://cloud.google.com/compute/docs/regions-zones/regions-zones) in which worker processing should occur, e.g. &quot;us-west1&quot;. Mutually exclusive with worker_zone. If neither worker_region nor worker_zone is specified, default to the control plane&#x27;s region.
@@ -199,7 +216,10 @@ Returns:
     &quot;environment&quot;: { # Describes the environment in which a Dataflow Job runs. # The environment for the job.
       &quot;clusterManagerApiService&quot;: &quot;A String&quot;, # The type of cluster manager API to use. If unknown or unspecified, the service will attempt to choose a reasonable default. This should be in the form of the API service name, e.g. &quot;compute.googleapis.com&quot;.
       &quot;dataset&quot;: &quot;A String&quot;, # The dataset for the current project where various workflow related tables are stored. The supported resource type is: Google BigQuery: bigquery.googleapis.com/{dataset}
-      &quot;experiments&quot;: [ # The list of experiments to enable. This field should be used for SDK related experiments and not for service related experiments. The proper field for service related experiments is service_options. For more details see the rationale at go/user-specified-service-options.
+      &quot;debugOptions&quot;: { # Describes any options that have an effect on the debugging of pipelines. # Any debugging options to be supplied to the job.
+        &quot;enableHotKeyLogging&quot;: True or False, # When true, enables the logging of the literal hot key to the user&#x27;s Cloud Logging.
+      },
+      &quot;experiments&quot;: [ # The list of experiments to enable. This field should be used for SDK related experiments and not for service related experiments. The proper field for service related experiments is service_options.
         &quot;A String&quot;,
       ],
       &quot;flexResourceSchedulingGoal&quot;: &quot;A String&quot;, # Which Flexible Resource Scheduling mode to run in.
@@ -211,7 +231,7 @@ Returns:
       },
       &quot;serviceAccountEmail&quot;: &quot;A String&quot;, # Identity to run virtual machines as. Defaults to the default account.
       &quot;serviceKmsKeyName&quot;: &quot;A String&quot;, # If set, contains the Cloud KMS key identifier used to encrypt data at rest, AKA a Customer Managed Encryption Key (CMEK). Format: projects/PROJECT_ID/locations/LOCATION/keyRings/KEY_RING/cryptoKeys/KEY
-      &quot;serviceOptions&quot;: [ # The list of service options to enable. This field should be used for service related experiments only. These experiments, when graduating to GA, should be replaced by dedicated fields or become default (i.e. always on). For more details see the rationale at go/user-specified-service-options.
+      &quot;serviceOptions&quot;: [ # The list of service options to enable. This field should be used for service related experiments only. These experiments, when graduating to GA, should be replaced by dedicated fields or become default (i.e. always on).
         &quot;A String&quot;,
       ],
       &quot;shuffleMode&quot;: &quot;A String&quot;, # Output only. The shuffle mode used for the job.
@@ -315,8 +335,8 @@ Returns:
     },
     &quot;id&quot;: &quot;A String&quot;, # The unique ID of this job. This field is set by the Cloud Dataflow service when the Job is created, and is immutable for the life of the job.
     &quot;jobMetadata&quot;: { # Metadata available primarily for filtering jobs. Will be included in the ListJob response and Job SUMMARY view. # This field is populated by the Dataflow service to support filtering jobs by the metadata values provided here. Populated for ListJobs and all GetJob views SUMMARY and higher.
-      &quot;bigTableDetails&quot;: [ # Identification of a BigTable source used in the Dataflow job.
-        { # Metadata for a BigTable connector used by the job.
+      &quot;bigTableDetails&quot;: [ # Identification of a Cloud Bigtable source used in the Dataflow job.
+        { # Metadata for a Cloud Bigtable connector used by the job.
           &quot;instanceId&quot;: &quot;A String&quot;, # InstanceId accessed in the connection.
           &quot;projectId&quot;: &quot;A String&quot;, # ProjectId accessed in the connection.
           &quot;tableId&quot;: &quot;A String&quot;, # TableId accessed in the connection.
@@ -341,8 +361,8 @@ Returns:
           &quot;filePattern&quot;: &quot;A String&quot;, # File Pattern used to access files by the connector.
         },
       ],
-      &quot;pubsubDetails&quot;: [ # Identification of a PubSub source used in the Dataflow job.
-        { # Metadata for a PubSub connector used by the job.
+      &quot;pubsubDetails&quot;: [ # Identification of a Pub/Sub source used in the Dataflow job.
+        { # Metadata for a Pub/Sub connector used by the job.
           &quot;subscription&quot;: &quot;A String&quot;, # Subscription used in the connection.
           &quot;topic&quot;: &quot;A String&quot;, # Topic accessed in the connection.
         },
@@ -407,7 +427,7 @@ Returns:
               &quot;userName&quot;: &quot;A String&quot;, # Human-readable name for this source; may be user or system generated.
             },
           ],
-          &quot;kind&quot;: &quot;A String&quot;, # Type of tranform this stage is executing.
+          &quot;kind&quot;: &quot;A String&quot;, # Type of transform this stage is executing.
           &quot;name&quot;: &quot;A String&quot;, # Dataflow service generated name for this stage.
           &quot;outputSource&quot;: [ # Output sources for this stage.
             { # Description of an input or output of an execution stage.
@@ -474,7 +494,7 @@ Returns:
         },
       },
     ],
-    &quot;stepsLocation&quot;: &quot;A String&quot;, # The GCS location where the steps are stored.
+    &quot;stepsLocation&quot;: &quot;A String&quot;, # The Cloud Storage location where the steps are stored.
     &quot;tempFiles&quot;: [ # A set of files the system should be aware of that are used for temporary storage. These temporary files will be removed on job completion. No duplicates are allowed. No file patterns are supported. The supported files are: Google Cloud Storage: storage.googleapis.com/{bucket}/{object} bucket.storage.googleapis.com/{object}
       &quot;A String&quot;,
     ],

@@ -93,7 +93,7 @@ h1, h2, h3 {
 <p class="firstline">Returns information about a data transfer config.</p>
 <p class="toc_element">
   <code><a href="#list">list(parent, dataSourceIds=None, pageSize=None, pageToken=None, x__xgafv=None)</a></code></p>
-<p class="firstline">Returns information about all data transfers in the project.</p>
+<p class="firstline">Returns information about all transfer configs owned by a project in the specified location.</p>
 <p class="toc_element">
   <code><a href="#list_next">list_next(previous_request, previous_response)</a></code></p>
 <p class="firstline">Retrieves the next page of results.</p>
@@ -133,11 +133,14 @@ Args:
   },
   &quot;name&quot;: &quot;A String&quot;, # The resource name of the transfer config. Transfer config names have the form `projects/{project_id}/locations/{region}/transferConfigs/{config_id}`. Where `config_id` is usually a uuid, even though it is not guaranteed or required. The name is ignored when creating a transfer config.
   &quot;nextRunTime&quot;: &quot;A String&quot;, # Output only. Next time when data transfer will run.
-  &quot;notificationPubsubTopic&quot;: &quot;A String&quot;, # Pub/Sub topic where notifications will be sent after transfer runs associated with this transfer config finish.
-  &quot;params&quot;: { # Data transfer specific parameters.
+  &quot;notificationPubsubTopic&quot;: &quot;A String&quot;, # Pub/Sub topic where notifications will be sent after transfer runs associated with this transfer config finish. The format for specifying a pubsub topic is: `projects/{project}/topics/{topic}`
+  &quot;ownerInfo&quot;: { # Information about a user. # Output only. Information about the user whose credentials are used to transfer data. Populated only for `transferConfigs.get` requests. In case the user information is not available, this field will not be populated.
+    &quot;email&quot;: &quot;A String&quot;, # E-mail address of the user.
+  },
+  &quot;params&quot;: { # Parameters specific to each data source. For more information see the bq tab in the &#x27;Setting up a data transfer&#x27; section for each data source. For example the parameters for Cloud Storage transfers are listed here: https://cloud.google.com/bigquery-transfer/docs/cloud-storage-transfer#bq
     &quot;a_key&quot;: &quot;&quot;, # Properties of the object.
   },
-  &quot;schedule&quot;: &quot;A String&quot;, # Data transfer schedule. If the data source does not support a custom schedule, this should be empty. If it is empty, the default value for the data source will be used. The specified times are in UTC. Examples of valid format: `1st,3rd monday of month 15:30`, `every wed,fri of jan,jun 13:15`, and `first sunday of quarter 00:00`. See more explanation about the format here: https://cloud.google.com/appengine/docs/flexible/python/scheduling-jobs-with-cron-yaml#the_schedule_format NOTE: the granularity should be at least 8 hours, or less frequent.
+  &quot;schedule&quot;: &quot;A String&quot;, # Data transfer schedule. If the data source does not support a custom schedule, this should be empty. If it is empty, the default value for the data source will be used. The specified times are in UTC. Examples of valid format: `1st,3rd monday of month 15:30`, `every wed,fri of jan,jun 13:15`, and `first sunday of quarter 00:00`. See more explanation about the format here: https://cloud.google.com/appengine/docs/flexible/python/scheduling-jobs-with-cron-yaml#the_schedule_format NOTE: The minimum interval time between recurring transfers depends on the data source; refer to the documentation for your data source.
   &quot;scheduleOptions&quot;: { # Options customizing the data transfer schedule. # Options customizing the data transfer schedule.
     &quot;disableAutoScheduling&quot;: True or False, # If true, automatic scheduling of data transfer runs for this configuration will be disabled. The runs can be started on ad-hoc basis using StartManualTransferRuns API. When automatic scheduling is disabled, the TransferConfig.schedule field will be ignored.
     &quot;endTime&quot;: &quot;A String&quot;, # Defines time to stop scheduling transfer runs. A transfer run cannot be scheduled at or after the end time. The end time can be changed at any moment. The time when a data transfer can be trigerred manually is not limited by this option.
@@ -171,11 +174,14 @@ Returns:
   },
   &quot;name&quot;: &quot;A String&quot;, # The resource name of the transfer config. Transfer config names have the form `projects/{project_id}/locations/{region}/transferConfigs/{config_id}`. Where `config_id` is usually a uuid, even though it is not guaranteed or required. The name is ignored when creating a transfer config.
   &quot;nextRunTime&quot;: &quot;A String&quot;, # Output only. Next time when data transfer will run.
-  &quot;notificationPubsubTopic&quot;: &quot;A String&quot;, # Pub/Sub topic where notifications will be sent after transfer runs associated with this transfer config finish.
-  &quot;params&quot;: { # Data transfer specific parameters.
+  &quot;notificationPubsubTopic&quot;: &quot;A String&quot;, # Pub/Sub topic where notifications will be sent after transfer runs associated with this transfer config finish. The format for specifying a pubsub topic is: `projects/{project}/topics/{topic}`
+  &quot;ownerInfo&quot;: { # Information about a user. # Output only. Information about the user whose credentials are used to transfer data. Populated only for `transferConfigs.get` requests. In case the user information is not available, this field will not be populated.
+    &quot;email&quot;: &quot;A String&quot;, # E-mail address of the user.
+  },
+  &quot;params&quot;: { # Parameters specific to each data source. For more information see the bq tab in the &#x27;Setting up a data transfer&#x27; section for each data source. For example the parameters for Cloud Storage transfers are listed here: https://cloud.google.com/bigquery-transfer/docs/cloud-storage-transfer#bq
     &quot;a_key&quot;: &quot;&quot;, # Properties of the object.
   },
-  &quot;schedule&quot;: &quot;A String&quot;, # Data transfer schedule. If the data source does not support a custom schedule, this should be empty. If it is empty, the default value for the data source will be used. The specified times are in UTC. Examples of valid format: `1st,3rd monday of month 15:30`, `every wed,fri of jan,jun 13:15`, and `first sunday of quarter 00:00`. See more explanation about the format here: https://cloud.google.com/appengine/docs/flexible/python/scheduling-jobs-with-cron-yaml#the_schedule_format NOTE: the granularity should be at least 8 hours, or less frequent.
+  &quot;schedule&quot;: &quot;A String&quot;, # Data transfer schedule. If the data source does not support a custom schedule, this should be empty. If it is empty, the default value for the data source will be used. The specified times are in UTC. Examples of valid format: `1st,3rd monday of month 15:30`, `every wed,fri of jan,jun 13:15`, and `first sunday of quarter 00:00`. See more explanation about the format here: https://cloud.google.com/appengine/docs/flexible/python/scheduling-jobs-with-cron-yaml#the_schedule_format NOTE: The minimum interval time between recurring transfers depends on the data source; refer to the documentation for your data source.
   &quot;scheduleOptions&quot;: { # Options customizing the data transfer schedule. # Options customizing the data transfer schedule.
     &quot;disableAutoScheduling&quot;: True or False, # If true, automatic scheduling of data transfer runs for this configuration will be disabled. The runs can be started on ad-hoc basis using StartManualTransferRuns API. When automatic scheduling is disabled, the TransferConfig.schedule field will be ignored.
     &quot;endTime&quot;: &quot;A String&quot;, # Defines time to stop scheduling transfer runs. A transfer run cannot be scheduled at or after the end time. The end time can be changed at any moment. The time when a data transfer can be trigerred manually is not limited by this option.
@@ -231,11 +237,14 @@ Returns:
   },
   &quot;name&quot;: &quot;A String&quot;, # The resource name of the transfer config. Transfer config names have the form `projects/{project_id}/locations/{region}/transferConfigs/{config_id}`. Where `config_id` is usually a uuid, even though it is not guaranteed or required. The name is ignored when creating a transfer config.
   &quot;nextRunTime&quot;: &quot;A String&quot;, # Output only. Next time when data transfer will run.
-  &quot;notificationPubsubTopic&quot;: &quot;A String&quot;, # Pub/Sub topic where notifications will be sent after transfer runs associated with this transfer config finish.
-  &quot;params&quot;: { # Data transfer specific parameters.
+  &quot;notificationPubsubTopic&quot;: &quot;A String&quot;, # Pub/Sub topic where notifications will be sent after transfer runs associated with this transfer config finish. The format for specifying a pubsub topic is: `projects/{project}/topics/{topic}`
+  &quot;ownerInfo&quot;: { # Information about a user. # Output only. Information about the user whose credentials are used to transfer data. Populated only for `transferConfigs.get` requests. In case the user information is not available, this field will not be populated.
+    &quot;email&quot;: &quot;A String&quot;, # E-mail address of the user.
+  },
+  &quot;params&quot;: { # Parameters specific to each data source. For more information see the bq tab in the &#x27;Setting up a data transfer&#x27; section for each data source. For example the parameters for Cloud Storage transfers are listed here: https://cloud.google.com/bigquery-transfer/docs/cloud-storage-transfer#bq
     &quot;a_key&quot;: &quot;&quot;, # Properties of the object.
   },
-  &quot;schedule&quot;: &quot;A String&quot;, # Data transfer schedule. If the data source does not support a custom schedule, this should be empty. If it is empty, the default value for the data source will be used. The specified times are in UTC. Examples of valid format: `1st,3rd monday of month 15:30`, `every wed,fri of jan,jun 13:15`, and `first sunday of quarter 00:00`. See more explanation about the format here: https://cloud.google.com/appengine/docs/flexible/python/scheduling-jobs-with-cron-yaml#the_schedule_format NOTE: the granularity should be at least 8 hours, or less frequent.
+  &quot;schedule&quot;: &quot;A String&quot;, # Data transfer schedule. If the data source does not support a custom schedule, this should be empty. If it is empty, the default value for the data source will be used. The specified times are in UTC. Examples of valid format: `1st,3rd monday of month 15:30`, `every wed,fri of jan,jun 13:15`, and `first sunday of quarter 00:00`. See more explanation about the format here: https://cloud.google.com/appengine/docs/flexible/python/scheduling-jobs-with-cron-yaml#the_schedule_format NOTE: The minimum interval time between recurring transfers depends on the data source; refer to the documentation for your data source.
   &quot;scheduleOptions&quot;: { # Options customizing the data transfer schedule. # Options customizing the data transfer schedule.
     &quot;disableAutoScheduling&quot;: True or False, # If true, automatic scheduling of data transfer runs for this configuration will be disabled. The runs can be started on ad-hoc basis using StartManualTransferRuns API. When automatic scheduling is disabled, the TransferConfig.schedule field will be ignored.
     &quot;endTime&quot;: &quot;A String&quot;, # Defines time to stop scheduling transfer runs. A transfer run cannot be scheduled at or after the end time. The end time can be changed at any moment. The time when a data transfer can be trigerred manually is not limited by this option.
@@ -249,7 +258,7 @@ Returns:
 
 <div class="method">
     <code class="details" id="list">list(parent, dataSourceIds=None, pageSize=None, pageToken=None, x__xgafv=None)</code>
-  <pre>Returns information about all data transfers in the project.
+  <pre>Returns information about all transfer configs owned by a project in the specified location.
 
 Args:
   parent: string, Required. The BigQuery project id for which data sources should be returned: `projects/{project_id}` or `projects/{project_id}/locations/{location_id}` (required)
@@ -279,11 +288,14 @@ Returns:
       },
       &quot;name&quot;: &quot;A String&quot;, # The resource name of the transfer config. Transfer config names have the form `projects/{project_id}/locations/{region}/transferConfigs/{config_id}`. Where `config_id` is usually a uuid, even though it is not guaranteed or required. The name is ignored when creating a transfer config.
       &quot;nextRunTime&quot;: &quot;A String&quot;, # Output only. Next time when data transfer will run.
-      &quot;notificationPubsubTopic&quot;: &quot;A String&quot;, # Pub/Sub topic where notifications will be sent after transfer runs associated with this transfer config finish.
-      &quot;params&quot;: { # Data transfer specific parameters.
+      &quot;notificationPubsubTopic&quot;: &quot;A String&quot;, # Pub/Sub topic where notifications will be sent after transfer runs associated with this transfer config finish. The format for specifying a pubsub topic is: `projects/{project}/topics/{topic}`
+      &quot;ownerInfo&quot;: { # Information about a user. # Output only. Information about the user whose credentials are used to transfer data. Populated only for `transferConfigs.get` requests. In case the user information is not available, this field will not be populated.
+        &quot;email&quot;: &quot;A String&quot;, # E-mail address of the user.
+      },
+      &quot;params&quot;: { # Parameters specific to each data source. For more information see the bq tab in the &#x27;Setting up a data transfer&#x27; section for each data source. For example the parameters for Cloud Storage transfers are listed here: https://cloud.google.com/bigquery-transfer/docs/cloud-storage-transfer#bq
         &quot;a_key&quot;: &quot;&quot;, # Properties of the object.
       },
-      &quot;schedule&quot;: &quot;A String&quot;, # Data transfer schedule. If the data source does not support a custom schedule, this should be empty. If it is empty, the default value for the data source will be used. The specified times are in UTC. Examples of valid format: `1st,3rd monday of month 15:30`, `every wed,fri of jan,jun 13:15`, and `first sunday of quarter 00:00`. See more explanation about the format here: https://cloud.google.com/appengine/docs/flexible/python/scheduling-jobs-with-cron-yaml#the_schedule_format NOTE: the granularity should be at least 8 hours, or less frequent.
+      &quot;schedule&quot;: &quot;A String&quot;, # Data transfer schedule. If the data source does not support a custom schedule, this should be empty. If it is empty, the default value for the data source will be used. The specified times are in UTC. Examples of valid format: `1st,3rd monday of month 15:30`, `every wed,fri of jan,jun 13:15`, and `first sunday of quarter 00:00`. See more explanation about the format here: https://cloud.google.com/appengine/docs/flexible/python/scheduling-jobs-with-cron-yaml#the_schedule_format NOTE: The minimum interval time between recurring transfers depends on the data source; refer to the documentation for your data source.
       &quot;scheduleOptions&quot;: { # Options customizing the data transfer schedule. # Options customizing the data transfer schedule.
         &quot;disableAutoScheduling&quot;: True or False, # If true, automatic scheduling of data transfer runs for this configuration will be disabled. The runs can be started on ad-hoc basis using StartManualTransferRuns API. When automatic scheduling is disabled, the TransferConfig.schedule field will be ignored.
         &quot;endTime&quot;: &quot;A String&quot;, # Defines time to stop scheduling transfer runs. A transfer run cannot be scheduled at or after the end time. The end time can be changed at any moment. The time when a data transfer can be trigerred manually is not limited by this option.
@@ -332,11 +344,14 @@ Args:
   },
   &quot;name&quot;: &quot;A String&quot;, # The resource name of the transfer config. Transfer config names have the form `projects/{project_id}/locations/{region}/transferConfigs/{config_id}`. Where `config_id` is usually a uuid, even though it is not guaranteed or required. The name is ignored when creating a transfer config.
   &quot;nextRunTime&quot;: &quot;A String&quot;, # Output only. Next time when data transfer will run.
-  &quot;notificationPubsubTopic&quot;: &quot;A String&quot;, # Pub/Sub topic where notifications will be sent after transfer runs associated with this transfer config finish.
-  &quot;params&quot;: { # Data transfer specific parameters.
+  &quot;notificationPubsubTopic&quot;: &quot;A String&quot;, # Pub/Sub topic where notifications will be sent after transfer runs associated with this transfer config finish. The format for specifying a pubsub topic is: `projects/{project}/topics/{topic}`
+  &quot;ownerInfo&quot;: { # Information about a user. # Output only. Information about the user whose credentials are used to transfer data. Populated only for `transferConfigs.get` requests. In case the user information is not available, this field will not be populated.
+    &quot;email&quot;: &quot;A String&quot;, # E-mail address of the user.
+  },
+  &quot;params&quot;: { # Parameters specific to each data source. For more information see the bq tab in the &#x27;Setting up a data transfer&#x27; section for each data source. For example the parameters for Cloud Storage transfers are listed here: https://cloud.google.com/bigquery-transfer/docs/cloud-storage-transfer#bq
     &quot;a_key&quot;: &quot;&quot;, # Properties of the object.
   },
-  &quot;schedule&quot;: &quot;A String&quot;, # Data transfer schedule. If the data source does not support a custom schedule, this should be empty. If it is empty, the default value for the data source will be used. The specified times are in UTC. Examples of valid format: `1st,3rd monday of month 15:30`, `every wed,fri of jan,jun 13:15`, and `first sunday of quarter 00:00`. See more explanation about the format here: https://cloud.google.com/appengine/docs/flexible/python/scheduling-jobs-with-cron-yaml#the_schedule_format NOTE: the granularity should be at least 8 hours, or less frequent.
+  &quot;schedule&quot;: &quot;A String&quot;, # Data transfer schedule. If the data source does not support a custom schedule, this should be empty. If it is empty, the default value for the data source will be used. The specified times are in UTC. Examples of valid format: `1st,3rd monday of month 15:30`, `every wed,fri of jan,jun 13:15`, and `first sunday of quarter 00:00`. See more explanation about the format here: https://cloud.google.com/appengine/docs/flexible/python/scheduling-jobs-with-cron-yaml#the_schedule_format NOTE: The minimum interval time between recurring transfers depends on the data source; refer to the documentation for your data source.
   &quot;scheduleOptions&quot;: { # Options customizing the data transfer schedule. # Options customizing the data transfer schedule.
     &quot;disableAutoScheduling&quot;: True or False, # If true, automatic scheduling of data transfer runs for this configuration will be disabled. The runs can be started on ad-hoc basis using StartManualTransferRuns API. When automatic scheduling is disabled, the TransferConfig.schedule field will be ignored.
     &quot;endTime&quot;: &quot;A String&quot;, # Defines time to stop scheduling transfer runs. A transfer run cannot be scheduled at or after the end time. The end time can be changed at any moment. The time when a data transfer can be trigerred manually is not limited by this option.
@@ -371,11 +386,14 @@ Returns:
   },
   &quot;name&quot;: &quot;A String&quot;, # The resource name of the transfer config. Transfer config names have the form `projects/{project_id}/locations/{region}/transferConfigs/{config_id}`. Where `config_id` is usually a uuid, even though it is not guaranteed or required. The name is ignored when creating a transfer config.
   &quot;nextRunTime&quot;: &quot;A String&quot;, # Output only. Next time when data transfer will run.
-  &quot;notificationPubsubTopic&quot;: &quot;A String&quot;, # Pub/Sub topic where notifications will be sent after transfer runs associated with this transfer config finish.
-  &quot;params&quot;: { # Data transfer specific parameters.
+  &quot;notificationPubsubTopic&quot;: &quot;A String&quot;, # Pub/Sub topic where notifications will be sent after transfer runs associated with this transfer config finish. The format for specifying a pubsub topic is: `projects/{project}/topics/{topic}`
+  &quot;ownerInfo&quot;: { # Information about a user. # Output only. Information about the user whose credentials are used to transfer data. Populated only for `transferConfigs.get` requests. In case the user information is not available, this field will not be populated.
+    &quot;email&quot;: &quot;A String&quot;, # E-mail address of the user.
+  },
+  &quot;params&quot;: { # Parameters specific to each data source. For more information see the bq tab in the &#x27;Setting up a data transfer&#x27; section for each data source. For example the parameters for Cloud Storage transfers are listed here: https://cloud.google.com/bigquery-transfer/docs/cloud-storage-transfer#bq
     &quot;a_key&quot;: &quot;&quot;, # Properties of the object.
   },
-  &quot;schedule&quot;: &quot;A String&quot;, # Data transfer schedule. If the data source does not support a custom schedule, this should be empty. If it is empty, the default value for the data source will be used. The specified times are in UTC. Examples of valid format: `1st,3rd monday of month 15:30`, `every wed,fri of jan,jun 13:15`, and `first sunday of quarter 00:00`. See more explanation about the format here: https://cloud.google.com/appengine/docs/flexible/python/scheduling-jobs-with-cron-yaml#the_schedule_format NOTE: the granularity should be at least 8 hours, or less frequent.
+  &quot;schedule&quot;: &quot;A String&quot;, # Data transfer schedule. If the data source does not support a custom schedule, this should be empty. If it is empty, the default value for the data source will be used. The specified times are in UTC. Examples of valid format: `1st,3rd monday of month 15:30`, `every wed,fri of jan,jun 13:15`, and `first sunday of quarter 00:00`. See more explanation about the format here: https://cloud.google.com/appengine/docs/flexible/python/scheduling-jobs-with-cron-yaml#the_schedule_format NOTE: The minimum interval time between recurring transfers depends on the data source; refer to the documentation for your data source.
   &quot;scheduleOptions&quot;: { # Options customizing the data transfer schedule. # Options customizing the data transfer schedule.
     &quot;disableAutoScheduling&quot;: True or False, # If true, automatic scheduling of data transfer runs for this configuration will be disabled. The runs can be started on ad-hoc basis using StartManualTransferRuns API. When automatic scheduling is disabled, the TransferConfig.schedule field will be ignored.
     &quot;endTime&quot;: &quot;A String&quot;, # Defines time to stop scheduling transfer runs. A transfer run cannot be scheduled at or after the end time. The end time can be changed at any moment. The time when a data transfer can be trigerred manually is not limited by this option.
@@ -428,8 +446,8 @@ Returns:
         &quot;message&quot;: &quot;A String&quot;, # A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the google.rpc.Status.details field, or localized by the client.
       },
       &quot;name&quot;: &quot;A String&quot;, # The resource name of the transfer run. Transfer run names have the form `projects/{project_id}/locations/{location}/transferConfigs/{config_id}/runs/{run_id}`. The name is ignored when creating a transfer run.
-      &quot;notificationPubsubTopic&quot;: &quot;A String&quot;, # Output only. Pub/Sub topic where a notification will be sent after this transfer run finishes
-      &quot;params&quot;: { # Output only. Data transfer specific parameters.
+      &quot;notificationPubsubTopic&quot;: &quot;A String&quot;, # Output only. Pub/Sub topic where a notification will be sent after this transfer run finishes. The format for specifying a pubsub topic is: `projects/{project}/topics/{topic}`
+      &quot;params&quot;: { # Output only. Parameters specific to each data source. For more information see the bq tab in the &#x27;Setting up a data transfer&#x27; section for each data source. For example the parameters for Cloud Storage transfers are listed here: https://cloud.google.com/bigquery-transfer/docs/cloud-storage-transfer#bq
         &quot;a_key&quot;: &quot;&quot;, # Properties of the object.
       },
       &quot;runTime&quot;: &quot;A String&quot;, # For batch transfer runs, specifies the date and time of the data should be ingested.
@@ -488,8 +506,8 @@ Returns:
         &quot;message&quot;: &quot;A String&quot;, # A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the google.rpc.Status.details field, or localized by the client.
       },
       &quot;name&quot;: &quot;A String&quot;, # The resource name of the transfer run. Transfer run names have the form `projects/{project_id}/locations/{location}/transferConfigs/{config_id}/runs/{run_id}`. The name is ignored when creating a transfer run.
-      &quot;notificationPubsubTopic&quot;: &quot;A String&quot;, # Output only. Pub/Sub topic where a notification will be sent after this transfer run finishes
-      &quot;params&quot;: { # Output only. Data transfer specific parameters.
+      &quot;notificationPubsubTopic&quot;: &quot;A String&quot;, # Output only. Pub/Sub topic where a notification will be sent after this transfer run finishes. The format for specifying a pubsub topic is: `projects/{project}/topics/{topic}`
+      &quot;params&quot;: { # Output only. Parameters specific to each data source. For more information see the bq tab in the &#x27;Setting up a data transfer&#x27; section for each data source. For example the parameters for Cloud Storage transfers are listed here: https://cloud.google.com/bigquery-transfer/docs/cloud-storage-transfer#bq
         &quot;a_key&quot;: &quot;&quot;, # Properties of the object.
       },
       &quot;runTime&quot;: &quot;A String&quot;, # For batch transfer runs, specifies the date and time of the data should be ingested.

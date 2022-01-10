@@ -360,7 +360,7 @@ Args:
         &quot;autoscalingConfig&quot;: { # Autoscaling Policy config associated with the cluster. # Optional. Autoscaling config for the policy associated with the cluster. Cluster does not autoscale if this field is unset.
           &quot;policyUri&quot;: &quot;A String&quot;, # Optional. The autoscaling policy used by the cluster.Only resource names including projectid and location (region) are valid. Examples: https://www.googleapis.com/compute/v1/projects/[project_id]/locations/[dataproc_region]/autoscalingPolicies/[policy_id] projects/[project_id]/locations/[dataproc_region]/autoscalingPolicies/[policy_id]Note that the policy must be in the same project and Dataproc region.
         },
-        &quot;configBucket&quot;: &quot;A String&quot;, # Optional. A Cloud Storage bucket used to stage job dependencies, config files, and job driver console output. If you do not specify a staging bucket, Cloud Dataproc will determine a Cloud Storage location (US, ASIA, or EU) for your cluster&#x27;s staging bucket according to the Compute Engine zone where your cluster is deployed, and then create and manage this project-level, per-location bucket (see Dataproc staging bucket (https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/staging-bucket)). This field requires a Cloud Storage bucket name, not a URI to a Cloud Storage bucket.
+        &quot;configBucket&quot;: &quot;A String&quot;, # Optional. A Cloud Storage bucket used to stage job dependencies, config files, and job driver console output. If you do not specify a staging bucket, Cloud Dataproc will determine a Cloud Storage location (US, ASIA, or EU) for your cluster&#x27;s staging bucket according to the Compute Engine zone where your cluster is deployed, and then create and manage this project-level, per-location bucket (see Dataproc staging and temp buckets (https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/staging-bucket)). This field requires a Cloud Storage bucket name, not a gs://... URI to a Cloud Storage bucket.
         &quot;encryptionConfig&quot;: { # Encryption settings for the cluster. # Optional. Encryption settings for the cluster.
           &quot;gcePdKmsKeyName&quot;: &quot;A String&quot;, # Optional. The Cloud KMS key name to use for PD disk encryption for all instances in the cluster.
         },
@@ -371,6 +371,9 @@ Args:
           },
         },
         &quot;gceClusterConfig&quot;: { # Common config settings for resources of Compute Engine cluster instances, applicable to all instances in the cluster. # Optional. The shared Compute Engine config settings for all instances in a cluster.
+          &quot;confidentialInstanceConfig&quot;: { # Confidential Instance Config for clusters using Confidential VMs (https://cloud.google.com/compute/confidential-vm/docs) # Optional. Confidential Instance Config for clusters using Confidential VMs (https://cloud.google.com/compute/confidential-vm/docs).
+            &quot;enableConfidentialCompute&quot;: True or False, # Optional. Defines whether the instance should have confidential compute enabled.
+          },
           &quot;internalIpOnly&quot;: True or False, # Optional. If true, all instances in the cluster will only have internal IP addresses. By default, clusters are not restricted to internal IP addresses, and will have ephemeral external IP addresses assigned to each instance. This internal_ip_only restriction can only be enabled for subnetwork enabled networks, and all off-cluster dependencies must be configured to be accessible without external IP addresses.
           &quot;metadata&quot;: { # The Compute Engine metadata entries to add to all instances (see Project and instance metadata (https://cloud.google.com/compute/docs/storing-retrieving-metadata#project_and_instance_metadata)).
             &quot;a_key&quot;: &quot;A String&quot;,
@@ -402,6 +405,12 @@ Args:
           ],
           &quot;zoneUri&quot;: &quot;A String&quot;, # Optional. The zone where the Compute Engine cluster will be located. On a create request, it is required in the &quot;global&quot; region. If omitted in a non-global Dataproc region, the service will pick a zone in the corresponding Compute Engine region. On a get request, zone will always be present.A full URL, partial URI, or short name are valid. Examples: https://www.googleapis.com/compute/v1/projects/[project_id]/zones/[zone] projects/[project_id]/zones/[zone] us-central1-f
         },
+        &quot;gkeClusterConfig&quot;: { # The cluster&#x27;s GKE config. # Optional. BETA. The Kubernetes Engine config for Dataproc clusters deployed to Kubernetes. Setting this is considered mutually exclusive with Compute Engine-based options such as gce_cluster_config, master_config, worker_config, secondary_worker_config, and autoscaling_config.
+          &quot;namespacedGkeDeploymentTarget&quot;: { # A full, namespace-isolated deployment target for an existing GKE cluster. # Optional. A target for the deployment.
+            &quot;clusterNamespace&quot;: &quot;A String&quot;, # Optional. A namespace within the GKE cluster to deploy into.
+            &quot;targetGkeCluster&quot;: &quot;A String&quot;, # Optional. The target GKE cluster to deploy to. Format: &#x27;projects/{project}/locations/{location}/clusters/{cluster_id}&#x27;
+          },
+        },
         &quot;initializationActions&quot;: [ # Optional. Commands to execute on each node after config is completed. By default, executables are run on master and all worker nodes. You can test a node&#x27;s role metadata to run an executable on a master or worker node, as shown below using curl (you can also use wget): ROLE=$(curl -H Metadata-Flavor:Google http://metadata/computeMetadata/v1/instance/attributes/dataproc-role) if [[ &quot;${ROLE}&quot; == &#x27;Master&#x27; ]]; then ... master specific actions ... else ... worker specific actions ... fi
           { # Specifies an executable to run on a fully configured node and a timeout period for executable completion.
             &quot;executableFile&quot;: &quot;A String&quot;, # Required. Cloud Storage URI of executable file.
@@ -414,7 +423,7 @@ Args:
           &quot;idleDeleteTtl&quot;: &quot;A String&quot;, # Optional. The duration to keep the cluster alive while idling (when no jobs are running). Passing this threshold will cause the cluster to be deleted. Minimum value is 5 minutes; maximum value is 14 days (see JSON representation of Duration (https://developers.google.com/protocol-buffers/docs/proto3#json)).
           &quot;idleStartTime&quot;: &quot;A String&quot;, # Output only. The time when cluster became idle (most recent job finished) and became eligible for deletion due to idleness (see JSON representation of Timestamp (https://developers.google.com/protocol-buffers/docs/proto3#json)).
         },
-        &quot;masterConfig&quot;: { # The config settings for Compute Engine resources in an instance group, such as a master or worker group. # Optional. The Compute Engine config settings for the master instance in a cluster.
+        &quot;masterConfig&quot;: { # The config settings for Compute Engine resources in an instance group, such as a master or worker group. # Optional. The Compute Engine config settings for the cluster&#x27;s master instance.
           &quot;accelerators&quot;: [ # Optional. The Compute Engine accelerator configuration for these instances.
             { # Specifies the type and number of accelerator cards attached to the instances of an instance. See GPUs on Compute Engine (https://cloud.google.com/compute/docs/gpus/).
               &quot;acceleratorCount&quot;: 42, # The number of the accelerator cards of this type exposed to this instance.
@@ -434,7 +443,8 @@ Args:
             { # A reference to a Compute Engine instance.
               &quot;instanceId&quot;: &quot;A String&quot;, # The unique identifier of the Compute Engine instance.
               &quot;instanceName&quot;: &quot;A String&quot;, # The user-friendly name of the Compute Engine instance.
-              &quot;publicKey&quot;: &quot;A String&quot;, # The public key used for sharing data with this instance.
+              &quot;publicEciesKey&quot;: &quot;A String&quot;, # The public ECIES key used for sharing data with this instance.
+              &quot;publicKey&quot;: &quot;A String&quot;, # The public RSA key used for sharing data with this instance.
             },
           ],
           &quot;isPreemptible&quot;: True or False, # Output only. Specifies that this instance group contains preemptible instances.
@@ -444,13 +454,13 @@ Args:
             &quot;instanceTemplateName&quot;: &quot;A String&quot;, # Output only. The name of the Instance Template used for the Managed Instance Group.
           },
           &quot;minCpuPlatform&quot;: &quot;A String&quot;, # Optional. Specifies the minimum cpu platform for the Instance Group. See Dataproc -&gt; Minimum CPU Platform (https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu).
-          &quot;numInstances&quot;: 42, # Optional. The number of VM instances in the instance group. For master instance groups, must be set to 1.
+          &quot;numInstances&quot;: 42, # Optional. The number of VM instances in the instance group. For HA cluster master_config groups, must be set to 3. For standard cluster master_config groups, must be set to 1.
           &quot;preemptibility&quot;: &quot;A String&quot;, # Optional. Specifies the preemptibility of the instance group.The default value for master and worker groups is NON_PREEMPTIBLE. This default cannot be changed.The default value for secondary instances is PREEMPTIBLE.
         },
         &quot;metastoreConfig&quot;: { # Specifies a Metastore configuration. # Optional. Metastore configuration.
           &quot;dataprocMetastoreService&quot;: &quot;A String&quot;, # Required. Resource name of an existing Dataproc Metastore service.Example: projects/[project_id]/locations/[dataproc_region]/services/[service-name]
         },
-        &quot;secondaryWorkerConfig&quot;: { # The config settings for Compute Engine resources in an instance group, such as a master or worker group. # Optional. The Compute Engine config settings for additional worker instances in a cluster.
+        &quot;secondaryWorkerConfig&quot;: { # The config settings for Compute Engine resources in an instance group, such as a master or worker group. # Optional. The Compute Engine config settings for a cluster&#x27;s secondary worker instances
           &quot;accelerators&quot;: [ # Optional. The Compute Engine accelerator configuration for these instances.
             { # Specifies the type and number of accelerator cards attached to the instances of an instance. See GPUs on Compute Engine (https://cloud.google.com/compute/docs/gpus/).
               &quot;acceleratorCount&quot;: 42, # The number of the accelerator cards of this type exposed to this instance.
@@ -470,7 +480,8 @@ Args:
             { # A reference to a Compute Engine instance.
               &quot;instanceId&quot;: &quot;A String&quot;, # The unique identifier of the Compute Engine instance.
               &quot;instanceName&quot;: &quot;A String&quot;, # The user-friendly name of the Compute Engine instance.
-              &quot;publicKey&quot;: &quot;A String&quot;, # The public key used for sharing data with this instance.
+              &quot;publicEciesKey&quot;: &quot;A String&quot;, # The public ECIES key used for sharing data with this instance.
+              &quot;publicKey&quot;: &quot;A String&quot;, # The public RSA key used for sharing data with this instance.
             },
           ],
           &quot;isPreemptible&quot;: True or False, # Output only. Specifies that this instance group contains preemptible instances.
@@ -480,10 +491,15 @@ Args:
             &quot;instanceTemplateName&quot;: &quot;A String&quot;, # Output only. The name of the Instance Template used for the Managed Instance Group.
           },
           &quot;minCpuPlatform&quot;: &quot;A String&quot;, # Optional. Specifies the minimum cpu platform for the Instance Group. See Dataproc -&gt; Minimum CPU Platform (https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu).
-          &quot;numInstances&quot;: 42, # Optional. The number of VM instances in the instance group. For master instance groups, must be set to 1.
+          &quot;numInstances&quot;: 42, # Optional. The number of VM instances in the instance group. For HA cluster master_config groups, must be set to 3. For standard cluster master_config groups, must be set to 1.
           &quot;preemptibility&quot;: &quot;A String&quot;, # Optional. Specifies the preemptibility of the instance group.The default value for master and worker groups is NON_PREEMPTIBLE. This default cannot be changed.The default value for secondary instances is PREEMPTIBLE.
         },
         &quot;securityConfig&quot;: { # Security related configuration, including encryption, Kerberos, etc. # Optional. Security settings for the cluster.
+          &quot;identityConfig&quot;: { # Identity related configuration, including service account based secure multi-tenancy user mappings. # Optional. Identity related configuration, including service account based secure multi-tenancy user mappings.
+            &quot;userServiceAccountMapping&quot;: { # Required. Map of user to service account.
+              &quot;a_key&quot;: &quot;A String&quot;,
+            },
+          },
           &quot;kerberosConfig&quot;: { # Specifies Kerberos related configuration. # Optional. Kerberos related configuration.
             &quot;crossRealmTrustAdminServer&quot;: &quot;A String&quot;, # Optional. The admin server (IP or hostname) for the remote trusted realm in a cross realm trust relationship.
             &quot;crossRealmTrustKdc&quot;: &quot;A String&quot;, # Optional. The KDC (IP or hostname) for the remote trusted realm in a cross realm trust relationship.
@@ -502,7 +518,7 @@ Args:
             &quot;truststoreUri&quot;: &quot;A String&quot;, # Optional. The Cloud Storage URI of the truststore file used for SSL encryption. If not provided, Dataproc will provide a self-signed certificate.
           },
         },
-        &quot;softwareConfig&quot;: { # Specifies the selection and config of software inside the cluster. # Optional. The config settings for software inside the cluster.
+        &quot;softwareConfig&quot;: { # Specifies the selection and config of software inside the cluster. # Optional. The config settings for cluster software.
           &quot;imageVersion&quot;: &quot;A String&quot;, # Optional. The version of software inside the cluster. It must be one of the supported Dataproc Versions (https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#supported_dataproc_versions), such as &quot;1.2&quot; (including a subminor version, such as &quot;1.2.29&quot;), or the &quot;preview&quot; version (https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#other_versions). If unspecified, it defaults to the latest Debian version.
           &quot;optionalComponents&quot;: [ # Optional. The set of components to activate on the cluster.
             &quot;A String&quot;,
@@ -511,8 +527,8 @@ Args:
             &quot;a_key&quot;: &quot;A String&quot;,
           },
         },
-        &quot;tempBucket&quot;: &quot;A String&quot;, # Optional. A Cloud Storage bucket used to store ephemeral cluster and jobs data, such as Spark and MapReduce history files. If you do not specify a temp bucket, Dataproc will determine a Cloud Storage location (US, ASIA, or EU) for your cluster&#x27;s temp bucket according to the Compute Engine zone where your cluster is deployed, and then create and manage this project-level, per-location bucket. The default bucket has a TTL of 90 days, but you can use any TTL (or none) if you specify a bucket. This field requires a Cloud Storage bucket name, not a URI to a Cloud Storage bucket.
-        &quot;workerConfig&quot;: { # The config settings for Compute Engine resources in an instance group, such as a master or worker group. # Optional. The Compute Engine config settings for worker instances in a cluster.
+        &quot;tempBucket&quot;: &quot;A String&quot;, # Optional. A Cloud Storage bucket used to store ephemeral cluster and jobs data, such as Spark and MapReduce history files. If you do not specify a temp bucket, Dataproc will determine a Cloud Storage location (US, ASIA, or EU) for your cluster&#x27;s temp bucket according to the Compute Engine zone where your cluster is deployed, and then create and manage this project-level, per-location bucket. The default bucket has a TTL of 90 days, but you can use any TTL (or none) if you specify a bucket (see Dataproc staging and temp buckets (https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/staging-bucket)). This field requires a Cloud Storage bucket name, not a gs://... URI to a Cloud Storage bucket.
+        &quot;workerConfig&quot;: { # The config settings for Compute Engine resources in an instance group, such as a master or worker group. # Optional. The Compute Engine config settings for the cluster&#x27;s worker instances.
           &quot;accelerators&quot;: [ # Optional. The Compute Engine accelerator configuration for these instances.
             { # Specifies the type and number of accelerator cards attached to the instances of an instance. See GPUs on Compute Engine (https://cloud.google.com/compute/docs/gpus/).
               &quot;acceleratorCount&quot;: 42, # The number of the accelerator cards of this type exposed to this instance.
@@ -532,7 +548,8 @@ Args:
             { # A reference to a Compute Engine instance.
               &quot;instanceId&quot;: &quot;A String&quot;, # The unique identifier of the Compute Engine instance.
               &quot;instanceName&quot;: &quot;A String&quot;, # The user-friendly name of the Compute Engine instance.
-              &quot;publicKey&quot;: &quot;A String&quot;, # The public key used for sharing data with this instance.
+              &quot;publicEciesKey&quot;: &quot;A String&quot;, # The public ECIES key used for sharing data with this instance.
+              &quot;publicKey&quot;: &quot;A String&quot;, # The public RSA key used for sharing data with this instance.
             },
           ],
           &quot;isPreemptible&quot;: True or False, # Output only. Specifies that this instance group contains preemptible instances.
@@ -542,7 +559,7 @@ Args:
             &quot;instanceTemplateName&quot;: &quot;A String&quot;, # Output only. The name of the Instance Template used for the Managed Instance Group.
           },
           &quot;minCpuPlatform&quot;: &quot;A String&quot;, # Optional. Specifies the minimum cpu platform for the Instance Group. See Dataproc -&gt; Minimum CPU Platform (https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu).
-          &quot;numInstances&quot;: 42, # Optional. The number of VM instances in the instance group. For master instance groups, must be set to 1.
+          &quot;numInstances&quot;: 42, # Optional. The number of VM instances in the instance group. For HA cluster master_config groups, must be set to 3. For standard cluster master_config groups, must be set to 1.
           &quot;preemptibility&quot;: &quot;A String&quot;, # Optional. Specifies the preemptibility of the instance group.The default value for master and worker groups is NON_PREEMPTIBLE. This default cannot be changed.The default value for secondary instances is PREEMPTIBLE.
         },
       },
@@ -798,7 +815,7 @@ Returns:
         &quot;autoscalingConfig&quot;: { # Autoscaling Policy config associated with the cluster. # Optional. Autoscaling config for the policy associated with the cluster. Cluster does not autoscale if this field is unset.
           &quot;policyUri&quot;: &quot;A String&quot;, # Optional. The autoscaling policy used by the cluster.Only resource names including projectid and location (region) are valid. Examples: https://www.googleapis.com/compute/v1/projects/[project_id]/locations/[dataproc_region]/autoscalingPolicies/[policy_id] projects/[project_id]/locations/[dataproc_region]/autoscalingPolicies/[policy_id]Note that the policy must be in the same project and Dataproc region.
         },
-        &quot;configBucket&quot;: &quot;A String&quot;, # Optional. A Cloud Storage bucket used to stage job dependencies, config files, and job driver console output. If you do not specify a staging bucket, Cloud Dataproc will determine a Cloud Storage location (US, ASIA, or EU) for your cluster&#x27;s staging bucket according to the Compute Engine zone where your cluster is deployed, and then create and manage this project-level, per-location bucket (see Dataproc staging bucket (https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/staging-bucket)). This field requires a Cloud Storage bucket name, not a URI to a Cloud Storage bucket.
+        &quot;configBucket&quot;: &quot;A String&quot;, # Optional. A Cloud Storage bucket used to stage job dependencies, config files, and job driver console output. If you do not specify a staging bucket, Cloud Dataproc will determine a Cloud Storage location (US, ASIA, or EU) for your cluster&#x27;s staging bucket according to the Compute Engine zone where your cluster is deployed, and then create and manage this project-level, per-location bucket (see Dataproc staging and temp buckets (https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/staging-bucket)). This field requires a Cloud Storage bucket name, not a gs://... URI to a Cloud Storage bucket.
         &quot;encryptionConfig&quot;: { # Encryption settings for the cluster. # Optional. Encryption settings for the cluster.
           &quot;gcePdKmsKeyName&quot;: &quot;A String&quot;, # Optional. The Cloud KMS key name to use for PD disk encryption for all instances in the cluster.
         },
@@ -809,6 +826,9 @@ Returns:
           },
         },
         &quot;gceClusterConfig&quot;: { # Common config settings for resources of Compute Engine cluster instances, applicable to all instances in the cluster. # Optional. The shared Compute Engine config settings for all instances in a cluster.
+          &quot;confidentialInstanceConfig&quot;: { # Confidential Instance Config for clusters using Confidential VMs (https://cloud.google.com/compute/confidential-vm/docs) # Optional. Confidential Instance Config for clusters using Confidential VMs (https://cloud.google.com/compute/confidential-vm/docs).
+            &quot;enableConfidentialCompute&quot;: True or False, # Optional. Defines whether the instance should have confidential compute enabled.
+          },
           &quot;internalIpOnly&quot;: True or False, # Optional. If true, all instances in the cluster will only have internal IP addresses. By default, clusters are not restricted to internal IP addresses, and will have ephemeral external IP addresses assigned to each instance. This internal_ip_only restriction can only be enabled for subnetwork enabled networks, and all off-cluster dependencies must be configured to be accessible without external IP addresses.
           &quot;metadata&quot;: { # The Compute Engine metadata entries to add to all instances (see Project and instance metadata (https://cloud.google.com/compute/docs/storing-retrieving-metadata#project_and_instance_metadata)).
             &quot;a_key&quot;: &quot;A String&quot;,
@@ -840,6 +860,12 @@ Returns:
           ],
           &quot;zoneUri&quot;: &quot;A String&quot;, # Optional. The zone where the Compute Engine cluster will be located. On a create request, it is required in the &quot;global&quot; region. If omitted in a non-global Dataproc region, the service will pick a zone in the corresponding Compute Engine region. On a get request, zone will always be present.A full URL, partial URI, or short name are valid. Examples: https://www.googleapis.com/compute/v1/projects/[project_id]/zones/[zone] projects/[project_id]/zones/[zone] us-central1-f
         },
+        &quot;gkeClusterConfig&quot;: { # The cluster&#x27;s GKE config. # Optional. BETA. The Kubernetes Engine config for Dataproc clusters deployed to Kubernetes. Setting this is considered mutually exclusive with Compute Engine-based options such as gce_cluster_config, master_config, worker_config, secondary_worker_config, and autoscaling_config.
+          &quot;namespacedGkeDeploymentTarget&quot;: { # A full, namespace-isolated deployment target for an existing GKE cluster. # Optional. A target for the deployment.
+            &quot;clusterNamespace&quot;: &quot;A String&quot;, # Optional. A namespace within the GKE cluster to deploy into.
+            &quot;targetGkeCluster&quot;: &quot;A String&quot;, # Optional. The target GKE cluster to deploy to. Format: &#x27;projects/{project}/locations/{location}/clusters/{cluster_id}&#x27;
+          },
+        },
         &quot;initializationActions&quot;: [ # Optional. Commands to execute on each node after config is completed. By default, executables are run on master and all worker nodes. You can test a node&#x27;s role metadata to run an executable on a master or worker node, as shown below using curl (you can also use wget): ROLE=$(curl -H Metadata-Flavor:Google http://metadata/computeMetadata/v1/instance/attributes/dataproc-role) if [[ &quot;${ROLE}&quot; == &#x27;Master&#x27; ]]; then ... master specific actions ... else ... worker specific actions ... fi
           { # Specifies an executable to run on a fully configured node and a timeout period for executable completion.
             &quot;executableFile&quot;: &quot;A String&quot;, # Required. Cloud Storage URI of executable file.
@@ -852,7 +878,7 @@ Returns:
           &quot;idleDeleteTtl&quot;: &quot;A String&quot;, # Optional. The duration to keep the cluster alive while idling (when no jobs are running). Passing this threshold will cause the cluster to be deleted. Minimum value is 5 minutes; maximum value is 14 days (see JSON representation of Duration (https://developers.google.com/protocol-buffers/docs/proto3#json)).
           &quot;idleStartTime&quot;: &quot;A String&quot;, # Output only. The time when cluster became idle (most recent job finished) and became eligible for deletion due to idleness (see JSON representation of Timestamp (https://developers.google.com/protocol-buffers/docs/proto3#json)).
         },
-        &quot;masterConfig&quot;: { # The config settings for Compute Engine resources in an instance group, such as a master or worker group. # Optional. The Compute Engine config settings for the master instance in a cluster.
+        &quot;masterConfig&quot;: { # The config settings for Compute Engine resources in an instance group, such as a master or worker group. # Optional. The Compute Engine config settings for the cluster&#x27;s master instance.
           &quot;accelerators&quot;: [ # Optional. The Compute Engine accelerator configuration for these instances.
             { # Specifies the type and number of accelerator cards attached to the instances of an instance. See GPUs on Compute Engine (https://cloud.google.com/compute/docs/gpus/).
               &quot;acceleratorCount&quot;: 42, # The number of the accelerator cards of this type exposed to this instance.
@@ -872,7 +898,8 @@ Returns:
             { # A reference to a Compute Engine instance.
               &quot;instanceId&quot;: &quot;A String&quot;, # The unique identifier of the Compute Engine instance.
               &quot;instanceName&quot;: &quot;A String&quot;, # The user-friendly name of the Compute Engine instance.
-              &quot;publicKey&quot;: &quot;A String&quot;, # The public key used for sharing data with this instance.
+              &quot;publicEciesKey&quot;: &quot;A String&quot;, # The public ECIES key used for sharing data with this instance.
+              &quot;publicKey&quot;: &quot;A String&quot;, # The public RSA key used for sharing data with this instance.
             },
           ],
           &quot;isPreemptible&quot;: True or False, # Output only. Specifies that this instance group contains preemptible instances.
@@ -882,13 +909,13 @@ Returns:
             &quot;instanceTemplateName&quot;: &quot;A String&quot;, # Output only. The name of the Instance Template used for the Managed Instance Group.
           },
           &quot;minCpuPlatform&quot;: &quot;A String&quot;, # Optional. Specifies the minimum cpu platform for the Instance Group. See Dataproc -&gt; Minimum CPU Platform (https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu).
-          &quot;numInstances&quot;: 42, # Optional. The number of VM instances in the instance group. For master instance groups, must be set to 1.
+          &quot;numInstances&quot;: 42, # Optional. The number of VM instances in the instance group. For HA cluster master_config groups, must be set to 3. For standard cluster master_config groups, must be set to 1.
           &quot;preemptibility&quot;: &quot;A String&quot;, # Optional. Specifies the preemptibility of the instance group.The default value for master and worker groups is NON_PREEMPTIBLE. This default cannot be changed.The default value for secondary instances is PREEMPTIBLE.
         },
         &quot;metastoreConfig&quot;: { # Specifies a Metastore configuration. # Optional. Metastore configuration.
           &quot;dataprocMetastoreService&quot;: &quot;A String&quot;, # Required. Resource name of an existing Dataproc Metastore service.Example: projects/[project_id]/locations/[dataproc_region]/services/[service-name]
         },
-        &quot;secondaryWorkerConfig&quot;: { # The config settings for Compute Engine resources in an instance group, such as a master or worker group. # Optional. The Compute Engine config settings for additional worker instances in a cluster.
+        &quot;secondaryWorkerConfig&quot;: { # The config settings for Compute Engine resources in an instance group, such as a master or worker group. # Optional. The Compute Engine config settings for a cluster&#x27;s secondary worker instances
           &quot;accelerators&quot;: [ # Optional. The Compute Engine accelerator configuration for these instances.
             { # Specifies the type and number of accelerator cards attached to the instances of an instance. See GPUs on Compute Engine (https://cloud.google.com/compute/docs/gpus/).
               &quot;acceleratorCount&quot;: 42, # The number of the accelerator cards of this type exposed to this instance.
@@ -908,7 +935,8 @@ Returns:
             { # A reference to a Compute Engine instance.
               &quot;instanceId&quot;: &quot;A String&quot;, # The unique identifier of the Compute Engine instance.
               &quot;instanceName&quot;: &quot;A String&quot;, # The user-friendly name of the Compute Engine instance.
-              &quot;publicKey&quot;: &quot;A String&quot;, # The public key used for sharing data with this instance.
+              &quot;publicEciesKey&quot;: &quot;A String&quot;, # The public ECIES key used for sharing data with this instance.
+              &quot;publicKey&quot;: &quot;A String&quot;, # The public RSA key used for sharing data with this instance.
             },
           ],
           &quot;isPreemptible&quot;: True or False, # Output only. Specifies that this instance group contains preemptible instances.
@@ -918,10 +946,15 @@ Returns:
             &quot;instanceTemplateName&quot;: &quot;A String&quot;, # Output only. The name of the Instance Template used for the Managed Instance Group.
           },
           &quot;minCpuPlatform&quot;: &quot;A String&quot;, # Optional. Specifies the minimum cpu platform for the Instance Group. See Dataproc -&gt; Minimum CPU Platform (https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu).
-          &quot;numInstances&quot;: 42, # Optional. The number of VM instances in the instance group. For master instance groups, must be set to 1.
+          &quot;numInstances&quot;: 42, # Optional. The number of VM instances in the instance group. For HA cluster master_config groups, must be set to 3. For standard cluster master_config groups, must be set to 1.
           &quot;preemptibility&quot;: &quot;A String&quot;, # Optional. Specifies the preemptibility of the instance group.The default value for master and worker groups is NON_PREEMPTIBLE. This default cannot be changed.The default value for secondary instances is PREEMPTIBLE.
         },
         &quot;securityConfig&quot;: { # Security related configuration, including encryption, Kerberos, etc. # Optional. Security settings for the cluster.
+          &quot;identityConfig&quot;: { # Identity related configuration, including service account based secure multi-tenancy user mappings. # Optional. Identity related configuration, including service account based secure multi-tenancy user mappings.
+            &quot;userServiceAccountMapping&quot;: { # Required. Map of user to service account.
+              &quot;a_key&quot;: &quot;A String&quot;,
+            },
+          },
           &quot;kerberosConfig&quot;: { # Specifies Kerberos related configuration. # Optional. Kerberos related configuration.
             &quot;crossRealmTrustAdminServer&quot;: &quot;A String&quot;, # Optional. The admin server (IP or hostname) for the remote trusted realm in a cross realm trust relationship.
             &quot;crossRealmTrustKdc&quot;: &quot;A String&quot;, # Optional. The KDC (IP or hostname) for the remote trusted realm in a cross realm trust relationship.
@@ -940,7 +973,7 @@ Returns:
             &quot;truststoreUri&quot;: &quot;A String&quot;, # Optional. The Cloud Storage URI of the truststore file used for SSL encryption. If not provided, Dataproc will provide a self-signed certificate.
           },
         },
-        &quot;softwareConfig&quot;: { # Specifies the selection and config of software inside the cluster. # Optional. The config settings for software inside the cluster.
+        &quot;softwareConfig&quot;: { # Specifies the selection and config of software inside the cluster. # Optional. The config settings for cluster software.
           &quot;imageVersion&quot;: &quot;A String&quot;, # Optional. The version of software inside the cluster. It must be one of the supported Dataproc Versions (https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#supported_dataproc_versions), such as &quot;1.2&quot; (including a subminor version, such as &quot;1.2.29&quot;), or the &quot;preview&quot; version (https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#other_versions). If unspecified, it defaults to the latest Debian version.
           &quot;optionalComponents&quot;: [ # Optional. The set of components to activate on the cluster.
             &quot;A String&quot;,
@@ -949,8 +982,8 @@ Returns:
             &quot;a_key&quot;: &quot;A String&quot;,
           },
         },
-        &quot;tempBucket&quot;: &quot;A String&quot;, # Optional. A Cloud Storage bucket used to store ephemeral cluster and jobs data, such as Spark and MapReduce history files. If you do not specify a temp bucket, Dataproc will determine a Cloud Storage location (US, ASIA, or EU) for your cluster&#x27;s temp bucket according to the Compute Engine zone where your cluster is deployed, and then create and manage this project-level, per-location bucket. The default bucket has a TTL of 90 days, but you can use any TTL (or none) if you specify a bucket. This field requires a Cloud Storage bucket name, not a URI to a Cloud Storage bucket.
-        &quot;workerConfig&quot;: { # The config settings for Compute Engine resources in an instance group, such as a master or worker group. # Optional. The Compute Engine config settings for worker instances in a cluster.
+        &quot;tempBucket&quot;: &quot;A String&quot;, # Optional. A Cloud Storage bucket used to store ephemeral cluster and jobs data, such as Spark and MapReduce history files. If you do not specify a temp bucket, Dataproc will determine a Cloud Storage location (US, ASIA, or EU) for your cluster&#x27;s temp bucket according to the Compute Engine zone where your cluster is deployed, and then create and manage this project-level, per-location bucket. The default bucket has a TTL of 90 days, but you can use any TTL (or none) if you specify a bucket (see Dataproc staging and temp buckets (https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/staging-bucket)). This field requires a Cloud Storage bucket name, not a gs://... URI to a Cloud Storage bucket.
+        &quot;workerConfig&quot;: { # The config settings for Compute Engine resources in an instance group, such as a master or worker group. # Optional. The Compute Engine config settings for the cluster&#x27;s worker instances.
           &quot;accelerators&quot;: [ # Optional. The Compute Engine accelerator configuration for these instances.
             { # Specifies the type and number of accelerator cards attached to the instances of an instance. See GPUs on Compute Engine (https://cloud.google.com/compute/docs/gpus/).
               &quot;acceleratorCount&quot;: 42, # The number of the accelerator cards of this type exposed to this instance.
@@ -970,7 +1003,8 @@ Returns:
             { # A reference to a Compute Engine instance.
               &quot;instanceId&quot;: &quot;A String&quot;, # The unique identifier of the Compute Engine instance.
               &quot;instanceName&quot;: &quot;A String&quot;, # The user-friendly name of the Compute Engine instance.
-              &quot;publicKey&quot;: &quot;A String&quot;, # The public key used for sharing data with this instance.
+              &quot;publicEciesKey&quot;: &quot;A String&quot;, # The public ECIES key used for sharing data with this instance.
+              &quot;publicKey&quot;: &quot;A String&quot;, # The public RSA key used for sharing data with this instance.
             },
           ],
           &quot;isPreemptible&quot;: True or False, # Output only. Specifies that this instance group contains preemptible instances.
@@ -980,7 +1014,7 @@ Returns:
             &quot;instanceTemplateName&quot;: &quot;A String&quot;, # Output only. The name of the Instance Template used for the Managed Instance Group.
           },
           &quot;minCpuPlatform&quot;: &quot;A String&quot;, # Optional. Specifies the minimum cpu platform for the Instance Group. See Dataproc -&gt; Minimum CPU Platform (https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu).
-          &quot;numInstances&quot;: 42, # Optional. The number of VM instances in the instance group. For master instance groups, must be set to 1.
+          &quot;numInstances&quot;: 42, # Optional. The number of VM instances in the instance group. For HA cluster master_config groups, must be set to 3. For standard cluster master_config groups, must be set to 1.
           &quot;preemptibility&quot;: &quot;A String&quot;, # Optional. Specifies the preemptibility of the instance group.The default value for master and worker groups is NON_PREEMPTIBLE. This default cannot be changed.The default value for secondary instances is PREEMPTIBLE.
         },
       },
@@ -1263,7 +1297,7 @@ Returns:
         &quot;autoscalingConfig&quot;: { # Autoscaling Policy config associated with the cluster. # Optional. Autoscaling config for the policy associated with the cluster. Cluster does not autoscale if this field is unset.
           &quot;policyUri&quot;: &quot;A String&quot;, # Optional. The autoscaling policy used by the cluster.Only resource names including projectid and location (region) are valid. Examples: https://www.googleapis.com/compute/v1/projects/[project_id]/locations/[dataproc_region]/autoscalingPolicies/[policy_id] projects/[project_id]/locations/[dataproc_region]/autoscalingPolicies/[policy_id]Note that the policy must be in the same project and Dataproc region.
         },
-        &quot;configBucket&quot;: &quot;A String&quot;, # Optional. A Cloud Storage bucket used to stage job dependencies, config files, and job driver console output. If you do not specify a staging bucket, Cloud Dataproc will determine a Cloud Storage location (US, ASIA, or EU) for your cluster&#x27;s staging bucket according to the Compute Engine zone where your cluster is deployed, and then create and manage this project-level, per-location bucket (see Dataproc staging bucket (https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/staging-bucket)). This field requires a Cloud Storage bucket name, not a URI to a Cloud Storage bucket.
+        &quot;configBucket&quot;: &quot;A String&quot;, # Optional. A Cloud Storage bucket used to stage job dependencies, config files, and job driver console output. If you do not specify a staging bucket, Cloud Dataproc will determine a Cloud Storage location (US, ASIA, or EU) for your cluster&#x27;s staging bucket according to the Compute Engine zone where your cluster is deployed, and then create and manage this project-level, per-location bucket (see Dataproc staging and temp buckets (https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/staging-bucket)). This field requires a Cloud Storage bucket name, not a gs://... URI to a Cloud Storage bucket.
         &quot;encryptionConfig&quot;: { # Encryption settings for the cluster. # Optional. Encryption settings for the cluster.
           &quot;gcePdKmsKeyName&quot;: &quot;A String&quot;, # Optional. The Cloud KMS key name to use for PD disk encryption for all instances in the cluster.
         },
@@ -1274,6 +1308,9 @@ Returns:
           },
         },
         &quot;gceClusterConfig&quot;: { # Common config settings for resources of Compute Engine cluster instances, applicable to all instances in the cluster. # Optional. The shared Compute Engine config settings for all instances in a cluster.
+          &quot;confidentialInstanceConfig&quot;: { # Confidential Instance Config for clusters using Confidential VMs (https://cloud.google.com/compute/confidential-vm/docs) # Optional. Confidential Instance Config for clusters using Confidential VMs (https://cloud.google.com/compute/confidential-vm/docs).
+            &quot;enableConfidentialCompute&quot;: True or False, # Optional. Defines whether the instance should have confidential compute enabled.
+          },
           &quot;internalIpOnly&quot;: True or False, # Optional. If true, all instances in the cluster will only have internal IP addresses. By default, clusters are not restricted to internal IP addresses, and will have ephemeral external IP addresses assigned to each instance. This internal_ip_only restriction can only be enabled for subnetwork enabled networks, and all off-cluster dependencies must be configured to be accessible without external IP addresses.
           &quot;metadata&quot;: { # The Compute Engine metadata entries to add to all instances (see Project and instance metadata (https://cloud.google.com/compute/docs/storing-retrieving-metadata#project_and_instance_metadata)).
             &quot;a_key&quot;: &quot;A String&quot;,
@@ -1305,6 +1342,12 @@ Returns:
           ],
           &quot;zoneUri&quot;: &quot;A String&quot;, # Optional. The zone where the Compute Engine cluster will be located. On a create request, it is required in the &quot;global&quot; region. If omitted in a non-global Dataproc region, the service will pick a zone in the corresponding Compute Engine region. On a get request, zone will always be present.A full URL, partial URI, or short name are valid. Examples: https://www.googleapis.com/compute/v1/projects/[project_id]/zones/[zone] projects/[project_id]/zones/[zone] us-central1-f
         },
+        &quot;gkeClusterConfig&quot;: { # The cluster&#x27;s GKE config. # Optional. BETA. The Kubernetes Engine config for Dataproc clusters deployed to Kubernetes. Setting this is considered mutually exclusive with Compute Engine-based options such as gce_cluster_config, master_config, worker_config, secondary_worker_config, and autoscaling_config.
+          &quot;namespacedGkeDeploymentTarget&quot;: { # A full, namespace-isolated deployment target for an existing GKE cluster. # Optional. A target for the deployment.
+            &quot;clusterNamespace&quot;: &quot;A String&quot;, # Optional. A namespace within the GKE cluster to deploy into.
+            &quot;targetGkeCluster&quot;: &quot;A String&quot;, # Optional. The target GKE cluster to deploy to. Format: &#x27;projects/{project}/locations/{location}/clusters/{cluster_id}&#x27;
+          },
+        },
         &quot;initializationActions&quot;: [ # Optional. Commands to execute on each node after config is completed. By default, executables are run on master and all worker nodes. You can test a node&#x27;s role metadata to run an executable on a master or worker node, as shown below using curl (you can also use wget): ROLE=$(curl -H Metadata-Flavor:Google http://metadata/computeMetadata/v1/instance/attributes/dataproc-role) if [[ &quot;${ROLE}&quot; == &#x27;Master&#x27; ]]; then ... master specific actions ... else ... worker specific actions ... fi
           { # Specifies an executable to run on a fully configured node and a timeout period for executable completion.
             &quot;executableFile&quot;: &quot;A String&quot;, # Required. Cloud Storage URI of executable file.
@@ -1317,7 +1360,7 @@ Returns:
           &quot;idleDeleteTtl&quot;: &quot;A String&quot;, # Optional. The duration to keep the cluster alive while idling (when no jobs are running). Passing this threshold will cause the cluster to be deleted. Minimum value is 5 minutes; maximum value is 14 days (see JSON representation of Duration (https://developers.google.com/protocol-buffers/docs/proto3#json)).
           &quot;idleStartTime&quot;: &quot;A String&quot;, # Output only. The time when cluster became idle (most recent job finished) and became eligible for deletion due to idleness (see JSON representation of Timestamp (https://developers.google.com/protocol-buffers/docs/proto3#json)).
         },
-        &quot;masterConfig&quot;: { # The config settings for Compute Engine resources in an instance group, such as a master or worker group. # Optional. The Compute Engine config settings for the master instance in a cluster.
+        &quot;masterConfig&quot;: { # The config settings for Compute Engine resources in an instance group, such as a master or worker group. # Optional. The Compute Engine config settings for the cluster&#x27;s master instance.
           &quot;accelerators&quot;: [ # Optional. The Compute Engine accelerator configuration for these instances.
             { # Specifies the type and number of accelerator cards attached to the instances of an instance. See GPUs on Compute Engine (https://cloud.google.com/compute/docs/gpus/).
               &quot;acceleratorCount&quot;: 42, # The number of the accelerator cards of this type exposed to this instance.
@@ -1337,7 +1380,8 @@ Returns:
             { # A reference to a Compute Engine instance.
               &quot;instanceId&quot;: &quot;A String&quot;, # The unique identifier of the Compute Engine instance.
               &quot;instanceName&quot;: &quot;A String&quot;, # The user-friendly name of the Compute Engine instance.
-              &quot;publicKey&quot;: &quot;A String&quot;, # The public key used for sharing data with this instance.
+              &quot;publicEciesKey&quot;: &quot;A String&quot;, # The public ECIES key used for sharing data with this instance.
+              &quot;publicKey&quot;: &quot;A String&quot;, # The public RSA key used for sharing data with this instance.
             },
           ],
           &quot;isPreemptible&quot;: True or False, # Output only. Specifies that this instance group contains preemptible instances.
@@ -1347,13 +1391,13 @@ Returns:
             &quot;instanceTemplateName&quot;: &quot;A String&quot;, # Output only. The name of the Instance Template used for the Managed Instance Group.
           },
           &quot;minCpuPlatform&quot;: &quot;A String&quot;, # Optional. Specifies the minimum cpu platform for the Instance Group. See Dataproc -&gt; Minimum CPU Platform (https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu).
-          &quot;numInstances&quot;: 42, # Optional. The number of VM instances in the instance group. For master instance groups, must be set to 1.
+          &quot;numInstances&quot;: 42, # Optional. The number of VM instances in the instance group. For HA cluster master_config groups, must be set to 3. For standard cluster master_config groups, must be set to 1.
           &quot;preemptibility&quot;: &quot;A String&quot;, # Optional. Specifies the preemptibility of the instance group.The default value for master and worker groups is NON_PREEMPTIBLE. This default cannot be changed.The default value for secondary instances is PREEMPTIBLE.
         },
         &quot;metastoreConfig&quot;: { # Specifies a Metastore configuration. # Optional. Metastore configuration.
           &quot;dataprocMetastoreService&quot;: &quot;A String&quot;, # Required. Resource name of an existing Dataproc Metastore service.Example: projects/[project_id]/locations/[dataproc_region]/services/[service-name]
         },
-        &quot;secondaryWorkerConfig&quot;: { # The config settings for Compute Engine resources in an instance group, such as a master or worker group. # Optional. The Compute Engine config settings for additional worker instances in a cluster.
+        &quot;secondaryWorkerConfig&quot;: { # The config settings for Compute Engine resources in an instance group, such as a master or worker group. # Optional. The Compute Engine config settings for a cluster&#x27;s secondary worker instances
           &quot;accelerators&quot;: [ # Optional. The Compute Engine accelerator configuration for these instances.
             { # Specifies the type and number of accelerator cards attached to the instances of an instance. See GPUs on Compute Engine (https://cloud.google.com/compute/docs/gpus/).
               &quot;acceleratorCount&quot;: 42, # The number of the accelerator cards of this type exposed to this instance.
@@ -1373,7 +1417,8 @@ Returns:
             { # A reference to a Compute Engine instance.
               &quot;instanceId&quot;: &quot;A String&quot;, # The unique identifier of the Compute Engine instance.
               &quot;instanceName&quot;: &quot;A String&quot;, # The user-friendly name of the Compute Engine instance.
-              &quot;publicKey&quot;: &quot;A String&quot;, # The public key used for sharing data with this instance.
+              &quot;publicEciesKey&quot;: &quot;A String&quot;, # The public ECIES key used for sharing data with this instance.
+              &quot;publicKey&quot;: &quot;A String&quot;, # The public RSA key used for sharing data with this instance.
             },
           ],
           &quot;isPreemptible&quot;: True or False, # Output only. Specifies that this instance group contains preemptible instances.
@@ -1383,10 +1428,15 @@ Returns:
             &quot;instanceTemplateName&quot;: &quot;A String&quot;, # Output only. The name of the Instance Template used for the Managed Instance Group.
           },
           &quot;minCpuPlatform&quot;: &quot;A String&quot;, # Optional. Specifies the minimum cpu platform for the Instance Group. See Dataproc -&gt; Minimum CPU Platform (https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu).
-          &quot;numInstances&quot;: 42, # Optional. The number of VM instances in the instance group. For master instance groups, must be set to 1.
+          &quot;numInstances&quot;: 42, # Optional. The number of VM instances in the instance group. For HA cluster master_config groups, must be set to 3. For standard cluster master_config groups, must be set to 1.
           &quot;preemptibility&quot;: &quot;A String&quot;, # Optional. Specifies the preemptibility of the instance group.The default value for master and worker groups is NON_PREEMPTIBLE. This default cannot be changed.The default value for secondary instances is PREEMPTIBLE.
         },
         &quot;securityConfig&quot;: { # Security related configuration, including encryption, Kerberos, etc. # Optional. Security settings for the cluster.
+          &quot;identityConfig&quot;: { # Identity related configuration, including service account based secure multi-tenancy user mappings. # Optional. Identity related configuration, including service account based secure multi-tenancy user mappings.
+            &quot;userServiceAccountMapping&quot;: { # Required. Map of user to service account.
+              &quot;a_key&quot;: &quot;A String&quot;,
+            },
+          },
           &quot;kerberosConfig&quot;: { # Specifies Kerberos related configuration. # Optional. Kerberos related configuration.
             &quot;crossRealmTrustAdminServer&quot;: &quot;A String&quot;, # Optional. The admin server (IP or hostname) for the remote trusted realm in a cross realm trust relationship.
             &quot;crossRealmTrustKdc&quot;: &quot;A String&quot;, # Optional. The KDC (IP or hostname) for the remote trusted realm in a cross realm trust relationship.
@@ -1405,7 +1455,7 @@ Returns:
             &quot;truststoreUri&quot;: &quot;A String&quot;, # Optional. The Cloud Storage URI of the truststore file used for SSL encryption. If not provided, Dataproc will provide a self-signed certificate.
           },
         },
-        &quot;softwareConfig&quot;: { # Specifies the selection and config of software inside the cluster. # Optional. The config settings for software inside the cluster.
+        &quot;softwareConfig&quot;: { # Specifies the selection and config of software inside the cluster. # Optional. The config settings for cluster software.
           &quot;imageVersion&quot;: &quot;A String&quot;, # Optional. The version of software inside the cluster. It must be one of the supported Dataproc Versions (https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#supported_dataproc_versions), such as &quot;1.2&quot; (including a subminor version, such as &quot;1.2.29&quot;), or the &quot;preview&quot; version (https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#other_versions). If unspecified, it defaults to the latest Debian version.
           &quot;optionalComponents&quot;: [ # Optional. The set of components to activate on the cluster.
             &quot;A String&quot;,
@@ -1414,8 +1464,8 @@ Returns:
             &quot;a_key&quot;: &quot;A String&quot;,
           },
         },
-        &quot;tempBucket&quot;: &quot;A String&quot;, # Optional. A Cloud Storage bucket used to store ephemeral cluster and jobs data, such as Spark and MapReduce history files. If you do not specify a temp bucket, Dataproc will determine a Cloud Storage location (US, ASIA, or EU) for your cluster&#x27;s temp bucket according to the Compute Engine zone where your cluster is deployed, and then create and manage this project-level, per-location bucket. The default bucket has a TTL of 90 days, but you can use any TTL (or none) if you specify a bucket. This field requires a Cloud Storage bucket name, not a URI to a Cloud Storage bucket.
-        &quot;workerConfig&quot;: { # The config settings for Compute Engine resources in an instance group, such as a master or worker group. # Optional. The Compute Engine config settings for worker instances in a cluster.
+        &quot;tempBucket&quot;: &quot;A String&quot;, # Optional. A Cloud Storage bucket used to store ephemeral cluster and jobs data, such as Spark and MapReduce history files. If you do not specify a temp bucket, Dataproc will determine a Cloud Storage location (US, ASIA, or EU) for your cluster&#x27;s temp bucket according to the Compute Engine zone where your cluster is deployed, and then create and manage this project-level, per-location bucket. The default bucket has a TTL of 90 days, but you can use any TTL (or none) if you specify a bucket (see Dataproc staging and temp buckets (https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/staging-bucket)). This field requires a Cloud Storage bucket name, not a gs://... URI to a Cloud Storage bucket.
+        &quot;workerConfig&quot;: { # The config settings for Compute Engine resources in an instance group, such as a master or worker group. # Optional. The Compute Engine config settings for the cluster&#x27;s worker instances.
           &quot;accelerators&quot;: [ # Optional. The Compute Engine accelerator configuration for these instances.
             { # Specifies the type and number of accelerator cards attached to the instances of an instance. See GPUs on Compute Engine (https://cloud.google.com/compute/docs/gpus/).
               &quot;acceleratorCount&quot;: 42, # The number of the accelerator cards of this type exposed to this instance.
@@ -1435,7 +1485,8 @@ Returns:
             { # A reference to a Compute Engine instance.
               &quot;instanceId&quot;: &quot;A String&quot;, # The unique identifier of the Compute Engine instance.
               &quot;instanceName&quot;: &quot;A String&quot;, # The user-friendly name of the Compute Engine instance.
-              &quot;publicKey&quot;: &quot;A String&quot;, # The public key used for sharing data with this instance.
+              &quot;publicEciesKey&quot;: &quot;A String&quot;, # The public ECIES key used for sharing data with this instance.
+              &quot;publicKey&quot;: &quot;A String&quot;, # The public RSA key used for sharing data with this instance.
             },
           ],
           &quot;isPreemptible&quot;: True or False, # Output only. Specifies that this instance group contains preemptible instances.
@@ -1445,7 +1496,7 @@ Returns:
             &quot;instanceTemplateName&quot;: &quot;A String&quot;, # Output only. The name of the Instance Template used for the Managed Instance Group.
           },
           &quot;minCpuPlatform&quot;: &quot;A String&quot;, # Optional. Specifies the minimum cpu platform for the Instance Group. See Dataproc -&gt; Minimum CPU Platform (https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu).
-          &quot;numInstances&quot;: 42, # Optional. The number of VM instances in the instance group. For master instance groups, must be set to 1.
+          &quot;numInstances&quot;: 42, # Optional. The number of VM instances in the instance group. For HA cluster master_config groups, must be set to 3. For standard cluster master_config groups, must be set to 1.
           &quot;preemptibility&quot;: &quot;A String&quot;, # Optional. Specifies the preemptibility of the instance group.The default value for master and worker groups is NON_PREEMPTIBLE. This default cannot be changed.The default value for secondary instances is PREEMPTIBLE.
         },
       },
@@ -1470,7 +1521,7 @@ Args:
 
 { # Request message for GetIamPolicy method.
   &quot;options&quot;: { # Encapsulates settings provided to GetIamPolicy. # OPTIONAL: A GetPolicyOptions object for specifying options to GetIamPolicy.
-    &quot;requestedPolicyVersion&quot;: 42, # Optional. The policy format version to be returned.Valid values are 0, 1, and 3. Requests specifying an invalid value will be rejected.Requests for policies with any conditional bindings must specify version 3. Policies without any conditional bindings may specify any valid value or leave the field unset.To learn which resources support conditions in their IAM policies, see the IAM documentation (https://cloud.google.com/iam/help/conditions/resource-policies).
+    &quot;requestedPolicyVersion&quot;: 42, # Optional. The maximum policy version that will be used to format the policy.Valid values are 0, 1, and 3. Requests specifying an invalid value will be rejected.Requests for policies with any conditional role bindings must specify version 3. Policies with no conditional role bindings may specify any valid value or leave the field unset.The policy in the response might use the policy version that you specified, or it might use a lower policy version. For example, if you specify version 3, but the policy has no conditional role bindings, the response uses version 1.To learn which resources support conditions in their IAM policies, see the IAM documentation (https://cloud.google.com/iam/help/conditions/resource-policies).
   },
 }
 
@@ -1482,19 +1533,19 @@ Args:
 Returns:
   An object of the form:
 
-    { # An Identity and Access Management (IAM) policy, which specifies access controls for Google Cloud resources.A Policy is a collection of bindings. A binding binds one or more members to a single role. Members can be user accounts, service accounts, Google groups, and domains (such as G Suite). A role is a named list of permissions; each role can be an IAM predefined role or a user-created custom role.For some types of Google Cloud resources, a binding can also specify a condition, which is a logical expression that allows access to a resource only if the expression evaluates to true. A condition can add constraints based on attributes of the request, the resource, or both. To learn which resources support conditions in their IAM policies, see the IAM documentation (https://cloud.google.com/iam/help/conditions/resource-policies).JSON example: { &quot;bindings&quot;: [ { &quot;role&quot;: &quot;roles/resourcemanager.organizationAdmin&quot;, &quot;members&quot;: [ &quot;user:mike@example.com&quot;, &quot;group:admins@example.com&quot;, &quot;domain:google.com&quot;, &quot;serviceAccount:my-project-id@appspot.gserviceaccount.com&quot; ] }, { &quot;role&quot;: &quot;roles/resourcemanager.organizationViewer&quot;, &quot;members&quot;: [ &quot;user:eve@example.com&quot; ], &quot;condition&quot;: { &quot;title&quot;: &quot;expirable access&quot;, &quot;description&quot;: &quot;Does not grant access after Sep 2020&quot;, &quot;expression&quot;: &quot;request.time &lt; timestamp(&#x27;2020-10-01T00:00:00.000Z&#x27;)&quot;, } } ], &quot;etag&quot;: &quot;BwWWja0YfJA=&quot;, &quot;version&quot;: 3 } YAML example: bindings: - members: - user:mike@example.com - group:admins@example.com - domain:google.com - serviceAccount:my-project-id@appspot.gserviceaccount.com role: roles/resourcemanager.organizationAdmin - members: - user:eve@example.com role: roles/resourcemanager.organizationViewer condition: title: expirable access description: Does not grant access after Sep 2020 expression: request.time &lt; timestamp(&#x27;2020-10-01T00:00:00.000Z&#x27;) - etag: BwWWja0YfJA= - version: 3 For a description of IAM and its features, see the IAM documentation (https://cloud.google.com/iam/docs/).
-  &quot;bindings&quot;: [ # Associates a list of members to a role. Optionally, may specify a condition that determines how and when the bindings are applied. Each of the bindings must contain at least one member.
-    { # Associates members with a role.
-      &quot;condition&quot;: { # Represents a textual expression in the Common Expression Language (CEL) syntax. CEL is a C-like expression language. The syntax and semantics of CEL are documented at https://github.com/google/cel-spec.Example (Comparison): title: &quot;Summary size limit&quot; description: &quot;Determines if a summary is less than 100 chars&quot; expression: &quot;document.summary.size() &lt; 100&quot; Example (Equality): title: &quot;Requestor is owner&quot; description: &quot;Determines if requestor is the document owner&quot; expression: &quot;document.owner == request.auth.claims.email&quot; Example (Logic): title: &quot;Public documents&quot; description: &quot;Determine whether the document should be publicly visible&quot; expression: &quot;document.type != &#x27;private&#x27; &amp;&amp; document.type != &#x27;internal&#x27;&quot; Example (Data Manipulation): title: &quot;Notification string&quot; description: &quot;Create a notification string with a timestamp.&quot; expression: &quot;&#x27;New message received at &#x27; + string(document.create_time)&quot; The exact variables and functions that may be referenced within an expression are determined by the service that evaluates it. See the service documentation for additional information. # The condition that is associated with this binding.If the condition evaluates to true, then this binding applies to the current request.If the condition evaluates to false, then this binding does not apply to the current request. However, a different role binding might grant the same role to one or more of the members in this binding.To learn which resources support conditions in their IAM policies, see the IAM documentation (https://cloud.google.com/iam/help/conditions/resource-policies).
+    { # An Identity and Access Management (IAM) policy, which specifies access controls for Google Cloud resources.A Policy is a collection of bindings. A binding binds one or more members, or principals, to a single role. Principals can be user accounts, service accounts, Google groups, and domains (such as G Suite). A role is a named list of permissions; each role can be an IAM predefined role or a user-created custom role.For some types of Google Cloud resources, a binding can also specify a condition, which is a logical expression that allows access to a resource only if the expression evaluates to true. A condition can add constraints based on attributes of the request, the resource, or both. To learn which resources support conditions in their IAM policies, see the IAM documentation (https://cloud.google.com/iam/help/conditions/resource-policies).JSON example: { &quot;bindings&quot;: [ { &quot;role&quot;: &quot;roles/resourcemanager.organizationAdmin&quot;, &quot;members&quot;: [ &quot;user:mike@example.com&quot;, &quot;group:admins@example.com&quot;, &quot;domain:google.com&quot;, &quot;serviceAccount:my-project-id@appspot.gserviceaccount.com&quot; ] }, { &quot;role&quot;: &quot;roles/resourcemanager.organizationViewer&quot;, &quot;members&quot;: [ &quot;user:eve@example.com&quot; ], &quot;condition&quot;: { &quot;title&quot;: &quot;expirable access&quot;, &quot;description&quot;: &quot;Does not grant access after Sep 2020&quot;, &quot;expression&quot;: &quot;request.time &lt; timestamp(&#x27;2020-10-01T00:00:00.000Z&#x27;)&quot;, } } ], &quot;etag&quot;: &quot;BwWWja0YfJA=&quot;, &quot;version&quot;: 3 } YAML example: bindings: - members: - user:mike@example.com - group:admins@example.com - domain:google.com - serviceAccount:my-project-id@appspot.gserviceaccount.com role: roles/resourcemanager.organizationAdmin - members: - user:eve@example.com role: roles/resourcemanager.organizationViewer condition: title: expirable access description: Does not grant access after Sep 2020 expression: request.time &lt; timestamp(&#x27;2020-10-01T00:00:00.000Z&#x27;) etag: BwWWja0YfJA= version: 3 For a description of IAM and its features, see the IAM documentation (https://cloud.google.com/iam/docs/).
+  &quot;bindings&quot;: [ # Associates a list of members, or principals, with a role. Optionally, may specify a condition that determines how and when the bindings are applied. Each of the bindings must contain at least one principal.The bindings in a Policy can refer to up to 1,500 principals; up to 250 of these principals can be Google groups. Each occurrence of a principal counts towards these limits. For example, if the bindings grant 50 different roles to user:alice@example.com, and not to any other principal, then you can add another 1,450 principals to the bindings in the Policy.
+    { # Associates members, or principals, with a role.
+      &quot;condition&quot;: { # Represents a textual expression in the Common Expression Language (CEL) syntax. CEL is a C-like expression language. The syntax and semantics of CEL are documented at https://github.com/google/cel-spec.Example (Comparison): title: &quot;Summary size limit&quot; description: &quot;Determines if a summary is less than 100 chars&quot; expression: &quot;document.summary.size() &lt; 100&quot; Example (Equality): title: &quot;Requestor is owner&quot; description: &quot;Determines if requestor is the document owner&quot; expression: &quot;document.owner == request.auth.claims.email&quot; Example (Logic): title: &quot;Public documents&quot; description: &quot;Determine whether the document should be publicly visible&quot; expression: &quot;document.type != &#x27;private&#x27; &amp;&amp; document.type != &#x27;internal&#x27;&quot; Example (Data Manipulation): title: &quot;Notification string&quot; description: &quot;Create a notification string with a timestamp.&quot; expression: &quot;&#x27;New message received at &#x27; + string(document.create_time)&quot; The exact variables and functions that may be referenced within an expression are determined by the service that evaluates it. See the service documentation for additional information. # The condition that is associated with this binding.If the condition evaluates to true, then this binding applies to the current request.If the condition evaluates to false, then this binding does not apply to the current request. However, a different role binding might grant the same role to one or more of the principals in this binding.To learn which resources support conditions in their IAM policies, see the IAM documentation (https://cloud.google.com/iam/help/conditions/resource-policies).
         &quot;description&quot;: &quot;A String&quot;, # Optional. Description of the expression. This is a longer text which describes the expression, e.g. when hovered over it in a UI.
         &quot;expression&quot;: &quot;A String&quot;, # Textual representation of an expression in Common Expression Language syntax.
         &quot;location&quot;: &quot;A String&quot;, # Optional. String indicating the location of the expression for error reporting, e.g. a file name and a position in the file.
         &quot;title&quot;: &quot;A String&quot;, # Optional. Title for the expression, i.e. a short string describing its purpose. This can be used e.g. in UIs which allow to enter the expression.
       },
-      &quot;members&quot;: [ # Specifies the identities requesting access for a Cloud Platform resource. members can have the following values: allUsers: A special identifier that represents anyone who is on the internet; with or without a Google account. allAuthenticatedUsers: A special identifier that represents anyone who is authenticated with a Google account or a service account. user:{emailid}: An email address that represents a specific Google account. For example, alice@example.com . serviceAccount:{emailid}: An email address that represents a service account. For example, my-other-app@appspot.gserviceaccount.com. group:{emailid}: An email address that represents a Google group. For example, admins@example.com. deleted:user:{emailid}?uid={uniqueid}: An email address (plus unique identifier) representing a user that has been recently deleted. For example, alice@example.com?uid=123456789012345678901. If the user is recovered, this value reverts to user:{emailid} and the recovered user retains the role in the binding. deleted:serviceAccount:{emailid}?uid={uniqueid}: An email address (plus unique identifier) representing a service account that has been recently deleted. For example, my-other-app@appspot.gserviceaccount.com?uid=123456789012345678901. If the service account is undeleted, this value reverts to serviceAccount:{emailid} and the undeleted service account retains the role in the binding. deleted:group:{emailid}?uid={uniqueid}: An email address (plus unique identifier) representing a Google group that has been recently deleted. For example, admins@example.com?uid=123456789012345678901. If the group is recovered, this value reverts to group:{emailid} and the recovered group retains the role in the binding. domain:{domain}: The G Suite domain (primary) that represents all the users of that domain. For example, google.com or example.com.
+      &quot;members&quot;: [ # Specifies the principals requesting access for a Cloud Platform resource. members can have the following values: allUsers: A special identifier that represents anyone who is on the internet; with or without a Google account. allAuthenticatedUsers: A special identifier that represents anyone who is authenticated with a Google account or a service account. user:{emailid}: An email address that represents a specific Google account. For example, alice@example.com . serviceAccount:{emailid}: An email address that represents a service account. For example, my-other-app@appspot.gserviceaccount.com. group:{emailid}: An email address that represents a Google group. For example, admins@example.com. deleted:user:{emailid}?uid={uniqueid}: An email address (plus unique identifier) representing a user that has been recently deleted. For example, alice@example.com?uid=123456789012345678901. If the user is recovered, this value reverts to user:{emailid} and the recovered user retains the role in the binding. deleted:serviceAccount:{emailid}?uid={uniqueid}: An email address (plus unique identifier) representing a service account that has been recently deleted. For example, my-other-app@appspot.gserviceaccount.com?uid=123456789012345678901. If the service account is undeleted, this value reverts to serviceAccount:{emailid} and the undeleted service account retains the role in the binding. deleted:group:{emailid}?uid={uniqueid}: An email address (plus unique identifier) representing a Google group that has been recently deleted. For example, admins@example.com?uid=123456789012345678901. If the group is recovered, this value reverts to group:{emailid} and the recovered group retains the role in the binding. domain:{domain}: The G Suite domain (primary) that represents all the users of that domain. For example, google.com or example.com.
         &quot;A String&quot;,
       ],
-      &quot;role&quot;: &quot;A String&quot;, # Role that is assigned to members. For example, roles/viewer, roles/editor, or roles/owner.
+      &quot;role&quot;: &quot;A String&quot;, # Role that is assigned to the list of members, or principals. For example, roles/viewer, roles/editor, or roles/owner.
     },
   ],
   &quot;etag&quot;: &quot;A String&quot;, # etag is used for optimistic concurrency control as a way to help prevent simultaneous updates of a policy from overwriting each other. It is strongly suggested that systems make use of the etag in the read-modify-write cycle to perform policy updates in order to avoid race conditions: An etag is returned in the response to getIamPolicy, and systems are expected to put that etag in the request to setIamPolicy to ensure that their change will be applied to the same version of the policy.Important: If you use IAM Conditions, you must include the etag field whenever you call setIamPolicy. If you omit this field, then IAM allows you to overwrite a version 3 policy with a version 1 policy, and all of the conditions in the version 3 policy are lost.
@@ -1792,7 +1843,7 @@ Args:
         &quot;autoscalingConfig&quot;: { # Autoscaling Policy config associated with the cluster. # Optional. Autoscaling config for the policy associated with the cluster. Cluster does not autoscale if this field is unset.
           &quot;policyUri&quot;: &quot;A String&quot;, # Optional. The autoscaling policy used by the cluster.Only resource names including projectid and location (region) are valid. Examples: https://www.googleapis.com/compute/v1/projects/[project_id]/locations/[dataproc_region]/autoscalingPolicies/[policy_id] projects/[project_id]/locations/[dataproc_region]/autoscalingPolicies/[policy_id]Note that the policy must be in the same project and Dataproc region.
         },
-        &quot;configBucket&quot;: &quot;A String&quot;, # Optional. A Cloud Storage bucket used to stage job dependencies, config files, and job driver console output. If you do not specify a staging bucket, Cloud Dataproc will determine a Cloud Storage location (US, ASIA, or EU) for your cluster&#x27;s staging bucket according to the Compute Engine zone where your cluster is deployed, and then create and manage this project-level, per-location bucket (see Dataproc staging bucket (https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/staging-bucket)). This field requires a Cloud Storage bucket name, not a URI to a Cloud Storage bucket.
+        &quot;configBucket&quot;: &quot;A String&quot;, # Optional. A Cloud Storage bucket used to stage job dependencies, config files, and job driver console output. If you do not specify a staging bucket, Cloud Dataproc will determine a Cloud Storage location (US, ASIA, or EU) for your cluster&#x27;s staging bucket according to the Compute Engine zone where your cluster is deployed, and then create and manage this project-level, per-location bucket (see Dataproc staging and temp buckets (https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/staging-bucket)). This field requires a Cloud Storage bucket name, not a gs://... URI to a Cloud Storage bucket.
         &quot;encryptionConfig&quot;: { # Encryption settings for the cluster. # Optional. Encryption settings for the cluster.
           &quot;gcePdKmsKeyName&quot;: &quot;A String&quot;, # Optional. The Cloud KMS key name to use for PD disk encryption for all instances in the cluster.
         },
@@ -1803,6 +1854,9 @@ Args:
           },
         },
         &quot;gceClusterConfig&quot;: { # Common config settings for resources of Compute Engine cluster instances, applicable to all instances in the cluster. # Optional. The shared Compute Engine config settings for all instances in a cluster.
+          &quot;confidentialInstanceConfig&quot;: { # Confidential Instance Config for clusters using Confidential VMs (https://cloud.google.com/compute/confidential-vm/docs) # Optional. Confidential Instance Config for clusters using Confidential VMs (https://cloud.google.com/compute/confidential-vm/docs).
+            &quot;enableConfidentialCompute&quot;: True or False, # Optional. Defines whether the instance should have confidential compute enabled.
+          },
           &quot;internalIpOnly&quot;: True or False, # Optional. If true, all instances in the cluster will only have internal IP addresses. By default, clusters are not restricted to internal IP addresses, and will have ephemeral external IP addresses assigned to each instance. This internal_ip_only restriction can only be enabled for subnetwork enabled networks, and all off-cluster dependencies must be configured to be accessible without external IP addresses.
           &quot;metadata&quot;: { # The Compute Engine metadata entries to add to all instances (see Project and instance metadata (https://cloud.google.com/compute/docs/storing-retrieving-metadata#project_and_instance_metadata)).
             &quot;a_key&quot;: &quot;A String&quot;,
@@ -1834,6 +1888,12 @@ Args:
           ],
           &quot;zoneUri&quot;: &quot;A String&quot;, # Optional. The zone where the Compute Engine cluster will be located. On a create request, it is required in the &quot;global&quot; region. If omitted in a non-global Dataproc region, the service will pick a zone in the corresponding Compute Engine region. On a get request, zone will always be present.A full URL, partial URI, or short name are valid. Examples: https://www.googleapis.com/compute/v1/projects/[project_id]/zones/[zone] projects/[project_id]/zones/[zone] us-central1-f
         },
+        &quot;gkeClusterConfig&quot;: { # The cluster&#x27;s GKE config. # Optional. BETA. The Kubernetes Engine config for Dataproc clusters deployed to Kubernetes. Setting this is considered mutually exclusive with Compute Engine-based options such as gce_cluster_config, master_config, worker_config, secondary_worker_config, and autoscaling_config.
+          &quot;namespacedGkeDeploymentTarget&quot;: { # A full, namespace-isolated deployment target for an existing GKE cluster. # Optional. A target for the deployment.
+            &quot;clusterNamespace&quot;: &quot;A String&quot;, # Optional. A namespace within the GKE cluster to deploy into.
+            &quot;targetGkeCluster&quot;: &quot;A String&quot;, # Optional. The target GKE cluster to deploy to. Format: &#x27;projects/{project}/locations/{location}/clusters/{cluster_id}&#x27;
+          },
+        },
         &quot;initializationActions&quot;: [ # Optional. Commands to execute on each node after config is completed. By default, executables are run on master and all worker nodes. You can test a node&#x27;s role metadata to run an executable on a master or worker node, as shown below using curl (you can also use wget): ROLE=$(curl -H Metadata-Flavor:Google http://metadata/computeMetadata/v1/instance/attributes/dataproc-role) if [[ &quot;${ROLE}&quot; == &#x27;Master&#x27; ]]; then ... master specific actions ... else ... worker specific actions ... fi
           { # Specifies an executable to run on a fully configured node and a timeout period for executable completion.
             &quot;executableFile&quot;: &quot;A String&quot;, # Required. Cloud Storage URI of executable file.
@@ -1846,7 +1906,7 @@ Args:
           &quot;idleDeleteTtl&quot;: &quot;A String&quot;, # Optional. The duration to keep the cluster alive while idling (when no jobs are running). Passing this threshold will cause the cluster to be deleted. Minimum value is 5 minutes; maximum value is 14 days (see JSON representation of Duration (https://developers.google.com/protocol-buffers/docs/proto3#json)).
           &quot;idleStartTime&quot;: &quot;A String&quot;, # Output only. The time when cluster became idle (most recent job finished) and became eligible for deletion due to idleness (see JSON representation of Timestamp (https://developers.google.com/protocol-buffers/docs/proto3#json)).
         },
-        &quot;masterConfig&quot;: { # The config settings for Compute Engine resources in an instance group, such as a master or worker group. # Optional. The Compute Engine config settings for the master instance in a cluster.
+        &quot;masterConfig&quot;: { # The config settings for Compute Engine resources in an instance group, such as a master or worker group. # Optional. The Compute Engine config settings for the cluster&#x27;s master instance.
           &quot;accelerators&quot;: [ # Optional. The Compute Engine accelerator configuration for these instances.
             { # Specifies the type and number of accelerator cards attached to the instances of an instance. See GPUs on Compute Engine (https://cloud.google.com/compute/docs/gpus/).
               &quot;acceleratorCount&quot;: 42, # The number of the accelerator cards of this type exposed to this instance.
@@ -1866,7 +1926,8 @@ Args:
             { # A reference to a Compute Engine instance.
               &quot;instanceId&quot;: &quot;A String&quot;, # The unique identifier of the Compute Engine instance.
               &quot;instanceName&quot;: &quot;A String&quot;, # The user-friendly name of the Compute Engine instance.
-              &quot;publicKey&quot;: &quot;A String&quot;, # The public key used for sharing data with this instance.
+              &quot;publicEciesKey&quot;: &quot;A String&quot;, # The public ECIES key used for sharing data with this instance.
+              &quot;publicKey&quot;: &quot;A String&quot;, # The public RSA key used for sharing data with this instance.
             },
           ],
           &quot;isPreemptible&quot;: True or False, # Output only. Specifies that this instance group contains preemptible instances.
@@ -1876,13 +1937,13 @@ Args:
             &quot;instanceTemplateName&quot;: &quot;A String&quot;, # Output only. The name of the Instance Template used for the Managed Instance Group.
           },
           &quot;minCpuPlatform&quot;: &quot;A String&quot;, # Optional. Specifies the minimum cpu platform for the Instance Group. See Dataproc -&gt; Minimum CPU Platform (https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu).
-          &quot;numInstances&quot;: 42, # Optional. The number of VM instances in the instance group. For master instance groups, must be set to 1.
+          &quot;numInstances&quot;: 42, # Optional. The number of VM instances in the instance group. For HA cluster master_config groups, must be set to 3. For standard cluster master_config groups, must be set to 1.
           &quot;preemptibility&quot;: &quot;A String&quot;, # Optional. Specifies the preemptibility of the instance group.The default value for master and worker groups is NON_PREEMPTIBLE. This default cannot be changed.The default value for secondary instances is PREEMPTIBLE.
         },
         &quot;metastoreConfig&quot;: { # Specifies a Metastore configuration. # Optional. Metastore configuration.
           &quot;dataprocMetastoreService&quot;: &quot;A String&quot;, # Required. Resource name of an existing Dataproc Metastore service.Example: projects/[project_id]/locations/[dataproc_region]/services/[service-name]
         },
-        &quot;secondaryWorkerConfig&quot;: { # The config settings for Compute Engine resources in an instance group, such as a master or worker group. # Optional. The Compute Engine config settings for additional worker instances in a cluster.
+        &quot;secondaryWorkerConfig&quot;: { # The config settings for Compute Engine resources in an instance group, such as a master or worker group. # Optional. The Compute Engine config settings for a cluster&#x27;s secondary worker instances
           &quot;accelerators&quot;: [ # Optional. The Compute Engine accelerator configuration for these instances.
             { # Specifies the type and number of accelerator cards attached to the instances of an instance. See GPUs on Compute Engine (https://cloud.google.com/compute/docs/gpus/).
               &quot;acceleratorCount&quot;: 42, # The number of the accelerator cards of this type exposed to this instance.
@@ -1902,7 +1963,8 @@ Args:
             { # A reference to a Compute Engine instance.
               &quot;instanceId&quot;: &quot;A String&quot;, # The unique identifier of the Compute Engine instance.
               &quot;instanceName&quot;: &quot;A String&quot;, # The user-friendly name of the Compute Engine instance.
-              &quot;publicKey&quot;: &quot;A String&quot;, # The public key used for sharing data with this instance.
+              &quot;publicEciesKey&quot;: &quot;A String&quot;, # The public ECIES key used for sharing data with this instance.
+              &quot;publicKey&quot;: &quot;A String&quot;, # The public RSA key used for sharing data with this instance.
             },
           ],
           &quot;isPreemptible&quot;: True or False, # Output only. Specifies that this instance group contains preemptible instances.
@@ -1912,10 +1974,15 @@ Args:
             &quot;instanceTemplateName&quot;: &quot;A String&quot;, # Output only. The name of the Instance Template used for the Managed Instance Group.
           },
           &quot;minCpuPlatform&quot;: &quot;A String&quot;, # Optional. Specifies the minimum cpu platform for the Instance Group. See Dataproc -&gt; Minimum CPU Platform (https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu).
-          &quot;numInstances&quot;: 42, # Optional. The number of VM instances in the instance group. For master instance groups, must be set to 1.
+          &quot;numInstances&quot;: 42, # Optional. The number of VM instances in the instance group. For HA cluster master_config groups, must be set to 3. For standard cluster master_config groups, must be set to 1.
           &quot;preemptibility&quot;: &quot;A String&quot;, # Optional. Specifies the preemptibility of the instance group.The default value for master and worker groups is NON_PREEMPTIBLE. This default cannot be changed.The default value for secondary instances is PREEMPTIBLE.
         },
         &quot;securityConfig&quot;: { # Security related configuration, including encryption, Kerberos, etc. # Optional. Security settings for the cluster.
+          &quot;identityConfig&quot;: { # Identity related configuration, including service account based secure multi-tenancy user mappings. # Optional. Identity related configuration, including service account based secure multi-tenancy user mappings.
+            &quot;userServiceAccountMapping&quot;: { # Required. Map of user to service account.
+              &quot;a_key&quot;: &quot;A String&quot;,
+            },
+          },
           &quot;kerberosConfig&quot;: { # Specifies Kerberos related configuration. # Optional. Kerberos related configuration.
             &quot;crossRealmTrustAdminServer&quot;: &quot;A String&quot;, # Optional. The admin server (IP or hostname) for the remote trusted realm in a cross realm trust relationship.
             &quot;crossRealmTrustKdc&quot;: &quot;A String&quot;, # Optional. The KDC (IP or hostname) for the remote trusted realm in a cross realm trust relationship.
@@ -1934,7 +2001,7 @@ Args:
             &quot;truststoreUri&quot;: &quot;A String&quot;, # Optional. The Cloud Storage URI of the truststore file used for SSL encryption. If not provided, Dataproc will provide a self-signed certificate.
           },
         },
-        &quot;softwareConfig&quot;: { # Specifies the selection and config of software inside the cluster. # Optional. The config settings for software inside the cluster.
+        &quot;softwareConfig&quot;: { # Specifies the selection and config of software inside the cluster. # Optional. The config settings for cluster software.
           &quot;imageVersion&quot;: &quot;A String&quot;, # Optional. The version of software inside the cluster. It must be one of the supported Dataproc Versions (https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#supported_dataproc_versions), such as &quot;1.2&quot; (including a subminor version, such as &quot;1.2.29&quot;), or the &quot;preview&quot; version (https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#other_versions). If unspecified, it defaults to the latest Debian version.
           &quot;optionalComponents&quot;: [ # Optional. The set of components to activate on the cluster.
             &quot;A String&quot;,
@@ -1943,8 +2010,8 @@ Args:
             &quot;a_key&quot;: &quot;A String&quot;,
           },
         },
-        &quot;tempBucket&quot;: &quot;A String&quot;, # Optional. A Cloud Storage bucket used to store ephemeral cluster and jobs data, such as Spark and MapReduce history files. If you do not specify a temp bucket, Dataproc will determine a Cloud Storage location (US, ASIA, or EU) for your cluster&#x27;s temp bucket according to the Compute Engine zone where your cluster is deployed, and then create and manage this project-level, per-location bucket. The default bucket has a TTL of 90 days, but you can use any TTL (or none) if you specify a bucket. This field requires a Cloud Storage bucket name, not a URI to a Cloud Storage bucket.
-        &quot;workerConfig&quot;: { # The config settings for Compute Engine resources in an instance group, such as a master or worker group. # Optional. The Compute Engine config settings for worker instances in a cluster.
+        &quot;tempBucket&quot;: &quot;A String&quot;, # Optional. A Cloud Storage bucket used to store ephemeral cluster and jobs data, such as Spark and MapReduce history files. If you do not specify a temp bucket, Dataproc will determine a Cloud Storage location (US, ASIA, or EU) for your cluster&#x27;s temp bucket according to the Compute Engine zone where your cluster is deployed, and then create and manage this project-level, per-location bucket. The default bucket has a TTL of 90 days, but you can use any TTL (or none) if you specify a bucket (see Dataproc staging and temp buckets (https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/staging-bucket)). This field requires a Cloud Storage bucket name, not a gs://... URI to a Cloud Storage bucket.
+        &quot;workerConfig&quot;: { # The config settings for Compute Engine resources in an instance group, such as a master or worker group. # Optional. The Compute Engine config settings for the cluster&#x27;s worker instances.
           &quot;accelerators&quot;: [ # Optional. The Compute Engine accelerator configuration for these instances.
             { # Specifies the type and number of accelerator cards attached to the instances of an instance. See GPUs on Compute Engine (https://cloud.google.com/compute/docs/gpus/).
               &quot;acceleratorCount&quot;: 42, # The number of the accelerator cards of this type exposed to this instance.
@@ -1964,7 +2031,8 @@ Args:
             { # A reference to a Compute Engine instance.
               &quot;instanceId&quot;: &quot;A String&quot;, # The unique identifier of the Compute Engine instance.
               &quot;instanceName&quot;: &quot;A String&quot;, # The user-friendly name of the Compute Engine instance.
-              &quot;publicKey&quot;: &quot;A String&quot;, # The public key used for sharing data with this instance.
+              &quot;publicEciesKey&quot;: &quot;A String&quot;, # The public ECIES key used for sharing data with this instance.
+              &quot;publicKey&quot;: &quot;A String&quot;, # The public RSA key used for sharing data with this instance.
             },
           ],
           &quot;isPreemptible&quot;: True or False, # Output only. Specifies that this instance group contains preemptible instances.
@@ -1974,7 +2042,7 @@ Args:
             &quot;instanceTemplateName&quot;: &quot;A String&quot;, # Output only. The name of the Instance Template used for the Managed Instance Group.
           },
           &quot;minCpuPlatform&quot;: &quot;A String&quot;, # Optional. Specifies the minimum cpu platform for the Instance Group. See Dataproc -&gt; Minimum CPU Platform (https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu).
-          &quot;numInstances&quot;: 42, # Optional. The number of VM instances in the instance group. For master instance groups, must be set to 1.
+          &quot;numInstances&quot;: 42, # Optional. The number of VM instances in the instance group. For HA cluster master_config groups, must be set to 3. For standard cluster master_config groups, must be set to 1.
           &quot;preemptibility&quot;: &quot;A String&quot;, # Optional. Specifies the preemptibility of the instance group.The default value for master and worker groups is NON_PREEMPTIBLE. This default cannot be changed.The default value for secondary instances is PREEMPTIBLE.
         },
       },
@@ -2271,7 +2339,7 @@ Returns:
             &quot;autoscalingConfig&quot;: { # Autoscaling Policy config associated with the cluster. # Optional. Autoscaling config for the policy associated with the cluster. Cluster does not autoscale if this field is unset.
               &quot;policyUri&quot;: &quot;A String&quot;, # Optional. The autoscaling policy used by the cluster.Only resource names including projectid and location (region) are valid. Examples: https://www.googleapis.com/compute/v1/projects/[project_id]/locations/[dataproc_region]/autoscalingPolicies/[policy_id] projects/[project_id]/locations/[dataproc_region]/autoscalingPolicies/[policy_id]Note that the policy must be in the same project and Dataproc region.
             },
-            &quot;configBucket&quot;: &quot;A String&quot;, # Optional. A Cloud Storage bucket used to stage job dependencies, config files, and job driver console output. If you do not specify a staging bucket, Cloud Dataproc will determine a Cloud Storage location (US, ASIA, or EU) for your cluster&#x27;s staging bucket according to the Compute Engine zone where your cluster is deployed, and then create and manage this project-level, per-location bucket (see Dataproc staging bucket (https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/staging-bucket)). This field requires a Cloud Storage bucket name, not a URI to a Cloud Storage bucket.
+            &quot;configBucket&quot;: &quot;A String&quot;, # Optional. A Cloud Storage bucket used to stage job dependencies, config files, and job driver console output. If you do not specify a staging bucket, Cloud Dataproc will determine a Cloud Storage location (US, ASIA, or EU) for your cluster&#x27;s staging bucket according to the Compute Engine zone where your cluster is deployed, and then create and manage this project-level, per-location bucket (see Dataproc staging and temp buckets (https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/staging-bucket)). This field requires a Cloud Storage bucket name, not a gs://... URI to a Cloud Storage bucket.
             &quot;encryptionConfig&quot;: { # Encryption settings for the cluster. # Optional. Encryption settings for the cluster.
               &quot;gcePdKmsKeyName&quot;: &quot;A String&quot;, # Optional. The Cloud KMS key name to use for PD disk encryption for all instances in the cluster.
             },
@@ -2282,6 +2350,9 @@ Returns:
               },
             },
             &quot;gceClusterConfig&quot;: { # Common config settings for resources of Compute Engine cluster instances, applicable to all instances in the cluster. # Optional. The shared Compute Engine config settings for all instances in a cluster.
+              &quot;confidentialInstanceConfig&quot;: { # Confidential Instance Config for clusters using Confidential VMs (https://cloud.google.com/compute/confidential-vm/docs) # Optional. Confidential Instance Config for clusters using Confidential VMs (https://cloud.google.com/compute/confidential-vm/docs).
+                &quot;enableConfidentialCompute&quot;: True or False, # Optional. Defines whether the instance should have confidential compute enabled.
+              },
               &quot;internalIpOnly&quot;: True or False, # Optional. If true, all instances in the cluster will only have internal IP addresses. By default, clusters are not restricted to internal IP addresses, and will have ephemeral external IP addresses assigned to each instance. This internal_ip_only restriction can only be enabled for subnetwork enabled networks, and all off-cluster dependencies must be configured to be accessible without external IP addresses.
               &quot;metadata&quot;: { # The Compute Engine metadata entries to add to all instances (see Project and instance metadata (https://cloud.google.com/compute/docs/storing-retrieving-metadata#project_and_instance_metadata)).
                 &quot;a_key&quot;: &quot;A String&quot;,
@@ -2313,6 +2384,12 @@ Returns:
               ],
               &quot;zoneUri&quot;: &quot;A String&quot;, # Optional. The zone where the Compute Engine cluster will be located. On a create request, it is required in the &quot;global&quot; region. If omitted in a non-global Dataproc region, the service will pick a zone in the corresponding Compute Engine region. On a get request, zone will always be present.A full URL, partial URI, or short name are valid. Examples: https://www.googleapis.com/compute/v1/projects/[project_id]/zones/[zone] projects/[project_id]/zones/[zone] us-central1-f
             },
+            &quot;gkeClusterConfig&quot;: { # The cluster&#x27;s GKE config. # Optional. BETA. The Kubernetes Engine config for Dataproc clusters deployed to Kubernetes. Setting this is considered mutually exclusive with Compute Engine-based options such as gce_cluster_config, master_config, worker_config, secondary_worker_config, and autoscaling_config.
+              &quot;namespacedGkeDeploymentTarget&quot;: { # A full, namespace-isolated deployment target for an existing GKE cluster. # Optional. A target for the deployment.
+                &quot;clusterNamespace&quot;: &quot;A String&quot;, # Optional. A namespace within the GKE cluster to deploy into.
+                &quot;targetGkeCluster&quot;: &quot;A String&quot;, # Optional. The target GKE cluster to deploy to. Format: &#x27;projects/{project}/locations/{location}/clusters/{cluster_id}&#x27;
+              },
+            },
             &quot;initializationActions&quot;: [ # Optional. Commands to execute on each node after config is completed. By default, executables are run on master and all worker nodes. You can test a node&#x27;s role metadata to run an executable on a master or worker node, as shown below using curl (you can also use wget): ROLE=$(curl -H Metadata-Flavor:Google http://metadata/computeMetadata/v1/instance/attributes/dataproc-role) if [[ &quot;${ROLE}&quot; == &#x27;Master&#x27; ]]; then ... master specific actions ... else ... worker specific actions ... fi
               { # Specifies an executable to run on a fully configured node and a timeout period for executable completion.
                 &quot;executableFile&quot;: &quot;A String&quot;, # Required. Cloud Storage URI of executable file.
@@ -2325,7 +2402,7 @@ Returns:
               &quot;idleDeleteTtl&quot;: &quot;A String&quot;, # Optional. The duration to keep the cluster alive while idling (when no jobs are running). Passing this threshold will cause the cluster to be deleted. Minimum value is 5 minutes; maximum value is 14 days (see JSON representation of Duration (https://developers.google.com/protocol-buffers/docs/proto3#json)).
               &quot;idleStartTime&quot;: &quot;A String&quot;, # Output only. The time when cluster became idle (most recent job finished) and became eligible for deletion due to idleness (see JSON representation of Timestamp (https://developers.google.com/protocol-buffers/docs/proto3#json)).
             },
-            &quot;masterConfig&quot;: { # The config settings for Compute Engine resources in an instance group, such as a master or worker group. # Optional. The Compute Engine config settings for the master instance in a cluster.
+            &quot;masterConfig&quot;: { # The config settings for Compute Engine resources in an instance group, such as a master or worker group. # Optional. The Compute Engine config settings for the cluster&#x27;s master instance.
               &quot;accelerators&quot;: [ # Optional. The Compute Engine accelerator configuration for these instances.
                 { # Specifies the type and number of accelerator cards attached to the instances of an instance. See GPUs on Compute Engine (https://cloud.google.com/compute/docs/gpus/).
                   &quot;acceleratorCount&quot;: 42, # The number of the accelerator cards of this type exposed to this instance.
@@ -2345,7 +2422,8 @@ Returns:
                 { # A reference to a Compute Engine instance.
                   &quot;instanceId&quot;: &quot;A String&quot;, # The unique identifier of the Compute Engine instance.
                   &quot;instanceName&quot;: &quot;A String&quot;, # The user-friendly name of the Compute Engine instance.
-                  &quot;publicKey&quot;: &quot;A String&quot;, # The public key used for sharing data with this instance.
+                  &quot;publicEciesKey&quot;: &quot;A String&quot;, # The public ECIES key used for sharing data with this instance.
+                  &quot;publicKey&quot;: &quot;A String&quot;, # The public RSA key used for sharing data with this instance.
                 },
               ],
               &quot;isPreemptible&quot;: True or False, # Output only. Specifies that this instance group contains preemptible instances.
@@ -2355,13 +2433,13 @@ Returns:
                 &quot;instanceTemplateName&quot;: &quot;A String&quot;, # Output only. The name of the Instance Template used for the Managed Instance Group.
               },
               &quot;minCpuPlatform&quot;: &quot;A String&quot;, # Optional. Specifies the minimum cpu platform for the Instance Group. See Dataproc -&gt; Minimum CPU Platform (https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu).
-              &quot;numInstances&quot;: 42, # Optional. The number of VM instances in the instance group. For master instance groups, must be set to 1.
+              &quot;numInstances&quot;: 42, # Optional. The number of VM instances in the instance group. For HA cluster master_config groups, must be set to 3. For standard cluster master_config groups, must be set to 1.
               &quot;preemptibility&quot;: &quot;A String&quot;, # Optional. Specifies the preemptibility of the instance group.The default value for master and worker groups is NON_PREEMPTIBLE. This default cannot be changed.The default value for secondary instances is PREEMPTIBLE.
             },
             &quot;metastoreConfig&quot;: { # Specifies a Metastore configuration. # Optional. Metastore configuration.
               &quot;dataprocMetastoreService&quot;: &quot;A String&quot;, # Required. Resource name of an existing Dataproc Metastore service.Example: projects/[project_id]/locations/[dataproc_region]/services/[service-name]
             },
-            &quot;secondaryWorkerConfig&quot;: { # The config settings for Compute Engine resources in an instance group, such as a master or worker group. # Optional. The Compute Engine config settings for additional worker instances in a cluster.
+            &quot;secondaryWorkerConfig&quot;: { # The config settings for Compute Engine resources in an instance group, such as a master or worker group. # Optional. The Compute Engine config settings for a cluster&#x27;s secondary worker instances
               &quot;accelerators&quot;: [ # Optional. The Compute Engine accelerator configuration for these instances.
                 { # Specifies the type and number of accelerator cards attached to the instances of an instance. See GPUs on Compute Engine (https://cloud.google.com/compute/docs/gpus/).
                   &quot;acceleratorCount&quot;: 42, # The number of the accelerator cards of this type exposed to this instance.
@@ -2381,7 +2459,8 @@ Returns:
                 { # A reference to a Compute Engine instance.
                   &quot;instanceId&quot;: &quot;A String&quot;, # The unique identifier of the Compute Engine instance.
                   &quot;instanceName&quot;: &quot;A String&quot;, # The user-friendly name of the Compute Engine instance.
-                  &quot;publicKey&quot;: &quot;A String&quot;, # The public key used for sharing data with this instance.
+                  &quot;publicEciesKey&quot;: &quot;A String&quot;, # The public ECIES key used for sharing data with this instance.
+                  &quot;publicKey&quot;: &quot;A String&quot;, # The public RSA key used for sharing data with this instance.
                 },
               ],
               &quot;isPreemptible&quot;: True or False, # Output only. Specifies that this instance group contains preemptible instances.
@@ -2391,10 +2470,15 @@ Returns:
                 &quot;instanceTemplateName&quot;: &quot;A String&quot;, # Output only. The name of the Instance Template used for the Managed Instance Group.
               },
               &quot;minCpuPlatform&quot;: &quot;A String&quot;, # Optional. Specifies the minimum cpu platform for the Instance Group. See Dataproc -&gt; Minimum CPU Platform (https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu).
-              &quot;numInstances&quot;: 42, # Optional. The number of VM instances in the instance group. For master instance groups, must be set to 1.
+              &quot;numInstances&quot;: 42, # Optional. The number of VM instances in the instance group. For HA cluster master_config groups, must be set to 3. For standard cluster master_config groups, must be set to 1.
               &quot;preemptibility&quot;: &quot;A String&quot;, # Optional. Specifies the preemptibility of the instance group.The default value for master and worker groups is NON_PREEMPTIBLE. This default cannot be changed.The default value for secondary instances is PREEMPTIBLE.
             },
             &quot;securityConfig&quot;: { # Security related configuration, including encryption, Kerberos, etc. # Optional. Security settings for the cluster.
+              &quot;identityConfig&quot;: { # Identity related configuration, including service account based secure multi-tenancy user mappings. # Optional. Identity related configuration, including service account based secure multi-tenancy user mappings.
+                &quot;userServiceAccountMapping&quot;: { # Required. Map of user to service account.
+                  &quot;a_key&quot;: &quot;A String&quot;,
+                },
+              },
               &quot;kerberosConfig&quot;: { # Specifies Kerberos related configuration. # Optional. Kerberos related configuration.
                 &quot;crossRealmTrustAdminServer&quot;: &quot;A String&quot;, # Optional. The admin server (IP or hostname) for the remote trusted realm in a cross realm trust relationship.
                 &quot;crossRealmTrustKdc&quot;: &quot;A String&quot;, # Optional. The KDC (IP or hostname) for the remote trusted realm in a cross realm trust relationship.
@@ -2413,7 +2497,7 @@ Returns:
                 &quot;truststoreUri&quot;: &quot;A String&quot;, # Optional. The Cloud Storage URI of the truststore file used for SSL encryption. If not provided, Dataproc will provide a self-signed certificate.
               },
             },
-            &quot;softwareConfig&quot;: { # Specifies the selection and config of software inside the cluster. # Optional. The config settings for software inside the cluster.
+            &quot;softwareConfig&quot;: { # Specifies the selection and config of software inside the cluster. # Optional. The config settings for cluster software.
               &quot;imageVersion&quot;: &quot;A String&quot;, # Optional. The version of software inside the cluster. It must be one of the supported Dataproc Versions (https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#supported_dataproc_versions), such as &quot;1.2&quot; (including a subminor version, such as &quot;1.2.29&quot;), or the &quot;preview&quot; version (https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#other_versions). If unspecified, it defaults to the latest Debian version.
               &quot;optionalComponents&quot;: [ # Optional. The set of components to activate on the cluster.
                 &quot;A String&quot;,
@@ -2422,8 +2506,8 @@ Returns:
                 &quot;a_key&quot;: &quot;A String&quot;,
               },
             },
-            &quot;tempBucket&quot;: &quot;A String&quot;, # Optional. A Cloud Storage bucket used to store ephemeral cluster and jobs data, such as Spark and MapReduce history files. If you do not specify a temp bucket, Dataproc will determine a Cloud Storage location (US, ASIA, or EU) for your cluster&#x27;s temp bucket according to the Compute Engine zone where your cluster is deployed, and then create and manage this project-level, per-location bucket. The default bucket has a TTL of 90 days, but you can use any TTL (or none) if you specify a bucket. This field requires a Cloud Storage bucket name, not a URI to a Cloud Storage bucket.
-            &quot;workerConfig&quot;: { # The config settings for Compute Engine resources in an instance group, such as a master or worker group. # Optional. The Compute Engine config settings for worker instances in a cluster.
+            &quot;tempBucket&quot;: &quot;A String&quot;, # Optional. A Cloud Storage bucket used to store ephemeral cluster and jobs data, such as Spark and MapReduce history files. If you do not specify a temp bucket, Dataproc will determine a Cloud Storage location (US, ASIA, or EU) for your cluster&#x27;s temp bucket according to the Compute Engine zone where your cluster is deployed, and then create and manage this project-level, per-location bucket. The default bucket has a TTL of 90 days, but you can use any TTL (or none) if you specify a bucket (see Dataproc staging and temp buckets (https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/staging-bucket)). This field requires a Cloud Storage bucket name, not a gs://... URI to a Cloud Storage bucket.
+            &quot;workerConfig&quot;: { # The config settings for Compute Engine resources in an instance group, such as a master or worker group. # Optional. The Compute Engine config settings for the cluster&#x27;s worker instances.
               &quot;accelerators&quot;: [ # Optional. The Compute Engine accelerator configuration for these instances.
                 { # Specifies the type and number of accelerator cards attached to the instances of an instance. See GPUs on Compute Engine (https://cloud.google.com/compute/docs/gpus/).
                   &quot;acceleratorCount&quot;: 42, # The number of the accelerator cards of this type exposed to this instance.
@@ -2443,7 +2527,8 @@ Returns:
                 { # A reference to a Compute Engine instance.
                   &quot;instanceId&quot;: &quot;A String&quot;, # The unique identifier of the Compute Engine instance.
                   &quot;instanceName&quot;: &quot;A String&quot;, # The user-friendly name of the Compute Engine instance.
-                  &quot;publicKey&quot;: &quot;A String&quot;, # The public key used for sharing data with this instance.
+                  &quot;publicEciesKey&quot;: &quot;A String&quot;, # The public ECIES key used for sharing data with this instance.
+                  &quot;publicKey&quot;: &quot;A String&quot;, # The public RSA key used for sharing data with this instance.
                 },
               ],
               &quot;isPreemptible&quot;: True or False, # Output only. Specifies that this instance group contains preemptible instances.
@@ -2453,7 +2538,7 @@ Returns:
                 &quot;instanceTemplateName&quot;: &quot;A String&quot;, # Output only. The name of the Instance Template used for the Managed Instance Group.
               },
               &quot;minCpuPlatform&quot;: &quot;A String&quot;, # Optional. Specifies the minimum cpu platform for the Instance Group. See Dataproc -&gt; Minimum CPU Platform (https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu).
-              &quot;numInstances&quot;: 42, # Optional. The number of VM instances in the instance group. For master instance groups, must be set to 1.
+              &quot;numInstances&quot;: 42, # Optional. The number of VM instances in the instance group. For HA cluster master_config groups, must be set to 3. For standard cluster master_config groups, must be set to 1.
               &quot;preemptibility&quot;: &quot;A String&quot;, # Optional. Specifies the preemptibility of the instance group.The default value for master and worker groups is NON_PREEMPTIBLE. This default cannot be changed.The default value for secondary instances is PREEMPTIBLE.
             },
           },
@@ -2493,19 +2578,19 @@ Args:
     The object takes the form of:
 
 { # Request message for SetIamPolicy method.
-  &quot;policy&quot;: { # An Identity and Access Management (IAM) policy, which specifies access controls for Google Cloud resources.A Policy is a collection of bindings. A binding binds one or more members to a single role. Members can be user accounts, service accounts, Google groups, and domains (such as G Suite). A role is a named list of permissions; each role can be an IAM predefined role or a user-created custom role.For some types of Google Cloud resources, a binding can also specify a condition, which is a logical expression that allows access to a resource only if the expression evaluates to true. A condition can add constraints based on attributes of the request, the resource, or both. To learn which resources support conditions in their IAM policies, see the IAM documentation (https://cloud.google.com/iam/help/conditions/resource-policies).JSON example: { &quot;bindings&quot;: [ { &quot;role&quot;: &quot;roles/resourcemanager.organizationAdmin&quot;, &quot;members&quot;: [ &quot;user:mike@example.com&quot;, &quot;group:admins@example.com&quot;, &quot;domain:google.com&quot;, &quot;serviceAccount:my-project-id@appspot.gserviceaccount.com&quot; ] }, { &quot;role&quot;: &quot;roles/resourcemanager.organizationViewer&quot;, &quot;members&quot;: [ &quot;user:eve@example.com&quot; ], &quot;condition&quot;: { &quot;title&quot;: &quot;expirable access&quot;, &quot;description&quot;: &quot;Does not grant access after Sep 2020&quot;, &quot;expression&quot;: &quot;request.time &lt; timestamp(&#x27;2020-10-01T00:00:00.000Z&#x27;)&quot;, } } ], &quot;etag&quot;: &quot;BwWWja0YfJA=&quot;, &quot;version&quot;: 3 } YAML example: bindings: - members: - user:mike@example.com - group:admins@example.com - domain:google.com - serviceAccount:my-project-id@appspot.gserviceaccount.com role: roles/resourcemanager.organizationAdmin - members: - user:eve@example.com role: roles/resourcemanager.organizationViewer condition: title: expirable access description: Does not grant access after Sep 2020 expression: request.time &lt; timestamp(&#x27;2020-10-01T00:00:00.000Z&#x27;) - etag: BwWWja0YfJA= - version: 3 For a description of IAM and its features, see the IAM documentation (https://cloud.google.com/iam/docs/). # REQUIRED: The complete policy to be applied to the resource. The size of the policy is limited to a few 10s of KB. An empty policy is a valid policy but certain Cloud Platform services (such as Projects) might reject them.
-    &quot;bindings&quot;: [ # Associates a list of members to a role. Optionally, may specify a condition that determines how and when the bindings are applied. Each of the bindings must contain at least one member.
-      { # Associates members with a role.
-        &quot;condition&quot;: { # Represents a textual expression in the Common Expression Language (CEL) syntax. CEL is a C-like expression language. The syntax and semantics of CEL are documented at https://github.com/google/cel-spec.Example (Comparison): title: &quot;Summary size limit&quot; description: &quot;Determines if a summary is less than 100 chars&quot; expression: &quot;document.summary.size() &lt; 100&quot; Example (Equality): title: &quot;Requestor is owner&quot; description: &quot;Determines if requestor is the document owner&quot; expression: &quot;document.owner == request.auth.claims.email&quot; Example (Logic): title: &quot;Public documents&quot; description: &quot;Determine whether the document should be publicly visible&quot; expression: &quot;document.type != &#x27;private&#x27; &amp;&amp; document.type != &#x27;internal&#x27;&quot; Example (Data Manipulation): title: &quot;Notification string&quot; description: &quot;Create a notification string with a timestamp.&quot; expression: &quot;&#x27;New message received at &#x27; + string(document.create_time)&quot; The exact variables and functions that may be referenced within an expression are determined by the service that evaluates it. See the service documentation for additional information. # The condition that is associated with this binding.If the condition evaluates to true, then this binding applies to the current request.If the condition evaluates to false, then this binding does not apply to the current request. However, a different role binding might grant the same role to one or more of the members in this binding.To learn which resources support conditions in their IAM policies, see the IAM documentation (https://cloud.google.com/iam/help/conditions/resource-policies).
+  &quot;policy&quot;: { # An Identity and Access Management (IAM) policy, which specifies access controls for Google Cloud resources.A Policy is a collection of bindings. A binding binds one or more members, or principals, to a single role. Principals can be user accounts, service accounts, Google groups, and domains (such as G Suite). A role is a named list of permissions; each role can be an IAM predefined role or a user-created custom role.For some types of Google Cloud resources, a binding can also specify a condition, which is a logical expression that allows access to a resource only if the expression evaluates to true. A condition can add constraints based on attributes of the request, the resource, or both. To learn which resources support conditions in their IAM policies, see the IAM documentation (https://cloud.google.com/iam/help/conditions/resource-policies).JSON example: { &quot;bindings&quot;: [ { &quot;role&quot;: &quot;roles/resourcemanager.organizationAdmin&quot;, &quot;members&quot;: [ &quot;user:mike@example.com&quot;, &quot;group:admins@example.com&quot;, &quot;domain:google.com&quot;, &quot;serviceAccount:my-project-id@appspot.gserviceaccount.com&quot; ] }, { &quot;role&quot;: &quot;roles/resourcemanager.organizationViewer&quot;, &quot;members&quot;: [ &quot;user:eve@example.com&quot; ], &quot;condition&quot;: { &quot;title&quot;: &quot;expirable access&quot;, &quot;description&quot;: &quot;Does not grant access after Sep 2020&quot;, &quot;expression&quot;: &quot;request.time &lt; timestamp(&#x27;2020-10-01T00:00:00.000Z&#x27;)&quot;, } } ], &quot;etag&quot;: &quot;BwWWja0YfJA=&quot;, &quot;version&quot;: 3 } YAML example: bindings: - members: - user:mike@example.com - group:admins@example.com - domain:google.com - serviceAccount:my-project-id@appspot.gserviceaccount.com role: roles/resourcemanager.organizationAdmin - members: - user:eve@example.com role: roles/resourcemanager.organizationViewer condition: title: expirable access description: Does not grant access after Sep 2020 expression: request.time &lt; timestamp(&#x27;2020-10-01T00:00:00.000Z&#x27;) etag: BwWWja0YfJA= version: 3 For a description of IAM and its features, see the IAM documentation (https://cloud.google.com/iam/docs/). # REQUIRED: The complete policy to be applied to the resource. The size of the policy is limited to a few 10s of KB. An empty policy is a valid policy but certain Cloud Platform services (such as Projects) might reject them.
+    &quot;bindings&quot;: [ # Associates a list of members, or principals, with a role. Optionally, may specify a condition that determines how and when the bindings are applied. Each of the bindings must contain at least one principal.The bindings in a Policy can refer to up to 1,500 principals; up to 250 of these principals can be Google groups. Each occurrence of a principal counts towards these limits. For example, if the bindings grant 50 different roles to user:alice@example.com, and not to any other principal, then you can add another 1,450 principals to the bindings in the Policy.
+      { # Associates members, or principals, with a role.
+        &quot;condition&quot;: { # Represents a textual expression in the Common Expression Language (CEL) syntax. CEL is a C-like expression language. The syntax and semantics of CEL are documented at https://github.com/google/cel-spec.Example (Comparison): title: &quot;Summary size limit&quot; description: &quot;Determines if a summary is less than 100 chars&quot; expression: &quot;document.summary.size() &lt; 100&quot; Example (Equality): title: &quot;Requestor is owner&quot; description: &quot;Determines if requestor is the document owner&quot; expression: &quot;document.owner == request.auth.claims.email&quot; Example (Logic): title: &quot;Public documents&quot; description: &quot;Determine whether the document should be publicly visible&quot; expression: &quot;document.type != &#x27;private&#x27; &amp;&amp; document.type != &#x27;internal&#x27;&quot; Example (Data Manipulation): title: &quot;Notification string&quot; description: &quot;Create a notification string with a timestamp.&quot; expression: &quot;&#x27;New message received at &#x27; + string(document.create_time)&quot; The exact variables and functions that may be referenced within an expression are determined by the service that evaluates it. See the service documentation for additional information. # The condition that is associated with this binding.If the condition evaluates to true, then this binding applies to the current request.If the condition evaluates to false, then this binding does not apply to the current request. However, a different role binding might grant the same role to one or more of the principals in this binding.To learn which resources support conditions in their IAM policies, see the IAM documentation (https://cloud.google.com/iam/help/conditions/resource-policies).
           &quot;description&quot;: &quot;A String&quot;, # Optional. Description of the expression. This is a longer text which describes the expression, e.g. when hovered over it in a UI.
           &quot;expression&quot;: &quot;A String&quot;, # Textual representation of an expression in Common Expression Language syntax.
           &quot;location&quot;: &quot;A String&quot;, # Optional. String indicating the location of the expression for error reporting, e.g. a file name and a position in the file.
           &quot;title&quot;: &quot;A String&quot;, # Optional. Title for the expression, i.e. a short string describing its purpose. This can be used e.g. in UIs which allow to enter the expression.
         },
-        &quot;members&quot;: [ # Specifies the identities requesting access for a Cloud Platform resource. members can have the following values: allUsers: A special identifier that represents anyone who is on the internet; with or without a Google account. allAuthenticatedUsers: A special identifier that represents anyone who is authenticated with a Google account or a service account. user:{emailid}: An email address that represents a specific Google account. For example, alice@example.com . serviceAccount:{emailid}: An email address that represents a service account. For example, my-other-app@appspot.gserviceaccount.com. group:{emailid}: An email address that represents a Google group. For example, admins@example.com. deleted:user:{emailid}?uid={uniqueid}: An email address (plus unique identifier) representing a user that has been recently deleted. For example, alice@example.com?uid=123456789012345678901. If the user is recovered, this value reverts to user:{emailid} and the recovered user retains the role in the binding. deleted:serviceAccount:{emailid}?uid={uniqueid}: An email address (plus unique identifier) representing a service account that has been recently deleted. For example, my-other-app@appspot.gserviceaccount.com?uid=123456789012345678901. If the service account is undeleted, this value reverts to serviceAccount:{emailid} and the undeleted service account retains the role in the binding. deleted:group:{emailid}?uid={uniqueid}: An email address (plus unique identifier) representing a Google group that has been recently deleted. For example, admins@example.com?uid=123456789012345678901. If the group is recovered, this value reverts to group:{emailid} and the recovered group retains the role in the binding. domain:{domain}: The G Suite domain (primary) that represents all the users of that domain. For example, google.com or example.com.
+        &quot;members&quot;: [ # Specifies the principals requesting access for a Cloud Platform resource. members can have the following values: allUsers: A special identifier that represents anyone who is on the internet; with or without a Google account. allAuthenticatedUsers: A special identifier that represents anyone who is authenticated with a Google account or a service account. user:{emailid}: An email address that represents a specific Google account. For example, alice@example.com . serviceAccount:{emailid}: An email address that represents a service account. For example, my-other-app@appspot.gserviceaccount.com. group:{emailid}: An email address that represents a Google group. For example, admins@example.com. deleted:user:{emailid}?uid={uniqueid}: An email address (plus unique identifier) representing a user that has been recently deleted. For example, alice@example.com?uid=123456789012345678901. If the user is recovered, this value reverts to user:{emailid} and the recovered user retains the role in the binding. deleted:serviceAccount:{emailid}?uid={uniqueid}: An email address (plus unique identifier) representing a service account that has been recently deleted. For example, my-other-app@appspot.gserviceaccount.com?uid=123456789012345678901. If the service account is undeleted, this value reverts to serviceAccount:{emailid} and the undeleted service account retains the role in the binding. deleted:group:{emailid}?uid={uniqueid}: An email address (plus unique identifier) representing a Google group that has been recently deleted. For example, admins@example.com?uid=123456789012345678901. If the group is recovered, this value reverts to group:{emailid} and the recovered group retains the role in the binding. domain:{domain}: The G Suite domain (primary) that represents all the users of that domain. For example, google.com or example.com.
           &quot;A String&quot;,
         ],
-        &quot;role&quot;: &quot;A String&quot;, # Role that is assigned to members. For example, roles/viewer, roles/editor, or roles/owner.
+        &quot;role&quot;: &quot;A String&quot;, # Role that is assigned to the list of members, or principals. For example, roles/viewer, roles/editor, or roles/owner.
       },
     ],
     &quot;etag&quot;: &quot;A String&quot;, # etag is used for optimistic concurrency control as a way to help prevent simultaneous updates of a policy from overwriting each other. It is strongly suggested that systems make use of the etag in the read-modify-write cycle to perform policy updates in order to avoid race conditions: An etag is returned in the response to getIamPolicy, and systems are expected to put that etag in the request to setIamPolicy to ensure that their change will be applied to the same version of the policy.Important: If you use IAM Conditions, you must include the etag field whenever you call setIamPolicy. If you omit this field, then IAM allows you to overwrite a version 3 policy with a version 1 policy, and all of the conditions in the version 3 policy are lost.
@@ -2521,19 +2606,19 @@ Args:
 Returns:
   An object of the form:
 
-    { # An Identity and Access Management (IAM) policy, which specifies access controls for Google Cloud resources.A Policy is a collection of bindings. A binding binds one or more members to a single role. Members can be user accounts, service accounts, Google groups, and domains (such as G Suite). A role is a named list of permissions; each role can be an IAM predefined role or a user-created custom role.For some types of Google Cloud resources, a binding can also specify a condition, which is a logical expression that allows access to a resource only if the expression evaluates to true. A condition can add constraints based on attributes of the request, the resource, or both. To learn which resources support conditions in their IAM policies, see the IAM documentation (https://cloud.google.com/iam/help/conditions/resource-policies).JSON example: { &quot;bindings&quot;: [ { &quot;role&quot;: &quot;roles/resourcemanager.organizationAdmin&quot;, &quot;members&quot;: [ &quot;user:mike@example.com&quot;, &quot;group:admins@example.com&quot;, &quot;domain:google.com&quot;, &quot;serviceAccount:my-project-id@appspot.gserviceaccount.com&quot; ] }, { &quot;role&quot;: &quot;roles/resourcemanager.organizationViewer&quot;, &quot;members&quot;: [ &quot;user:eve@example.com&quot; ], &quot;condition&quot;: { &quot;title&quot;: &quot;expirable access&quot;, &quot;description&quot;: &quot;Does not grant access after Sep 2020&quot;, &quot;expression&quot;: &quot;request.time &lt; timestamp(&#x27;2020-10-01T00:00:00.000Z&#x27;)&quot;, } } ], &quot;etag&quot;: &quot;BwWWja0YfJA=&quot;, &quot;version&quot;: 3 } YAML example: bindings: - members: - user:mike@example.com - group:admins@example.com - domain:google.com - serviceAccount:my-project-id@appspot.gserviceaccount.com role: roles/resourcemanager.organizationAdmin - members: - user:eve@example.com role: roles/resourcemanager.organizationViewer condition: title: expirable access description: Does not grant access after Sep 2020 expression: request.time &lt; timestamp(&#x27;2020-10-01T00:00:00.000Z&#x27;) - etag: BwWWja0YfJA= - version: 3 For a description of IAM and its features, see the IAM documentation (https://cloud.google.com/iam/docs/).
-  &quot;bindings&quot;: [ # Associates a list of members to a role. Optionally, may specify a condition that determines how and when the bindings are applied. Each of the bindings must contain at least one member.
-    { # Associates members with a role.
-      &quot;condition&quot;: { # Represents a textual expression in the Common Expression Language (CEL) syntax. CEL is a C-like expression language. The syntax and semantics of CEL are documented at https://github.com/google/cel-spec.Example (Comparison): title: &quot;Summary size limit&quot; description: &quot;Determines if a summary is less than 100 chars&quot; expression: &quot;document.summary.size() &lt; 100&quot; Example (Equality): title: &quot;Requestor is owner&quot; description: &quot;Determines if requestor is the document owner&quot; expression: &quot;document.owner == request.auth.claims.email&quot; Example (Logic): title: &quot;Public documents&quot; description: &quot;Determine whether the document should be publicly visible&quot; expression: &quot;document.type != &#x27;private&#x27; &amp;&amp; document.type != &#x27;internal&#x27;&quot; Example (Data Manipulation): title: &quot;Notification string&quot; description: &quot;Create a notification string with a timestamp.&quot; expression: &quot;&#x27;New message received at &#x27; + string(document.create_time)&quot; The exact variables and functions that may be referenced within an expression are determined by the service that evaluates it. See the service documentation for additional information. # The condition that is associated with this binding.If the condition evaluates to true, then this binding applies to the current request.If the condition evaluates to false, then this binding does not apply to the current request. However, a different role binding might grant the same role to one or more of the members in this binding.To learn which resources support conditions in their IAM policies, see the IAM documentation (https://cloud.google.com/iam/help/conditions/resource-policies).
+    { # An Identity and Access Management (IAM) policy, which specifies access controls for Google Cloud resources.A Policy is a collection of bindings. A binding binds one or more members, or principals, to a single role. Principals can be user accounts, service accounts, Google groups, and domains (such as G Suite). A role is a named list of permissions; each role can be an IAM predefined role or a user-created custom role.For some types of Google Cloud resources, a binding can also specify a condition, which is a logical expression that allows access to a resource only if the expression evaluates to true. A condition can add constraints based on attributes of the request, the resource, or both. To learn which resources support conditions in their IAM policies, see the IAM documentation (https://cloud.google.com/iam/help/conditions/resource-policies).JSON example: { &quot;bindings&quot;: [ { &quot;role&quot;: &quot;roles/resourcemanager.organizationAdmin&quot;, &quot;members&quot;: [ &quot;user:mike@example.com&quot;, &quot;group:admins@example.com&quot;, &quot;domain:google.com&quot;, &quot;serviceAccount:my-project-id@appspot.gserviceaccount.com&quot; ] }, { &quot;role&quot;: &quot;roles/resourcemanager.organizationViewer&quot;, &quot;members&quot;: [ &quot;user:eve@example.com&quot; ], &quot;condition&quot;: { &quot;title&quot;: &quot;expirable access&quot;, &quot;description&quot;: &quot;Does not grant access after Sep 2020&quot;, &quot;expression&quot;: &quot;request.time &lt; timestamp(&#x27;2020-10-01T00:00:00.000Z&#x27;)&quot;, } } ], &quot;etag&quot;: &quot;BwWWja0YfJA=&quot;, &quot;version&quot;: 3 } YAML example: bindings: - members: - user:mike@example.com - group:admins@example.com - domain:google.com - serviceAccount:my-project-id@appspot.gserviceaccount.com role: roles/resourcemanager.organizationAdmin - members: - user:eve@example.com role: roles/resourcemanager.organizationViewer condition: title: expirable access description: Does not grant access after Sep 2020 expression: request.time &lt; timestamp(&#x27;2020-10-01T00:00:00.000Z&#x27;) etag: BwWWja0YfJA= version: 3 For a description of IAM and its features, see the IAM documentation (https://cloud.google.com/iam/docs/).
+  &quot;bindings&quot;: [ # Associates a list of members, or principals, with a role. Optionally, may specify a condition that determines how and when the bindings are applied. Each of the bindings must contain at least one principal.The bindings in a Policy can refer to up to 1,500 principals; up to 250 of these principals can be Google groups. Each occurrence of a principal counts towards these limits. For example, if the bindings grant 50 different roles to user:alice@example.com, and not to any other principal, then you can add another 1,450 principals to the bindings in the Policy.
+    { # Associates members, or principals, with a role.
+      &quot;condition&quot;: { # Represents a textual expression in the Common Expression Language (CEL) syntax. CEL is a C-like expression language. The syntax and semantics of CEL are documented at https://github.com/google/cel-spec.Example (Comparison): title: &quot;Summary size limit&quot; description: &quot;Determines if a summary is less than 100 chars&quot; expression: &quot;document.summary.size() &lt; 100&quot; Example (Equality): title: &quot;Requestor is owner&quot; description: &quot;Determines if requestor is the document owner&quot; expression: &quot;document.owner == request.auth.claims.email&quot; Example (Logic): title: &quot;Public documents&quot; description: &quot;Determine whether the document should be publicly visible&quot; expression: &quot;document.type != &#x27;private&#x27; &amp;&amp; document.type != &#x27;internal&#x27;&quot; Example (Data Manipulation): title: &quot;Notification string&quot; description: &quot;Create a notification string with a timestamp.&quot; expression: &quot;&#x27;New message received at &#x27; + string(document.create_time)&quot; The exact variables and functions that may be referenced within an expression are determined by the service that evaluates it. See the service documentation for additional information. # The condition that is associated with this binding.If the condition evaluates to true, then this binding applies to the current request.If the condition evaluates to false, then this binding does not apply to the current request. However, a different role binding might grant the same role to one or more of the principals in this binding.To learn which resources support conditions in their IAM policies, see the IAM documentation (https://cloud.google.com/iam/help/conditions/resource-policies).
         &quot;description&quot;: &quot;A String&quot;, # Optional. Description of the expression. This is a longer text which describes the expression, e.g. when hovered over it in a UI.
         &quot;expression&quot;: &quot;A String&quot;, # Textual representation of an expression in Common Expression Language syntax.
         &quot;location&quot;: &quot;A String&quot;, # Optional. String indicating the location of the expression for error reporting, e.g. a file name and a position in the file.
         &quot;title&quot;: &quot;A String&quot;, # Optional. Title for the expression, i.e. a short string describing its purpose. This can be used e.g. in UIs which allow to enter the expression.
       },
-      &quot;members&quot;: [ # Specifies the identities requesting access for a Cloud Platform resource. members can have the following values: allUsers: A special identifier that represents anyone who is on the internet; with or without a Google account. allAuthenticatedUsers: A special identifier that represents anyone who is authenticated with a Google account or a service account. user:{emailid}: An email address that represents a specific Google account. For example, alice@example.com . serviceAccount:{emailid}: An email address that represents a service account. For example, my-other-app@appspot.gserviceaccount.com. group:{emailid}: An email address that represents a Google group. For example, admins@example.com. deleted:user:{emailid}?uid={uniqueid}: An email address (plus unique identifier) representing a user that has been recently deleted. For example, alice@example.com?uid=123456789012345678901. If the user is recovered, this value reverts to user:{emailid} and the recovered user retains the role in the binding. deleted:serviceAccount:{emailid}?uid={uniqueid}: An email address (plus unique identifier) representing a service account that has been recently deleted. For example, my-other-app@appspot.gserviceaccount.com?uid=123456789012345678901. If the service account is undeleted, this value reverts to serviceAccount:{emailid} and the undeleted service account retains the role in the binding. deleted:group:{emailid}?uid={uniqueid}: An email address (plus unique identifier) representing a Google group that has been recently deleted. For example, admins@example.com?uid=123456789012345678901. If the group is recovered, this value reverts to group:{emailid} and the recovered group retains the role in the binding. domain:{domain}: The G Suite domain (primary) that represents all the users of that domain. For example, google.com or example.com.
+      &quot;members&quot;: [ # Specifies the principals requesting access for a Cloud Platform resource. members can have the following values: allUsers: A special identifier that represents anyone who is on the internet; with or without a Google account. allAuthenticatedUsers: A special identifier that represents anyone who is authenticated with a Google account or a service account. user:{emailid}: An email address that represents a specific Google account. For example, alice@example.com . serviceAccount:{emailid}: An email address that represents a service account. For example, my-other-app@appspot.gserviceaccount.com. group:{emailid}: An email address that represents a Google group. For example, admins@example.com. deleted:user:{emailid}?uid={uniqueid}: An email address (plus unique identifier) representing a user that has been recently deleted. For example, alice@example.com?uid=123456789012345678901. If the user is recovered, this value reverts to user:{emailid} and the recovered user retains the role in the binding. deleted:serviceAccount:{emailid}?uid={uniqueid}: An email address (plus unique identifier) representing a service account that has been recently deleted. For example, my-other-app@appspot.gserviceaccount.com?uid=123456789012345678901. If the service account is undeleted, this value reverts to serviceAccount:{emailid} and the undeleted service account retains the role in the binding. deleted:group:{emailid}?uid={uniqueid}: An email address (plus unique identifier) representing a Google group that has been recently deleted. For example, admins@example.com?uid=123456789012345678901. If the group is recovered, this value reverts to group:{emailid} and the recovered group retains the role in the binding. domain:{domain}: The G Suite domain (primary) that represents all the users of that domain. For example, google.com or example.com.
         &quot;A String&quot;,
       ],
-      &quot;role&quot;: &quot;A String&quot;, # Role that is assigned to members. For example, roles/viewer, roles/editor, or roles/owner.
+      &quot;role&quot;: &quot;A String&quot;, # Role that is assigned to the list of members, or principals. For example, roles/viewer, roles/editor, or roles/owner.
     },
   ],
   &quot;etag&quot;: &quot;A String&quot;, # etag is used for optimistic concurrency control as a way to help prevent simultaneous updates of a policy from overwriting each other. It is strongly suggested that systems make use of the etag in the read-modify-write cycle to perform policy updates in order to avoid race conditions: An etag is returned in the response to getIamPolicy, and systems are expected to put that etag in the request to setIamPolicy to ensure that their change will be applied to the same version of the policy.Important: If you use IAM Conditions, you must include the etag field whenever you call setIamPolicy. If you omit this field, then IAM allows you to overwrite a version 3 policy with a version 1 policy, and all of the conditions in the version 3 policy are lost.
@@ -2815,7 +2900,7 @@ Args:
         &quot;autoscalingConfig&quot;: { # Autoscaling Policy config associated with the cluster. # Optional. Autoscaling config for the policy associated with the cluster. Cluster does not autoscale if this field is unset.
           &quot;policyUri&quot;: &quot;A String&quot;, # Optional. The autoscaling policy used by the cluster.Only resource names including projectid and location (region) are valid. Examples: https://www.googleapis.com/compute/v1/projects/[project_id]/locations/[dataproc_region]/autoscalingPolicies/[policy_id] projects/[project_id]/locations/[dataproc_region]/autoscalingPolicies/[policy_id]Note that the policy must be in the same project and Dataproc region.
         },
-        &quot;configBucket&quot;: &quot;A String&quot;, # Optional. A Cloud Storage bucket used to stage job dependencies, config files, and job driver console output. If you do not specify a staging bucket, Cloud Dataproc will determine a Cloud Storage location (US, ASIA, or EU) for your cluster&#x27;s staging bucket according to the Compute Engine zone where your cluster is deployed, and then create and manage this project-level, per-location bucket (see Dataproc staging bucket (https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/staging-bucket)). This field requires a Cloud Storage bucket name, not a URI to a Cloud Storage bucket.
+        &quot;configBucket&quot;: &quot;A String&quot;, # Optional. A Cloud Storage bucket used to stage job dependencies, config files, and job driver console output. If you do not specify a staging bucket, Cloud Dataproc will determine a Cloud Storage location (US, ASIA, or EU) for your cluster&#x27;s staging bucket according to the Compute Engine zone where your cluster is deployed, and then create and manage this project-level, per-location bucket (see Dataproc staging and temp buckets (https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/staging-bucket)). This field requires a Cloud Storage bucket name, not a gs://... URI to a Cloud Storage bucket.
         &quot;encryptionConfig&quot;: { # Encryption settings for the cluster. # Optional. Encryption settings for the cluster.
           &quot;gcePdKmsKeyName&quot;: &quot;A String&quot;, # Optional. The Cloud KMS key name to use for PD disk encryption for all instances in the cluster.
         },
@@ -2826,6 +2911,9 @@ Args:
           },
         },
         &quot;gceClusterConfig&quot;: { # Common config settings for resources of Compute Engine cluster instances, applicable to all instances in the cluster. # Optional. The shared Compute Engine config settings for all instances in a cluster.
+          &quot;confidentialInstanceConfig&quot;: { # Confidential Instance Config for clusters using Confidential VMs (https://cloud.google.com/compute/confidential-vm/docs) # Optional. Confidential Instance Config for clusters using Confidential VMs (https://cloud.google.com/compute/confidential-vm/docs).
+            &quot;enableConfidentialCompute&quot;: True or False, # Optional. Defines whether the instance should have confidential compute enabled.
+          },
           &quot;internalIpOnly&quot;: True or False, # Optional. If true, all instances in the cluster will only have internal IP addresses. By default, clusters are not restricted to internal IP addresses, and will have ephemeral external IP addresses assigned to each instance. This internal_ip_only restriction can only be enabled for subnetwork enabled networks, and all off-cluster dependencies must be configured to be accessible without external IP addresses.
           &quot;metadata&quot;: { # The Compute Engine metadata entries to add to all instances (see Project and instance metadata (https://cloud.google.com/compute/docs/storing-retrieving-metadata#project_and_instance_metadata)).
             &quot;a_key&quot;: &quot;A String&quot;,
@@ -2857,6 +2945,12 @@ Args:
           ],
           &quot;zoneUri&quot;: &quot;A String&quot;, # Optional. The zone where the Compute Engine cluster will be located. On a create request, it is required in the &quot;global&quot; region. If omitted in a non-global Dataproc region, the service will pick a zone in the corresponding Compute Engine region. On a get request, zone will always be present.A full URL, partial URI, or short name are valid. Examples: https://www.googleapis.com/compute/v1/projects/[project_id]/zones/[zone] projects/[project_id]/zones/[zone] us-central1-f
         },
+        &quot;gkeClusterConfig&quot;: { # The cluster&#x27;s GKE config. # Optional. BETA. The Kubernetes Engine config for Dataproc clusters deployed to Kubernetes. Setting this is considered mutually exclusive with Compute Engine-based options such as gce_cluster_config, master_config, worker_config, secondary_worker_config, and autoscaling_config.
+          &quot;namespacedGkeDeploymentTarget&quot;: { # A full, namespace-isolated deployment target for an existing GKE cluster. # Optional. A target for the deployment.
+            &quot;clusterNamespace&quot;: &quot;A String&quot;, # Optional. A namespace within the GKE cluster to deploy into.
+            &quot;targetGkeCluster&quot;: &quot;A String&quot;, # Optional. The target GKE cluster to deploy to. Format: &#x27;projects/{project}/locations/{location}/clusters/{cluster_id}&#x27;
+          },
+        },
         &quot;initializationActions&quot;: [ # Optional. Commands to execute on each node after config is completed. By default, executables are run on master and all worker nodes. You can test a node&#x27;s role metadata to run an executable on a master or worker node, as shown below using curl (you can also use wget): ROLE=$(curl -H Metadata-Flavor:Google http://metadata/computeMetadata/v1/instance/attributes/dataproc-role) if [[ &quot;${ROLE}&quot; == &#x27;Master&#x27; ]]; then ... master specific actions ... else ... worker specific actions ... fi
           { # Specifies an executable to run on a fully configured node and a timeout period for executable completion.
             &quot;executableFile&quot;: &quot;A String&quot;, # Required. Cloud Storage URI of executable file.
@@ -2869,7 +2963,7 @@ Args:
           &quot;idleDeleteTtl&quot;: &quot;A String&quot;, # Optional. The duration to keep the cluster alive while idling (when no jobs are running). Passing this threshold will cause the cluster to be deleted. Minimum value is 5 minutes; maximum value is 14 days (see JSON representation of Duration (https://developers.google.com/protocol-buffers/docs/proto3#json)).
           &quot;idleStartTime&quot;: &quot;A String&quot;, # Output only. The time when cluster became idle (most recent job finished) and became eligible for deletion due to idleness (see JSON representation of Timestamp (https://developers.google.com/protocol-buffers/docs/proto3#json)).
         },
-        &quot;masterConfig&quot;: { # The config settings for Compute Engine resources in an instance group, such as a master or worker group. # Optional. The Compute Engine config settings for the master instance in a cluster.
+        &quot;masterConfig&quot;: { # The config settings for Compute Engine resources in an instance group, such as a master or worker group. # Optional. The Compute Engine config settings for the cluster&#x27;s master instance.
           &quot;accelerators&quot;: [ # Optional. The Compute Engine accelerator configuration for these instances.
             { # Specifies the type and number of accelerator cards attached to the instances of an instance. See GPUs on Compute Engine (https://cloud.google.com/compute/docs/gpus/).
               &quot;acceleratorCount&quot;: 42, # The number of the accelerator cards of this type exposed to this instance.
@@ -2889,7 +2983,8 @@ Args:
             { # A reference to a Compute Engine instance.
               &quot;instanceId&quot;: &quot;A String&quot;, # The unique identifier of the Compute Engine instance.
               &quot;instanceName&quot;: &quot;A String&quot;, # The user-friendly name of the Compute Engine instance.
-              &quot;publicKey&quot;: &quot;A String&quot;, # The public key used for sharing data with this instance.
+              &quot;publicEciesKey&quot;: &quot;A String&quot;, # The public ECIES key used for sharing data with this instance.
+              &quot;publicKey&quot;: &quot;A String&quot;, # The public RSA key used for sharing data with this instance.
             },
           ],
           &quot;isPreemptible&quot;: True or False, # Output only. Specifies that this instance group contains preemptible instances.
@@ -2899,13 +2994,13 @@ Args:
             &quot;instanceTemplateName&quot;: &quot;A String&quot;, # Output only. The name of the Instance Template used for the Managed Instance Group.
           },
           &quot;minCpuPlatform&quot;: &quot;A String&quot;, # Optional. Specifies the minimum cpu platform for the Instance Group. See Dataproc -&gt; Minimum CPU Platform (https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu).
-          &quot;numInstances&quot;: 42, # Optional. The number of VM instances in the instance group. For master instance groups, must be set to 1.
+          &quot;numInstances&quot;: 42, # Optional. The number of VM instances in the instance group. For HA cluster master_config groups, must be set to 3. For standard cluster master_config groups, must be set to 1.
           &quot;preemptibility&quot;: &quot;A String&quot;, # Optional. Specifies the preemptibility of the instance group.The default value for master and worker groups is NON_PREEMPTIBLE. This default cannot be changed.The default value for secondary instances is PREEMPTIBLE.
         },
         &quot;metastoreConfig&quot;: { # Specifies a Metastore configuration. # Optional. Metastore configuration.
           &quot;dataprocMetastoreService&quot;: &quot;A String&quot;, # Required. Resource name of an existing Dataproc Metastore service.Example: projects/[project_id]/locations/[dataproc_region]/services/[service-name]
         },
-        &quot;secondaryWorkerConfig&quot;: { # The config settings for Compute Engine resources in an instance group, such as a master or worker group. # Optional. The Compute Engine config settings for additional worker instances in a cluster.
+        &quot;secondaryWorkerConfig&quot;: { # The config settings for Compute Engine resources in an instance group, such as a master or worker group. # Optional. The Compute Engine config settings for a cluster&#x27;s secondary worker instances
           &quot;accelerators&quot;: [ # Optional. The Compute Engine accelerator configuration for these instances.
             { # Specifies the type and number of accelerator cards attached to the instances of an instance. See GPUs on Compute Engine (https://cloud.google.com/compute/docs/gpus/).
               &quot;acceleratorCount&quot;: 42, # The number of the accelerator cards of this type exposed to this instance.
@@ -2925,7 +3020,8 @@ Args:
             { # A reference to a Compute Engine instance.
               &quot;instanceId&quot;: &quot;A String&quot;, # The unique identifier of the Compute Engine instance.
               &quot;instanceName&quot;: &quot;A String&quot;, # The user-friendly name of the Compute Engine instance.
-              &quot;publicKey&quot;: &quot;A String&quot;, # The public key used for sharing data with this instance.
+              &quot;publicEciesKey&quot;: &quot;A String&quot;, # The public ECIES key used for sharing data with this instance.
+              &quot;publicKey&quot;: &quot;A String&quot;, # The public RSA key used for sharing data with this instance.
             },
           ],
           &quot;isPreemptible&quot;: True or False, # Output only. Specifies that this instance group contains preemptible instances.
@@ -2935,10 +3031,15 @@ Args:
             &quot;instanceTemplateName&quot;: &quot;A String&quot;, # Output only. The name of the Instance Template used for the Managed Instance Group.
           },
           &quot;minCpuPlatform&quot;: &quot;A String&quot;, # Optional. Specifies the minimum cpu platform for the Instance Group. See Dataproc -&gt; Minimum CPU Platform (https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu).
-          &quot;numInstances&quot;: 42, # Optional. The number of VM instances in the instance group. For master instance groups, must be set to 1.
+          &quot;numInstances&quot;: 42, # Optional. The number of VM instances in the instance group. For HA cluster master_config groups, must be set to 3. For standard cluster master_config groups, must be set to 1.
           &quot;preemptibility&quot;: &quot;A String&quot;, # Optional. Specifies the preemptibility of the instance group.The default value for master and worker groups is NON_PREEMPTIBLE. This default cannot be changed.The default value for secondary instances is PREEMPTIBLE.
         },
         &quot;securityConfig&quot;: { # Security related configuration, including encryption, Kerberos, etc. # Optional. Security settings for the cluster.
+          &quot;identityConfig&quot;: { # Identity related configuration, including service account based secure multi-tenancy user mappings. # Optional. Identity related configuration, including service account based secure multi-tenancy user mappings.
+            &quot;userServiceAccountMapping&quot;: { # Required. Map of user to service account.
+              &quot;a_key&quot;: &quot;A String&quot;,
+            },
+          },
           &quot;kerberosConfig&quot;: { # Specifies Kerberos related configuration. # Optional. Kerberos related configuration.
             &quot;crossRealmTrustAdminServer&quot;: &quot;A String&quot;, # Optional. The admin server (IP or hostname) for the remote trusted realm in a cross realm trust relationship.
             &quot;crossRealmTrustKdc&quot;: &quot;A String&quot;, # Optional. The KDC (IP or hostname) for the remote trusted realm in a cross realm trust relationship.
@@ -2957,7 +3058,7 @@ Args:
             &quot;truststoreUri&quot;: &quot;A String&quot;, # Optional. The Cloud Storage URI of the truststore file used for SSL encryption. If not provided, Dataproc will provide a self-signed certificate.
           },
         },
-        &quot;softwareConfig&quot;: { # Specifies the selection and config of software inside the cluster. # Optional. The config settings for software inside the cluster.
+        &quot;softwareConfig&quot;: { # Specifies the selection and config of software inside the cluster. # Optional. The config settings for cluster software.
           &quot;imageVersion&quot;: &quot;A String&quot;, # Optional. The version of software inside the cluster. It must be one of the supported Dataproc Versions (https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#supported_dataproc_versions), such as &quot;1.2&quot; (including a subminor version, such as &quot;1.2.29&quot;), or the &quot;preview&quot; version (https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#other_versions). If unspecified, it defaults to the latest Debian version.
           &quot;optionalComponents&quot;: [ # Optional. The set of components to activate on the cluster.
             &quot;A String&quot;,
@@ -2966,8 +3067,8 @@ Args:
             &quot;a_key&quot;: &quot;A String&quot;,
           },
         },
-        &quot;tempBucket&quot;: &quot;A String&quot;, # Optional. A Cloud Storage bucket used to store ephemeral cluster and jobs data, such as Spark and MapReduce history files. If you do not specify a temp bucket, Dataproc will determine a Cloud Storage location (US, ASIA, or EU) for your cluster&#x27;s temp bucket according to the Compute Engine zone where your cluster is deployed, and then create and manage this project-level, per-location bucket. The default bucket has a TTL of 90 days, but you can use any TTL (or none) if you specify a bucket. This field requires a Cloud Storage bucket name, not a URI to a Cloud Storage bucket.
-        &quot;workerConfig&quot;: { # The config settings for Compute Engine resources in an instance group, such as a master or worker group. # Optional. The Compute Engine config settings for worker instances in a cluster.
+        &quot;tempBucket&quot;: &quot;A String&quot;, # Optional. A Cloud Storage bucket used to store ephemeral cluster and jobs data, such as Spark and MapReduce history files. If you do not specify a temp bucket, Dataproc will determine a Cloud Storage location (US, ASIA, or EU) for your cluster&#x27;s temp bucket according to the Compute Engine zone where your cluster is deployed, and then create and manage this project-level, per-location bucket. The default bucket has a TTL of 90 days, but you can use any TTL (or none) if you specify a bucket (see Dataproc staging and temp buckets (https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/staging-bucket)). This field requires a Cloud Storage bucket name, not a gs://... URI to a Cloud Storage bucket.
+        &quot;workerConfig&quot;: { # The config settings for Compute Engine resources in an instance group, such as a master or worker group. # Optional. The Compute Engine config settings for the cluster&#x27;s worker instances.
           &quot;accelerators&quot;: [ # Optional. The Compute Engine accelerator configuration for these instances.
             { # Specifies the type and number of accelerator cards attached to the instances of an instance. See GPUs on Compute Engine (https://cloud.google.com/compute/docs/gpus/).
               &quot;acceleratorCount&quot;: 42, # The number of the accelerator cards of this type exposed to this instance.
@@ -2987,7 +3088,8 @@ Args:
             { # A reference to a Compute Engine instance.
               &quot;instanceId&quot;: &quot;A String&quot;, # The unique identifier of the Compute Engine instance.
               &quot;instanceName&quot;: &quot;A String&quot;, # The user-friendly name of the Compute Engine instance.
-              &quot;publicKey&quot;: &quot;A String&quot;, # The public key used for sharing data with this instance.
+              &quot;publicEciesKey&quot;: &quot;A String&quot;, # The public ECIES key used for sharing data with this instance.
+              &quot;publicKey&quot;: &quot;A String&quot;, # The public RSA key used for sharing data with this instance.
             },
           ],
           &quot;isPreemptible&quot;: True or False, # Output only. Specifies that this instance group contains preemptible instances.
@@ -2997,7 +3099,7 @@ Args:
             &quot;instanceTemplateName&quot;: &quot;A String&quot;, # Output only. The name of the Instance Template used for the Managed Instance Group.
           },
           &quot;minCpuPlatform&quot;: &quot;A String&quot;, # Optional. Specifies the minimum cpu platform for the Instance Group. See Dataproc -&gt; Minimum CPU Platform (https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu).
-          &quot;numInstances&quot;: 42, # Optional. The number of VM instances in the instance group. For master instance groups, must be set to 1.
+          &quot;numInstances&quot;: 42, # Optional. The number of VM instances in the instance group. For HA cluster master_config groups, must be set to 3. For standard cluster master_config groups, must be set to 1.
           &quot;preemptibility&quot;: &quot;A String&quot;, # Optional. Specifies the preemptibility of the instance group.The default value for master and worker groups is NON_PREEMPTIBLE. This default cannot be changed.The default value for secondary instances is PREEMPTIBLE.
         },
       },
@@ -3253,7 +3355,7 @@ Returns:
         &quot;autoscalingConfig&quot;: { # Autoscaling Policy config associated with the cluster. # Optional. Autoscaling config for the policy associated with the cluster. Cluster does not autoscale if this field is unset.
           &quot;policyUri&quot;: &quot;A String&quot;, # Optional. The autoscaling policy used by the cluster.Only resource names including projectid and location (region) are valid. Examples: https://www.googleapis.com/compute/v1/projects/[project_id]/locations/[dataproc_region]/autoscalingPolicies/[policy_id] projects/[project_id]/locations/[dataproc_region]/autoscalingPolicies/[policy_id]Note that the policy must be in the same project and Dataproc region.
         },
-        &quot;configBucket&quot;: &quot;A String&quot;, # Optional. A Cloud Storage bucket used to stage job dependencies, config files, and job driver console output. If you do not specify a staging bucket, Cloud Dataproc will determine a Cloud Storage location (US, ASIA, or EU) for your cluster&#x27;s staging bucket according to the Compute Engine zone where your cluster is deployed, and then create and manage this project-level, per-location bucket (see Dataproc staging bucket (https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/staging-bucket)). This field requires a Cloud Storage bucket name, not a URI to a Cloud Storage bucket.
+        &quot;configBucket&quot;: &quot;A String&quot;, # Optional. A Cloud Storage bucket used to stage job dependencies, config files, and job driver console output. If you do not specify a staging bucket, Cloud Dataproc will determine a Cloud Storage location (US, ASIA, or EU) for your cluster&#x27;s staging bucket according to the Compute Engine zone where your cluster is deployed, and then create and manage this project-level, per-location bucket (see Dataproc staging and temp buckets (https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/staging-bucket)). This field requires a Cloud Storage bucket name, not a gs://... URI to a Cloud Storage bucket.
         &quot;encryptionConfig&quot;: { # Encryption settings for the cluster. # Optional. Encryption settings for the cluster.
           &quot;gcePdKmsKeyName&quot;: &quot;A String&quot;, # Optional. The Cloud KMS key name to use for PD disk encryption for all instances in the cluster.
         },
@@ -3264,6 +3366,9 @@ Returns:
           },
         },
         &quot;gceClusterConfig&quot;: { # Common config settings for resources of Compute Engine cluster instances, applicable to all instances in the cluster. # Optional. The shared Compute Engine config settings for all instances in a cluster.
+          &quot;confidentialInstanceConfig&quot;: { # Confidential Instance Config for clusters using Confidential VMs (https://cloud.google.com/compute/confidential-vm/docs) # Optional. Confidential Instance Config for clusters using Confidential VMs (https://cloud.google.com/compute/confidential-vm/docs).
+            &quot;enableConfidentialCompute&quot;: True or False, # Optional. Defines whether the instance should have confidential compute enabled.
+          },
           &quot;internalIpOnly&quot;: True or False, # Optional. If true, all instances in the cluster will only have internal IP addresses. By default, clusters are not restricted to internal IP addresses, and will have ephemeral external IP addresses assigned to each instance. This internal_ip_only restriction can only be enabled for subnetwork enabled networks, and all off-cluster dependencies must be configured to be accessible without external IP addresses.
           &quot;metadata&quot;: { # The Compute Engine metadata entries to add to all instances (see Project and instance metadata (https://cloud.google.com/compute/docs/storing-retrieving-metadata#project_and_instance_metadata)).
             &quot;a_key&quot;: &quot;A String&quot;,
@@ -3295,6 +3400,12 @@ Returns:
           ],
           &quot;zoneUri&quot;: &quot;A String&quot;, # Optional. The zone where the Compute Engine cluster will be located. On a create request, it is required in the &quot;global&quot; region. If omitted in a non-global Dataproc region, the service will pick a zone in the corresponding Compute Engine region. On a get request, zone will always be present.A full URL, partial URI, or short name are valid. Examples: https://www.googleapis.com/compute/v1/projects/[project_id]/zones/[zone] projects/[project_id]/zones/[zone] us-central1-f
         },
+        &quot;gkeClusterConfig&quot;: { # The cluster&#x27;s GKE config. # Optional. BETA. The Kubernetes Engine config for Dataproc clusters deployed to Kubernetes. Setting this is considered mutually exclusive with Compute Engine-based options such as gce_cluster_config, master_config, worker_config, secondary_worker_config, and autoscaling_config.
+          &quot;namespacedGkeDeploymentTarget&quot;: { # A full, namespace-isolated deployment target for an existing GKE cluster. # Optional. A target for the deployment.
+            &quot;clusterNamespace&quot;: &quot;A String&quot;, # Optional. A namespace within the GKE cluster to deploy into.
+            &quot;targetGkeCluster&quot;: &quot;A String&quot;, # Optional. The target GKE cluster to deploy to. Format: &#x27;projects/{project}/locations/{location}/clusters/{cluster_id}&#x27;
+          },
+        },
         &quot;initializationActions&quot;: [ # Optional. Commands to execute on each node after config is completed. By default, executables are run on master and all worker nodes. You can test a node&#x27;s role metadata to run an executable on a master or worker node, as shown below using curl (you can also use wget): ROLE=$(curl -H Metadata-Flavor:Google http://metadata/computeMetadata/v1/instance/attributes/dataproc-role) if [[ &quot;${ROLE}&quot; == &#x27;Master&#x27; ]]; then ... master specific actions ... else ... worker specific actions ... fi
           { # Specifies an executable to run on a fully configured node and a timeout period for executable completion.
             &quot;executableFile&quot;: &quot;A String&quot;, # Required. Cloud Storage URI of executable file.
@@ -3307,7 +3418,7 @@ Returns:
           &quot;idleDeleteTtl&quot;: &quot;A String&quot;, # Optional. The duration to keep the cluster alive while idling (when no jobs are running). Passing this threshold will cause the cluster to be deleted. Minimum value is 5 minutes; maximum value is 14 days (see JSON representation of Duration (https://developers.google.com/protocol-buffers/docs/proto3#json)).
           &quot;idleStartTime&quot;: &quot;A String&quot;, # Output only. The time when cluster became idle (most recent job finished) and became eligible for deletion due to idleness (see JSON representation of Timestamp (https://developers.google.com/protocol-buffers/docs/proto3#json)).
         },
-        &quot;masterConfig&quot;: { # The config settings for Compute Engine resources in an instance group, such as a master or worker group. # Optional. The Compute Engine config settings for the master instance in a cluster.
+        &quot;masterConfig&quot;: { # The config settings for Compute Engine resources in an instance group, such as a master or worker group. # Optional. The Compute Engine config settings for the cluster&#x27;s master instance.
           &quot;accelerators&quot;: [ # Optional. The Compute Engine accelerator configuration for these instances.
             { # Specifies the type and number of accelerator cards attached to the instances of an instance. See GPUs on Compute Engine (https://cloud.google.com/compute/docs/gpus/).
               &quot;acceleratorCount&quot;: 42, # The number of the accelerator cards of this type exposed to this instance.
@@ -3327,7 +3438,8 @@ Returns:
             { # A reference to a Compute Engine instance.
               &quot;instanceId&quot;: &quot;A String&quot;, # The unique identifier of the Compute Engine instance.
               &quot;instanceName&quot;: &quot;A String&quot;, # The user-friendly name of the Compute Engine instance.
-              &quot;publicKey&quot;: &quot;A String&quot;, # The public key used for sharing data with this instance.
+              &quot;publicEciesKey&quot;: &quot;A String&quot;, # The public ECIES key used for sharing data with this instance.
+              &quot;publicKey&quot;: &quot;A String&quot;, # The public RSA key used for sharing data with this instance.
             },
           ],
           &quot;isPreemptible&quot;: True or False, # Output only. Specifies that this instance group contains preemptible instances.
@@ -3337,13 +3449,13 @@ Returns:
             &quot;instanceTemplateName&quot;: &quot;A String&quot;, # Output only. The name of the Instance Template used for the Managed Instance Group.
           },
           &quot;minCpuPlatform&quot;: &quot;A String&quot;, # Optional. Specifies the minimum cpu platform for the Instance Group. See Dataproc -&gt; Minimum CPU Platform (https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu).
-          &quot;numInstances&quot;: 42, # Optional. The number of VM instances in the instance group. For master instance groups, must be set to 1.
+          &quot;numInstances&quot;: 42, # Optional. The number of VM instances in the instance group. For HA cluster master_config groups, must be set to 3. For standard cluster master_config groups, must be set to 1.
           &quot;preemptibility&quot;: &quot;A String&quot;, # Optional. Specifies the preemptibility of the instance group.The default value for master and worker groups is NON_PREEMPTIBLE. This default cannot be changed.The default value for secondary instances is PREEMPTIBLE.
         },
         &quot;metastoreConfig&quot;: { # Specifies a Metastore configuration. # Optional. Metastore configuration.
           &quot;dataprocMetastoreService&quot;: &quot;A String&quot;, # Required. Resource name of an existing Dataproc Metastore service.Example: projects/[project_id]/locations/[dataproc_region]/services/[service-name]
         },
-        &quot;secondaryWorkerConfig&quot;: { # The config settings for Compute Engine resources in an instance group, such as a master or worker group. # Optional. The Compute Engine config settings for additional worker instances in a cluster.
+        &quot;secondaryWorkerConfig&quot;: { # The config settings for Compute Engine resources in an instance group, such as a master or worker group. # Optional. The Compute Engine config settings for a cluster&#x27;s secondary worker instances
           &quot;accelerators&quot;: [ # Optional. The Compute Engine accelerator configuration for these instances.
             { # Specifies the type and number of accelerator cards attached to the instances of an instance. See GPUs on Compute Engine (https://cloud.google.com/compute/docs/gpus/).
               &quot;acceleratorCount&quot;: 42, # The number of the accelerator cards of this type exposed to this instance.
@@ -3363,7 +3475,8 @@ Returns:
             { # A reference to a Compute Engine instance.
               &quot;instanceId&quot;: &quot;A String&quot;, # The unique identifier of the Compute Engine instance.
               &quot;instanceName&quot;: &quot;A String&quot;, # The user-friendly name of the Compute Engine instance.
-              &quot;publicKey&quot;: &quot;A String&quot;, # The public key used for sharing data with this instance.
+              &quot;publicEciesKey&quot;: &quot;A String&quot;, # The public ECIES key used for sharing data with this instance.
+              &quot;publicKey&quot;: &quot;A String&quot;, # The public RSA key used for sharing data with this instance.
             },
           ],
           &quot;isPreemptible&quot;: True or False, # Output only. Specifies that this instance group contains preemptible instances.
@@ -3373,10 +3486,15 @@ Returns:
             &quot;instanceTemplateName&quot;: &quot;A String&quot;, # Output only. The name of the Instance Template used for the Managed Instance Group.
           },
           &quot;minCpuPlatform&quot;: &quot;A String&quot;, # Optional. Specifies the minimum cpu platform for the Instance Group. See Dataproc -&gt; Minimum CPU Platform (https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu).
-          &quot;numInstances&quot;: 42, # Optional. The number of VM instances in the instance group. For master instance groups, must be set to 1.
+          &quot;numInstances&quot;: 42, # Optional. The number of VM instances in the instance group. For HA cluster master_config groups, must be set to 3. For standard cluster master_config groups, must be set to 1.
           &quot;preemptibility&quot;: &quot;A String&quot;, # Optional. Specifies the preemptibility of the instance group.The default value for master and worker groups is NON_PREEMPTIBLE. This default cannot be changed.The default value for secondary instances is PREEMPTIBLE.
         },
         &quot;securityConfig&quot;: { # Security related configuration, including encryption, Kerberos, etc. # Optional. Security settings for the cluster.
+          &quot;identityConfig&quot;: { # Identity related configuration, including service account based secure multi-tenancy user mappings. # Optional. Identity related configuration, including service account based secure multi-tenancy user mappings.
+            &quot;userServiceAccountMapping&quot;: { # Required. Map of user to service account.
+              &quot;a_key&quot;: &quot;A String&quot;,
+            },
+          },
           &quot;kerberosConfig&quot;: { # Specifies Kerberos related configuration. # Optional. Kerberos related configuration.
             &quot;crossRealmTrustAdminServer&quot;: &quot;A String&quot;, # Optional. The admin server (IP or hostname) for the remote trusted realm in a cross realm trust relationship.
             &quot;crossRealmTrustKdc&quot;: &quot;A String&quot;, # Optional. The KDC (IP or hostname) for the remote trusted realm in a cross realm trust relationship.
@@ -3395,7 +3513,7 @@ Returns:
             &quot;truststoreUri&quot;: &quot;A String&quot;, # Optional. The Cloud Storage URI of the truststore file used for SSL encryption. If not provided, Dataproc will provide a self-signed certificate.
           },
         },
-        &quot;softwareConfig&quot;: { # Specifies the selection and config of software inside the cluster. # Optional. The config settings for software inside the cluster.
+        &quot;softwareConfig&quot;: { # Specifies the selection and config of software inside the cluster. # Optional. The config settings for cluster software.
           &quot;imageVersion&quot;: &quot;A String&quot;, # Optional. The version of software inside the cluster. It must be one of the supported Dataproc Versions (https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#supported_dataproc_versions), such as &quot;1.2&quot; (including a subminor version, such as &quot;1.2.29&quot;), or the &quot;preview&quot; version (https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-versions#other_versions). If unspecified, it defaults to the latest Debian version.
           &quot;optionalComponents&quot;: [ # Optional. The set of components to activate on the cluster.
             &quot;A String&quot;,
@@ -3404,8 +3522,8 @@ Returns:
             &quot;a_key&quot;: &quot;A String&quot;,
           },
         },
-        &quot;tempBucket&quot;: &quot;A String&quot;, # Optional. A Cloud Storage bucket used to store ephemeral cluster and jobs data, such as Spark and MapReduce history files. If you do not specify a temp bucket, Dataproc will determine a Cloud Storage location (US, ASIA, or EU) for your cluster&#x27;s temp bucket according to the Compute Engine zone where your cluster is deployed, and then create and manage this project-level, per-location bucket. The default bucket has a TTL of 90 days, but you can use any TTL (or none) if you specify a bucket. This field requires a Cloud Storage bucket name, not a URI to a Cloud Storage bucket.
-        &quot;workerConfig&quot;: { # The config settings for Compute Engine resources in an instance group, such as a master or worker group. # Optional. The Compute Engine config settings for worker instances in a cluster.
+        &quot;tempBucket&quot;: &quot;A String&quot;, # Optional. A Cloud Storage bucket used to store ephemeral cluster and jobs data, such as Spark and MapReduce history files. If you do not specify a temp bucket, Dataproc will determine a Cloud Storage location (US, ASIA, or EU) for your cluster&#x27;s temp bucket according to the Compute Engine zone where your cluster is deployed, and then create and manage this project-level, per-location bucket. The default bucket has a TTL of 90 days, but you can use any TTL (or none) if you specify a bucket (see Dataproc staging and temp buckets (https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/staging-bucket)). This field requires a Cloud Storage bucket name, not a gs://... URI to a Cloud Storage bucket.
+        &quot;workerConfig&quot;: { # The config settings for Compute Engine resources in an instance group, such as a master or worker group. # Optional. The Compute Engine config settings for the cluster&#x27;s worker instances.
           &quot;accelerators&quot;: [ # Optional. The Compute Engine accelerator configuration for these instances.
             { # Specifies the type and number of accelerator cards attached to the instances of an instance. See GPUs on Compute Engine (https://cloud.google.com/compute/docs/gpus/).
               &quot;acceleratorCount&quot;: 42, # The number of the accelerator cards of this type exposed to this instance.
@@ -3425,7 +3543,8 @@ Returns:
             { # A reference to a Compute Engine instance.
               &quot;instanceId&quot;: &quot;A String&quot;, # The unique identifier of the Compute Engine instance.
               &quot;instanceName&quot;: &quot;A String&quot;, # The user-friendly name of the Compute Engine instance.
-              &quot;publicKey&quot;: &quot;A String&quot;, # The public key used for sharing data with this instance.
+              &quot;publicEciesKey&quot;: &quot;A String&quot;, # The public ECIES key used for sharing data with this instance.
+              &quot;publicKey&quot;: &quot;A String&quot;, # The public RSA key used for sharing data with this instance.
             },
           ],
           &quot;isPreemptible&quot;: True or False, # Output only. Specifies that this instance group contains preemptible instances.
@@ -3435,7 +3554,7 @@ Returns:
             &quot;instanceTemplateName&quot;: &quot;A String&quot;, # Output only. The name of the Instance Template used for the Managed Instance Group.
           },
           &quot;minCpuPlatform&quot;: &quot;A String&quot;, # Optional. Specifies the minimum cpu platform for the Instance Group. See Dataproc -&gt; Minimum CPU Platform (https://cloud.google.com/dataproc/docs/concepts/compute/dataproc-min-cpu).
-          &quot;numInstances&quot;: 42, # Optional. The number of VM instances in the instance group. For master instance groups, must be set to 1.
+          &quot;numInstances&quot;: 42, # Optional. The number of VM instances in the instance group. For HA cluster master_config groups, must be set to 3. For standard cluster master_config groups, must be set to 1.
           &quot;preemptibility&quot;: &quot;A String&quot;, # Optional. Specifies the preemptibility of the instance group.The default value for master and worker groups is NON_PREEMPTIBLE. This default cannot be changed.The default value for secondary instances is PREEMPTIBLE.
         },
       },

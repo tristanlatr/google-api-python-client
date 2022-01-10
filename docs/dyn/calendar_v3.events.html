@@ -136,7 +136,7 @@ Whether to send notifications about the deletion of the event. Note that some em
     Allowed values
       all - Notifications are sent to all guests.
       externalOnly - Notifications are sent to non-Google Calendar guests only.
-      none - No notifications are sent. This value should only be used for migration use cases (note that in most migration cases the import method should be used).
+      none - No notifications are sent. For calendar migration tasks, consider using the Events.import method instead.
 </pre>
 </div>
 
@@ -155,7 +155,7 @@ Returns:
   An object of the form:
 
     {
-  &quot;anyoneCanAddSelf&quot;: false, # Whether anyone can invite themselves to the event (currently works for Google+ events only). Optional. The default is False.
+  &quot;anyoneCanAddSelf&quot;: false, # Whether anyone can invite themselves to the event (deprecated). Optional. The default is False.
   &quot;attachments&quot;: [ # File attachments for the event. Currently only Google Drive attachments are supported.
       # In order to modify attachments the supportsAttachments request parameter should be set to true.
       # There can be at most 25 attachments per event,
@@ -177,7 +177,7 @@ Returns:
       &quot;displayName&quot;: &quot;A String&quot;, # The attendee&#x27;s name, if available. Optional.
       &quot;email&quot;: &quot;A String&quot;, # The attendee&#x27;s email address, if available. This field must be present when adding an attendee. It must be a valid email address as per RFC5322.
           # Required when adding an attendee.
-      &quot;id&quot;: &quot;A String&quot;, # The attendee&#x27;s Profile ID, if available. It corresponds to the id field in the People collection of the Google+ API
+      &quot;id&quot;: &quot;A String&quot;, # The attendee&#x27;s Profile ID, if available.
       &quot;optional&quot;: false, # Whether this is an optional attendee. Optional. The default is False.
       &quot;organizer&quot;: True or False, # Whether the attendee is the organizer of the event. Read-only. The default is False.
       &quot;resource&quot;: false, # Whether the attendee is a resource. Can only be set when the attendee is added to the event for the first time. Subsequent modifications are ignored. Optional. The default is False.
@@ -194,12 +194,12 @@ Returns:
   &quot;conferenceData&quot;: { # The conference-related information, such as details of a Google Meet conference. To create new conference details use the createRequest field. To persist your changes, remember to set the conferenceDataVersion request parameter to 1 for all event modification requests.
     &quot;conferenceId&quot;: &quot;A String&quot;, # The ID of the conference.
         # Can be used by developers to keep track of conferences, should not be displayed to users.
-        # Values for solution types:
-        # - &quot;eventHangout&quot;: unset.
-        # - &quot;eventNamedHangout&quot;: the name of the Hangout.
-        # - &quot;hangoutsMeet&quot;: the 10-letter meeting code, for example &quot;aaa-bbbb-ccc&quot;.
-        # - &quot;addOn&quot;: defined by 3P conference provider.  Optional.
-    &quot;conferenceSolution&quot;: { # The conference solution, such as Hangouts or Google Meet.
+        # The ID value is formed differently for each conference solution type:
+        # - eventHangout: ID is not set. (This conference type is deprecated.)
+        # - eventNamedHangout: ID is the name of the Hangout. (This conference type is deprecated.)
+        # - hangoutsMeet: ID is the 10-letter meeting code, for example aaa-bbbb-ccc.
+        # - addOn: ID is defined by the third-party provider.  Optional.
+    &quot;conferenceSolution&quot;: { # The conference solution, such as Google Meet.
         # Unset for a conference with a failed create request.
         # Either conferenceSolution and at least one entryPoint, or createRequest is required.
       &quot;iconUri&quot;: &quot;A String&quot;, # The user-visible icon for this solution.
@@ -207,8 +207,8 @@ Returns:
         &quot;type&quot;: &quot;A String&quot;, # The conference solution type.
             # If a client encounters an unfamiliar or empty type, it should still be able to display the entry points. However, it should disallow modifications.
             # The possible values are:
-            # - &quot;eventHangout&quot; for Hangouts for consumers (http://hangouts.google.com)
-            # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (http://hangouts.google.com)
+            # - &quot;eventHangout&quot; for Hangouts for consumers (deprecated; existing events may show this conference solution type but new conferences cannot be created)
+            # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (deprecated; existing events may show this conference solution type but new conferences cannot be created)
             # - &quot;hangoutsMeet&quot; for Google Meet (http://meet.google.com)
             # - &quot;addOn&quot; for 3P conference providers
       },
@@ -220,8 +220,8 @@ Returns:
         &quot;type&quot;: &quot;A String&quot;, # The conference solution type.
             # If a client encounters an unfamiliar or empty type, it should still be able to display the entry points. However, it should disallow modifications.
             # The possible values are:
-            # - &quot;eventHangout&quot; for Hangouts for consumers (http://hangouts.google.com)
-            # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (http://hangouts.google.com)
+            # - &quot;eventHangout&quot; for Hangouts for consumers (deprecated; existing events may show this conference solution type but new conferences cannot be created)
+            # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (deprecated; existing events may show this conference solution type but new conferences cannot be created)
             # - &quot;hangoutsMeet&quot; for Google Meet (http://meet.google.com)
             # - &quot;addOn&quot; for 3P conference providers
       },
@@ -296,7 +296,7 @@ Returns:
   &quot;creator&quot;: { # The creator of the event. Read-only.
     &quot;displayName&quot;: &quot;A String&quot;, # The creator&#x27;s name, if available.
     &quot;email&quot;: &quot;A String&quot;, # The creator&#x27;s email address, if available.
-    &quot;id&quot;: &quot;A String&quot;, # The creator&#x27;s Profile ID, if available. It corresponds to the id field in the People collection of the Google+ API
+    &quot;id&quot;: &quot;A String&quot;, # The creator&#x27;s Profile ID, if available.
     &quot;self&quot;: false, # Whether the creator corresponds to the calendar on which this copy of the event appears. Read-only. The default is False.
   },
   &quot;description&quot;: &quot;A String&quot;, # Description of the event. Can contain HTML. Optional.
@@ -310,6 +310,7 @@ Returns:
   &quot;eventType&quot;: &quot;default&quot;, # Specific type of the event. Read-only. Possible values are:
       # - &quot;default&quot; - A regular event or not further specified.
       # - &quot;outOfOffice&quot; - An out-of-office event.
+      # - &quot;focusTime&quot; - A focus-time event.
   &quot;extendedProperties&quot;: { # Extended properties of the event.
     &quot;private&quot;: { # Properties that are private to the copy of the event that appears on this calendar.
       &quot;a_key&quot;: &quot;A String&quot;, # The name of the private property and the corresponding value.
@@ -335,7 +336,7 @@ Returns:
   &quot;guestsCanInviteOthers&quot;: true, # Whether attendees other than the organizer can invite others to the event. Optional. The default is True.
   &quot;guestsCanModify&quot;: false, # Whether attendees other than the organizer can modify the event. Optional. The default is False.
   &quot;guestsCanSeeOtherGuests&quot;: true, # Whether attendees other than the organizer can see who the event&#x27;s attendees are. Optional. The default is True.
-  &quot;hangoutLink&quot;: &quot;A String&quot;, # An absolute link to the Google+ hangout associated with this event. Read-only.
+  &quot;hangoutLink&quot;: &quot;A String&quot;, # An absolute link to the Google Hangout associated with this event. Read-only.
   &quot;htmlLink&quot;: &quot;A String&quot;, # An absolute link to this event in the Google Calendar Web UI. Read-only.
   &quot;iCalUID&quot;: &quot;A String&quot;, # Event unique identifier as defined in RFC5545. It is used to uniquely identify events accross calendaring systems and must be supplied when importing events via the import method.
       # Note that the icalUID and the id are not identical and only one of them should be supplied at event creation time. One difference in their semantics is that in recurring events, all occurrences of one event have different ids while they all share the same icalUIDs.
@@ -351,7 +352,7 @@ Returns:
   &quot;organizer&quot;: { # The organizer of the event. If the organizer is also an attendee, this is indicated with a separate entry in attendees with the organizer field set to True. To change the organizer, use the move operation. Read-only, except when importing an event.
     &quot;displayName&quot;: &quot;A String&quot;, # The organizer&#x27;s name, if available.
     &quot;email&quot;: &quot;A String&quot;, # The organizer&#x27;s email address, if available. It must be a valid email address as per RFC5322.
-    &quot;id&quot;: &quot;A String&quot;, # The organizer&#x27;s Profile ID, if available. It corresponds to the id field in the People collection of the Google+ API
+    &quot;id&quot;: &quot;A String&quot;, # The organizer&#x27;s Profile ID, if available.
     &quot;self&quot;: false, # Whether the organizer corresponds to the calendar on which this copy of the event appears. Read-only. The default is False.
   },
   &quot;originalStartTime&quot;: { # For an instance of a recurring event, this is the time at which this event would start according to the recurrence data in the recurring event identified by recurringEventId. It uniquely identifies the instance within the recurring event series even if the instance was moved to a different time. Immutable.
@@ -420,7 +421,7 @@ Args:
     The object takes the form of:
 
 {
-  &quot;anyoneCanAddSelf&quot;: false, # Whether anyone can invite themselves to the event (currently works for Google+ events only). Optional. The default is False.
+  &quot;anyoneCanAddSelf&quot;: false, # Whether anyone can invite themselves to the event (deprecated). Optional. The default is False.
   &quot;attachments&quot;: [ # File attachments for the event. Currently only Google Drive attachments are supported.
       # In order to modify attachments the supportsAttachments request parameter should be set to true.
       # There can be at most 25 attachments per event,
@@ -442,7 +443,7 @@ Args:
       &quot;displayName&quot;: &quot;A String&quot;, # The attendee&#x27;s name, if available. Optional.
       &quot;email&quot;: &quot;A String&quot;, # The attendee&#x27;s email address, if available. This field must be present when adding an attendee. It must be a valid email address as per RFC5322.
           # Required when adding an attendee.
-      &quot;id&quot;: &quot;A String&quot;, # The attendee&#x27;s Profile ID, if available. It corresponds to the id field in the People collection of the Google+ API
+      &quot;id&quot;: &quot;A String&quot;, # The attendee&#x27;s Profile ID, if available.
       &quot;optional&quot;: false, # Whether this is an optional attendee. Optional. The default is False.
       &quot;organizer&quot;: True or False, # Whether the attendee is the organizer of the event. Read-only. The default is False.
       &quot;resource&quot;: false, # Whether the attendee is a resource. Can only be set when the attendee is added to the event for the first time. Subsequent modifications are ignored. Optional. The default is False.
@@ -459,12 +460,12 @@ Args:
   &quot;conferenceData&quot;: { # The conference-related information, such as details of a Google Meet conference. To create new conference details use the createRequest field. To persist your changes, remember to set the conferenceDataVersion request parameter to 1 for all event modification requests.
     &quot;conferenceId&quot;: &quot;A String&quot;, # The ID of the conference.
         # Can be used by developers to keep track of conferences, should not be displayed to users.
-        # Values for solution types:
-        # - &quot;eventHangout&quot;: unset.
-        # - &quot;eventNamedHangout&quot;: the name of the Hangout.
-        # - &quot;hangoutsMeet&quot;: the 10-letter meeting code, for example &quot;aaa-bbbb-ccc&quot;.
-        # - &quot;addOn&quot;: defined by 3P conference provider.  Optional.
-    &quot;conferenceSolution&quot;: { # The conference solution, such as Hangouts or Google Meet.
+        # The ID value is formed differently for each conference solution type:
+        # - eventHangout: ID is not set. (This conference type is deprecated.)
+        # - eventNamedHangout: ID is the name of the Hangout. (This conference type is deprecated.)
+        # - hangoutsMeet: ID is the 10-letter meeting code, for example aaa-bbbb-ccc.
+        # - addOn: ID is defined by the third-party provider.  Optional.
+    &quot;conferenceSolution&quot;: { # The conference solution, such as Google Meet.
         # Unset for a conference with a failed create request.
         # Either conferenceSolution and at least one entryPoint, or createRequest is required.
       &quot;iconUri&quot;: &quot;A String&quot;, # The user-visible icon for this solution.
@@ -472,8 +473,8 @@ Args:
         &quot;type&quot;: &quot;A String&quot;, # The conference solution type.
             # If a client encounters an unfamiliar or empty type, it should still be able to display the entry points. However, it should disallow modifications.
             # The possible values are:
-            # - &quot;eventHangout&quot; for Hangouts for consumers (http://hangouts.google.com)
-            # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (http://hangouts.google.com)
+            # - &quot;eventHangout&quot; for Hangouts for consumers (deprecated; existing events may show this conference solution type but new conferences cannot be created)
+            # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (deprecated; existing events may show this conference solution type but new conferences cannot be created)
             # - &quot;hangoutsMeet&quot; for Google Meet (http://meet.google.com)
             # - &quot;addOn&quot; for 3P conference providers
       },
@@ -485,8 +486,8 @@ Args:
         &quot;type&quot;: &quot;A String&quot;, # The conference solution type.
             # If a client encounters an unfamiliar or empty type, it should still be able to display the entry points. However, it should disallow modifications.
             # The possible values are:
-            # - &quot;eventHangout&quot; for Hangouts for consumers (http://hangouts.google.com)
-            # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (http://hangouts.google.com)
+            # - &quot;eventHangout&quot; for Hangouts for consumers (deprecated; existing events may show this conference solution type but new conferences cannot be created)
+            # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (deprecated; existing events may show this conference solution type but new conferences cannot be created)
             # - &quot;hangoutsMeet&quot; for Google Meet (http://meet.google.com)
             # - &quot;addOn&quot; for 3P conference providers
       },
@@ -561,7 +562,7 @@ Args:
   &quot;creator&quot;: { # The creator of the event. Read-only.
     &quot;displayName&quot;: &quot;A String&quot;, # The creator&#x27;s name, if available.
     &quot;email&quot;: &quot;A String&quot;, # The creator&#x27;s email address, if available.
-    &quot;id&quot;: &quot;A String&quot;, # The creator&#x27;s Profile ID, if available. It corresponds to the id field in the People collection of the Google+ API
+    &quot;id&quot;: &quot;A String&quot;, # The creator&#x27;s Profile ID, if available.
     &quot;self&quot;: false, # Whether the creator corresponds to the calendar on which this copy of the event appears. Read-only. The default is False.
   },
   &quot;description&quot;: &quot;A String&quot;, # Description of the event. Can contain HTML. Optional.
@@ -575,6 +576,7 @@ Args:
   &quot;eventType&quot;: &quot;default&quot;, # Specific type of the event. Read-only. Possible values are:
       # - &quot;default&quot; - A regular event or not further specified.
       # - &quot;outOfOffice&quot; - An out-of-office event.
+      # - &quot;focusTime&quot; - A focus-time event.
   &quot;extendedProperties&quot;: { # Extended properties of the event.
     &quot;private&quot;: { # Properties that are private to the copy of the event that appears on this calendar.
       &quot;a_key&quot;: &quot;A String&quot;, # The name of the private property and the corresponding value.
@@ -600,7 +602,7 @@ Args:
   &quot;guestsCanInviteOthers&quot;: true, # Whether attendees other than the organizer can invite others to the event. Optional. The default is True.
   &quot;guestsCanModify&quot;: false, # Whether attendees other than the organizer can modify the event. Optional. The default is False.
   &quot;guestsCanSeeOtherGuests&quot;: true, # Whether attendees other than the organizer can see who the event&#x27;s attendees are. Optional. The default is True.
-  &quot;hangoutLink&quot;: &quot;A String&quot;, # An absolute link to the Google+ hangout associated with this event. Read-only.
+  &quot;hangoutLink&quot;: &quot;A String&quot;, # An absolute link to the Google Hangout associated with this event. Read-only.
   &quot;htmlLink&quot;: &quot;A String&quot;, # An absolute link to this event in the Google Calendar Web UI. Read-only.
   &quot;iCalUID&quot;: &quot;A String&quot;, # Event unique identifier as defined in RFC5545. It is used to uniquely identify events accross calendaring systems and must be supplied when importing events via the import method.
       # Note that the icalUID and the id are not identical and only one of them should be supplied at event creation time. One difference in their semantics is that in recurring events, all occurrences of one event have different ids while they all share the same icalUIDs.
@@ -616,7 +618,7 @@ Args:
   &quot;organizer&quot;: { # The organizer of the event. If the organizer is also an attendee, this is indicated with a separate entry in attendees with the organizer field set to True. To change the organizer, use the move operation. Read-only, except when importing an event.
     &quot;displayName&quot;: &quot;A String&quot;, # The organizer&#x27;s name, if available.
     &quot;email&quot;: &quot;A String&quot;, # The organizer&#x27;s email address, if available. It must be a valid email address as per RFC5322.
-    &quot;id&quot;: &quot;A String&quot;, # The organizer&#x27;s Profile ID, if available. It corresponds to the id field in the People collection of the Google+ API
+    &quot;id&quot;: &quot;A String&quot;, # The organizer&#x27;s Profile ID, if available.
     &quot;self&quot;: false, # Whether the organizer corresponds to the calendar on which this copy of the event appears. Read-only. The default is False.
   },
   &quot;originalStartTime&quot;: { # For an instance of a recurring event, this is the time at which this event would start according to the recurrence data in the recurring event identified by recurringEventId. It uniquely identifies the instance within the recurring event series even if the instance was moved to a different time. Immutable.
@@ -681,7 +683,7 @@ Returns:
   An object of the form:
 
     {
-  &quot;anyoneCanAddSelf&quot;: false, # Whether anyone can invite themselves to the event (currently works for Google+ events only). Optional. The default is False.
+  &quot;anyoneCanAddSelf&quot;: false, # Whether anyone can invite themselves to the event (deprecated). Optional. The default is False.
   &quot;attachments&quot;: [ # File attachments for the event. Currently only Google Drive attachments are supported.
       # In order to modify attachments the supportsAttachments request parameter should be set to true.
       # There can be at most 25 attachments per event,
@@ -703,7 +705,7 @@ Returns:
       &quot;displayName&quot;: &quot;A String&quot;, # The attendee&#x27;s name, if available. Optional.
       &quot;email&quot;: &quot;A String&quot;, # The attendee&#x27;s email address, if available. This field must be present when adding an attendee. It must be a valid email address as per RFC5322.
           # Required when adding an attendee.
-      &quot;id&quot;: &quot;A String&quot;, # The attendee&#x27;s Profile ID, if available. It corresponds to the id field in the People collection of the Google+ API
+      &quot;id&quot;: &quot;A String&quot;, # The attendee&#x27;s Profile ID, if available.
       &quot;optional&quot;: false, # Whether this is an optional attendee. Optional. The default is False.
       &quot;organizer&quot;: True or False, # Whether the attendee is the organizer of the event. Read-only. The default is False.
       &quot;resource&quot;: false, # Whether the attendee is a resource. Can only be set when the attendee is added to the event for the first time. Subsequent modifications are ignored. Optional. The default is False.
@@ -720,12 +722,12 @@ Returns:
   &quot;conferenceData&quot;: { # The conference-related information, such as details of a Google Meet conference. To create new conference details use the createRequest field. To persist your changes, remember to set the conferenceDataVersion request parameter to 1 for all event modification requests.
     &quot;conferenceId&quot;: &quot;A String&quot;, # The ID of the conference.
         # Can be used by developers to keep track of conferences, should not be displayed to users.
-        # Values for solution types:
-        # - &quot;eventHangout&quot;: unset.
-        # - &quot;eventNamedHangout&quot;: the name of the Hangout.
-        # - &quot;hangoutsMeet&quot;: the 10-letter meeting code, for example &quot;aaa-bbbb-ccc&quot;.
-        # - &quot;addOn&quot;: defined by 3P conference provider.  Optional.
-    &quot;conferenceSolution&quot;: { # The conference solution, such as Hangouts or Google Meet.
+        # The ID value is formed differently for each conference solution type:
+        # - eventHangout: ID is not set. (This conference type is deprecated.)
+        # - eventNamedHangout: ID is the name of the Hangout. (This conference type is deprecated.)
+        # - hangoutsMeet: ID is the 10-letter meeting code, for example aaa-bbbb-ccc.
+        # - addOn: ID is defined by the third-party provider.  Optional.
+    &quot;conferenceSolution&quot;: { # The conference solution, such as Google Meet.
         # Unset for a conference with a failed create request.
         # Either conferenceSolution and at least one entryPoint, or createRequest is required.
       &quot;iconUri&quot;: &quot;A String&quot;, # The user-visible icon for this solution.
@@ -733,8 +735,8 @@ Returns:
         &quot;type&quot;: &quot;A String&quot;, # The conference solution type.
             # If a client encounters an unfamiliar or empty type, it should still be able to display the entry points. However, it should disallow modifications.
             # The possible values are:
-            # - &quot;eventHangout&quot; for Hangouts for consumers (http://hangouts.google.com)
-            # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (http://hangouts.google.com)
+            # - &quot;eventHangout&quot; for Hangouts for consumers (deprecated; existing events may show this conference solution type but new conferences cannot be created)
+            # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (deprecated; existing events may show this conference solution type but new conferences cannot be created)
             # - &quot;hangoutsMeet&quot; for Google Meet (http://meet.google.com)
             # - &quot;addOn&quot; for 3P conference providers
       },
@@ -746,8 +748,8 @@ Returns:
         &quot;type&quot;: &quot;A String&quot;, # The conference solution type.
             # If a client encounters an unfamiliar or empty type, it should still be able to display the entry points. However, it should disallow modifications.
             # The possible values are:
-            # - &quot;eventHangout&quot; for Hangouts for consumers (http://hangouts.google.com)
-            # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (http://hangouts.google.com)
+            # - &quot;eventHangout&quot; for Hangouts for consumers (deprecated; existing events may show this conference solution type but new conferences cannot be created)
+            # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (deprecated; existing events may show this conference solution type but new conferences cannot be created)
             # - &quot;hangoutsMeet&quot; for Google Meet (http://meet.google.com)
             # - &quot;addOn&quot; for 3P conference providers
       },
@@ -822,7 +824,7 @@ Returns:
   &quot;creator&quot;: { # The creator of the event. Read-only.
     &quot;displayName&quot;: &quot;A String&quot;, # The creator&#x27;s name, if available.
     &quot;email&quot;: &quot;A String&quot;, # The creator&#x27;s email address, if available.
-    &quot;id&quot;: &quot;A String&quot;, # The creator&#x27;s Profile ID, if available. It corresponds to the id field in the People collection of the Google+ API
+    &quot;id&quot;: &quot;A String&quot;, # The creator&#x27;s Profile ID, if available.
     &quot;self&quot;: false, # Whether the creator corresponds to the calendar on which this copy of the event appears. Read-only. The default is False.
   },
   &quot;description&quot;: &quot;A String&quot;, # Description of the event. Can contain HTML. Optional.
@@ -836,6 +838,7 @@ Returns:
   &quot;eventType&quot;: &quot;default&quot;, # Specific type of the event. Read-only. Possible values are:
       # - &quot;default&quot; - A regular event or not further specified.
       # - &quot;outOfOffice&quot; - An out-of-office event.
+      # - &quot;focusTime&quot; - A focus-time event.
   &quot;extendedProperties&quot;: { # Extended properties of the event.
     &quot;private&quot;: { # Properties that are private to the copy of the event that appears on this calendar.
       &quot;a_key&quot;: &quot;A String&quot;, # The name of the private property and the corresponding value.
@@ -861,7 +864,7 @@ Returns:
   &quot;guestsCanInviteOthers&quot;: true, # Whether attendees other than the organizer can invite others to the event. Optional. The default is True.
   &quot;guestsCanModify&quot;: false, # Whether attendees other than the organizer can modify the event. Optional. The default is False.
   &quot;guestsCanSeeOtherGuests&quot;: true, # Whether attendees other than the organizer can see who the event&#x27;s attendees are. Optional. The default is True.
-  &quot;hangoutLink&quot;: &quot;A String&quot;, # An absolute link to the Google+ hangout associated with this event. Read-only.
+  &quot;hangoutLink&quot;: &quot;A String&quot;, # An absolute link to the Google Hangout associated with this event. Read-only.
   &quot;htmlLink&quot;: &quot;A String&quot;, # An absolute link to this event in the Google Calendar Web UI. Read-only.
   &quot;iCalUID&quot;: &quot;A String&quot;, # Event unique identifier as defined in RFC5545. It is used to uniquely identify events accross calendaring systems and must be supplied when importing events via the import method.
       # Note that the icalUID and the id are not identical and only one of them should be supplied at event creation time. One difference in their semantics is that in recurring events, all occurrences of one event have different ids while they all share the same icalUIDs.
@@ -877,7 +880,7 @@ Returns:
   &quot;organizer&quot;: { # The organizer of the event. If the organizer is also an attendee, this is indicated with a separate entry in attendees with the organizer field set to True. To change the organizer, use the move operation. Read-only, except when importing an event.
     &quot;displayName&quot;: &quot;A String&quot;, # The organizer&#x27;s name, if available.
     &quot;email&quot;: &quot;A String&quot;, # The organizer&#x27;s email address, if available. It must be a valid email address as per RFC5322.
-    &quot;id&quot;: &quot;A String&quot;, # The organizer&#x27;s Profile ID, if available. It corresponds to the id field in the People collection of the Google+ API
+    &quot;id&quot;: &quot;A String&quot;, # The organizer&#x27;s Profile ID, if available.
     &quot;self&quot;: false, # Whether the organizer corresponds to the calendar on which this copy of the event appears. Read-only. The default is False.
   },
   &quot;originalStartTime&quot;: { # For an instance of a recurring event, this is the time at which this event would start according to the recurrence data in the recurring event identified by recurringEventId. It uniquely identifies the instance within the recurring event series even if the instance was moved to a different time. Immutable.
@@ -946,7 +949,7 @@ Args:
     The object takes the form of:
 
 {
-  &quot;anyoneCanAddSelf&quot;: false, # Whether anyone can invite themselves to the event (currently works for Google+ events only). Optional. The default is False.
+  &quot;anyoneCanAddSelf&quot;: false, # Whether anyone can invite themselves to the event (deprecated). Optional. The default is False.
   &quot;attachments&quot;: [ # File attachments for the event. Currently only Google Drive attachments are supported.
       # In order to modify attachments the supportsAttachments request parameter should be set to true.
       # There can be at most 25 attachments per event,
@@ -968,7 +971,7 @@ Args:
       &quot;displayName&quot;: &quot;A String&quot;, # The attendee&#x27;s name, if available. Optional.
       &quot;email&quot;: &quot;A String&quot;, # The attendee&#x27;s email address, if available. This field must be present when adding an attendee. It must be a valid email address as per RFC5322.
           # Required when adding an attendee.
-      &quot;id&quot;: &quot;A String&quot;, # The attendee&#x27;s Profile ID, if available. It corresponds to the id field in the People collection of the Google+ API
+      &quot;id&quot;: &quot;A String&quot;, # The attendee&#x27;s Profile ID, if available.
       &quot;optional&quot;: false, # Whether this is an optional attendee. Optional. The default is False.
       &quot;organizer&quot;: True or False, # Whether the attendee is the organizer of the event. Read-only. The default is False.
       &quot;resource&quot;: false, # Whether the attendee is a resource. Can only be set when the attendee is added to the event for the first time. Subsequent modifications are ignored. Optional. The default is False.
@@ -985,12 +988,12 @@ Args:
   &quot;conferenceData&quot;: { # The conference-related information, such as details of a Google Meet conference. To create new conference details use the createRequest field. To persist your changes, remember to set the conferenceDataVersion request parameter to 1 for all event modification requests.
     &quot;conferenceId&quot;: &quot;A String&quot;, # The ID of the conference.
         # Can be used by developers to keep track of conferences, should not be displayed to users.
-        # Values for solution types:
-        # - &quot;eventHangout&quot;: unset.
-        # - &quot;eventNamedHangout&quot;: the name of the Hangout.
-        # - &quot;hangoutsMeet&quot;: the 10-letter meeting code, for example &quot;aaa-bbbb-ccc&quot;.
-        # - &quot;addOn&quot;: defined by 3P conference provider.  Optional.
-    &quot;conferenceSolution&quot;: { # The conference solution, such as Hangouts or Google Meet.
+        # The ID value is formed differently for each conference solution type:
+        # - eventHangout: ID is not set. (This conference type is deprecated.)
+        # - eventNamedHangout: ID is the name of the Hangout. (This conference type is deprecated.)
+        # - hangoutsMeet: ID is the 10-letter meeting code, for example aaa-bbbb-ccc.
+        # - addOn: ID is defined by the third-party provider.  Optional.
+    &quot;conferenceSolution&quot;: { # The conference solution, such as Google Meet.
         # Unset for a conference with a failed create request.
         # Either conferenceSolution and at least one entryPoint, or createRequest is required.
       &quot;iconUri&quot;: &quot;A String&quot;, # The user-visible icon for this solution.
@@ -998,8 +1001,8 @@ Args:
         &quot;type&quot;: &quot;A String&quot;, # The conference solution type.
             # If a client encounters an unfamiliar or empty type, it should still be able to display the entry points. However, it should disallow modifications.
             # The possible values are:
-            # - &quot;eventHangout&quot; for Hangouts for consumers (http://hangouts.google.com)
-            # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (http://hangouts.google.com)
+            # - &quot;eventHangout&quot; for Hangouts for consumers (deprecated; existing events may show this conference solution type but new conferences cannot be created)
+            # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (deprecated; existing events may show this conference solution type but new conferences cannot be created)
             # - &quot;hangoutsMeet&quot; for Google Meet (http://meet.google.com)
             # - &quot;addOn&quot; for 3P conference providers
       },
@@ -1011,8 +1014,8 @@ Args:
         &quot;type&quot;: &quot;A String&quot;, # The conference solution type.
             # If a client encounters an unfamiliar or empty type, it should still be able to display the entry points. However, it should disallow modifications.
             # The possible values are:
-            # - &quot;eventHangout&quot; for Hangouts for consumers (http://hangouts.google.com)
-            # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (http://hangouts.google.com)
+            # - &quot;eventHangout&quot; for Hangouts for consumers (deprecated; existing events may show this conference solution type but new conferences cannot be created)
+            # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (deprecated; existing events may show this conference solution type but new conferences cannot be created)
             # - &quot;hangoutsMeet&quot; for Google Meet (http://meet.google.com)
             # - &quot;addOn&quot; for 3P conference providers
       },
@@ -1087,7 +1090,7 @@ Args:
   &quot;creator&quot;: { # The creator of the event. Read-only.
     &quot;displayName&quot;: &quot;A String&quot;, # The creator&#x27;s name, if available.
     &quot;email&quot;: &quot;A String&quot;, # The creator&#x27;s email address, if available.
-    &quot;id&quot;: &quot;A String&quot;, # The creator&#x27;s Profile ID, if available. It corresponds to the id field in the People collection of the Google+ API
+    &quot;id&quot;: &quot;A String&quot;, # The creator&#x27;s Profile ID, if available.
     &quot;self&quot;: false, # Whether the creator corresponds to the calendar on which this copy of the event appears. Read-only. The default is False.
   },
   &quot;description&quot;: &quot;A String&quot;, # Description of the event. Can contain HTML. Optional.
@@ -1101,6 +1104,7 @@ Args:
   &quot;eventType&quot;: &quot;default&quot;, # Specific type of the event. Read-only. Possible values are:
       # - &quot;default&quot; - A regular event or not further specified.
       # - &quot;outOfOffice&quot; - An out-of-office event.
+      # - &quot;focusTime&quot; - A focus-time event.
   &quot;extendedProperties&quot;: { # Extended properties of the event.
     &quot;private&quot;: { # Properties that are private to the copy of the event that appears on this calendar.
       &quot;a_key&quot;: &quot;A String&quot;, # The name of the private property and the corresponding value.
@@ -1126,7 +1130,7 @@ Args:
   &quot;guestsCanInviteOthers&quot;: true, # Whether attendees other than the organizer can invite others to the event. Optional. The default is True.
   &quot;guestsCanModify&quot;: false, # Whether attendees other than the organizer can modify the event. Optional. The default is False.
   &quot;guestsCanSeeOtherGuests&quot;: true, # Whether attendees other than the organizer can see who the event&#x27;s attendees are. Optional. The default is True.
-  &quot;hangoutLink&quot;: &quot;A String&quot;, # An absolute link to the Google+ hangout associated with this event. Read-only.
+  &quot;hangoutLink&quot;: &quot;A String&quot;, # An absolute link to the Google Hangout associated with this event. Read-only.
   &quot;htmlLink&quot;: &quot;A String&quot;, # An absolute link to this event in the Google Calendar Web UI. Read-only.
   &quot;iCalUID&quot;: &quot;A String&quot;, # Event unique identifier as defined in RFC5545. It is used to uniquely identify events accross calendaring systems and must be supplied when importing events via the import method.
       # Note that the icalUID and the id are not identical and only one of them should be supplied at event creation time. One difference in their semantics is that in recurring events, all occurrences of one event have different ids while they all share the same icalUIDs.
@@ -1142,7 +1146,7 @@ Args:
   &quot;organizer&quot;: { # The organizer of the event. If the organizer is also an attendee, this is indicated with a separate entry in attendees with the organizer field set to True. To change the organizer, use the move operation. Read-only, except when importing an event.
     &quot;displayName&quot;: &quot;A String&quot;, # The organizer&#x27;s name, if available.
     &quot;email&quot;: &quot;A String&quot;, # The organizer&#x27;s email address, if available. It must be a valid email address as per RFC5322.
-    &quot;id&quot;: &quot;A String&quot;, # The organizer&#x27;s Profile ID, if available. It corresponds to the id field in the People collection of the Google+ API
+    &quot;id&quot;: &quot;A String&quot;, # The organizer&#x27;s Profile ID, if available.
     &quot;self&quot;: false, # Whether the organizer corresponds to the calendar on which this copy of the event appears. Read-only. The default is False.
   },
   &quot;originalStartTime&quot;: { # For an instance of a recurring event, this is the time at which this event would start according to the recurrence data in the recurring event identified by recurringEventId. It uniquely identifies the instance within the recurring event series even if the instance was moved to a different time. Immutable.
@@ -1209,14 +1213,14 @@ Whether to send notifications about the creation of the new event. Note that som
     Allowed values
       all - Notifications are sent to all guests.
       externalOnly - Notifications are sent to non-Google Calendar guests only.
-      none - No notifications are sent. This value should only be used for migration use cases (note that in most migration cases the import method should be used).
+      none - No notifications are sent. For calendar migration tasks, consider using the Events.import method instead.
   supportsAttachments: boolean, Whether API client performing operation supports event attachments. Optional. The default is False.
 
 Returns:
   An object of the form:
 
     {
-  &quot;anyoneCanAddSelf&quot;: false, # Whether anyone can invite themselves to the event (currently works for Google+ events only). Optional. The default is False.
+  &quot;anyoneCanAddSelf&quot;: false, # Whether anyone can invite themselves to the event (deprecated). Optional. The default is False.
   &quot;attachments&quot;: [ # File attachments for the event. Currently only Google Drive attachments are supported.
       # In order to modify attachments the supportsAttachments request parameter should be set to true.
       # There can be at most 25 attachments per event,
@@ -1238,7 +1242,7 @@ Returns:
       &quot;displayName&quot;: &quot;A String&quot;, # The attendee&#x27;s name, if available. Optional.
       &quot;email&quot;: &quot;A String&quot;, # The attendee&#x27;s email address, if available. This field must be present when adding an attendee. It must be a valid email address as per RFC5322.
           # Required when adding an attendee.
-      &quot;id&quot;: &quot;A String&quot;, # The attendee&#x27;s Profile ID, if available. It corresponds to the id field in the People collection of the Google+ API
+      &quot;id&quot;: &quot;A String&quot;, # The attendee&#x27;s Profile ID, if available.
       &quot;optional&quot;: false, # Whether this is an optional attendee. Optional. The default is False.
       &quot;organizer&quot;: True or False, # Whether the attendee is the organizer of the event. Read-only. The default is False.
       &quot;resource&quot;: false, # Whether the attendee is a resource. Can only be set when the attendee is added to the event for the first time. Subsequent modifications are ignored. Optional. The default is False.
@@ -1255,12 +1259,12 @@ Returns:
   &quot;conferenceData&quot;: { # The conference-related information, such as details of a Google Meet conference. To create new conference details use the createRequest field. To persist your changes, remember to set the conferenceDataVersion request parameter to 1 for all event modification requests.
     &quot;conferenceId&quot;: &quot;A String&quot;, # The ID of the conference.
         # Can be used by developers to keep track of conferences, should not be displayed to users.
-        # Values for solution types:
-        # - &quot;eventHangout&quot;: unset.
-        # - &quot;eventNamedHangout&quot;: the name of the Hangout.
-        # - &quot;hangoutsMeet&quot;: the 10-letter meeting code, for example &quot;aaa-bbbb-ccc&quot;.
-        # - &quot;addOn&quot;: defined by 3P conference provider.  Optional.
-    &quot;conferenceSolution&quot;: { # The conference solution, such as Hangouts or Google Meet.
+        # The ID value is formed differently for each conference solution type:
+        # - eventHangout: ID is not set. (This conference type is deprecated.)
+        # - eventNamedHangout: ID is the name of the Hangout. (This conference type is deprecated.)
+        # - hangoutsMeet: ID is the 10-letter meeting code, for example aaa-bbbb-ccc.
+        # - addOn: ID is defined by the third-party provider.  Optional.
+    &quot;conferenceSolution&quot;: { # The conference solution, such as Google Meet.
         # Unset for a conference with a failed create request.
         # Either conferenceSolution and at least one entryPoint, or createRequest is required.
       &quot;iconUri&quot;: &quot;A String&quot;, # The user-visible icon for this solution.
@@ -1268,8 +1272,8 @@ Returns:
         &quot;type&quot;: &quot;A String&quot;, # The conference solution type.
             # If a client encounters an unfamiliar or empty type, it should still be able to display the entry points. However, it should disallow modifications.
             # The possible values are:
-            # - &quot;eventHangout&quot; for Hangouts for consumers (http://hangouts.google.com)
-            # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (http://hangouts.google.com)
+            # - &quot;eventHangout&quot; for Hangouts for consumers (deprecated; existing events may show this conference solution type but new conferences cannot be created)
+            # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (deprecated; existing events may show this conference solution type but new conferences cannot be created)
             # - &quot;hangoutsMeet&quot; for Google Meet (http://meet.google.com)
             # - &quot;addOn&quot; for 3P conference providers
       },
@@ -1281,8 +1285,8 @@ Returns:
         &quot;type&quot;: &quot;A String&quot;, # The conference solution type.
             # If a client encounters an unfamiliar or empty type, it should still be able to display the entry points. However, it should disallow modifications.
             # The possible values are:
-            # - &quot;eventHangout&quot; for Hangouts for consumers (http://hangouts.google.com)
-            # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (http://hangouts.google.com)
+            # - &quot;eventHangout&quot; for Hangouts for consumers (deprecated; existing events may show this conference solution type but new conferences cannot be created)
+            # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (deprecated; existing events may show this conference solution type but new conferences cannot be created)
             # - &quot;hangoutsMeet&quot; for Google Meet (http://meet.google.com)
             # - &quot;addOn&quot; for 3P conference providers
       },
@@ -1357,7 +1361,7 @@ Returns:
   &quot;creator&quot;: { # The creator of the event. Read-only.
     &quot;displayName&quot;: &quot;A String&quot;, # The creator&#x27;s name, if available.
     &quot;email&quot;: &quot;A String&quot;, # The creator&#x27;s email address, if available.
-    &quot;id&quot;: &quot;A String&quot;, # The creator&#x27;s Profile ID, if available. It corresponds to the id field in the People collection of the Google+ API
+    &quot;id&quot;: &quot;A String&quot;, # The creator&#x27;s Profile ID, if available.
     &quot;self&quot;: false, # Whether the creator corresponds to the calendar on which this copy of the event appears. Read-only. The default is False.
   },
   &quot;description&quot;: &quot;A String&quot;, # Description of the event. Can contain HTML. Optional.
@@ -1371,6 +1375,7 @@ Returns:
   &quot;eventType&quot;: &quot;default&quot;, # Specific type of the event. Read-only. Possible values are:
       # - &quot;default&quot; - A regular event or not further specified.
       # - &quot;outOfOffice&quot; - An out-of-office event.
+      # - &quot;focusTime&quot; - A focus-time event.
   &quot;extendedProperties&quot;: { # Extended properties of the event.
     &quot;private&quot;: { # Properties that are private to the copy of the event that appears on this calendar.
       &quot;a_key&quot;: &quot;A String&quot;, # The name of the private property and the corresponding value.
@@ -1396,7 +1401,7 @@ Returns:
   &quot;guestsCanInviteOthers&quot;: true, # Whether attendees other than the organizer can invite others to the event. Optional. The default is True.
   &quot;guestsCanModify&quot;: false, # Whether attendees other than the organizer can modify the event. Optional. The default is False.
   &quot;guestsCanSeeOtherGuests&quot;: true, # Whether attendees other than the organizer can see who the event&#x27;s attendees are. Optional. The default is True.
-  &quot;hangoutLink&quot;: &quot;A String&quot;, # An absolute link to the Google+ hangout associated with this event. Read-only.
+  &quot;hangoutLink&quot;: &quot;A String&quot;, # An absolute link to the Google Hangout associated with this event. Read-only.
   &quot;htmlLink&quot;: &quot;A String&quot;, # An absolute link to this event in the Google Calendar Web UI. Read-only.
   &quot;iCalUID&quot;: &quot;A String&quot;, # Event unique identifier as defined in RFC5545. It is used to uniquely identify events accross calendaring systems and must be supplied when importing events via the import method.
       # Note that the icalUID and the id are not identical and only one of them should be supplied at event creation time. One difference in their semantics is that in recurring events, all occurrences of one event have different ids while they all share the same icalUIDs.
@@ -1412,7 +1417,7 @@ Returns:
   &quot;organizer&quot;: { # The organizer of the event. If the organizer is also an attendee, this is indicated with a separate entry in attendees with the organizer field set to True. To change the organizer, use the move operation. Read-only, except when importing an event.
     &quot;displayName&quot;: &quot;A String&quot;, # The organizer&#x27;s name, if available.
     &quot;email&quot;: &quot;A String&quot;, # The organizer&#x27;s email address, if available. It must be a valid email address as per RFC5322.
-    &quot;id&quot;: &quot;A String&quot;, # The organizer&#x27;s Profile ID, if available. It corresponds to the id field in the People collection of the Google+ API
+    &quot;id&quot;: &quot;A String&quot;, # The organizer&#x27;s Profile ID, if available.
     &quot;self&quot;: false, # Whether the organizer corresponds to the calendar on which this copy of the event appears. Read-only. The default is False.
   },
   &quot;originalStartTime&quot;: { # For an instance of a recurring event, this is the time at which this event would start according to the recurrence data in the recurring event identified by recurringEventId. It uniquely identifies the instance within the recurring event series even if the instance was moved to a different time. Immutable.
@@ -1512,7 +1517,7 @@ Returns:
   &quot;etag&quot;: &quot;A String&quot;, # ETag of the collection.
   &quot;items&quot;: [ # List of events on the calendar.
     {
-      &quot;anyoneCanAddSelf&quot;: false, # Whether anyone can invite themselves to the event (currently works for Google+ events only). Optional. The default is False.
+      &quot;anyoneCanAddSelf&quot;: false, # Whether anyone can invite themselves to the event (deprecated). Optional. The default is False.
       &quot;attachments&quot;: [ # File attachments for the event. Currently only Google Drive attachments are supported.
           # In order to modify attachments the supportsAttachments request parameter should be set to true.
           # There can be at most 25 attachments per event,
@@ -1534,7 +1539,7 @@ Returns:
           &quot;displayName&quot;: &quot;A String&quot;, # The attendee&#x27;s name, if available. Optional.
           &quot;email&quot;: &quot;A String&quot;, # The attendee&#x27;s email address, if available. This field must be present when adding an attendee. It must be a valid email address as per RFC5322.
               # Required when adding an attendee.
-          &quot;id&quot;: &quot;A String&quot;, # The attendee&#x27;s Profile ID, if available. It corresponds to the id field in the People collection of the Google+ API
+          &quot;id&quot;: &quot;A String&quot;, # The attendee&#x27;s Profile ID, if available.
           &quot;optional&quot;: false, # Whether this is an optional attendee. Optional. The default is False.
           &quot;organizer&quot;: True or False, # Whether the attendee is the organizer of the event. Read-only. The default is False.
           &quot;resource&quot;: false, # Whether the attendee is a resource. Can only be set when the attendee is added to the event for the first time. Subsequent modifications are ignored. Optional. The default is False.
@@ -1551,12 +1556,12 @@ Returns:
       &quot;conferenceData&quot;: { # The conference-related information, such as details of a Google Meet conference. To create new conference details use the createRequest field. To persist your changes, remember to set the conferenceDataVersion request parameter to 1 for all event modification requests.
         &quot;conferenceId&quot;: &quot;A String&quot;, # The ID of the conference.
             # Can be used by developers to keep track of conferences, should not be displayed to users.
-            # Values for solution types:
-            # - &quot;eventHangout&quot;: unset.
-            # - &quot;eventNamedHangout&quot;: the name of the Hangout.
-            # - &quot;hangoutsMeet&quot;: the 10-letter meeting code, for example &quot;aaa-bbbb-ccc&quot;.
-            # - &quot;addOn&quot;: defined by 3P conference provider.  Optional.
-        &quot;conferenceSolution&quot;: { # The conference solution, such as Hangouts or Google Meet.
+            # The ID value is formed differently for each conference solution type:
+            # - eventHangout: ID is not set. (This conference type is deprecated.)
+            # - eventNamedHangout: ID is the name of the Hangout. (This conference type is deprecated.)
+            # - hangoutsMeet: ID is the 10-letter meeting code, for example aaa-bbbb-ccc.
+            # - addOn: ID is defined by the third-party provider.  Optional.
+        &quot;conferenceSolution&quot;: { # The conference solution, such as Google Meet.
             # Unset for a conference with a failed create request.
             # Either conferenceSolution and at least one entryPoint, or createRequest is required.
           &quot;iconUri&quot;: &quot;A String&quot;, # The user-visible icon for this solution.
@@ -1564,8 +1569,8 @@ Returns:
             &quot;type&quot;: &quot;A String&quot;, # The conference solution type.
                 # If a client encounters an unfamiliar or empty type, it should still be able to display the entry points. However, it should disallow modifications.
                 # The possible values are:
-                # - &quot;eventHangout&quot; for Hangouts for consumers (http://hangouts.google.com)
-                # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (http://hangouts.google.com)
+                # - &quot;eventHangout&quot; for Hangouts for consumers (deprecated; existing events may show this conference solution type but new conferences cannot be created)
+                # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (deprecated; existing events may show this conference solution type but new conferences cannot be created)
                 # - &quot;hangoutsMeet&quot; for Google Meet (http://meet.google.com)
                 # - &quot;addOn&quot; for 3P conference providers
           },
@@ -1577,8 +1582,8 @@ Returns:
             &quot;type&quot;: &quot;A String&quot;, # The conference solution type.
                 # If a client encounters an unfamiliar or empty type, it should still be able to display the entry points. However, it should disallow modifications.
                 # The possible values are:
-                # - &quot;eventHangout&quot; for Hangouts for consumers (http://hangouts.google.com)
-                # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (http://hangouts.google.com)
+                # - &quot;eventHangout&quot; for Hangouts for consumers (deprecated; existing events may show this conference solution type but new conferences cannot be created)
+                # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (deprecated; existing events may show this conference solution type but new conferences cannot be created)
                 # - &quot;hangoutsMeet&quot; for Google Meet (http://meet.google.com)
                 # - &quot;addOn&quot; for 3P conference providers
           },
@@ -1653,7 +1658,7 @@ Returns:
       &quot;creator&quot;: { # The creator of the event. Read-only.
         &quot;displayName&quot;: &quot;A String&quot;, # The creator&#x27;s name, if available.
         &quot;email&quot;: &quot;A String&quot;, # The creator&#x27;s email address, if available.
-        &quot;id&quot;: &quot;A String&quot;, # The creator&#x27;s Profile ID, if available. It corresponds to the id field in the People collection of the Google+ API
+        &quot;id&quot;: &quot;A String&quot;, # The creator&#x27;s Profile ID, if available.
         &quot;self&quot;: false, # Whether the creator corresponds to the calendar on which this copy of the event appears. Read-only. The default is False.
       },
       &quot;description&quot;: &quot;A String&quot;, # Description of the event. Can contain HTML. Optional.
@@ -1667,6 +1672,7 @@ Returns:
       &quot;eventType&quot;: &quot;default&quot;, # Specific type of the event. Read-only. Possible values are:
           # - &quot;default&quot; - A regular event or not further specified.
           # - &quot;outOfOffice&quot; - An out-of-office event.
+          # - &quot;focusTime&quot; - A focus-time event.
       &quot;extendedProperties&quot;: { # Extended properties of the event.
         &quot;private&quot;: { # Properties that are private to the copy of the event that appears on this calendar.
           &quot;a_key&quot;: &quot;A String&quot;, # The name of the private property and the corresponding value.
@@ -1692,7 +1698,7 @@ Returns:
       &quot;guestsCanInviteOthers&quot;: true, # Whether attendees other than the organizer can invite others to the event. Optional. The default is True.
       &quot;guestsCanModify&quot;: false, # Whether attendees other than the organizer can modify the event. Optional. The default is False.
       &quot;guestsCanSeeOtherGuests&quot;: true, # Whether attendees other than the organizer can see who the event&#x27;s attendees are. Optional. The default is True.
-      &quot;hangoutLink&quot;: &quot;A String&quot;, # An absolute link to the Google+ hangout associated with this event. Read-only.
+      &quot;hangoutLink&quot;: &quot;A String&quot;, # An absolute link to the Google Hangout associated with this event. Read-only.
       &quot;htmlLink&quot;: &quot;A String&quot;, # An absolute link to this event in the Google Calendar Web UI. Read-only.
       &quot;iCalUID&quot;: &quot;A String&quot;, # Event unique identifier as defined in RFC5545. It is used to uniquely identify events accross calendaring systems and must be supplied when importing events via the import method.
           # Note that the icalUID and the id are not identical and only one of them should be supplied at event creation time. One difference in their semantics is that in recurring events, all occurrences of one event have different ids while they all share the same icalUIDs.
@@ -1708,7 +1714,7 @@ Returns:
       &quot;organizer&quot;: { # The organizer of the event. If the organizer is also an attendee, this is indicated with a separate entry in attendees with the organizer field set to True. To change the organizer, use the move operation. Read-only, except when importing an event.
         &quot;displayName&quot;: &quot;A String&quot;, # The organizer&#x27;s name, if available.
         &quot;email&quot;: &quot;A String&quot;, # The organizer&#x27;s email address, if available. It must be a valid email address as per RFC5322.
-        &quot;id&quot;: &quot;A String&quot;, # The organizer&#x27;s Profile ID, if available. It corresponds to the id field in the People collection of the Google+ API
+        &quot;id&quot;: &quot;A String&quot;, # The organizer&#x27;s Profile ID, if available.
         &quot;self&quot;: false, # Whether the organizer corresponds to the calendar on which this copy of the event appears. Read-only. The default is False.
       },
       &quot;originalStartTime&quot;: { # For an instance of a recurring event, this is the time at which this event would start according to the recurrence data in the recurring event identified by recurringEventId. It uniquely identifies the instance within the recurring event series even if the instance was moved to a different time. Immutable.
@@ -1853,7 +1859,7 @@ Returns:
   &quot;etag&quot;: &quot;A String&quot;, # ETag of the collection.
   &quot;items&quot;: [ # List of events on the calendar.
     {
-      &quot;anyoneCanAddSelf&quot;: false, # Whether anyone can invite themselves to the event (currently works for Google+ events only). Optional. The default is False.
+      &quot;anyoneCanAddSelf&quot;: false, # Whether anyone can invite themselves to the event (deprecated). Optional. The default is False.
       &quot;attachments&quot;: [ # File attachments for the event. Currently only Google Drive attachments are supported.
           # In order to modify attachments the supportsAttachments request parameter should be set to true.
           # There can be at most 25 attachments per event,
@@ -1875,7 +1881,7 @@ Returns:
           &quot;displayName&quot;: &quot;A String&quot;, # The attendee&#x27;s name, if available. Optional.
           &quot;email&quot;: &quot;A String&quot;, # The attendee&#x27;s email address, if available. This field must be present when adding an attendee. It must be a valid email address as per RFC5322.
               # Required when adding an attendee.
-          &quot;id&quot;: &quot;A String&quot;, # The attendee&#x27;s Profile ID, if available. It corresponds to the id field in the People collection of the Google+ API
+          &quot;id&quot;: &quot;A String&quot;, # The attendee&#x27;s Profile ID, if available.
           &quot;optional&quot;: false, # Whether this is an optional attendee. Optional. The default is False.
           &quot;organizer&quot;: True or False, # Whether the attendee is the organizer of the event. Read-only. The default is False.
           &quot;resource&quot;: false, # Whether the attendee is a resource. Can only be set when the attendee is added to the event for the first time. Subsequent modifications are ignored. Optional. The default is False.
@@ -1892,12 +1898,12 @@ Returns:
       &quot;conferenceData&quot;: { # The conference-related information, such as details of a Google Meet conference. To create new conference details use the createRequest field. To persist your changes, remember to set the conferenceDataVersion request parameter to 1 for all event modification requests.
         &quot;conferenceId&quot;: &quot;A String&quot;, # The ID of the conference.
             # Can be used by developers to keep track of conferences, should not be displayed to users.
-            # Values for solution types:
-            # - &quot;eventHangout&quot;: unset.
-            # - &quot;eventNamedHangout&quot;: the name of the Hangout.
-            # - &quot;hangoutsMeet&quot;: the 10-letter meeting code, for example &quot;aaa-bbbb-ccc&quot;.
-            # - &quot;addOn&quot;: defined by 3P conference provider.  Optional.
-        &quot;conferenceSolution&quot;: { # The conference solution, such as Hangouts or Google Meet.
+            # The ID value is formed differently for each conference solution type:
+            # - eventHangout: ID is not set. (This conference type is deprecated.)
+            # - eventNamedHangout: ID is the name of the Hangout. (This conference type is deprecated.)
+            # - hangoutsMeet: ID is the 10-letter meeting code, for example aaa-bbbb-ccc.
+            # - addOn: ID is defined by the third-party provider.  Optional.
+        &quot;conferenceSolution&quot;: { # The conference solution, such as Google Meet.
             # Unset for a conference with a failed create request.
             # Either conferenceSolution and at least one entryPoint, or createRequest is required.
           &quot;iconUri&quot;: &quot;A String&quot;, # The user-visible icon for this solution.
@@ -1905,8 +1911,8 @@ Returns:
             &quot;type&quot;: &quot;A String&quot;, # The conference solution type.
                 # If a client encounters an unfamiliar or empty type, it should still be able to display the entry points. However, it should disallow modifications.
                 # The possible values are:
-                # - &quot;eventHangout&quot; for Hangouts for consumers (http://hangouts.google.com)
-                # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (http://hangouts.google.com)
+                # - &quot;eventHangout&quot; for Hangouts for consumers (deprecated; existing events may show this conference solution type but new conferences cannot be created)
+                # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (deprecated; existing events may show this conference solution type but new conferences cannot be created)
                 # - &quot;hangoutsMeet&quot; for Google Meet (http://meet.google.com)
                 # - &quot;addOn&quot; for 3P conference providers
           },
@@ -1918,8 +1924,8 @@ Returns:
             &quot;type&quot;: &quot;A String&quot;, # The conference solution type.
                 # If a client encounters an unfamiliar or empty type, it should still be able to display the entry points. However, it should disallow modifications.
                 # The possible values are:
-                # - &quot;eventHangout&quot; for Hangouts for consumers (http://hangouts.google.com)
-                # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (http://hangouts.google.com)
+                # - &quot;eventHangout&quot; for Hangouts for consumers (deprecated; existing events may show this conference solution type but new conferences cannot be created)
+                # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (deprecated; existing events may show this conference solution type but new conferences cannot be created)
                 # - &quot;hangoutsMeet&quot; for Google Meet (http://meet.google.com)
                 # - &quot;addOn&quot; for 3P conference providers
           },
@@ -1994,7 +2000,7 @@ Returns:
       &quot;creator&quot;: { # The creator of the event. Read-only.
         &quot;displayName&quot;: &quot;A String&quot;, # The creator&#x27;s name, if available.
         &quot;email&quot;: &quot;A String&quot;, # The creator&#x27;s email address, if available.
-        &quot;id&quot;: &quot;A String&quot;, # The creator&#x27;s Profile ID, if available. It corresponds to the id field in the People collection of the Google+ API
+        &quot;id&quot;: &quot;A String&quot;, # The creator&#x27;s Profile ID, if available.
         &quot;self&quot;: false, # Whether the creator corresponds to the calendar on which this copy of the event appears. Read-only. The default is False.
       },
       &quot;description&quot;: &quot;A String&quot;, # Description of the event. Can contain HTML. Optional.
@@ -2008,6 +2014,7 @@ Returns:
       &quot;eventType&quot;: &quot;default&quot;, # Specific type of the event. Read-only. Possible values are:
           # - &quot;default&quot; - A regular event or not further specified.
           # - &quot;outOfOffice&quot; - An out-of-office event.
+          # - &quot;focusTime&quot; - A focus-time event.
       &quot;extendedProperties&quot;: { # Extended properties of the event.
         &quot;private&quot;: { # Properties that are private to the copy of the event that appears on this calendar.
           &quot;a_key&quot;: &quot;A String&quot;, # The name of the private property and the corresponding value.
@@ -2033,7 +2040,7 @@ Returns:
       &quot;guestsCanInviteOthers&quot;: true, # Whether attendees other than the organizer can invite others to the event. Optional. The default is True.
       &quot;guestsCanModify&quot;: false, # Whether attendees other than the organizer can modify the event. Optional. The default is False.
       &quot;guestsCanSeeOtherGuests&quot;: true, # Whether attendees other than the organizer can see who the event&#x27;s attendees are. Optional. The default is True.
-      &quot;hangoutLink&quot;: &quot;A String&quot;, # An absolute link to the Google+ hangout associated with this event. Read-only.
+      &quot;hangoutLink&quot;: &quot;A String&quot;, # An absolute link to the Google Hangout associated with this event. Read-only.
       &quot;htmlLink&quot;: &quot;A String&quot;, # An absolute link to this event in the Google Calendar Web UI. Read-only.
       &quot;iCalUID&quot;: &quot;A String&quot;, # Event unique identifier as defined in RFC5545. It is used to uniquely identify events accross calendaring systems and must be supplied when importing events via the import method.
           # Note that the icalUID and the id are not identical and only one of them should be supplied at event creation time. One difference in their semantics is that in recurring events, all occurrences of one event have different ids while they all share the same icalUIDs.
@@ -2049,7 +2056,7 @@ Returns:
       &quot;organizer&quot;: { # The organizer of the event. If the organizer is also an attendee, this is indicated with a separate entry in attendees with the organizer field set to True. To change the organizer, use the move operation. Read-only, except when importing an event.
         &quot;displayName&quot;: &quot;A String&quot;, # The organizer&#x27;s name, if available.
         &quot;email&quot;: &quot;A String&quot;, # The organizer&#x27;s email address, if available. It must be a valid email address as per RFC5322.
-        &quot;id&quot;: &quot;A String&quot;, # The organizer&#x27;s Profile ID, if available. It corresponds to the id field in the People collection of the Google+ API
+        &quot;id&quot;: &quot;A String&quot;, # The organizer&#x27;s Profile ID, if available.
         &quot;self&quot;: false, # Whether the organizer corresponds to the calendar on which this copy of the event appears. Read-only. The default is False.
       },
       &quot;originalStartTime&quot;: { # For an instance of a recurring event, this is the time at which this event would start according to the recurrence data in the recurring event identified by recurringEventId. It uniquely identifies the instance within the recurring event series even if the instance was moved to a different time. Immutable.
@@ -2145,13 +2152,13 @@ Whether to send notifications about the change of the event&#x27;s organizer. No
     Allowed values
       all - Notifications are sent to all guests.
       externalOnly - Notifications are sent to non-Google Calendar guests only.
-      none - No notifications are sent. This value should only be used for migration use cases (note that in most migration cases the import method should be used).
+      none - No notifications are sent. For calendar migration tasks, consider using the Events.import method instead.
 
 Returns:
   An object of the form:
 
     {
-  &quot;anyoneCanAddSelf&quot;: false, # Whether anyone can invite themselves to the event (currently works for Google+ events only). Optional. The default is False.
+  &quot;anyoneCanAddSelf&quot;: false, # Whether anyone can invite themselves to the event (deprecated). Optional. The default is False.
   &quot;attachments&quot;: [ # File attachments for the event. Currently only Google Drive attachments are supported.
       # In order to modify attachments the supportsAttachments request parameter should be set to true.
       # There can be at most 25 attachments per event,
@@ -2173,7 +2180,7 @@ Returns:
       &quot;displayName&quot;: &quot;A String&quot;, # The attendee&#x27;s name, if available. Optional.
       &quot;email&quot;: &quot;A String&quot;, # The attendee&#x27;s email address, if available. This field must be present when adding an attendee. It must be a valid email address as per RFC5322.
           # Required when adding an attendee.
-      &quot;id&quot;: &quot;A String&quot;, # The attendee&#x27;s Profile ID, if available. It corresponds to the id field in the People collection of the Google+ API
+      &quot;id&quot;: &quot;A String&quot;, # The attendee&#x27;s Profile ID, if available.
       &quot;optional&quot;: false, # Whether this is an optional attendee. Optional. The default is False.
       &quot;organizer&quot;: True or False, # Whether the attendee is the organizer of the event. Read-only. The default is False.
       &quot;resource&quot;: false, # Whether the attendee is a resource. Can only be set when the attendee is added to the event for the first time. Subsequent modifications are ignored. Optional. The default is False.
@@ -2190,12 +2197,12 @@ Returns:
   &quot;conferenceData&quot;: { # The conference-related information, such as details of a Google Meet conference. To create new conference details use the createRequest field. To persist your changes, remember to set the conferenceDataVersion request parameter to 1 for all event modification requests.
     &quot;conferenceId&quot;: &quot;A String&quot;, # The ID of the conference.
         # Can be used by developers to keep track of conferences, should not be displayed to users.
-        # Values for solution types:
-        # - &quot;eventHangout&quot;: unset.
-        # - &quot;eventNamedHangout&quot;: the name of the Hangout.
-        # - &quot;hangoutsMeet&quot;: the 10-letter meeting code, for example &quot;aaa-bbbb-ccc&quot;.
-        # - &quot;addOn&quot;: defined by 3P conference provider.  Optional.
-    &quot;conferenceSolution&quot;: { # The conference solution, such as Hangouts or Google Meet.
+        # The ID value is formed differently for each conference solution type:
+        # - eventHangout: ID is not set. (This conference type is deprecated.)
+        # - eventNamedHangout: ID is the name of the Hangout. (This conference type is deprecated.)
+        # - hangoutsMeet: ID is the 10-letter meeting code, for example aaa-bbbb-ccc.
+        # - addOn: ID is defined by the third-party provider.  Optional.
+    &quot;conferenceSolution&quot;: { # The conference solution, such as Google Meet.
         # Unset for a conference with a failed create request.
         # Either conferenceSolution and at least one entryPoint, or createRequest is required.
       &quot;iconUri&quot;: &quot;A String&quot;, # The user-visible icon for this solution.
@@ -2203,8 +2210,8 @@ Returns:
         &quot;type&quot;: &quot;A String&quot;, # The conference solution type.
             # If a client encounters an unfamiliar or empty type, it should still be able to display the entry points. However, it should disallow modifications.
             # The possible values are:
-            # - &quot;eventHangout&quot; for Hangouts for consumers (http://hangouts.google.com)
-            # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (http://hangouts.google.com)
+            # - &quot;eventHangout&quot; for Hangouts for consumers (deprecated; existing events may show this conference solution type but new conferences cannot be created)
+            # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (deprecated; existing events may show this conference solution type but new conferences cannot be created)
             # - &quot;hangoutsMeet&quot; for Google Meet (http://meet.google.com)
             # - &quot;addOn&quot; for 3P conference providers
       },
@@ -2216,8 +2223,8 @@ Returns:
         &quot;type&quot;: &quot;A String&quot;, # The conference solution type.
             # If a client encounters an unfamiliar or empty type, it should still be able to display the entry points. However, it should disallow modifications.
             # The possible values are:
-            # - &quot;eventHangout&quot; for Hangouts for consumers (http://hangouts.google.com)
-            # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (http://hangouts.google.com)
+            # - &quot;eventHangout&quot; for Hangouts for consumers (deprecated; existing events may show this conference solution type but new conferences cannot be created)
+            # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (deprecated; existing events may show this conference solution type but new conferences cannot be created)
             # - &quot;hangoutsMeet&quot; for Google Meet (http://meet.google.com)
             # - &quot;addOn&quot; for 3P conference providers
       },
@@ -2292,7 +2299,7 @@ Returns:
   &quot;creator&quot;: { # The creator of the event. Read-only.
     &quot;displayName&quot;: &quot;A String&quot;, # The creator&#x27;s name, if available.
     &quot;email&quot;: &quot;A String&quot;, # The creator&#x27;s email address, if available.
-    &quot;id&quot;: &quot;A String&quot;, # The creator&#x27;s Profile ID, if available. It corresponds to the id field in the People collection of the Google+ API
+    &quot;id&quot;: &quot;A String&quot;, # The creator&#x27;s Profile ID, if available.
     &quot;self&quot;: false, # Whether the creator corresponds to the calendar on which this copy of the event appears. Read-only. The default is False.
   },
   &quot;description&quot;: &quot;A String&quot;, # Description of the event. Can contain HTML. Optional.
@@ -2306,6 +2313,7 @@ Returns:
   &quot;eventType&quot;: &quot;default&quot;, # Specific type of the event. Read-only. Possible values are:
       # - &quot;default&quot; - A regular event or not further specified.
       # - &quot;outOfOffice&quot; - An out-of-office event.
+      # - &quot;focusTime&quot; - A focus-time event.
   &quot;extendedProperties&quot;: { # Extended properties of the event.
     &quot;private&quot;: { # Properties that are private to the copy of the event that appears on this calendar.
       &quot;a_key&quot;: &quot;A String&quot;, # The name of the private property and the corresponding value.
@@ -2331,7 +2339,7 @@ Returns:
   &quot;guestsCanInviteOthers&quot;: true, # Whether attendees other than the organizer can invite others to the event. Optional. The default is True.
   &quot;guestsCanModify&quot;: false, # Whether attendees other than the organizer can modify the event. Optional. The default is False.
   &quot;guestsCanSeeOtherGuests&quot;: true, # Whether attendees other than the organizer can see who the event&#x27;s attendees are. Optional. The default is True.
-  &quot;hangoutLink&quot;: &quot;A String&quot;, # An absolute link to the Google+ hangout associated with this event. Read-only.
+  &quot;hangoutLink&quot;: &quot;A String&quot;, # An absolute link to the Google Hangout associated with this event. Read-only.
   &quot;htmlLink&quot;: &quot;A String&quot;, # An absolute link to this event in the Google Calendar Web UI. Read-only.
   &quot;iCalUID&quot;: &quot;A String&quot;, # Event unique identifier as defined in RFC5545. It is used to uniquely identify events accross calendaring systems and must be supplied when importing events via the import method.
       # Note that the icalUID and the id are not identical and only one of them should be supplied at event creation time. One difference in their semantics is that in recurring events, all occurrences of one event have different ids while they all share the same icalUIDs.
@@ -2347,7 +2355,7 @@ Returns:
   &quot;organizer&quot;: { # The organizer of the event. If the organizer is also an attendee, this is indicated with a separate entry in attendees with the organizer field set to True. To change the organizer, use the move operation. Read-only, except when importing an event.
     &quot;displayName&quot;: &quot;A String&quot;, # The organizer&#x27;s name, if available.
     &quot;email&quot;: &quot;A String&quot;, # The organizer&#x27;s email address, if available. It must be a valid email address as per RFC5322.
-    &quot;id&quot;: &quot;A String&quot;, # The organizer&#x27;s Profile ID, if available. It corresponds to the id field in the People collection of the Google+ API
+    &quot;id&quot;: &quot;A String&quot;, # The organizer&#x27;s Profile ID, if available.
     &quot;self&quot;: false, # Whether the organizer corresponds to the calendar on which this copy of the event appears. Read-only. The default is False.
   },
   &quot;originalStartTime&quot;: { # For an instance of a recurring event, this is the time at which this event would start according to the recurrence data in the recurring event identified by recurringEventId. It uniquely identifies the instance within the recurring event series even if the instance was moved to a different time. Immutable.
@@ -2417,7 +2425,7 @@ Args:
     The object takes the form of:
 
 {
-  &quot;anyoneCanAddSelf&quot;: false, # Whether anyone can invite themselves to the event (currently works for Google+ events only). Optional. The default is False.
+  &quot;anyoneCanAddSelf&quot;: false, # Whether anyone can invite themselves to the event (deprecated). Optional. The default is False.
   &quot;attachments&quot;: [ # File attachments for the event. Currently only Google Drive attachments are supported.
       # In order to modify attachments the supportsAttachments request parameter should be set to true.
       # There can be at most 25 attachments per event,
@@ -2439,7 +2447,7 @@ Args:
       &quot;displayName&quot;: &quot;A String&quot;, # The attendee&#x27;s name, if available. Optional.
       &quot;email&quot;: &quot;A String&quot;, # The attendee&#x27;s email address, if available. This field must be present when adding an attendee. It must be a valid email address as per RFC5322.
           # Required when adding an attendee.
-      &quot;id&quot;: &quot;A String&quot;, # The attendee&#x27;s Profile ID, if available. It corresponds to the id field in the People collection of the Google+ API
+      &quot;id&quot;: &quot;A String&quot;, # The attendee&#x27;s Profile ID, if available.
       &quot;optional&quot;: false, # Whether this is an optional attendee. Optional. The default is False.
       &quot;organizer&quot;: True or False, # Whether the attendee is the organizer of the event. Read-only. The default is False.
       &quot;resource&quot;: false, # Whether the attendee is a resource. Can only be set when the attendee is added to the event for the first time. Subsequent modifications are ignored. Optional. The default is False.
@@ -2456,12 +2464,12 @@ Args:
   &quot;conferenceData&quot;: { # The conference-related information, such as details of a Google Meet conference. To create new conference details use the createRequest field. To persist your changes, remember to set the conferenceDataVersion request parameter to 1 for all event modification requests.
     &quot;conferenceId&quot;: &quot;A String&quot;, # The ID of the conference.
         # Can be used by developers to keep track of conferences, should not be displayed to users.
-        # Values for solution types:
-        # - &quot;eventHangout&quot;: unset.
-        # - &quot;eventNamedHangout&quot;: the name of the Hangout.
-        # - &quot;hangoutsMeet&quot;: the 10-letter meeting code, for example &quot;aaa-bbbb-ccc&quot;.
-        # - &quot;addOn&quot;: defined by 3P conference provider.  Optional.
-    &quot;conferenceSolution&quot;: { # The conference solution, such as Hangouts or Google Meet.
+        # The ID value is formed differently for each conference solution type:
+        # - eventHangout: ID is not set. (This conference type is deprecated.)
+        # - eventNamedHangout: ID is the name of the Hangout. (This conference type is deprecated.)
+        # - hangoutsMeet: ID is the 10-letter meeting code, for example aaa-bbbb-ccc.
+        # - addOn: ID is defined by the third-party provider.  Optional.
+    &quot;conferenceSolution&quot;: { # The conference solution, such as Google Meet.
         # Unset for a conference with a failed create request.
         # Either conferenceSolution and at least one entryPoint, or createRequest is required.
       &quot;iconUri&quot;: &quot;A String&quot;, # The user-visible icon for this solution.
@@ -2469,8 +2477,8 @@ Args:
         &quot;type&quot;: &quot;A String&quot;, # The conference solution type.
             # If a client encounters an unfamiliar or empty type, it should still be able to display the entry points. However, it should disallow modifications.
             # The possible values are:
-            # - &quot;eventHangout&quot; for Hangouts for consumers (http://hangouts.google.com)
-            # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (http://hangouts.google.com)
+            # - &quot;eventHangout&quot; for Hangouts for consumers (deprecated; existing events may show this conference solution type but new conferences cannot be created)
+            # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (deprecated; existing events may show this conference solution type but new conferences cannot be created)
             # - &quot;hangoutsMeet&quot; for Google Meet (http://meet.google.com)
             # - &quot;addOn&quot; for 3P conference providers
       },
@@ -2482,8 +2490,8 @@ Args:
         &quot;type&quot;: &quot;A String&quot;, # The conference solution type.
             # If a client encounters an unfamiliar or empty type, it should still be able to display the entry points. However, it should disallow modifications.
             # The possible values are:
-            # - &quot;eventHangout&quot; for Hangouts for consumers (http://hangouts.google.com)
-            # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (http://hangouts.google.com)
+            # - &quot;eventHangout&quot; for Hangouts for consumers (deprecated; existing events may show this conference solution type but new conferences cannot be created)
+            # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (deprecated; existing events may show this conference solution type but new conferences cannot be created)
             # - &quot;hangoutsMeet&quot; for Google Meet (http://meet.google.com)
             # - &quot;addOn&quot; for 3P conference providers
       },
@@ -2558,7 +2566,7 @@ Args:
   &quot;creator&quot;: { # The creator of the event. Read-only.
     &quot;displayName&quot;: &quot;A String&quot;, # The creator&#x27;s name, if available.
     &quot;email&quot;: &quot;A String&quot;, # The creator&#x27;s email address, if available.
-    &quot;id&quot;: &quot;A String&quot;, # The creator&#x27;s Profile ID, if available. It corresponds to the id field in the People collection of the Google+ API
+    &quot;id&quot;: &quot;A String&quot;, # The creator&#x27;s Profile ID, if available.
     &quot;self&quot;: false, # Whether the creator corresponds to the calendar on which this copy of the event appears. Read-only. The default is False.
   },
   &quot;description&quot;: &quot;A String&quot;, # Description of the event. Can contain HTML. Optional.
@@ -2572,6 +2580,7 @@ Args:
   &quot;eventType&quot;: &quot;default&quot;, # Specific type of the event. Read-only. Possible values are:
       # - &quot;default&quot; - A regular event or not further specified.
       # - &quot;outOfOffice&quot; - An out-of-office event.
+      # - &quot;focusTime&quot; - A focus-time event.
   &quot;extendedProperties&quot;: { # Extended properties of the event.
     &quot;private&quot;: { # Properties that are private to the copy of the event that appears on this calendar.
       &quot;a_key&quot;: &quot;A String&quot;, # The name of the private property and the corresponding value.
@@ -2597,7 +2606,7 @@ Args:
   &quot;guestsCanInviteOthers&quot;: true, # Whether attendees other than the organizer can invite others to the event. Optional. The default is True.
   &quot;guestsCanModify&quot;: false, # Whether attendees other than the organizer can modify the event. Optional. The default is False.
   &quot;guestsCanSeeOtherGuests&quot;: true, # Whether attendees other than the organizer can see who the event&#x27;s attendees are. Optional. The default is True.
-  &quot;hangoutLink&quot;: &quot;A String&quot;, # An absolute link to the Google+ hangout associated with this event. Read-only.
+  &quot;hangoutLink&quot;: &quot;A String&quot;, # An absolute link to the Google Hangout associated with this event. Read-only.
   &quot;htmlLink&quot;: &quot;A String&quot;, # An absolute link to this event in the Google Calendar Web UI. Read-only.
   &quot;iCalUID&quot;: &quot;A String&quot;, # Event unique identifier as defined in RFC5545. It is used to uniquely identify events accross calendaring systems and must be supplied when importing events via the import method.
       # Note that the icalUID and the id are not identical and only one of them should be supplied at event creation time. One difference in their semantics is that in recurring events, all occurrences of one event have different ids while they all share the same icalUIDs.
@@ -2613,7 +2622,7 @@ Args:
   &quot;organizer&quot;: { # The organizer of the event. If the organizer is also an attendee, this is indicated with a separate entry in attendees with the organizer field set to True. To change the organizer, use the move operation. Read-only, except when importing an event.
     &quot;displayName&quot;: &quot;A String&quot;, # The organizer&#x27;s name, if available.
     &quot;email&quot;: &quot;A String&quot;, # The organizer&#x27;s email address, if available. It must be a valid email address as per RFC5322.
-    &quot;id&quot;: &quot;A String&quot;, # The organizer&#x27;s Profile ID, if available. It corresponds to the id field in the People collection of the Google+ API
+    &quot;id&quot;: &quot;A String&quot;, # The organizer&#x27;s Profile ID, if available.
     &quot;self&quot;: false, # Whether the organizer corresponds to the calendar on which this copy of the event appears. Read-only. The default is False.
   },
   &quot;originalStartTime&quot;: { # For an instance of a recurring event, this is the time at which this event would start according to the recurrence data in the recurring event identified by recurringEventId. It uniquely identifies the instance within the recurring event series even if the instance was moved to a different time. Immutable.
@@ -2681,14 +2690,14 @@ Whether to send notifications about the event update (for example, description c
     Allowed values
       all - Notifications are sent to all guests.
       externalOnly - Notifications are sent to non-Google Calendar guests only.
-      none - No notifications are sent. This value should only be used for migration use cases (note that in most migration cases the import method should be used).
+      none - No notifications are sent. For calendar migration tasks, consider using the Events.import method instead.
   supportsAttachments: boolean, Whether API client performing operation supports event attachments. Optional. The default is False.
 
 Returns:
   An object of the form:
 
     {
-  &quot;anyoneCanAddSelf&quot;: false, # Whether anyone can invite themselves to the event (currently works for Google+ events only). Optional. The default is False.
+  &quot;anyoneCanAddSelf&quot;: false, # Whether anyone can invite themselves to the event (deprecated). Optional. The default is False.
   &quot;attachments&quot;: [ # File attachments for the event. Currently only Google Drive attachments are supported.
       # In order to modify attachments the supportsAttachments request parameter should be set to true.
       # There can be at most 25 attachments per event,
@@ -2710,7 +2719,7 @@ Returns:
       &quot;displayName&quot;: &quot;A String&quot;, # The attendee&#x27;s name, if available. Optional.
       &quot;email&quot;: &quot;A String&quot;, # The attendee&#x27;s email address, if available. This field must be present when adding an attendee. It must be a valid email address as per RFC5322.
           # Required when adding an attendee.
-      &quot;id&quot;: &quot;A String&quot;, # The attendee&#x27;s Profile ID, if available. It corresponds to the id field in the People collection of the Google+ API
+      &quot;id&quot;: &quot;A String&quot;, # The attendee&#x27;s Profile ID, if available.
       &quot;optional&quot;: false, # Whether this is an optional attendee. Optional. The default is False.
       &quot;organizer&quot;: True or False, # Whether the attendee is the organizer of the event. Read-only. The default is False.
       &quot;resource&quot;: false, # Whether the attendee is a resource. Can only be set when the attendee is added to the event for the first time. Subsequent modifications are ignored. Optional. The default is False.
@@ -2727,12 +2736,12 @@ Returns:
   &quot;conferenceData&quot;: { # The conference-related information, such as details of a Google Meet conference. To create new conference details use the createRequest field. To persist your changes, remember to set the conferenceDataVersion request parameter to 1 for all event modification requests.
     &quot;conferenceId&quot;: &quot;A String&quot;, # The ID of the conference.
         # Can be used by developers to keep track of conferences, should not be displayed to users.
-        # Values for solution types:
-        # - &quot;eventHangout&quot;: unset.
-        # - &quot;eventNamedHangout&quot;: the name of the Hangout.
-        # - &quot;hangoutsMeet&quot;: the 10-letter meeting code, for example &quot;aaa-bbbb-ccc&quot;.
-        # - &quot;addOn&quot;: defined by 3P conference provider.  Optional.
-    &quot;conferenceSolution&quot;: { # The conference solution, such as Hangouts or Google Meet.
+        # The ID value is formed differently for each conference solution type:
+        # - eventHangout: ID is not set. (This conference type is deprecated.)
+        # - eventNamedHangout: ID is the name of the Hangout. (This conference type is deprecated.)
+        # - hangoutsMeet: ID is the 10-letter meeting code, for example aaa-bbbb-ccc.
+        # - addOn: ID is defined by the third-party provider.  Optional.
+    &quot;conferenceSolution&quot;: { # The conference solution, such as Google Meet.
         # Unset for a conference with a failed create request.
         # Either conferenceSolution and at least one entryPoint, or createRequest is required.
       &quot;iconUri&quot;: &quot;A String&quot;, # The user-visible icon for this solution.
@@ -2740,8 +2749,8 @@ Returns:
         &quot;type&quot;: &quot;A String&quot;, # The conference solution type.
             # If a client encounters an unfamiliar or empty type, it should still be able to display the entry points. However, it should disallow modifications.
             # The possible values are:
-            # - &quot;eventHangout&quot; for Hangouts for consumers (http://hangouts.google.com)
-            # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (http://hangouts.google.com)
+            # - &quot;eventHangout&quot; for Hangouts for consumers (deprecated; existing events may show this conference solution type but new conferences cannot be created)
+            # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (deprecated; existing events may show this conference solution type but new conferences cannot be created)
             # - &quot;hangoutsMeet&quot; for Google Meet (http://meet.google.com)
             # - &quot;addOn&quot; for 3P conference providers
       },
@@ -2753,8 +2762,8 @@ Returns:
         &quot;type&quot;: &quot;A String&quot;, # The conference solution type.
             # If a client encounters an unfamiliar or empty type, it should still be able to display the entry points. However, it should disallow modifications.
             # The possible values are:
-            # - &quot;eventHangout&quot; for Hangouts for consumers (http://hangouts.google.com)
-            # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (http://hangouts.google.com)
+            # - &quot;eventHangout&quot; for Hangouts for consumers (deprecated; existing events may show this conference solution type but new conferences cannot be created)
+            # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (deprecated; existing events may show this conference solution type but new conferences cannot be created)
             # - &quot;hangoutsMeet&quot; for Google Meet (http://meet.google.com)
             # - &quot;addOn&quot; for 3P conference providers
       },
@@ -2829,7 +2838,7 @@ Returns:
   &quot;creator&quot;: { # The creator of the event. Read-only.
     &quot;displayName&quot;: &quot;A String&quot;, # The creator&#x27;s name, if available.
     &quot;email&quot;: &quot;A String&quot;, # The creator&#x27;s email address, if available.
-    &quot;id&quot;: &quot;A String&quot;, # The creator&#x27;s Profile ID, if available. It corresponds to the id field in the People collection of the Google+ API
+    &quot;id&quot;: &quot;A String&quot;, # The creator&#x27;s Profile ID, if available.
     &quot;self&quot;: false, # Whether the creator corresponds to the calendar on which this copy of the event appears. Read-only. The default is False.
   },
   &quot;description&quot;: &quot;A String&quot;, # Description of the event. Can contain HTML. Optional.
@@ -2843,6 +2852,7 @@ Returns:
   &quot;eventType&quot;: &quot;default&quot;, # Specific type of the event. Read-only. Possible values are:
       # - &quot;default&quot; - A regular event or not further specified.
       # - &quot;outOfOffice&quot; - An out-of-office event.
+      # - &quot;focusTime&quot; - A focus-time event.
   &quot;extendedProperties&quot;: { # Extended properties of the event.
     &quot;private&quot;: { # Properties that are private to the copy of the event that appears on this calendar.
       &quot;a_key&quot;: &quot;A String&quot;, # The name of the private property and the corresponding value.
@@ -2868,7 +2878,7 @@ Returns:
   &quot;guestsCanInviteOthers&quot;: true, # Whether attendees other than the organizer can invite others to the event. Optional. The default is True.
   &quot;guestsCanModify&quot;: false, # Whether attendees other than the organizer can modify the event. Optional. The default is False.
   &quot;guestsCanSeeOtherGuests&quot;: true, # Whether attendees other than the organizer can see who the event&#x27;s attendees are. Optional. The default is True.
-  &quot;hangoutLink&quot;: &quot;A String&quot;, # An absolute link to the Google+ hangout associated with this event. Read-only.
+  &quot;hangoutLink&quot;: &quot;A String&quot;, # An absolute link to the Google Hangout associated with this event. Read-only.
   &quot;htmlLink&quot;: &quot;A String&quot;, # An absolute link to this event in the Google Calendar Web UI. Read-only.
   &quot;iCalUID&quot;: &quot;A String&quot;, # Event unique identifier as defined in RFC5545. It is used to uniquely identify events accross calendaring systems and must be supplied when importing events via the import method.
       # Note that the icalUID and the id are not identical and only one of them should be supplied at event creation time. One difference in their semantics is that in recurring events, all occurrences of one event have different ids while they all share the same icalUIDs.
@@ -2884,7 +2894,7 @@ Returns:
   &quot;organizer&quot;: { # The organizer of the event. If the organizer is also an attendee, this is indicated with a separate entry in attendees with the organizer field set to True. To change the organizer, use the move operation. Read-only, except when importing an event.
     &quot;displayName&quot;: &quot;A String&quot;, # The organizer&#x27;s name, if available.
     &quot;email&quot;: &quot;A String&quot;, # The organizer&#x27;s email address, if available. It must be a valid email address as per RFC5322.
-    &quot;id&quot;: &quot;A String&quot;, # The organizer&#x27;s Profile ID, if available. It corresponds to the id field in the People collection of the Google+ API
+    &quot;id&quot;: &quot;A String&quot;, # The organizer&#x27;s Profile ID, if available.
     &quot;self&quot;: false, # Whether the organizer corresponds to the calendar on which this copy of the event appears. Read-only. The default is False.
   },
   &quot;originalStartTime&quot;: { # For an instance of a recurring event, this is the time at which this event would start according to the recurrence data in the recurring event identified by recurringEventId. It uniquely identifies the instance within the recurring event series even if the instance was moved to a different time. Immutable.
@@ -2957,13 +2967,13 @@ Whether to send notifications about the creation of the event. Note that some em
     Allowed values
       all - Notifications are sent to all guests.
       externalOnly - Notifications are sent to non-Google Calendar guests only.
-      none - No notifications are sent. This value should only be used for migration use cases (note that in most migration cases the import method should be used).
+      none - No notifications are sent. For calendar migration tasks, consider using the Events.import method instead.
 
 Returns:
   An object of the form:
 
     {
-  &quot;anyoneCanAddSelf&quot;: false, # Whether anyone can invite themselves to the event (currently works for Google+ events only). Optional. The default is False.
+  &quot;anyoneCanAddSelf&quot;: false, # Whether anyone can invite themselves to the event (deprecated). Optional. The default is False.
   &quot;attachments&quot;: [ # File attachments for the event. Currently only Google Drive attachments are supported.
       # In order to modify attachments the supportsAttachments request parameter should be set to true.
       # There can be at most 25 attachments per event,
@@ -2985,7 +2995,7 @@ Returns:
       &quot;displayName&quot;: &quot;A String&quot;, # The attendee&#x27;s name, if available. Optional.
       &quot;email&quot;: &quot;A String&quot;, # The attendee&#x27;s email address, if available. This field must be present when adding an attendee. It must be a valid email address as per RFC5322.
           # Required when adding an attendee.
-      &quot;id&quot;: &quot;A String&quot;, # The attendee&#x27;s Profile ID, if available. It corresponds to the id field in the People collection of the Google+ API
+      &quot;id&quot;: &quot;A String&quot;, # The attendee&#x27;s Profile ID, if available.
       &quot;optional&quot;: false, # Whether this is an optional attendee. Optional. The default is False.
       &quot;organizer&quot;: True or False, # Whether the attendee is the organizer of the event. Read-only. The default is False.
       &quot;resource&quot;: false, # Whether the attendee is a resource. Can only be set when the attendee is added to the event for the first time. Subsequent modifications are ignored. Optional. The default is False.
@@ -3002,12 +3012,12 @@ Returns:
   &quot;conferenceData&quot;: { # The conference-related information, such as details of a Google Meet conference. To create new conference details use the createRequest field. To persist your changes, remember to set the conferenceDataVersion request parameter to 1 for all event modification requests.
     &quot;conferenceId&quot;: &quot;A String&quot;, # The ID of the conference.
         # Can be used by developers to keep track of conferences, should not be displayed to users.
-        # Values for solution types:
-        # - &quot;eventHangout&quot;: unset.
-        # - &quot;eventNamedHangout&quot;: the name of the Hangout.
-        # - &quot;hangoutsMeet&quot;: the 10-letter meeting code, for example &quot;aaa-bbbb-ccc&quot;.
-        # - &quot;addOn&quot;: defined by 3P conference provider.  Optional.
-    &quot;conferenceSolution&quot;: { # The conference solution, such as Hangouts or Google Meet.
+        # The ID value is formed differently for each conference solution type:
+        # - eventHangout: ID is not set. (This conference type is deprecated.)
+        # - eventNamedHangout: ID is the name of the Hangout. (This conference type is deprecated.)
+        # - hangoutsMeet: ID is the 10-letter meeting code, for example aaa-bbbb-ccc.
+        # - addOn: ID is defined by the third-party provider.  Optional.
+    &quot;conferenceSolution&quot;: { # The conference solution, such as Google Meet.
         # Unset for a conference with a failed create request.
         # Either conferenceSolution and at least one entryPoint, or createRequest is required.
       &quot;iconUri&quot;: &quot;A String&quot;, # The user-visible icon for this solution.
@@ -3015,8 +3025,8 @@ Returns:
         &quot;type&quot;: &quot;A String&quot;, # The conference solution type.
             # If a client encounters an unfamiliar or empty type, it should still be able to display the entry points. However, it should disallow modifications.
             # The possible values are:
-            # - &quot;eventHangout&quot; for Hangouts for consumers (http://hangouts.google.com)
-            # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (http://hangouts.google.com)
+            # - &quot;eventHangout&quot; for Hangouts for consumers (deprecated; existing events may show this conference solution type but new conferences cannot be created)
+            # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (deprecated; existing events may show this conference solution type but new conferences cannot be created)
             # - &quot;hangoutsMeet&quot; for Google Meet (http://meet.google.com)
             # - &quot;addOn&quot; for 3P conference providers
       },
@@ -3028,8 +3038,8 @@ Returns:
         &quot;type&quot;: &quot;A String&quot;, # The conference solution type.
             # If a client encounters an unfamiliar or empty type, it should still be able to display the entry points. However, it should disallow modifications.
             # The possible values are:
-            # - &quot;eventHangout&quot; for Hangouts for consumers (http://hangouts.google.com)
-            # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (http://hangouts.google.com)
+            # - &quot;eventHangout&quot; for Hangouts for consumers (deprecated; existing events may show this conference solution type but new conferences cannot be created)
+            # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (deprecated; existing events may show this conference solution type but new conferences cannot be created)
             # - &quot;hangoutsMeet&quot; for Google Meet (http://meet.google.com)
             # - &quot;addOn&quot; for 3P conference providers
       },
@@ -3104,7 +3114,7 @@ Returns:
   &quot;creator&quot;: { # The creator of the event. Read-only.
     &quot;displayName&quot;: &quot;A String&quot;, # The creator&#x27;s name, if available.
     &quot;email&quot;: &quot;A String&quot;, # The creator&#x27;s email address, if available.
-    &quot;id&quot;: &quot;A String&quot;, # The creator&#x27;s Profile ID, if available. It corresponds to the id field in the People collection of the Google+ API
+    &quot;id&quot;: &quot;A String&quot;, # The creator&#x27;s Profile ID, if available.
     &quot;self&quot;: false, # Whether the creator corresponds to the calendar on which this copy of the event appears. Read-only. The default is False.
   },
   &quot;description&quot;: &quot;A String&quot;, # Description of the event. Can contain HTML. Optional.
@@ -3118,6 +3128,7 @@ Returns:
   &quot;eventType&quot;: &quot;default&quot;, # Specific type of the event. Read-only. Possible values are:
       # - &quot;default&quot; - A regular event or not further specified.
       # - &quot;outOfOffice&quot; - An out-of-office event.
+      # - &quot;focusTime&quot; - A focus-time event.
   &quot;extendedProperties&quot;: { # Extended properties of the event.
     &quot;private&quot;: { # Properties that are private to the copy of the event that appears on this calendar.
       &quot;a_key&quot;: &quot;A String&quot;, # The name of the private property and the corresponding value.
@@ -3143,7 +3154,7 @@ Returns:
   &quot;guestsCanInviteOthers&quot;: true, # Whether attendees other than the organizer can invite others to the event. Optional. The default is True.
   &quot;guestsCanModify&quot;: false, # Whether attendees other than the organizer can modify the event. Optional. The default is False.
   &quot;guestsCanSeeOtherGuests&quot;: true, # Whether attendees other than the organizer can see who the event&#x27;s attendees are. Optional. The default is True.
-  &quot;hangoutLink&quot;: &quot;A String&quot;, # An absolute link to the Google+ hangout associated with this event. Read-only.
+  &quot;hangoutLink&quot;: &quot;A String&quot;, # An absolute link to the Google Hangout associated with this event. Read-only.
   &quot;htmlLink&quot;: &quot;A String&quot;, # An absolute link to this event in the Google Calendar Web UI. Read-only.
   &quot;iCalUID&quot;: &quot;A String&quot;, # Event unique identifier as defined in RFC5545. It is used to uniquely identify events accross calendaring systems and must be supplied when importing events via the import method.
       # Note that the icalUID and the id are not identical and only one of them should be supplied at event creation time. One difference in their semantics is that in recurring events, all occurrences of one event have different ids while they all share the same icalUIDs.
@@ -3159,7 +3170,7 @@ Returns:
   &quot;organizer&quot;: { # The organizer of the event. If the organizer is also an attendee, this is indicated with a separate entry in attendees with the organizer field set to True. To change the organizer, use the move operation. Read-only, except when importing an event.
     &quot;displayName&quot;: &quot;A String&quot;, # The organizer&#x27;s name, if available.
     &quot;email&quot;: &quot;A String&quot;, # The organizer&#x27;s email address, if available. It must be a valid email address as per RFC5322.
-    &quot;id&quot;: &quot;A String&quot;, # The organizer&#x27;s Profile ID, if available. It corresponds to the id field in the People collection of the Google+ API
+    &quot;id&quot;: &quot;A String&quot;, # The organizer&#x27;s Profile ID, if available.
     &quot;self&quot;: false, # Whether the organizer corresponds to the calendar on which this copy of the event appears. Read-only. The default is False.
   },
   &quot;originalStartTime&quot;: { # For an instance of a recurring event, this is the time at which this event would start according to the recurrence data in the recurring event identified by recurringEventId. It uniquely identifies the instance within the recurring event series even if the instance was moved to a different time. Immutable.
@@ -3229,7 +3240,7 @@ Args:
     The object takes the form of:
 
 {
-  &quot;anyoneCanAddSelf&quot;: false, # Whether anyone can invite themselves to the event (currently works for Google+ events only). Optional. The default is False.
+  &quot;anyoneCanAddSelf&quot;: false, # Whether anyone can invite themselves to the event (deprecated). Optional. The default is False.
   &quot;attachments&quot;: [ # File attachments for the event. Currently only Google Drive attachments are supported.
       # In order to modify attachments the supportsAttachments request parameter should be set to true.
       # There can be at most 25 attachments per event,
@@ -3251,7 +3262,7 @@ Args:
       &quot;displayName&quot;: &quot;A String&quot;, # The attendee&#x27;s name, if available. Optional.
       &quot;email&quot;: &quot;A String&quot;, # The attendee&#x27;s email address, if available. This field must be present when adding an attendee. It must be a valid email address as per RFC5322.
           # Required when adding an attendee.
-      &quot;id&quot;: &quot;A String&quot;, # The attendee&#x27;s Profile ID, if available. It corresponds to the id field in the People collection of the Google+ API
+      &quot;id&quot;: &quot;A String&quot;, # The attendee&#x27;s Profile ID, if available.
       &quot;optional&quot;: false, # Whether this is an optional attendee. Optional. The default is False.
       &quot;organizer&quot;: True or False, # Whether the attendee is the organizer of the event. Read-only. The default is False.
       &quot;resource&quot;: false, # Whether the attendee is a resource. Can only be set when the attendee is added to the event for the first time. Subsequent modifications are ignored. Optional. The default is False.
@@ -3268,12 +3279,12 @@ Args:
   &quot;conferenceData&quot;: { # The conference-related information, such as details of a Google Meet conference. To create new conference details use the createRequest field. To persist your changes, remember to set the conferenceDataVersion request parameter to 1 for all event modification requests.
     &quot;conferenceId&quot;: &quot;A String&quot;, # The ID of the conference.
         # Can be used by developers to keep track of conferences, should not be displayed to users.
-        # Values for solution types:
-        # - &quot;eventHangout&quot;: unset.
-        # - &quot;eventNamedHangout&quot;: the name of the Hangout.
-        # - &quot;hangoutsMeet&quot;: the 10-letter meeting code, for example &quot;aaa-bbbb-ccc&quot;.
-        # - &quot;addOn&quot;: defined by 3P conference provider.  Optional.
-    &quot;conferenceSolution&quot;: { # The conference solution, such as Hangouts or Google Meet.
+        # The ID value is formed differently for each conference solution type:
+        # - eventHangout: ID is not set. (This conference type is deprecated.)
+        # - eventNamedHangout: ID is the name of the Hangout. (This conference type is deprecated.)
+        # - hangoutsMeet: ID is the 10-letter meeting code, for example aaa-bbbb-ccc.
+        # - addOn: ID is defined by the third-party provider.  Optional.
+    &quot;conferenceSolution&quot;: { # The conference solution, such as Google Meet.
         # Unset for a conference with a failed create request.
         # Either conferenceSolution and at least one entryPoint, or createRequest is required.
       &quot;iconUri&quot;: &quot;A String&quot;, # The user-visible icon for this solution.
@@ -3281,8 +3292,8 @@ Args:
         &quot;type&quot;: &quot;A String&quot;, # The conference solution type.
             # If a client encounters an unfamiliar or empty type, it should still be able to display the entry points. However, it should disallow modifications.
             # The possible values are:
-            # - &quot;eventHangout&quot; for Hangouts for consumers (http://hangouts.google.com)
-            # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (http://hangouts.google.com)
+            # - &quot;eventHangout&quot; for Hangouts for consumers (deprecated; existing events may show this conference solution type but new conferences cannot be created)
+            # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (deprecated; existing events may show this conference solution type but new conferences cannot be created)
             # - &quot;hangoutsMeet&quot; for Google Meet (http://meet.google.com)
             # - &quot;addOn&quot; for 3P conference providers
       },
@@ -3294,8 +3305,8 @@ Args:
         &quot;type&quot;: &quot;A String&quot;, # The conference solution type.
             # If a client encounters an unfamiliar or empty type, it should still be able to display the entry points. However, it should disallow modifications.
             # The possible values are:
-            # - &quot;eventHangout&quot; for Hangouts for consumers (http://hangouts.google.com)
-            # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (http://hangouts.google.com)
+            # - &quot;eventHangout&quot; for Hangouts for consumers (deprecated; existing events may show this conference solution type but new conferences cannot be created)
+            # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (deprecated; existing events may show this conference solution type but new conferences cannot be created)
             # - &quot;hangoutsMeet&quot; for Google Meet (http://meet.google.com)
             # - &quot;addOn&quot; for 3P conference providers
       },
@@ -3370,7 +3381,7 @@ Args:
   &quot;creator&quot;: { # The creator of the event. Read-only.
     &quot;displayName&quot;: &quot;A String&quot;, # The creator&#x27;s name, if available.
     &quot;email&quot;: &quot;A String&quot;, # The creator&#x27;s email address, if available.
-    &quot;id&quot;: &quot;A String&quot;, # The creator&#x27;s Profile ID, if available. It corresponds to the id field in the People collection of the Google+ API
+    &quot;id&quot;: &quot;A String&quot;, # The creator&#x27;s Profile ID, if available.
     &quot;self&quot;: false, # Whether the creator corresponds to the calendar on which this copy of the event appears. Read-only. The default is False.
   },
   &quot;description&quot;: &quot;A String&quot;, # Description of the event. Can contain HTML. Optional.
@@ -3384,6 +3395,7 @@ Args:
   &quot;eventType&quot;: &quot;default&quot;, # Specific type of the event. Read-only. Possible values are:
       # - &quot;default&quot; - A regular event or not further specified.
       # - &quot;outOfOffice&quot; - An out-of-office event.
+      # - &quot;focusTime&quot; - A focus-time event.
   &quot;extendedProperties&quot;: { # Extended properties of the event.
     &quot;private&quot;: { # Properties that are private to the copy of the event that appears on this calendar.
       &quot;a_key&quot;: &quot;A String&quot;, # The name of the private property and the corresponding value.
@@ -3409,7 +3421,7 @@ Args:
   &quot;guestsCanInviteOthers&quot;: true, # Whether attendees other than the organizer can invite others to the event. Optional. The default is True.
   &quot;guestsCanModify&quot;: false, # Whether attendees other than the organizer can modify the event. Optional. The default is False.
   &quot;guestsCanSeeOtherGuests&quot;: true, # Whether attendees other than the organizer can see who the event&#x27;s attendees are. Optional. The default is True.
-  &quot;hangoutLink&quot;: &quot;A String&quot;, # An absolute link to the Google+ hangout associated with this event. Read-only.
+  &quot;hangoutLink&quot;: &quot;A String&quot;, # An absolute link to the Google Hangout associated with this event. Read-only.
   &quot;htmlLink&quot;: &quot;A String&quot;, # An absolute link to this event in the Google Calendar Web UI. Read-only.
   &quot;iCalUID&quot;: &quot;A String&quot;, # Event unique identifier as defined in RFC5545. It is used to uniquely identify events accross calendaring systems and must be supplied when importing events via the import method.
       # Note that the icalUID and the id are not identical and only one of them should be supplied at event creation time. One difference in their semantics is that in recurring events, all occurrences of one event have different ids while they all share the same icalUIDs.
@@ -3425,7 +3437,7 @@ Args:
   &quot;organizer&quot;: { # The organizer of the event. If the organizer is also an attendee, this is indicated with a separate entry in attendees with the organizer field set to True. To change the organizer, use the move operation. Read-only, except when importing an event.
     &quot;displayName&quot;: &quot;A String&quot;, # The organizer&#x27;s name, if available.
     &quot;email&quot;: &quot;A String&quot;, # The organizer&#x27;s email address, if available. It must be a valid email address as per RFC5322.
-    &quot;id&quot;: &quot;A String&quot;, # The organizer&#x27;s Profile ID, if available. It corresponds to the id field in the People collection of the Google+ API
+    &quot;id&quot;: &quot;A String&quot;, # The organizer&#x27;s Profile ID, if available.
     &quot;self&quot;: false, # Whether the organizer corresponds to the calendar on which this copy of the event appears. Read-only. The default is False.
   },
   &quot;originalStartTime&quot;: { # For an instance of a recurring event, this is the time at which this event would start according to the recurrence data in the recurring event identified by recurringEventId. It uniquely identifies the instance within the recurring event series even if the instance was moved to a different time. Immutable.
@@ -3493,14 +3505,14 @@ Whether to send notifications about the event update (for example, description c
     Allowed values
       all - Notifications are sent to all guests.
       externalOnly - Notifications are sent to non-Google Calendar guests only.
-      none - No notifications are sent. This value should only be used for migration use cases (note that in most migration cases the import method should be used).
+      none - No notifications are sent. For calendar migration tasks, consider using the Events.import method instead.
   supportsAttachments: boolean, Whether API client performing operation supports event attachments. Optional. The default is False.
 
 Returns:
   An object of the form:
 
     {
-  &quot;anyoneCanAddSelf&quot;: false, # Whether anyone can invite themselves to the event (currently works for Google+ events only). Optional. The default is False.
+  &quot;anyoneCanAddSelf&quot;: false, # Whether anyone can invite themselves to the event (deprecated). Optional. The default is False.
   &quot;attachments&quot;: [ # File attachments for the event. Currently only Google Drive attachments are supported.
       # In order to modify attachments the supportsAttachments request parameter should be set to true.
       # There can be at most 25 attachments per event,
@@ -3522,7 +3534,7 @@ Returns:
       &quot;displayName&quot;: &quot;A String&quot;, # The attendee&#x27;s name, if available. Optional.
       &quot;email&quot;: &quot;A String&quot;, # The attendee&#x27;s email address, if available. This field must be present when adding an attendee. It must be a valid email address as per RFC5322.
           # Required when adding an attendee.
-      &quot;id&quot;: &quot;A String&quot;, # The attendee&#x27;s Profile ID, if available. It corresponds to the id field in the People collection of the Google+ API
+      &quot;id&quot;: &quot;A String&quot;, # The attendee&#x27;s Profile ID, if available.
       &quot;optional&quot;: false, # Whether this is an optional attendee. Optional. The default is False.
       &quot;organizer&quot;: True or False, # Whether the attendee is the organizer of the event. Read-only. The default is False.
       &quot;resource&quot;: false, # Whether the attendee is a resource. Can only be set when the attendee is added to the event for the first time. Subsequent modifications are ignored. Optional. The default is False.
@@ -3539,12 +3551,12 @@ Returns:
   &quot;conferenceData&quot;: { # The conference-related information, such as details of a Google Meet conference. To create new conference details use the createRequest field. To persist your changes, remember to set the conferenceDataVersion request parameter to 1 for all event modification requests.
     &quot;conferenceId&quot;: &quot;A String&quot;, # The ID of the conference.
         # Can be used by developers to keep track of conferences, should not be displayed to users.
-        # Values for solution types:
-        # - &quot;eventHangout&quot;: unset.
-        # - &quot;eventNamedHangout&quot;: the name of the Hangout.
-        # - &quot;hangoutsMeet&quot;: the 10-letter meeting code, for example &quot;aaa-bbbb-ccc&quot;.
-        # - &quot;addOn&quot;: defined by 3P conference provider.  Optional.
-    &quot;conferenceSolution&quot;: { # The conference solution, such as Hangouts or Google Meet.
+        # The ID value is formed differently for each conference solution type:
+        # - eventHangout: ID is not set. (This conference type is deprecated.)
+        # - eventNamedHangout: ID is the name of the Hangout. (This conference type is deprecated.)
+        # - hangoutsMeet: ID is the 10-letter meeting code, for example aaa-bbbb-ccc.
+        # - addOn: ID is defined by the third-party provider.  Optional.
+    &quot;conferenceSolution&quot;: { # The conference solution, such as Google Meet.
         # Unset for a conference with a failed create request.
         # Either conferenceSolution and at least one entryPoint, or createRequest is required.
       &quot;iconUri&quot;: &quot;A String&quot;, # The user-visible icon for this solution.
@@ -3552,8 +3564,8 @@ Returns:
         &quot;type&quot;: &quot;A String&quot;, # The conference solution type.
             # If a client encounters an unfamiliar or empty type, it should still be able to display the entry points. However, it should disallow modifications.
             # The possible values are:
-            # - &quot;eventHangout&quot; for Hangouts for consumers (http://hangouts.google.com)
-            # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (http://hangouts.google.com)
+            # - &quot;eventHangout&quot; for Hangouts for consumers (deprecated; existing events may show this conference solution type but new conferences cannot be created)
+            # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (deprecated; existing events may show this conference solution type but new conferences cannot be created)
             # - &quot;hangoutsMeet&quot; for Google Meet (http://meet.google.com)
             # - &quot;addOn&quot; for 3P conference providers
       },
@@ -3565,8 +3577,8 @@ Returns:
         &quot;type&quot;: &quot;A String&quot;, # The conference solution type.
             # If a client encounters an unfamiliar or empty type, it should still be able to display the entry points. However, it should disallow modifications.
             # The possible values are:
-            # - &quot;eventHangout&quot; for Hangouts for consumers (http://hangouts.google.com)
-            # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (http://hangouts.google.com)
+            # - &quot;eventHangout&quot; for Hangouts for consumers (deprecated; existing events may show this conference solution type but new conferences cannot be created)
+            # - &quot;eventNamedHangout&quot; for classic Hangouts for Google Workspace users (deprecated; existing events may show this conference solution type but new conferences cannot be created)
             # - &quot;hangoutsMeet&quot; for Google Meet (http://meet.google.com)
             # - &quot;addOn&quot; for 3P conference providers
       },
@@ -3641,7 +3653,7 @@ Returns:
   &quot;creator&quot;: { # The creator of the event. Read-only.
     &quot;displayName&quot;: &quot;A String&quot;, # The creator&#x27;s name, if available.
     &quot;email&quot;: &quot;A String&quot;, # The creator&#x27;s email address, if available.
-    &quot;id&quot;: &quot;A String&quot;, # The creator&#x27;s Profile ID, if available. It corresponds to the id field in the People collection of the Google+ API
+    &quot;id&quot;: &quot;A String&quot;, # The creator&#x27;s Profile ID, if available.
     &quot;self&quot;: false, # Whether the creator corresponds to the calendar on which this copy of the event appears. Read-only. The default is False.
   },
   &quot;description&quot;: &quot;A String&quot;, # Description of the event. Can contain HTML. Optional.
@@ -3655,6 +3667,7 @@ Returns:
   &quot;eventType&quot;: &quot;default&quot;, # Specific type of the event. Read-only. Possible values are:
       # - &quot;default&quot; - A regular event or not further specified.
       # - &quot;outOfOffice&quot; - An out-of-office event.
+      # - &quot;focusTime&quot; - A focus-time event.
   &quot;extendedProperties&quot;: { # Extended properties of the event.
     &quot;private&quot;: { # Properties that are private to the copy of the event that appears on this calendar.
       &quot;a_key&quot;: &quot;A String&quot;, # The name of the private property and the corresponding value.
@@ -3680,7 +3693,7 @@ Returns:
   &quot;guestsCanInviteOthers&quot;: true, # Whether attendees other than the organizer can invite others to the event. Optional. The default is True.
   &quot;guestsCanModify&quot;: false, # Whether attendees other than the organizer can modify the event. Optional. The default is False.
   &quot;guestsCanSeeOtherGuests&quot;: true, # Whether attendees other than the organizer can see who the event&#x27;s attendees are. Optional. The default is True.
-  &quot;hangoutLink&quot;: &quot;A String&quot;, # An absolute link to the Google+ hangout associated with this event. Read-only.
+  &quot;hangoutLink&quot;: &quot;A String&quot;, # An absolute link to the Google Hangout associated with this event. Read-only.
   &quot;htmlLink&quot;: &quot;A String&quot;, # An absolute link to this event in the Google Calendar Web UI. Read-only.
   &quot;iCalUID&quot;: &quot;A String&quot;, # Event unique identifier as defined in RFC5545. It is used to uniquely identify events accross calendaring systems and must be supplied when importing events via the import method.
       # Note that the icalUID and the id are not identical and only one of them should be supplied at event creation time. One difference in their semantics is that in recurring events, all occurrences of one event have different ids while they all share the same icalUIDs.
@@ -3696,7 +3709,7 @@ Returns:
   &quot;organizer&quot;: { # The organizer of the event. If the organizer is also an attendee, this is indicated with a separate entry in attendees with the organizer field set to True. To change the organizer, use the move operation. Read-only, except when importing an event.
     &quot;displayName&quot;: &quot;A String&quot;, # The organizer&#x27;s name, if available.
     &quot;email&quot;: &quot;A String&quot;, # The organizer&#x27;s email address, if available. It must be a valid email address as per RFC5322.
-    &quot;id&quot;: &quot;A String&quot;, # The organizer&#x27;s Profile ID, if available. It corresponds to the id field in the People collection of the Google+ API
+    &quot;id&quot;: &quot;A String&quot;, # The organizer&#x27;s Profile ID, if available.
     &quot;self&quot;: false, # Whether the organizer corresponds to the calendar on which this copy of the event appears. Read-only. The default is False.
   },
   &quot;originalStartTime&quot;: { # For an instance of a recurring event, this is the time at which this event would start according to the recurrence data in the recurring event identified by recurringEventId. It uniquely identifies the instance within the recurring event series even if the instance was moved to a different time. Immutable.

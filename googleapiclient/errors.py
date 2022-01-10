@@ -43,7 +43,7 @@ class HttpError(Error):
         self.content = content
         self.uri = uri
         self.error_details = ""
-        self._get_reason()
+        self.reason = self._get_reason()
 
     @property
     def status_code(self):
@@ -61,7 +61,7 @@ class HttpError(Error):
                 data = self.content.decode("utf-8")
             if isinstance(data, dict):
                 reason = data["error"]["message"]
-                error_detail_keyword = next((kw for kw in ["detail", "details", "message"] if kw in data["error"]), "")
+                error_detail_keyword = next((kw for kw in ["detail", "details", "errors", "message"] if kw in data["error"]), "")
                 if error_detail_keyword:
                     self.error_details = data["error"][error_detail_keyword]
             elif isinstance(data, list) and len(data) > 0:
@@ -75,25 +75,24 @@ class HttpError(Error):
             pass
         if reason is None:
             reason = ""
-        return reason
+        return reason.strip()
 
     def __repr__(self):
-        reason = self._get_reason()
         if self.error_details:
             return '<HttpError %s when requesting %s returned "%s". Details: "%s">' % (
                 self.resp.status,
                 self.uri,
-                reason.strip(),
+                self.reason,
                 self.error_details,
             )
         elif self.uri:
             return '<HttpError %s when requesting %s returned "%s">' % (
                 self.resp.status,
                 self.uri,
-                self._get_reason().strip(),
+                self.reason,
             )
         else:
-            return '<HttpError %s "%s">' % (self.resp.status, self._get_reason())
+            return '<HttpError %s "%s">' % (self.resp.status, self.reason)
 
     __str__ = __repr__
 

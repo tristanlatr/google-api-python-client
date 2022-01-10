@@ -133,7 +133,7 @@ Args:
 Returns:
   An object of the form:
 
-    { # Note: this resource requires whitelisting for access. Please contact your account manager for access to Marketplace resources. Represents a proposal in the Marketplace. A proposal is the unit of negotiation between a seller and a buyer and contains deals which are served. Note: you can not update, create, or otherwise modify Private Auction or Preferred Deals deals through the API. Fields are updatable unless noted otherwise.
+    { # Represents a proposal in the Marketplace. A proposal is the unit of negotiation between a seller and a buyer and contains deals which are served. Note: You can&#x27;t update, create, or otherwise modify Private Auction deals through the API. Fields are updatable unless noted otherwise.
   &quot;billedBuyer&quot;: { # Represents a buyer of inventory. Each buyer is identified by a unique Authorized Buyers account ID. # Output only. Reference to the buyer that will get billed for this proposal.
     &quot;accountId&quot;: &quot;A String&quot;, # Authorized Buyers account ID of the buyer.
   },
@@ -224,7 +224,10 @@ Returns:
           ],
           &quot;guaranteedImpressions&quot;: &quot;A String&quot;, # Guaranteed impressions as a percentage. This is the percentage of guaranteed looks that the buyer is guaranteeing to buy.
           &quot;guaranteedLooks&quot;: &quot;A String&quot;, # Count of guaranteed looks. Required for deal, optional for product.
+          &quot;impressionCap&quot;: &quot;A String&quot;, # The lifetime impression cap for CPM sponsorship deals. The deal will stop serving when the cap is reached.
           &quot;minimumDailyLooks&quot;: &quot;A String&quot;, # Daily minimum looks for CPD deal types.
+          &quot;percentShareOfVoice&quot;: &quot;A String&quot;, # For sponsorship deals, this is the percentage of the seller&#x27;s eligible impressions that the deal will serve until the cap is reached.
+          &quot;reservationType&quot;: &quot;A String&quot;, # The reservation type for a Programmatic Guaranteed deal. This indicates whether the number of impressions is fixed, or a percent of available impressions. If not specified, the default reservation type is STANDARD.
         },
         &quot;nonGuaranteedAuctionTerms&quot;: { # Terms for Private Auctions. Note that Private Auctions can be created only by the seller, but they can be returned in a get or list request. # The terms for non-guaranteed auction deals.
           &quot;autoOptimizePrivateAuction&quot;: True or False, # True if open auction buyers are allowed to compete with invited buyers in this private auction.
@@ -247,7 +250,7 @@ Returns:
             },
           ],
         },
-        &quot;nonGuaranteedFixedPriceTerms&quot;: { # Terms for Preferred Deals. Note that Preferred Deals cannot be created via the API at this time, but can be returned in a get or list request. # The terms for non-guaranteed fixed price deals.
+        &quot;nonGuaranteedFixedPriceTerms&quot;: { # Terms for Preferred Deals. # The terms for non-guaranteed fixed price deals.
           &quot;fixedPrices&quot;: [ # Fixed price for the specified buyer.
             { # Used to specify pricing rules for buyers/advertisers. Each PricePerBuyer in a product can become 0 or 1 deals. To check if there is a PricePerBuyer for a particular buyer or buyer/advertiser pair, we look for the most specific matching rule - we first look for a rule matching the buyer and advertiser, next a rule with the buyer but an empty advertiser list, and otherwise look for a matching rule where no buyer is set.
               &quot;advertiserIds&quot;: [ # The list of advertisers for this price when associated with this buyer. If empty, all advertisers with this buyer pay this price.
@@ -500,7 +503,7 @@ Returns:
   &quot;proposalState&quot;: &quot;A String&quot;, # Output only. The current state of the proposal.
   &quot;seller&quot;: { # Represents a seller of inventory. Each seller is identified by a unique Ad Manager account ID. # Reference to the seller on the proposal. Note: This field may be set only when creating the resource. Modifying this field while updating the resource will result in an error.
     &quot;accountId&quot;: &quot;A String&quot;, # The unique ID for the seller. The seller fills in this field. The seller account ID is then available to buyer in the product.
-    &quot;subAccountId&quot;: &quot;A String&quot;, # Optional sub-account ID for the seller.
+    &quot;subAccountId&quot;: &quot;A String&quot;, # Output only. Ad manager network code for the seller.
   },
   &quot;sellerContacts&quot;: [ # Output only. Contact information for the seller.
     { # Contains information on how a buyer or seller can be reached.
@@ -571,7 +574,7 @@ Args:
 Returns:
   An object of the form:
 
-    { # Note: this resource requires whitelisting for access. Please contact your account manager for access to Marketplace resources. Represents a proposal in the Marketplace. A proposal is the unit of negotiation between a seller and a buyer and contains deals which are served. Note: you can not update, create, or otherwise modify Private Auction or Preferred Deals deals through the API. Fields are updatable unless noted otherwise.
+    { # Represents a proposal in the Marketplace. A proposal is the unit of negotiation between a seller and a buyer and contains deals which are served. Note: You can&#x27;t update, create, or otherwise modify Private Auction deals through the API. Fields are updatable unless noted otherwise.
   &quot;billedBuyer&quot;: { # Represents a buyer of inventory. Each buyer is identified by a unique Authorized Buyers account ID. # Output only. Reference to the buyer that will get billed for this proposal.
     &quot;accountId&quot;: &quot;A String&quot;, # Authorized Buyers account ID of the buyer.
   },
@@ -662,7 +665,10 @@ Returns:
           ],
           &quot;guaranteedImpressions&quot;: &quot;A String&quot;, # Guaranteed impressions as a percentage. This is the percentage of guaranteed looks that the buyer is guaranteeing to buy.
           &quot;guaranteedLooks&quot;: &quot;A String&quot;, # Count of guaranteed looks. Required for deal, optional for product.
+          &quot;impressionCap&quot;: &quot;A String&quot;, # The lifetime impression cap for CPM sponsorship deals. The deal will stop serving when the cap is reached.
           &quot;minimumDailyLooks&quot;: &quot;A String&quot;, # Daily minimum looks for CPD deal types.
+          &quot;percentShareOfVoice&quot;: &quot;A String&quot;, # For sponsorship deals, this is the percentage of the seller&#x27;s eligible impressions that the deal will serve until the cap is reached.
+          &quot;reservationType&quot;: &quot;A String&quot;, # The reservation type for a Programmatic Guaranteed deal. This indicates whether the number of impressions is fixed, or a percent of available impressions. If not specified, the default reservation type is STANDARD.
         },
         &quot;nonGuaranteedAuctionTerms&quot;: { # Terms for Private Auctions. Note that Private Auctions can be created only by the seller, but they can be returned in a get or list request. # The terms for non-guaranteed auction deals.
           &quot;autoOptimizePrivateAuction&quot;: True or False, # True if open auction buyers are allowed to compete with invited buyers in this private auction.
@@ -685,7 +691,7 @@ Returns:
             },
           ],
         },
-        &quot;nonGuaranteedFixedPriceTerms&quot;: { # Terms for Preferred Deals. Note that Preferred Deals cannot be created via the API at this time, but can be returned in a get or list request. # The terms for non-guaranteed fixed price deals.
+        &quot;nonGuaranteedFixedPriceTerms&quot;: { # Terms for Preferred Deals. # The terms for non-guaranteed fixed price deals.
           &quot;fixedPrices&quot;: [ # Fixed price for the specified buyer.
             { # Used to specify pricing rules for buyers/advertisers. Each PricePerBuyer in a product can become 0 or 1 deals. To check if there is a PricePerBuyer for a particular buyer or buyer/advertiser pair, we look for the most specific matching rule - we first look for a rule matching the buyer and advertiser, next a rule with the buyer but an empty advertiser list, and otherwise look for a matching rule where no buyer is set.
               &quot;advertiserIds&quot;: [ # The list of advertisers for this price when associated with this buyer. If empty, all advertisers with this buyer pay this price.
@@ -938,7 +944,7 @@ Returns:
   &quot;proposalState&quot;: &quot;A String&quot;, # Output only. The current state of the proposal.
   &quot;seller&quot;: { # Represents a seller of inventory. Each seller is identified by a unique Ad Manager account ID. # Reference to the seller on the proposal. Note: This field may be set only when creating the resource. Modifying this field while updating the resource will result in an error.
     &quot;accountId&quot;: &quot;A String&quot;, # The unique ID for the seller. The seller fills in this field. The seller account ID is then available to buyer in the product.
-    &quot;subAccountId&quot;: &quot;A String&quot;, # Optional sub-account ID for the seller.
+    &quot;subAccountId&quot;: &quot;A String&quot;, # Output only. Ad manager network code for the seller.
   },
   &quot;sellerContacts&quot;: [ # Output only. Contact information for the seller.
     { # Contains information on how a buyer or seller can be reached.
@@ -977,7 +983,7 @@ Args:
 Returns:
   An object of the form:
 
-    { # Note: this resource requires whitelisting for access. Please contact your account manager for access to Marketplace resources. Represents a proposal in the Marketplace. A proposal is the unit of negotiation between a seller and a buyer and contains deals which are served. Note: you can not update, create, or otherwise modify Private Auction or Preferred Deals deals through the API. Fields are updatable unless noted otherwise.
+    { # Represents a proposal in the Marketplace. A proposal is the unit of negotiation between a seller and a buyer and contains deals which are served. Note: You can&#x27;t update, create, or otherwise modify Private Auction deals through the API. Fields are updatable unless noted otherwise.
   &quot;billedBuyer&quot;: { # Represents a buyer of inventory. Each buyer is identified by a unique Authorized Buyers account ID. # Output only. Reference to the buyer that will get billed for this proposal.
     &quot;accountId&quot;: &quot;A String&quot;, # Authorized Buyers account ID of the buyer.
   },
@@ -1068,7 +1074,10 @@ Returns:
           ],
           &quot;guaranteedImpressions&quot;: &quot;A String&quot;, # Guaranteed impressions as a percentage. This is the percentage of guaranteed looks that the buyer is guaranteeing to buy.
           &quot;guaranteedLooks&quot;: &quot;A String&quot;, # Count of guaranteed looks. Required for deal, optional for product.
+          &quot;impressionCap&quot;: &quot;A String&quot;, # The lifetime impression cap for CPM sponsorship deals. The deal will stop serving when the cap is reached.
           &quot;minimumDailyLooks&quot;: &quot;A String&quot;, # Daily minimum looks for CPD deal types.
+          &quot;percentShareOfVoice&quot;: &quot;A String&quot;, # For sponsorship deals, this is the percentage of the seller&#x27;s eligible impressions that the deal will serve until the cap is reached.
+          &quot;reservationType&quot;: &quot;A String&quot;, # The reservation type for a Programmatic Guaranteed deal. This indicates whether the number of impressions is fixed, or a percent of available impressions. If not specified, the default reservation type is STANDARD.
         },
         &quot;nonGuaranteedAuctionTerms&quot;: { # Terms for Private Auctions. Note that Private Auctions can be created only by the seller, but they can be returned in a get or list request. # The terms for non-guaranteed auction deals.
           &quot;autoOptimizePrivateAuction&quot;: True or False, # True if open auction buyers are allowed to compete with invited buyers in this private auction.
@@ -1091,7 +1100,7 @@ Returns:
             },
           ],
         },
-        &quot;nonGuaranteedFixedPriceTerms&quot;: { # Terms for Preferred Deals. Note that Preferred Deals cannot be created via the API at this time, but can be returned in a get or list request. # The terms for non-guaranteed fixed price deals.
+        &quot;nonGuaranteedFixedPriceTerms&quot;: { # Terms for Preferred Deals. # The terms for non-guaranteed fixed price deals.
           &quot;fixedPrices&quot;: [ # Fixed price for the specified buyer.
             { # Used to specify pricing rules for buyers/advertisers. Each PricePerBuyer in a product can become 0 or 1 deals. To check if there is a PricePerBuyer for a particular buyer or buyer/advertiser pair, we look for the most specific matching rule - we first look for a rule matching the buyer and advertiser, next a rule with the buyer but an empty advertiser list, and otherwise look for a matching rule where no buyer is set.
               &quot;advertiserIds&quot;: [ # The list of advertisers for this price when associated with this buyer. If empty, all advertisers with this buyer pay this price.
@@ -1344,7 +1353,7 @@ Returns:
   &quot;proposalState&quot;: &quot;A String&quot;, # Output only. The current state of the proposal.
   &quot;seller&quot;: { # Represents a seller of inventory. Each seller is identified by a unique Ad Manager account ID. # Reference to the seller on the proposal. Note: This field may be set only when creating the resource. Modifying this field while updating the resource will result in an error.
     &quot;accountId&quot;: &quot;A String&quot;, # The unique ID for the seller. The seller fills in this field. The seller account ID is then available to buyer in the product.
-    &quot;subAccountId&quot;: &quot;A String&quot;, # Optional sub-account ID for the seller.
+    &quot;subAccountId&quot;: &quot;A String&quot;, # Output only. Ad manager network code for the seller.
   },
   &quot;sellerContacts&quot;: [ # Output only. Contact information for the seller.
     { # Contains information on how a buyer or seller can be reached.
@@ -1366,7 +1375,7 @@ Args:
   body: object, The request body.
     The object takes the form of:
 
-{ # Note: this resource requires whitelisting for access. Please contact your account manager for access to Marketplace resources. Represents a proposal in the Marketplace. A proposal is the unit of negotiation between a seller and a buyer and contains deals which are served. Note: you can not update, create, or otherwise modify Private Auction or Preferred Deals deals through the API. Fields are updatable unless noted otherwise.
+{ # Represents a proposal in the Marketplace. A proposal is the unit of negotiation between a seller and a buyer and contains deals which are served. Note: You can&#x27;t update, create, or otherwise modify Private Auction deals through the API. Fields are updatable unless noted otherwise.
   &quot;billedBuyer&quot;: { # Represents a buyer of inventory. Each buyer is identified by a unique Authorized Buyers account ID. # Output only. Reference to the buyer that will get billed for this proposal.
     &quot;accountId&quot;: &quot;A String&quot;, # Authorized Buyers account ID of the buyer.
   },
@@ -1457,7 +1466,10 @@ Args:
           ],
           &quot;guaranteedImpressions&quot;: &quot;A String&quot;, # Guaranteed impressions as a percentage. This is the percentage of guaranteed looks that the buyer is guaranteeing to buy.
           &quot;guaranteedLooks&quot;: &quot;A String&quot;, # Count of guaranteed looks. Required for deal, optional for product.
+          &quot;impressionCap&quot;: &quot;A String&quot;, # The lifetime impression cap for CPM sponsorship deals. The deal will stop serving when the cap is reached.
           &quot;minimumDailyLooks&quot;: &quot;A String&quot;, # Daily minimum looks for CPD deal types.
+          &quot;percentShareOfVoice&quot;: &quot;A String&quot;, # For sponsorship deals, this is the percentage of the seller&#x27;s eligible impressions that the deal will serve until the cap is reached.
+          &quot;reservationType&quot;: &quot;A String&quot;, # The reservation type for a Programmatic Guaranteed deal. This indicates whether the number of impressions is fixed, or a percent of available impressions. If not specified, the default reservation type is STANDARD.
         },
         &quot;nonGuaranteedAuctionTerms&quot;: { # Terms for Private Auctions. Note that Private Auctions can be created only by the seller, but they can be returned in a get or list request. # The terms for non-guaranteed auction deals.
           &quot;autoOptimizePrivateAuction&quot;: True or False, # True if open auction buyers are allowed to compete with invited buyers in this private auction.
@@ -1480,7 +1492,7 @@ Args:
             },
           ],
         },
-        &quot;nonGuaranteedFixedPriceTerms&quot;: { # Terms for Preferred Deals. Note that Preferred Deals cannot be created via the API at this time, but can be returned in a get or list request. # The terms for non-guaranteed fixed price deals.
+        &quot;nonGuaranteedFixedPriceTerms&quot;: { # Terms for Preferred Deals. # The terms for non-guaranteed fixed price deals.
           &quot;fixedPrices&quot;: [ # Fixed price for the specified buyer.
             { # Used to specify pricing rules for buyers/advertisers. Each PricePerBuyer in a product can become 0 or 1 deals. To check if there is a PricePerBuyer for a particular buyer or buyer/advertiser pair, we look for the most specific matching rule - we first look for a rule matching the buyer and advertiser, next a rule with the buyer but an empty advertiser list, and otherwise look for a matching rule where no buyer is set.
               &quot;advertiserIds&quot;: [ # The list of advertisers for this price when associated with this buyer. If empty, all advertisers with this buyer pay this price.
@@ -1733,7 +1745,7 @@ Args:
   &quot;proposalState&quot;: &quot;A String&quot;, # Output only. The current state of the proposal.
   &quot;seller&quot;: { # Represents a seller of inventory. Each seller is identified by a unique Ad Manager account ID. # Reference to the seller on the proposal. Note: This field may be set only when creating the resource. Modifying this field while updating the resource will result in an error.
     &quot;accountId&quot;: &quot;A String&quot;, # The unique ID for the seller. The seller fills in this field. The seller account ID is then available to buyer in the product.
-    &quot;subAccountId&quot;: &quot;A String&quot;, # Optional sub-account ID for the seller.
+    &quot;subAccountId&quot;: &quot;A String&quot;, # Output only. Ad manager network code for the seller.
   },
   &quot;sellerContacts&quot;: [ # Output only. Contact information for the seller.
     { # Contains information on how a buyer or seller can be reached.
@@ -1753,7 +1765,7 @@ Args:
 Returns:
   An object of the form:
 
-    { # Note: this resource requires whitelisting for access. Please contact your account manager for access to Marketplace resources. Represents a proposal in the Marketplace. A proposal is the unit of negotiation between a seller and a buyer and contains deals which are served. Note: you can not update, create, or otherwise modify Private Auction or Preferred Deals deals through the API. Fields are updatable unless noted otherwise.
+    { # Represents a proposal in the Marketplace. A proposal is the unit of negotiation between a seller and a buyer and contains deals which are served. Note: You can&#x27;t update, create, or otherwise modify Private Auction deals through the API. Fields are updatable unless noted otherwise.
   &quot;billedBuyer&quot;: { # Represents a buyer of inventory. Each buyer is identified by a unique Authorized Buyers account ID. # Output only. Reference to the buyer that will get billed for this proposal.
     &quot;accountId&quot;: &quot;A String&quot;, # Authorized Buyers account ID of the buyer.
   },
@@ -1844,7 +1856,10 @@ Returns:
           ],
           &quot;guaranteedImpressions&quot;: &quot;A String&quot;, # Guaranteed impressions as a percentage. This is the percentage of guaranteed looks that the buyer is guaranteeing to buy.
           &quot;guaranteedLooks&quot;: &quot;A String&quot;, # Count of guaranteed looks. Required for deal, optional for product.
+          &quot;impressionCap&quot;: &quot;A String&quot;, # The lifetime impression cap for CPM sponsorship deals. The deal will stop serving when the cap is reached.
           &quot;minimumDailyLooks&quot;: &quot;A String&quot;, # Daily minimum looks for CPD deal types.
+          &quot;percentShareOfVoice&quot;: &quot;A String&quot;, # For sponsorship deals, this is the percentage of the seller&#x27;s eligible impressions that the deal will serve until the cap is reached.
+          &quot;reservationType&quot;: &quot;A String&quot;, # The reservation type for a Programmatic Guaranteed deal. This indicates whether the number of impressions is fixed, or a percent of available impressions. If not specified, the default reservation type is STANDARD.
         },
         &quot;nonGuaranteedAuctionTerms&quot;: { # Terms for Private Auctions. Note that Private Auctions can be created only by the seller, but they can be returned in a get or list request. # The terms for non-guaranteed auction deals.
           &quot;autoOptimizePrivateAuction&quot;: True or False, # True if open auction buyers are allowed to compete with invited buyers in this private auction.
@@ -1867,7 +1882,7 @@ Returns:
             },
           ],
         },
-        &quot;nonGuaranteedFixedPriceTerms&quot;: { # Terms for Preferred Deals. Note that Preferred Deals cannot be created via the API at this time, but can be returned in a get or list request. # The terms for non-guaranteed fixed price deals.
+        &quot;nonGuaranteedFixedPriceTerms&quot;: { # Terms for Preferred Deals. # The terms for non-guaranteed fixed price deals.
           &quot;fixedPrices&quot;: [ # Fixed price for the specified buyer.
             { # Used to specify pricing rules for buyers/advertisers. Each PricePerBuyer in a product can become 0 or 1 deals. To check if there is a PricePerBuyer for a particular buyer or buyer/advertiser pair, we look for the most specific matching rule - we first look for a rule matching the buyer and advertiser, next a rule with the buyer but an empty advertiser list, and otherwise look for a matching rule where no buyer is set.
               &quot;advertiserIds&quot;: [ # The list of advertisers for this price when associated with this buyer. If empty, all advertisers with this buyer pay this price.
@@ -2120,7 +2135,7 @@ Returns:
   &quot;proposalState&quot;: &quot;A String&quot;, # Output only. The current state of the proposal.
   &quot;seller&quot;: { # Represents a seller of inventory. Each seller is identified by a unique Ad Manager account ID. # Reference to the seller on the proposal. Note: This field may be set only when creating the resource. Modifying this field while updating the resource will result in an error.
     &quot;accountId&quot;: &quot;A String&quot;, # The unique ID for the seller. The seller fills in this field. The seller account ID is then available to buyer in the product.
-    &quot;subAccountId&quot;: &quot;A String&quot;, # Optional sub-account ID for the seller.
+    &quot;subAccountId&quot;: &quot;A String&quot;, # Output only. Ad manager network code for the seller.
   },
   &quot;sellerContacts&quot;: [ # Output only. Contact information for the seller.
     { # Contains information on how a buyer or seller can be reached.
@@ -2148,7 +2163,7 @@ Args:
 Returns:
   An object of the form:
 
-    { # Note: this resource requires whitelisting for access. Please contact your account manager for access to Marketplace resources. Represents a proposal in the Marketplace. A proposal is the unit of negotiation between a seller and a buyer and contains deals which are served. Note: you can not update, create, or otherwise modify Private Auction or Preferred Deals deals through the API. Fields are updatable unless noted otherwise.
+    { # Represents a proposal in the Marketplace. A proposal is the unit of negotiation between a seller and a buyer and contains deals which are served. Note: You can&#x27;t update, create, or otherwise modify Private Auction deals through the API. Fields are updatable unless noted otherwise.
   &quot;billedBuyer&quot;: { # Represents a buyer of inventory. Each buyer is identified by a unique Authorized Buyers account ID. # Output only. Reference to the buyer that will get billed for this proposal.
     &quot;accountId&quot;: &quot;A String&quot;, # Authorized Buyers account ID of the buyer.
   },
@@ -2239,7 +2254,10 @@ Returns:
           ],
           &quot;guaranteedImpressions&quot;: &quot;A String&quot;, # Guaranteed impressions as a percentage. This is the percentage of guaranteed looks that the buyer is guaranteeing to buy.
           &quot;guaranteedLooks&quot;: &quot;A String&quot;, # Count of guaranteed looks. Required for deal, optional for product.
+          &quot;impressionCap&quot;: &quot;A String&quot;, # The lifetime impression cap for CPM sponsorship deals. The deal will stop serving when the cap is reached.
           &quot;minimumDailyLooks&quot;: &quot;A String&quot;, # Daily minimum looks for CPD deal types.
+          &quot;percentShareOfVoice&quot;: &quot;A String&quot;, # For sponsorship deals, this is the percentage of the seller&#x27;s eligible impressions that the deal will serve until the cap is reached.
+          &quot;reservationType&quot;: &quot;A String&quot;, # The reservation type for a Programmatic Guaranteed deal. This indicates whether the number of impressions is fixed, or a percent of available impressions. If not specified, the default reservation type is STANDARD.
         },
         &quot;nonGuaranteedAuctionTerms&quot;: { # Terms for Private Auctions. Note that Private Auctions can be created only by the seller, but they can be returned in a get or list request. # The terms for non-guaranteed auction deals.
           &quot;autoOptimizePrivateAuction&quot;: True or False, # True if open auction buyers are allowed to compete with invited buyers in this private auction.
@@ -2262,7 +2280,7 @@ Returns:
             },
           ],
         },
-        &quot;nonGuaranteedFixedPriceTerms&quot;: { # Terms for Preferred Deals. Note that Preferred Deals cannot be created via the API at this time, but can be returned in a get or list request. # The terms for non-guaranteed fixed price deals.
+        &quot;nonGuaranteedFixedPriceTerms&quot;: { # Terms for Preferred Deals. # The terms for non-guaranteed fixed price deals.
           &quot;fixedPrices&quot;: [ # Fixed price for the specified buyer.
             { # Used to specify pricing rules for buyers/advertisers. Each PricePerBuyer in a product can become 0 or 1 deals. To check if there is a PricePerBuyer for a particular buyer or buyer/advertiser pair, we look for the most specific matching rule - we first look for a rule matching the buyer and advertiser, next a rule with the buyer but an empty advertiser list, and otherwise look for a matching rule where no buyer is set.
               &quot;advertiserIds&quot;: [ # The list of advertisers for this price when associated with this buyer. If empty, all advertisers with this buyer pay this price.
@@ -2515,7 +2533,7 @@ Returns:
   &quot;proposalState&quot;: &quot;A String&quot;, # Output only. The current state of the proposal.
   &quot;seller&quot;: { # Represents a seller of inventory. Each seller is identified by a unique Ad Manager account ID. # Reference to the seller on the proposal. Note: This field may be set only when creating the resource. Modifying this field while updating the resource will result in an error.
     &quot;accountId&quot;: &quot;A String&quot;, # The unique ID for the seller. The seller fills in this field. The seller account ID is then available to buyer in the product.
-    &quot;subAccountId&quot;: &quot;A String&quot;, # Optional sub-account ID for the seller.
+    &quot;subAccountId&quot;: &quot;A String&quot;, # Output only. Ad manager network code for the seller.
   },
   &quot;sellerContacts&quot;: [ # Output only. Contact information for the seller.
     { # Contains information on how a buyer or seller can be reached.
@@ -2553,7 +2571,7 @@ Returns:
     { # Response message for listing proposals.
   &quot;nextPageToken&quot;: &quot;A String&quot;, # Continuation token for fetching the next page of results.
   &quot;proposals&quot;: [ # The list of proposals.
-    { # Note: this resource requires whitelisting for access. Please contact your account manager for access to Marketplace resources. Represents a proposal in the Marketplace. A proposal is the unit of negotiation between a seller and a buyer and contains deals which are served. Note: you can not update, create, or otherwise modify Private Auction or Preferred Deals deals through the API. Fields are updatable unless noted otherwise.
+    { # Represents a proposal in the Marketplace. A proposal is the unit of negotiation between a seller and a buyer and contains deals which are served. Note: You can&#x27;t update, create, or otherwise modify Private Auction deals through the API. Fields are updatable unless noted otherwise.
       &quot;billedBuyer&quot;: { # Represents a buyer of inventory. Each buyer is identified by a unique Authorized Buyers account ID. # Output only. Reference to the buyer that will get billed for this proposal.
         &quot;accountId&quot;: &quot;A String&quot;, # Authorized Buyers account ID of the buyer.
       },
@@ -2644,7 +2662,10 @@ Returns:
               ],
               &quot;guaranteedImpressions&quot;: &quot;A String&quot;, # Guaranteed impressions as a percentage. This is the percentage of guaranteed looks that the buyer is guaranteeing to buy.
               &quot;guaranteedLooks&quot;: &quot;A String&quot;, # Count of guaranteed looks. Required for deal, optional for product.
+              &quot;impressionCap&quot;: &quot;A String&quot;, # The lifetime impression cap for CPM sponsorship deals. The deal will stop serving when the cap is reached.
               &quot;minimumDailyLooks&quot;: &quot;A String&quot;, # Daily minimum looks for CPD deal types.
+              &quot;percentShareOfVoice&quot;: &quot;A String&quot;, # For sponsorship deals, this is the percentage of the seller&#x27;s eligible impressions that the deal will serve until the cap is reached.
+              &quot;reservationType&quot;: &quot;A String&quot;, # The reservation type for a Programmatic Guaranteed deal. This indicates whether the number of impressions is fixed, or a percent of available impressions. If not specified, the default reservation type is STANDARD.
             },
             &quot;nonGuaranteedAuctionTerms&quot;: { # Terms for Private Auctions. Note that Private Auctions can be created only by the seller, but they can be returned in a get or list request. # The terms for non-guaranteed auction deals.
               &quot;autoOptimizePrivateAuction&quot;: True or False, # True if open auction buyers are allowed to compete with invited buyers in this private auction.
@@ -2667,7 +2688,7 @@ Returns:
                 },
               ],
             },
-            &quot;nonGuaranteedFixedPriceTerms&quot;: { # Terms for Preferred Deals. Note that Preferred Deals cannot be created via the API at this time, but can be returned in a get or list request. # The terms for non-guaranteed fixed price deals.
+            &quot;nonGuaranteedFixedPriceTerms&quot;: { # Terms for Preferred Deals. # The terms for non-guaranteed fixed price deals.
               &quot;fixedPrices&quot;: [ # Fixed price for the specified buyer.
                 { # Used to specify pricing rules for buyers/advertisers. Each PricePerBuyer in a product can become 0 or 1 deals. To check if there is a PricePerBuyer for a particular buyer or buyer/advertiser pair, we look for the most specific matching rule - we first look for a rule matching the buyer and advertiser, next a rule with the buyer but an empty advertiser list, and otherwise look for a matching rule where no buyer is set.
                   &quot;advertiserIds&quot;: [ # The list of advertisers for this price when associated with this buyer. If empty, all advertisers with this buyer pay this price.
@@ -2920,7 +2941,7 @@ Returns:
       &quot;proposalState&quot;: &quot;A String&quot;, # Output only. The current state of the proposal.
       &quot;seller&quot;: { # Represents a seller of inventory. Each seller is identified by a unique Ad Manager account ID. # Reference to the seller on the proposal. Note: This field may be set only when creating the resource. Modifying this field while updating the resource will result in an error.
         &quot;accountId&quot;: &quot;A String&quot;, # The unique ID for the seller. The seller fills in this field. The seller account ID is then available to buyer in the product.
-        &quot;subAccountId&quot;: &quot;A String&quot;, # Optional sub-account ID for the seller.
+        &quot;subAccountId&quot;: &quot;A String&quot;, # Output only. Ad manager network code for the seller.
       },
       &quot;sellerContacts&quot;: [ # Output only. Contact information for the seller.
         { # Contains information on how a buyer or seller can be reached.
@@ -2971,7 +2992,7 @@ Args:
 Returns:
   An object of the form:
 
-    { # Note: this resource requires whitelisting for access. Please contact your account manager for access to Marketplace resources. Represents a proposal in the Marketplace. A proposal is the unit of negotiation between a seller and a buyer and contains deals which are served. Note: you can not update, create, or otherwise modify Private Auction or Preferred Deals deals through the API. Fields are updatable unless noted otherwise.
+    { # Represents a proposal in the Marketplace. A proposal is the unit of negotiation between a seller and a buyer and contains deals which are served. Note: You can&#x27;t update, create, or otherwise modify Private Auction deals through the API. Fields are updatable unless noted otherwise.
   &quot;billedBuyer&quot;: { # Represents a buyer of inventory. Each buyer is identified by a unique Authorized Buyers account ID. # Output only. Reference to the buyer that will get billed for this proposal.
     &quot;accountId&quot;: &quot;A String&quot;, # Authorized Buyers account ID of the buyer.
   },
@@ -3062,7 +3083,10 @@ Returns:
           ],
           &quot;guaranteedImpressions&quot;: &quot;A String&quot;, # Guaranteed impressions as a percentage. This is the percentage of guaranteed looks that the buyer is guaranteeing to buy.
           &quot;guaranteedLooks&quot;: &quot;A String&quot;, # Count of guaranteed looks. Required for deal, optional for product.
+          &quot;impressionCap&quot;: &quot;A String&quot;, # The lifetime impression cap for CPM sponsorship deals. The deal will stop serving when the cap is reached.
           &quot;minimumDailyLooks&quot;: &quot;A String&quot;, # Daily minimum looks for CPD deal types.
+          &quot;percentShareOfVoice&quot;: &quot;A String&quot;, # For sponsorship deals, this is the percentage of the seller&#x27;s eligible impressions that the deal will serve until the cap is reached.
+          &quot;reservationType&quot;: &quot;A String&quot;, # The reservation type for a Programmatic Guaranteed deal. This indicates whether the number of impressions is fixed, or a percent of available impressions. If not specified, the default reservation type is STANDARD.
         },
         &quot;nonGuaranteedAuctionTerms&quot;: { # Terms for Private Auctions. Note that Private Auctions can be created only by the seller, but they can be returned in a get or list request. # The terms for non-guaranteed auction deals.
           &quot;autoOptimizePrivateAuction&quot;: True or False, # True if open auction buyers are allowed to compete with invited buyers in this private auction.
@@ -3085,7 +3109,7 @@ Returns:
             },
           ],
         },
-        &quot;nonGuaranteedFixedPriceTerms&quot;: { # Terms for Preferred Deals. Note that Preferred Deals cannot be created via the API at this time, but can be returned in a get or list request. # The terms for non-guaranteed fixed price deals.
+        &quot;nonGuaranteedFixedPriceTerms&quot;: { # Terms for Preferred Deals. # The terms for non-guaranteed fixed price deals.
           &quot;fixedPrices&quot;: [ # Fixed price for the specified buyer.
             { # Used to specify pricing rules for buyers/advertisers. Each PricePerBuyer in a product can become 0 or 1 deals. To check if there is a PricePerBuyer for a particular buyer or buyer/advertiser pair, we look for the most specific matching rule - we first look for a rule matching the buyer and advertiser, next a rule with the buyer but an empty advertiser list, and otherwise look for a matching rule where no buyer is set.
               &quot;advertiserIds&quot;: [ # The list of advertisers for this price when associated with this buyer. If empty, all advertisers with this buyer pay this price.
@@ -3338,7 +3362,7 @@ Returns:
   &quot;proposalState&quot;: &quot;A String&quot;, # Output only. The current state of the proposal.
   &quot;seller&quot;: { # Represents a seller of inventory. Each seller is identified by a unique Ad Manager account ID. # Reference to the seller on the proposal. Note: This field may be set only when creating the resource. Modifying this field while updating the resource will result in an error.
     &quot;accountId&quot;: &quot;A String&quot;, # The unique ID for the seller. The seller fills in this field. The seller account ID is then available to buyer in the product.
-    &quot;subAccountId&quot;: &quot;A String&quot;, # Optional sub-account ID for the seller.
+    &quot;subAccountId&quot;: &quot;A String&quot;, # Output only. Ad manager network code for the seller.
   },
   &quot;sellerContacts&quot;: [ # Output only. Contact information for the seller.
     { # Contains information on how a buyer or seller can be reached.
@@ -3372,7 +3396,7 @@ Args:
 Returns:
   An object of the form:
 
-    { # Note: this resource requires whitelisting for access. Please contact your account manager for access to Marketplace resources. Represents a proposal in the Marketplace. A proposal is the unit of negotiation between a seller and a buyer and contains deals which are served. Note: you can not update, create, or otherwise modify Private Auction or Preferred Deals deals through the API. Fields are updatable unless noted otherwise.
+    { # Represents a proposal in the Marketplace. A proposal is the unit of negotiation between a seller and a buyer and contains deals which are served. Note: You can&#x27;t update, create, or otherwise modify Private Auction deals through the API. Fields are updatable unless noted otherwise.
   &quot;billedBuyer&quot;: { # Represents a buyer of inventory. Each buyer is identified by a unique Authorized Buyers account ID. # Output only. Reference to the buyer that will get billed for this proposal.
     &quot;accountId&quot;: &quot;A String&quot;, # Authorized Buyers account ID of the buyer.
   },
@@ -3463,7 +3487,10 @@ Returns:
           ],
           &quot;guaranteedImpressions&quot;: &quot;A String&quot;, # Guaranteed impressions as a percentage. This is the percentage of guaranteed looks that the buyer is guaranteeing to buy.
           &quot;guaranteedLooks&quot;: &quot;A String&quot;, # Count of guaranteed looks. Required for deal, optional for product.
+          &quot;impressionCap&quot;: &quot;A String&quot;, # The lifetime impression cap for CPM sponsorship deals. The deal will stop serving when the cap is reached.
           &quot;minimumDailyLooks&quot;: &quot;A String&quot;, # Daily minimum looks for CPD deal types.
+          &quot;percentShareOfVoice&quot;: &quot;A String&quot;, # For sponsorship deals, this is the percentage of the seller&#x27;s eligible impressions that the deal will serve until the cap is reached.
+          &quot;reservationType&quot;: &quot;A String&quot;, # The reservation type for a Programmatic Guaranteed deal. This indicates whether the number of impressions is fixed, or a percent of available impressions. If not specified, the default reservation type is STANDARD.
         },
         &quot;nonGuaranteedAuctionTerms&quot;: { # Terms for Private Auctions. Note that Private Auctions can be created only by the seller, but they can be returned in a get or list request. # The terms for non-guaranteed auction deals.
           &quot;autoOptimizePrivateAuction&quot;: True or False, # True if open auction buyers are allowed to compete with invited buyers in this private auction.
@@ -3486,7 +3513,7 @@ Returns:
             },
           ],
         },
-        &quot;nonGuaranteedFixedPriceTerms&quot;: { # Terms for Preferred Deals. Note that Preferred Deals cannot be created via the API at this time, but can be returned in a get or list request. # The terms for non-guaranteed fixed price deals.
+        &quot;nonGuaranteedFixedPriceTerms&quot;: { # Terms for Preferred Deals. # The terms for non-guaranteed fixed price deals.
           &quot;fixedPrices&quot;: [ # Fixed price for the specified buyer.
             { # Used to specify pricing rules for buyers/advertisers. Each PricePerBuyer in a product can become 0 or 1 deals. To check if there is a PricePerBuyer for a particular buyer or buyer/advertiser pair, we look for the most specific matching rule - we first look for a rule matching the buyer and advertiser, next a rule with the buyer but an empty advertiser list, and otherwise look for a matching rule where no buyer is set.
               &quot;advertiserIds&quot;: [ # The list of advertisers for this price when associated with this buyer. If empty, all advertisers with this buyer pay this price.
@@ -3739,7 +3766,7 @@ Returns:
   &quot;proposalState&quot;: &quot;A String&quot;, # Output only. The current state of the proposal.
   &quot;seller&quot;: { # Represents a seller of inventory. Each seller is identified by a unique Ad Manager account ID. # Reference to the seller on the proposal. Note: This field may be set only when creating the resource. Modifying this field while updating the resource will result in an error.
     &quot;accountId&quot;: &quot;A String&quot;, # The unique ID for the seller. The seller fills in this field. The seller account ID is then available to buyer in the product.
-    &quot;subAccountId&quot;: &quot;A String&quot;, # Optional sub-account ID for the seller.
+    &quot;subAccountId&quot;: &quot;A String&quot;, # Output only. Ad manager network code for the seller.
   },
   &quot;sellerContacts&quot;: [ # Output only. Contact information for the seller.
     { # Contains information on how a buyer or seller can be reached.
@@ -3762,7 +3789,7 @@ Args:
   body: object, The request body.
     The object takes the form of:
 
-{ # Note: this resource requires whitelisting for access. Please contact your account manager for access to Marketplace resources. Represents a proposal in the Marketplace. A proposal is the unit of negotiation between a seller and a buyer and contains deals which are served. Note: you can not update, create, or otherwise modify Private Auction or Preferred Deals deals through the API. Fields are updatable unless noted otherwise.
+{ # Represents a proposal in the Marketplace. A proposal is the unit of negotiation between a seller and a buyer and contains deals which are served. Note: You can&#x27;t update, create, or otherwise modify Private Auction deals through the API. Fields are updatable unless noted otherwise.
   &quot;billedBuyer&quot;: { # Represents a buyer of inventory. Each buyer is identified by a unique Authorized Buyers account ID. # Output only. Reference to the buyer that will get billed for this proposal.
     &quot;accountId&quot;: &quot;A String&quot;, # Authorized Buyers account ID of the buyer.
   },
@@ -3853,7 +3880,10 @@ Args:
           ],
           &quot;guaranteedImpressions&quot;: &quot;A String&quot;, # Guaranteed impressions as a percentage. This is the percentage of guaranteed looks that the buyer is guaranteeing to buy.
           &quot;guaranteedLooks&quot;: &quot;A String&quot;, # Count of guaranteed looks. Required for deal, optional for product.
+          &quot;impressionCap&quot;: &quot;A String&quot;, # The lifetime impression cap for CPM sponsorship deals. The deal will stop serving when the cap is reached.
           &quot;minimumDailyLooks&quot;: &quot;A String&quot;, # Daily minimum looks for CPD deal types.
+          &quot;percentShareOfVoice&quot;: &quot;A String&quot;, # For sponsorship deals, this is the percentage of the seller&#x27;s eligible impressions that the deal will serve until the cap is reached.
+          &quot;reservationType&quot;: &quot;A String&quot;, # The reservation type for a Programmatic Guaranteed deal. This indicates whether the number of impressions is fixed, or a percent of available impressions. If not specified, the default reservation type is STANDARD.
         },
         &quot;nonGuaranteedAuctionTerms&quot;: { # Terms for Private Auctions. Note that Private Auctions can be created only by the seller, but they can be returned in a get or list request. # The terms for non-guaranteed auction deals.
           &quot;autoOptimizePrivateAuction&quot;: True or False, # True if open auction buyers are allowed to compete with invited buyers in this private auction.
@@ -3876,7 +3906,7 @@ Args:
             },
           ],
         },
-        &quot;nonGuaranteedFixedPriceTerms&quot;: { # Terms for Preferred Deals. Note that Preferred Deals cannot be created via the API at this time, but can be returned in a get or list request. # The terms for non-guaranteed fixed price deals.
+        &quot;nonGuaranteedFixedPriceTerms&quot;: { # Terms for Preferred Deals. # The terms for non-guaranteed fixed price deals.
           &quot;fixedPrices&quot;: [ # Fixed price for the specified buyer.
             { # Used to specify pricing rules for buyers/advertisers. Each PricePerBuyer in a product can become 0 or 1 deals. To check if there is a PricePerBuyer for a particular buyer or buyer/advertiser pair, we look for the most specific matching rule - we first look for a rule matching the buyer and advertiser, next a rule with the buyer but an empty advertiser list, and otherwise look for a matching rule where no buyer is set.
               &quot;advertiserIds&quot;: [ # The list of advertisers for this price when associated with this buyer. If empty, all advertisers with this buyer pay this price.
@@ -4129,7 +4159,7 @@ Args:
   &quot;proposalState&quot;: &quot;A String&quot;, # Output only. The current state of the proposal.
   &quot;seller&quot;: { # Represents a seller of inventory. Each seller is identified by a unique Ad Manager account ID. # Reference to the seller on the proposal. Note: This field may be set only when creating the resource. Modifying this field while updating the resource will result in an error.
     &quot;accountId&quot;: &quot;A String&quot;, # The unique ID for the seller. The seller fills in this field. The seller account ID is then available to buyer in the product.
-    &quot;subAccountId&quot;: &quot;A String&quot;, # Optional sub-account ID for the seller.
+    &quot;subAccountId&quot;: &quot;A String&quot;, # Output only. Ad manager network code for the seller.
   },
   &quot;sellerContacts&quot;: [ # Output only. Contact information for the seller.
     { # Contains information on how a buyer or seller can be reached.
@@ -4149,7 +4179,7 @@ Args:
 Returns:
   An object of the form:
 
-    { # Note: this resource requires whitelisting for access. Please contact your account manager for access to Marketplace resources. Represents a proposal in the Marketplace. A proposal is the unit of negotiation between a seller and a buyer and contains deals which are served. Note: you can not update, create, or otherwise modify Private Auction or Preferred Deals deals through the API. Fields are updatable unless noted otherwise.
+    { # Represents a proposal in the Marketplace. A proposal is the unit of negotiation between a seller and a buyer and contains deals which are served. Note: You can&#x27;t update, create, or otherwise modify Private Auction deals through the API. Fields are updatable unless noted otherwise.
   &quot;billedBuyer&quot;: { # Represents a buyer of inventory. Each buyer is identified by a unique Authorized Buyers account ID. # Output only. Reference to the buyer that will get billed for this proposal.
     &quot;accountId&quot;: &quot;A String&quot;, # Authorized Buyers account ID of the buyer.
   },
@@ -4240,7 +4270,10 @@ Returns:
           ],
           &quot;guaranteedImpressions&quot;: &quot;A String&quot;, # Guaranteed impressions as a percentage. This is the percentage of guaranteed looks that the buyer is guaranteeing to buy.
           &quot;guaranteedLooks&quot;: &quot;A String&quot;, # Count of guaranteed looks. Required for deal, optional for product.
+          &quot;impressionCap&quot;: &quot;A String&quot;, # The lifetime impression cap for CPM sponsorship deals. The deal will stop serving when the cap is reached.
           &quot;minimumDailyLooks&quot;: &quot;A String&quot;, # Daily minimum looks for CPD deal types.
+          &quot;percentShareOfVoice&quot;: &quot;A String&quot;, # For sponsorship deals, this is the percentage of the seller&#x27;s eligible impressions that the deal will serve until the cap is reached.
+          &quot;reservationType&quot;: &quot;A String&quot;, # The reservation type for a Programmatic Guaranteed deal. This indicates whether the number of impressions is fixed, or a percent of available impressions. If not specified, the default reservation type is STANDARD.
         },
         &quot;nonGuaranteedAuctionTerms&quot;: { # Terms for Private Auctions. Note that Private Auctions can be created only by the seller, but they can be returned in a get or list request. # The terms for non-guaranteed auction deals.
           &quot;autoOptimizePrivateAuction&quot;: True or False, # True if open auction buyers are allowed to compete with invited buyers in this private auction.
@@ -4263,7 +4296,7 @@ Returns:
             },
           ],
         },
-        &quot;nonGuaranteedFixedPriceTerms&quot;: { # Terms for Preferred Deals. Note that Preferred Deals cannot be created via the API at this time, but can be returned in a get or list request. # The terms for non-guaranteed fixed price deals.
+        &quot;nonGuaranteedFixedPriceTerms&quot;: { # Terms for Preferred Deals. # The terms for non-guaranteed fixed price deals.
           &quot;fixedPrices&quot;: [ # Fixed price for the specified buyer.
             { # Used to specify pricing rules for buyers/advertisers. Each PricePerBuyer in a product can become 0 or 1 deals. To check if there is a PricePerBuyer for a particular buyer or buyer/advertiser pair, we look for the most specific matching rule - we first look for a rule matching the buyer and advertiser, next a rule with the buyer but an empty advertiser list, and otherwise look for a matching rule where no buyer is set.
               &quot;advertiserIds&quot;: [ # The list of advertisers for this price when associated with this buyer. If empty, all advertisers with this buyer pay this price.
@@ -4516,7 +4549,7 @@ Returns:
   &quot;proposalState&quot;: &quot;A String&quot;, # Output only. The current state of the proposal.
   &quot;seller&quot;: { # Represents a seller of inventory. Each seller is identified by a unique Ad Manager account ID. # Reference to the seller on the proposal. Note: This field may be set only when creating the resource. Modifying this field while updating the resource will result in an error.
     &quot;accountId&quot;: &quot;A String&quot;, # The unique ID for the seller. The seller fills in this field. The seller account ID is then available to buyer in the product.
-    &quot;subAccountId&quot;: &quot;A String&quot;, # Optional sub-account ID for the seller.
+    &quot;subAccountId&quot;: &quot;A String&quot;, # Output only. Ad manager network code for the seller.
   },
   &quot;sellerContacts&quot;: [ # Output only. Contact information for the seller.
     { # Contains information on how a buyer or seller can be reached.

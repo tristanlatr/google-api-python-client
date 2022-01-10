@@ -84,10 +84,10 @@ h1, h2, h3 {
 <p class="firstline">Close httplib2 connections.</p>
 <p class="toc_element">
   <code><a href="#search">search(body=None, x__xgafv=None)</a></code></p>
-<p class="firstline">The Cloud Search Query API provides the search method, which returns the most relevant results from a user query. The results can come from G Suite Apps, such as Gmail or Google Drive, or they can come from data that you have indexed from a third party. **Note:** This API requires a standard end user account to execute. A service account can't perform Query API requests directly; to use a service account to perform queries, set up [G Suite domain-wide delegation of authority](https://developers.google.com/cloud-search/docs/guides/delegation/).</p>
+<p class="firstline">The Cloud Search Query API provides the search method, which returns the most relevant results from a user query. The results can come from Google Workspace apps, such as Gmail or Google Drive, or they can come from data that you have indexed from a third party. **Note:** This API requires a standard end user account to execute. A service account can't perform Query API requests directly; to use a service account to perform queries, set up [Google Workspace domain-wide delegation of authority](https://developers.google.com/cloud-search/docs/guides/delegation/).</p>
 <p class="toc_element">
   <code><a href="#suggest">suggest(body=None, x__xgafv=None)</a></code></p>
-<p class="firstline">Provides suggestions for autocompleting the query. **Note:** This API requires a standard end user account to execute. A service account can't perform Query API requests directly; to use a service account to perform queries, set up [G Suite domain-wide delegation of authority](https://developers.google.com/cloud-search/docs/guides/delegation/).</p>
+<p class="firstline">Provides suggestions for autocompleting the query. **Note:** This API requires a standard end user account to execute. A service account can't perform Query API requests directly; to use a service account to perform queries, set up [Google Workspace domain-wide delegation of authority](https://developers.google.com/cloud-search/docs/guides/delegation/).</p>
 <h3>Method Details</h3>
 <div class="method">
     <code class="details" id="close">close()</code>
@@ -96,13 +96,21 @@ h1, h2, h3 {
 
 <div class="method">
     <code class="details" id="search">search(body=None, x__xgafv=None)</code>
-  <pre>The Cloud Search Query API provides the search method, which returns the most relevant results from a user query. The results can come from G Suite Apps, such as Gmail or Google Drive, or they can come from data that you have indexed from a third party. **Note:** This API requires a standard end user account to execute. A service account can&#x27;t perform Query API requests directly; to use a service account to perform queries, set up [G Suite domain-wide delegation of authority](https://developers.google.com/cloud-search/docs/guides/delegation/).
+  <pre>The Cloud Search Query API provides the search method, which returns the most relevant results from a user query. The results can come from Google Workspace apps, such as Gmail or Google Drive, or they can come from data that you have indexed from a third party. **Note:** This API requires a standard end user account to execute. A service account can&#x27;t perform Query API requests directly; to use a service account to perform queries, set up [Google Workspace domain-wide delegation of authority](https://developers.google.com/cloud-search/docs/guides/delegation/).
 
 Args:
   body: object, The request body.
     The object takes the form of:
 
 { # The search API request.
+  &quot;contextAttributes&quot;: [ # Context attributes for the request which will be used to adjust ranking of search results. The maximum number of elements is 10.
+    { # A named attribute associated with an item which can be used for influencing the ranking of the item based on the context in the request.
+      &quot;name&quot;: &quot;A String&quot;, # The name of the attribute. It should not be empty. The maximum length is 32 characters. The name must start with a letter and can only contain letters (A-Z, a-z) or numbers (0-9). The name will be normalized (lower-cased) before being matched.
+      &quot;values&quot;: [ # Text values of the attribute. The maximum number of elements is 10. The maximum length of an element in the array is 32 characters. The value will be normalized (lower-cased) before being matched.
+        &quot;A String&quot;,
+      ],
+    },
+  ],
   &quot;dataSourceRestrictions&quot;: [ # The sources to use for querying. If not specified, all data sources from the current search application are used.
     { # Restriction on Datasource.
       &quot;filterOptions&quot;: [ # Filter options restricting the results. If multiple filters are present, they are grouped by object type before joining. Filters with the same object type are joined conjunctively, then the resulting expressions are joined disjunctively. The maximum number of elements is 20. NOTE: Suggest API supports only few filters at the moment: &quot;objecttype&quot;, &quot;type&quot; and &quot;mimetype&quot;. For now, schema specific filters cannot be used to filter suggestions.
@@ -151,6 +159,7 @@ Args:
   &quot;query&quot;: &quot;A String&quot;, # The raw query string. See supported search operators in the [Cloud search Cheat Sheet](https://support.google.com/a/users/answer/9299929)
   &quot;queryInterpretationOptions&quot;: { # Options to interpret user query. # Options to interpret the user query.
     &quot;disableNlInterpretation&quot;: True or False, # Flag to disable natural language (NL) interpretation of queries. Default is false, Set to true to disable natural language interpretation. NL interpretation only applies to predefined datasources.
+    &quot;disableSupplementalResults&quot;: True or False, # Use this flag to disable supplemental results for a query. Supplemental results setting chosen at SearchApplication level will take precedence if set to True.
     &quot;enableVerbatimMode&quot;: True or False, # Enable this flag to turn off all internal optimizations like natural language (NL) interpretation of queries, supplemental result retrieval, and usage of synonyms including custom ones. Nl interpretation will be disabled if either one of the two flags is true.
   },
   &quot;requestOptions&quot;: { # Shared request options for all RPC methods. # Request options, such as the search application and user timezone.
@@ -195,7 +204,7 @@ Returns:
     { # Source specific facet response
       &quot;buckets&quot;: [ # FacetBuckets for values in response containing at least a single result.
         { # A bucket in a facet is the basic unit of operation. A bucket can comprise either a single value OR a contiguous range of values, depending on the type of the field bucketed. FacetBucket is currently used only for returning the response object.
-          &quot;count&quot;: 42, # Number of results that match the bucket value. Counts are only returned for searches when count accuracy is ensured. Can be empty.
+          &quot;count&quot;: 42, # Number of results that match the bucket value. Counts are only returned for searches when count accuracy is ensured. Cloud Search does not guarantee facet counts for any query and facet counts might be present only intermittently, even for identical queries. Do not build dependencies on facet count existence; instead use facet ount percentages which are always returned.
           &quot;percentage&quot;: 42, # Percent of results that match the bucket value. The returned value is between (0-100], and is rounded down to an integer if fractional. If the value is not explicitly returned, it represents a percentage value that rounds to 0. Percentages are returned for all searches, but are an estimate. Because percentages are always returned, you should render percentages instead of counts.
           &quot;value&quot;: { # Definition of a single value with generic type.
             &quot;booleanValue&quot;: True or False,
@@ -383,6 +392,7 @@ Returns:
           &quot;name&quot;: &quot;A String&quot;, # Source name for content indexed by the Indexing API.
           &quot;predefinedSource&quot;: &quot;A String&quot;, # Predefined content source for Google Apps.
         },
+        &quot;thumbnailUrl&quot;: &quot;A String&quot;, # The thumbnail URL of the result.
         &quot;updateTime&quot;: &quot;A String&quot;, # The last modified date for the object in the search result. If not set in the item, the value returned here is empty. When `updateTime` is used for calculating freshness and is not set, this value defaults to 2 years from the current time.
       },
       &quot;snippet&quot;: { # Snippet of the search result, which summarizes the content of the resulting page. # The concatenation of all snippets (summaries) available for this result.
@@ -431,7 +441,7 @@ Returns:
 
 <div class="method">
     <code class="details" id="suggest">suggest(body=None, x__xgafv=None)</code>
-  <pre>Provides suggestions for autocompleting the query. **Note:** This API requires a standard end user account to execute. A service account can&#x27;t perform Query API requests directly; to use a service account to perform queries, set up [G Suite domain-wide delegation of authority](https://developers.google.com/cloud-search/docs/guides/delegation/).
+  <pre>Provides suggestions for autocompleting the query. **Note:** This API requires a standard end user account to execute. A service account can&#x27;t perform Query API requests directly; to use a service account to perform queries, set up [Google Workspace domain-wide delegation of authority](https://developers.google.com/cloud-search/docs/guides/delegation/).
 
 Args:
   body: object, The request body.

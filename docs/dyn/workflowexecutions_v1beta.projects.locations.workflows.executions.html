@@ -115,16 +115,17 @@ Returns:
 
     { # A running instance of a [Workflow](/workflows/docs/reference/rest/v1beta/projects.locations.workflows).
   &quot;argument&quot;: &quot;A String&quot;, # Input parameters of the execution represented as a JSON string. The size limit is 32KB. *Note*: If you are using the REST API directly to run your workflow, you must escape any JSON string value of `argument`. Example: `&#x27;{&quot;argument&quot;:&quot;{\&quot;firstName\&quot;:\&quot;FIRST\&quot;,\&quot;lastName\&quot;:\&quot;LAST\&quot;}&quot;}&#x27;`
+  &quot;callLogLevel&quot;: &quot;A String&quot;, # The call logging level associated to this execution.
   &quot;endTime&quot;: &quot;A String&quot;, # Output only. Marks the end of execution, successful or not.
   &quot;error&quot;: { # Error describes why the execution was abnormally terminated. # Output only. The error which caused the execution to finish prematurely. The value is only present if the execution&#x27;s state is `FAILED` or `CANCELLED`.
-    &quot;context&quot;: &quot;A String&quot;, # Human readable stack trace string.
+    &quot;context&quot;: &quot;A String&quot;, # Human-readable stack trace string.
     &quot;payload&quot;: &quot;A String&quot;, # Error message and data returned represented as a JSON string.
     &quot;stackTrace&quot;: { # A collection of stack elements (frames) where an error occurred. # Stack trace with detailed information of where error was generated.
-      &quot;elements&quot;: [ # An array of Stack elements.
-        { # A single stack element (frame) where an error occurred. This field currently only exists in v1Beta. We will need to roll this change out to V1 after the feature is thoroughly tested. TODO(b/178540475)
-          &quot;position&quot;: { # Position contains source position information about the stack trace element such as line number, column number and length of the code block in bytes. # The source position information of the stacktrace element.
+      &quot;elements&quot;: [ # An array of stack elements.
+        { # A single stack element (frame) where an error occurred.
+          &quot;position&quot;: { # Position contains source position information about the stack trace element such as line number, column number and length of the code block in bytes. # The source position information of the stack trace element.
             &quot;column&quot;: &quot;A String&quot;, # The source code column position (of the line) the current instruction was generated from.
-            &quot;length&quot;: &quot;A String&quot;, # The length in bytes of text in this character group, e.g. digits of a number, string length, or AST (abstract syntax tree) node.
+            &quot;length&quot;: &quot;A String&quot;, # The number of bytes of source code making up this stack trace element.
             &quot;line&quot;: &quot;A String&quot;, # The source code line number the current instruction was generated from.
           },
           &quot;routine&quot;: &quot;A String&quot;, # The routine where the error occurred.
@@ -157,16 +158,17 @@ Args:
 
 { # A running instance of a [Workflow](/workflows/docs/reference/rest/v1beta/projects.locations.workflows).
   &quot;argument&quot;: &quot;A String&quot;, # Input parameters of the execution represented as a JSON string. The size limit is 32KB. *Note*: If you are using the REST API directly to run your workflow, you must escape any JSON string value of `argument`. Example: `&#x27;{&quot;argument&quot;:&quot;{\&quot;firstName\&quot;:\&quot;FIRST\&quot;,\&quot;lastName\&quot;:\&quot;LAST\&quot;}&quot;}&#x27;`
+  &quot;callLogLevel&quot;: &quot;A String&quot;, # The call logging level associated to this execution.
   &quot;endTime&quot;: &quot;A String&quot;, # Output only. Marks the end of execution, successful or not.
   &quot;error&quot;: { # Error describes why the execution was abnormally terminated. # Output only. The error which caused the execution to finish prematurely. The value is only present if the execution&#x27;s state is `FAILED` or `CANCELLED`.
-    &quot;context&quot;: &quot;A String&quot;, # Human readable stack trace string.
+    &quot;context&quot;: &quot;A String&quot;, # Human-readable stack trace string.
     &quot;payload&quot;: &quot;A String&quot;, # Error message and data returned represented as a JSON string.
     &quot;stackTrace&quot;: { # A collection of stack elements (frames) where an error occurred. # Stack trace with detailed information of where error was generated.
-      &quot;elements&quot;: [ # An array of Stack elements.
-        { # A single stack element (frame) where an error occurred. This field currently only exists in v1Beta. We will need to roll this change out to V1 after the feature is thoroughly tested. TODO(b/178540475)
-          &quot;position&quot;: { # Position contains source position information about the stack trace element such as line number, column number and length of the code block in bytes. # The source position information of the stacktrace element.
+      &quot;elements&quot;: [ # An array of stack elements.
+        { # A single stack element (frame) where an error occurred.
+          &quot;position&quot;: { # Position contains source position information about the stack trace element such as line number, column number and length of the code block in bytes. # The source position information of the stack trace element.
             &quot;column&quot;: &quot;A String&quot;, # The source code column position (of the line) the current instruction was generated from.
-            &quot;length&quot;: &quot;A String&quot;, # The length in bytes of text in this character group, e.g. digits of a number, string length, or AST (abstract syntax tree) node.
+            &quot;length&quot;: &quot;A String&quot;, # The number of bytes of source code making up this stack trace element.
             &quot;line&quot;: &quot;A String&quot;, # The source code line number the current instruction was generated from.
           },
           &quot;routine&quot;: &quot;A String&quot;, # The routine where the error occurred.
@@ -192,16 +194,17 @@ Returns:
 
     { # A running instance of a [Workflow](/workflows/docs/reference/rest/v1beta/projects.locations.workflows).
   &quot;argument&quot;: &quot;A String&quot;, # Input parameters of the execution represented as a JSON string. The size limit is 32KB. *Note*: If you are using the REST API directly to run your workflow, you must escape any JSON string value of `argument`. Example: `&#x27;{&quot;argument&quot;:&quot;{\&quot;firstName\&quot;:\&quot;FIRST\&quot;,\&quot;lastName\&quot;:\&quot;LAST\&quot;}&quot;}&#x27;`
+  &quot;callLogLevel&quot;: &quot;A String&quot;, # The call logging level associated to this execution.
   &quot;endTime&quot;: &quot;A String&quot;, # Output only. Marks the end of execution, successful or not.
   &quot;error&quot;: { # Error describes why the execution was abnormally terminated. # Output only. The error which caused the execution to finish prematurely. The value is only present if the execution&#x27;s state is `FAILED` or `CANCELLED`.
-    &quot;context&quot;: &quot;A String&quot;, # Human readable stack trace string.
+    &quot;context&quot;: &quot;A String&quot;, # Human-readable stack trace string.
     &quot;payload&quot;: &quot;A String&quot;, # Error message and data returned represented as a JSON string.
     &quot;stackTrace&quot;: { # A collection of stack elements (frames) where an error occurred. # Stack trace with detailed information of where error was generated.
-      &quot;elements&quot;: [ # An array of Stack elements.
-        { # A single stack element (frame) where an error occurred. This field currently only exists in v1Beta. We will need to roll this change out to V1 after the feature is thoroughly tested. TODO(b/178540475)
-          &quot;position&quot;: { # Position contains source position information about the stack trace element such as line number, column number and length of the code block in bytes. # The source position information of the stacktrace element.
+      &quot;elements&quot;: [ # An array of stack elements.
+        { # A single stack element (frame) where an error occurred.
+          &quot;position&quot;: { # Position contains source position information about the stack trace element such as line number, column number and length of the code block in bytes. # The source position information of the stack trace element.
             &quot;column&quot;: &quot;A String&quot;, # The source code column position (of the line) the current instruction was generated from.
-            &quot;length&quot;: &quot;A String&quot;, # The length in bytes of text in this character group, e.g. digits of a number, string length, or AST (abstract syntax tree) node.
+            &quot;length&quot;: &quot;A String&quot;, # The number of bytes of source code making up this stack trace element.
             &quot;line&quot;: &quot;A String&quot;, # The source code line number the current instruction was generated from.
           },
           &quot;routine&quot;: &quot;A String&quot;, # The routine where the error occurred.
@@ -239,16 +242,17 @@ Returns:
 
     { # A running instance of a [Workflow](/workflows/docs/reference/rest/v1beta/projects.locations.workflows).
   &quot;argument&quot;: &quot;A String&quot;, # Input parameters of the execution represented as a JSON string. The size limit is 32KB. *Note*: If you are using the REST API directly to run your workflow, you must escape any JSON string value of `argument`. Example: `&#x27;{&quot;argument&quot;:&quot;{\&quot;firstName\&quot;:\&quot;FIRST\&quot;,\&quot;lastName\&quot;:\&quot;LAST\&quot;}&quot;}&#x27;`
+  &quot;callLogLevel&quot;: &quot;A String&quot;, # The call logging level associated to this execution.
   &quot;endTime&quot;: &quot;A String&quot;, # Output only. Marks the end of execution, successful or not.
   &quot;error&quot;: { # Error describes why the execution was abnormally terminated. # Output only. The error which caused the execution to finish prematurely. The value is only present if the execution&#x27;s state is `FAILED` or `CANCELLED`.
-    &quot;context&quot;: &quot;A String&quot;, # Human readable stack trace string.
+    &quot;context&quot;: &quot;A String&quot;, # Human-readable stack trace string.
     &quot;payload&quot;: &quot;A String&quot;, # Error message and data returned represented as a JSON string.
     &quot;stackTrace&quot;: { # A collection of stack elements (frames) where an error occurred. # Stack trace with detailed information of where error was generated.
-      &quot;elements&quot;: [ # An array of Stack elements.
-        { # A single stack element (frame) where an error occurred. This field currently only exists in v1Beta. We will need to roll this change out to V1 after the feature is thoroughly tested. TODO(b/178540475)
-          &quot;position&quot;: { # Position contains source position information about the stack trace element such as line number, column number and length of the code block in bytes. # The source position information of the stacktrace element.
+      &quot;elements&quot;: [ # An array of stack elements.
+        { # A single stack element (frame) where an error occurred.
+          &quot;position&quot;: { # Position contains source position information about the stack trace element such as line number, column number and length of the code block in bytes. # The source position information of the stack trace element.
             &quot;column&quot;: &quot;A String&quot;, # The source code column position (of the line) the current instruction was generated from.
-            &quot;length&quot;: &quot;A String&quot;, # The length in bytes of text in this character group, e.g. digits of a number, string length, or AST (abstract syntax tree) node.
+            &quot;length&quot;: &quot;A String&quot;, # The number of bytes of source code making up this stack trace element.
             &quot;line&quot;: &quot;A String&quot;, # The source code line number the current instruction was generated from.
           },
           &quot;routine&quot;: &quot;A String&quot;, # The routine where the error occurred.
@@ -290,16 +294,17 @@ Returns:
   &quot;executions&quot;: [ # The executions which match the request.
     { # A running instance of a [Workflow](/workflows/docs/reference/rest/v1beta/projects.locations.workflows).
       &quot;argument&quot;: &quot;A String&quot;, # Input parameters of the execution represented as a JSON string. The size limit is 32KB. *Note*: If you are using the REST API directly to run your workflow, you must escape any JSON string value of `argument`. Example: `&#x27;{&quot;argument&quot;:&quot;{\&quot;firstName\&quot;:\&quot;FIRST\&quot;,\&quot;lastName\&quot;:\&quot;LAST\&quot;}&quot;}&#x27;`
+      &quot;callLogLevel&quot;: &quot;A String&quot;, # The call logging level associated to this execution.
       &quot;endTime&quot;: &quot;A String&quot;, # Output only. Marks the end of execution, successful or not.
       &quot;error&quot;: { # Error describes why the execution was abnormally terminated. # Output only. The error which caused the execution to finish prematurely. The value is only present if the execution&#x27;s state is `FAILED` or `CANCELLED`.
-        &quot;context&quot;: &quot;A String&quot;, # Human readable stack trace string.
+        &quot;context&quot;: &quot;A String&quot;, # Human-readable stack trace string.
         &quot;payload&quot;: &quot;A String&quot;, # Error message and data returned represented as a JSON string.
         &quot;stackTrace&quot;: { # A collection of stack elements (frames) where an error occurred. # Stack trace with detailed information of where error was generated.
-          &quot;elements&quot;: [ # An array of Stack elements.
-            { # A single stack element (frame) where an error occurred. This field currently only exists in v1Beta. We will need to roll this change out to V1 after the feature is thoroughly tested. TODO(b/178540475)
-              &quot;position&quot;: { # Position contains source position information about the stack trace element such as line number, column number and length of the code block in bytes. # The source position information of the stacktrace element.
+          &quot;elements&quot;: [ # An array of stack elements.
+            { # A single stack element (frame) where an error occurred.
+              &quot;position&quot;: { # Position contains source position information about the stack trace element such as line number, column number and length of the code block in bytes. # The source position information of the stack trace element.
                 &quot;column&quot;: &quot;A String&quot;, # The source code column position (of the line) the current instruction was generated from.
-                &quot;length&quot;: &quot;A String&quot;, # The length in bytes of text in this character group, e.g. digits of a number, string length, or AST (abstract syntax tree) node.
+                &quot;length&quot;: &quot;A String&quot;, # The number of bytes of source code making up this stack trace element.
                 &quot;line&quot;: &quot;A String&quot;, # The source code line number the current instruction was generated from.
               },
               &quot;routine&quot;: &quot;A String&quot;, # The routine where the error occurred.

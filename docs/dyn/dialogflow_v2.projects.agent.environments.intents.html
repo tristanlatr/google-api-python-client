@@ -94,7 +94,7 @@ h1, h2, h3 {
   <pre>Returns the list of all intents in the specified agent.
 
 Args:
-  parent: string, Required. The agent to list all intents from. Format: `projects//agent`. (required)
+  parent: string, Required. The agent to list all intents from. Format: `projects//agent` or `projects//locations//agent`. Alternatively, you can specify the environment to list intents for. Format: `projects//agent/environments/` or `projects//locations//agent/environments/`. Note: training phrases of the intents will not be returned for non-draft environment. (required)
   intentView: string, Optional. The resource view to apply to the returned intent.
     Allowed values
       INTENT_VIEW_UNSPECIFIED - Training phrases field is not populated in the response.
@@ -118,10 +118,11 @@ Returns:
         &quot;A String&quot;,
       ],
       &quot;displayName&quot;: &quot;A String&quot;, # Required. The name of this intent.
+      &quot;endInteraction&quot;: True or False, # Optional. Indicates that this intent ends an interaction. Some integrations (e.g., Actions on Google or Dialogflow phone gateway) use this information to close interaction with an end user. Default is false.
       &quot;events&quot;: [ # Optional. The collection of event names that trigger the intent. If the collection of input contexts is not empty, all of the contexts must be present in the active user session for an event to trigger this intent. Event names are limited to 150 characters.
         &quot;A String&quot;,
       ],
-      &quot;followupIntentInfo&quot;: [ # Read-only. Information about all followup intents that have this intent as a direct or indirect parent. We populate this field only in the output.
+      &quot;followupIntentInfo&quot;: [ # Output only. Read-only. Information about all followup intents that have this intent as a direct or indirect parent. We populate this field only in the output.
         { # Represents a single followup intent in the chain.
           &quot;followupIntentName&quot;: &quot;A String&quot;, # The unique identifier of the followup intent. Format: `projects//agent/intents/`.
           &quot;parentFollowupIntentName&quot;: &quot;A String&quot;, # The unique identifier of the followup intent&#x27;s parent. Format: `projects//agent/intents/`.
@@ -131,6 +132,7 @@ Returns:
         &quot;A String&quot;,
       ],
       &quot;isFallback&quot;: True or False, # Optional. Indicates whether this is a fallback intent.
+      &quot;liveAgentHandoff&quot;: True or False, # Optional. Indicates that a live agent should be brought in to handle the interaction with the user. In most cases, when you set this flag to true, you would also want to set end_interaction to true as well. Default is false.
       &quot;messages&quot;: [ # Optional. The collection of rich messages corresponding to the `Response` field in the Dialogflow console.
         { # A rich response message. Corresponds to the intent `Response` field in the Dialogflow console. For more information, see [Rich response messages](https://cloud.google.com/dialogflow/docs/intents-rich-messages).
           &quot;basicCard&quot;: { # The basic card message. Useful for displaying information. # The basic card response for Actions on Google.
@@ -336,7 +338,7 @@ Returns:
       &quot;parentFollowupIntentName&quot;: &quot;A String&quot;, # Read-only after creation. The unique identifier of the parent intent in the chain of followup intents. You can set this field when creating an intent, for example with CreateIntent or BatchUpdateIntents, in order to make this intent a followup intent. It identifies the parent followup intent. Format: `projects//agent/intents/`.
       &quot;priority&quot;: 42, # Optional. The priority of this intent. Higher numbers represent higher priorities. - If the supplied value is unspecified or 0, the service translates the value to 500,000, which corresponds to the `Normal` priority in the console. - If the supplied value is negative, the intent is ignored in runtime detect intent requests.
       &quot;resetContexts&quot;: True or False, # Optional. Indicates whether to delete all contexts in the current session when this intent is matched.
-      &quot;rootFollowupIntentName&quot;: &quot;A String&quot;, # Read-only. The unique identifier of the root intent in the chain of followup intents. It identifies the correct followup intents chain for this intent. We populate this field only in the output. Format: `projects//agent/intents/`.
+      &quot;rootFollowupIntentName&quot;: &quot;A String&quot;, # Output only. Read-only. The unique identifier of the root intent in the chain of followup intents. It identifies the correct followup intents chain for this intent. We populate this field only in the output. Format: `projects//agent/intents/`.
       &quot;trainingPhrases&quot;: [ # Optional. The collection of examples that the agent is trained on.
         { # Represents an example that the agent is trained on.
           &quot;name&quot;: &quot;A String&quot;, # Output only. The unique identifier of this training phrase.

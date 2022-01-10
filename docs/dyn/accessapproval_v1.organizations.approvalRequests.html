@@ -198,7 +198,7 @@ Returns:
   <pre>Gets an approval request. Returns NOT_FOUND if the request does not exist.
 
 Args:
-  name: string, Name of the approval request to retrieve. (required)
+  name: string, The name of the approval request to retrieve. Format: &quot;{projects|folders|organizations}/{id}/approvalRequests/{approval_request}&quot; (required)
   x__xgafv: string, V1 error format.
     Allowed values
       1 - v1 error format
@@ -240,7 +240,7 @@ Returns:
 
 Args:
   parent: string, The parent resource. This may be &quot;projects/{project}&quot;, &quot;folders/{folder}&quot;, or &quot;organizations/{organization}&quot;. (required)
-  filter: string, A filter on the type of approval requests to retrieve. Must be one of the following values: * [not set]: Requests that are pending or have active approvals. * ALL: All requests. * PENDING: Only pending requests. * ACTIVE: Only active (i.e. currently approved) requests. * DISMISSED: Only requests that have been dismissed, or requests that . are not approved and past expiration. * EXPIRED: Only requests that have been approved, and the approval has expired. * HISTORY: Active, dismissed and expired requests.
+  filter: string, A filter on the type of approval requests to retrieve. Must be one of the following values: * [not set]: Requests that are pending or have active approvals. * ALL: All requests. * PENDING: Only pending requests. * ACTIVE: Only active (i.e. currently approved) requests. * DISMISSED: Only requests that have been dismissed, or requests that are not approved and past expiration. * EXPIRED: Only requests that have been approved, and the approval has expired. * HISTORY: Active, dismissed and expired requests.
   pageSize: integer, Requested page size.
   pageToken: string, A token identifying the page of results to return.
   x__xgafv: string, V1 error format.

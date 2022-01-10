@@ -1,4 +1,3 @@
-
 # Copyright 2020 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import sys
-
+import os
 import nox
+import shutil
 
 test_dependencies = [
     "django>=2.0.0",
@@ -28,7 +27,6 @@ test_dependencies = [
     "pytest-cov",
     "webtest",
     "coverage",
-    "unittest2",
     "mock",
 ]
 
@@ -47,7 +45,7 @@ def lint(session):
     )
 
 
-@nox.session(python=["3.6", "3.7", "3.8", "3.9"])
+@nox.session(python=["3.6", "3.7", "3.8", "3.9", "3.10"])
 @nox.parametrize(
     "oauth2client",
     [
@@ -58,9 +56,22 @@ def lint(session):
     ],
 )
 def unit(session, oauth2client):
+    # Clean up dist and build folders
+    shutil.rmtree("dist", ignore_errors=True)
+    shutil.rmtree("build", ignore_errors=True)
+
     session.install(*test_dependencies)
     session.install(oauth2client)
-    session.install('.')
+
+    # Create and install wheels
+    session.run("python3", "setup.py", "bdist_wheel")
+    session.install(os.path.join("dist", os.listdir("dist").pop()))
+
+    # Run tests from a different directory to test the package artifacts
+    root_dir = os.path.dirname(os.path.realpath(__file__))
+    temp_dir = session.create_tmp()
+    session.chdir(temp_dir)
+    shutil.copytree(os.path.join(root_dir, "tests"), "tests")
 
     # Run py.test against the unit tests.
     session.run(
@@ -77,7 +88,20 @@ def unit(session, oauth2client):
     )
 
 
-@nox.session(python="3.6")
-def docs(session):
-    session.install('.')
-    session.run("python", "describe.py")
+@nox.session(python=["3.9"])
+def scripts(session):
+    session.install(*test_dependencies)
+    session.install("-e", ".")
+    session.install("-r", "scripts/requirements.txt")
+
+    # Run py.test against the unit tests.
+    session.run(
+        "py.test",
+        "--quiet",
+        "--cov=scripts",
+        "--cov-config=.coveragerc",
+        "--cov-report=",
+        "--cov-fail-under=91",
+        "scripts",
+        *session.posargs,
+    )

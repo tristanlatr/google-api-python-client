@@ -124,7 +124,7 @@ Args:
     &quot;securityLevel&quot;: &quot;A String&quot;, # Security (HTTPS) enforcement for this URL.
     &quot;url&quot;: &quot;A String&quot;, # URL to serve the endpoint at.
   },
-  &quot;appEngineApis&quot;: True or False, # app_engine_apis allows Second Generation runtimes to access the App Engine APIs.
+  &quot;appEngineApis&quot;: True or False, # app_engine_apis allows second generation runtimes to access the App Engine APIs.
   &quot;automaticScaling&quot;: { # Automatic scaling is based on request rate, response latencies, and other application metrics. # Automatic scaling is based on request rate, response latencies, and other application metrics. Instances are dynamically created and destroyed as needed in order to handle traffic.
     &quot;coolDownPeriod&quot;: &quot;A String&quot;, # The time period that the Autoscaler (https://cloud.google.com/compute/docs/autoscaler/) should wait before it starts collecting information from a new instance. This prevents the autoscaler from collecting information when the instance is initializing, during which the collected usage would not be reliable. Only applicable in the App Engine flexible environment.
     &quot;cpuUtilization&quot;: { # Target scaling by CPU usage. # Target scaling by CPU usage.
@@ -290,6 +290,7 @@ Args:
     &quot;forwardedPorts&quot;: [ # List of ports, or port pairs, to forward from the virtual machine to the application container. Only applicable in the App Engine flexible environment.
       &quot;A String&quot;,
     ],
+    &quot;instanceIpMode&quot;: &quot;A String&quot;, # The IP mode for instances. Only applicable in the App Engine flexible environment.
     &quot;instanceTag&quot;: &quot;A String&quot;, # Tag to apply to the instance during creation. Only applicable in the App Engine flexible environment.
     &quot;name&quot;: &quot;A String&quot;, # Google Compute Engine network where the virtual machines are created. Specify the short name, not the resource path.Defaults to default.
     &quot;sessionAffinity&quot;: True or False, # Enable session affinity. Only applicable in the App Engine flexible environment.
@@ -322,11 +323,13 @@ Args:
   &quot;runtimeApiVersion&quot;: &quot;A String&quot;, # The version of the API in the given runtime environment. Please see the app.yaml reference for valid values at https://cloud.google.com/appengine/docs/standard//config/appref
   &quot;runtimeChannel&quot;: &quot;A String&quot;, # The channel of the runtime to use. Only available for some runtimes. Defaults to the default channel.
   &quot;runtimeMainExecutablePath&quot;: &quot;A String&quot;, # The path or name of the app&#x27;s main executable.
+  &quot;serviceAccount&quot;: &quot;A String&quot;, # The identity that the deployed version will run as. Admin API will use the App Engine Appspot service account as default if this field is neither provided in app.yaml file nor through CLI flag.
   &quot;servingStatus&quot;: &quot;A String&quot;, # Current serving status of this version. Only the versions with a SERVING status create instances and can be billed.SERVING_STATUS_UNSPECIFIED is an invalid value. Defaults to SERVING.
   &quot;threadsafe&quot;: True or False, # Whether multiple requests can be dispatched to this version at once.
   &quot;versionUrl&quot;: &quot;A String&quot;, # Serving URL for this version. Example: &quot;https://myversion-dot-myservice-dot-myapp.appspot.com&quot;@OutputOnly
   &quot;vm&quot;: True or False, # Whether to deploy this version in a container on a virtual machine.
   &quot;vpcAccessConnector&quot;: { # VPC access connector specification. # Enables VPC connectivity for standard apps.
+    &quot;egressSetting&quot;: &quot;A String&quot;, # The egress setting for the connector, controlling what traffic is diverted through it.
     &quot;name&quot;: &quot;A String&quot;, # Full Serverless VPC Access Connector name e.g. /projects/my-project/locations/us-central1/connectors/c1.
   },
   &quot;zones&quot;: [ # The Google Compute Engine zones that are supported by this version in the App Engine flexible environment. Deprecated.
@@ -428,7 +431,7 @@ Returns:
     &quot;securityLevel&quot;: &quot;A String&quot;, # Security (HTTPS) enforcement for this URL.
     &quot;url&quot;: &quot;A String&quot;, # URL to serve the endpoint at.
   },
-  &quot;appEngineApis&quot;: True or False, # app_engine_apis allows Second Generation runtimes to access the App Engine APIs.
+  &quot;appEngineApis&quot;: True or False, # app_engine_apis allows second generation runtimes to access the App Engine APIs.
   &quot;automaticScaling&quot;: { # Automatic scaling is based on request rate, response latencies, and other application metrics. # Automatic scaling is based on request rate, response latencies, and other application metrics. Instances are dynamically created and destroyed as needed in order to handle traffic.
     &quot;coolDownPeriod&quot;: &quot;A String&quot;, # The time period that the Autoscaler (https://cloud.google.com/compute/docs/autoscaler/) should wait before it starts collecting information from a new instance. This prevents the autoscaler from collecting information when the instance is initializing, during which the collected usage would not be reliable. Only applicable in the App Engine flexible environment.
     &quot;cpuUtilization&quot;: { # Target scaling by CPU usage. # Target scaling by CPU usage.
@@ -594,6 +597,7 @@ Returns:
     &quot;forwardedPorts&quot;: [ # List of ports, or port pairs, to forward from the virtual machine to the application container. Only applicable in the App Engine flexible environment.
       &quot;A String&quot;,
     ],
+    &quot;instanceIpMode&quot;: &quot;A String&quot;, # The IP mode for instances. Only applicable in the App Engine flexible environment.
     &quot;instanceTag&quot;: &quot;A String&quot;, # Tag to apply to the instance during creation. Only applicable in the App Engine flexible environment.
     &quot;name&quot;: &quot;A String&quot;, # Google Compute Engine network where the virtual machines are created. Specify the short name, not the resource path.Defaults to default.
     &quot;sessionAffinity&quot;: True or False, # Enable session affinity. Only applicable in the App Engine flexible environment.
@@ -626,11 +630,13 @@ Returns:
   &quot;runtimeApiVersion&quot;: &quot;A String&quot;, # The version of the API in the given runtime environment. Please see the app.yaml reference for valid values at https://cloud.google.com/appengine/docs/standard//config/appref
   &quot;runtimeChannel&quot;: &quot;A String&quot;, # The channel of the runtime to use. Only available for some runtimes. Defaults to the default channel.
   &quot;runtimeMainExecutablePath&quot;: &quot;A String&quot;, # The path or name of the app&#x27;s main executable.
+  &quot;serviceAccount&quot;: &quot;A String&quot;, # The identity that the deployed version will run as. Admin API will use the App Engine Appspot service account as default if this field is neither provided in app.yaml file nor through CLI flag.
   &quot;servingStatus&quot;: &quot;A String&quot;, # Current serving status of this version. Only the versions with a SERVING status create instances and can be billed.SERVING_STATUS_UNSPECIFIED is an invalid value. Defaults to SERVING.
   &quot;threadsafe&quot;: True or False, # Whether multiple requests can be dispatched to this version at once.
   &quot;versionUrl&quot;: &quot;A String&quot;, # Serving URL for this version. Example: &quot;https://myversion-dot-myservice-dot-myapp.appspot.com&quot;@OutputOnly
   &quot;vm&quot;: True or False, # Whether to deploy this version in a container on a virtual machine.
   &quot;vpcAccessConnector&quot;: { # VPC access connector specification. # Enables VPC connectivity for standard apps.
+    &quot;egressSetting&quot;: &quot;A String&quot;, # The egress setting for the connector, controlling what traffic is diverted through it.
     &quot;name&quot;: &quot;A String&quot;, # Full Serverless VPC Access Connector name e.g. /projects/my-project/locations/us-central1/connectors/c1.
   },
   &quot;zones&quot;: [ # The Google Compute Engine zones that are supported by this version in the App Engine flexible environment. Deprecated.
@@ -671,7 +677,7 @@ Returns:
         &quot;securityLevel&quot;: &quot;A String&quot;, # Security (HTTPS) enforcement for this URL.
         &quot;url&quot;: &quot;A String&quot;, # URL to serve the endpoint at.
       },
-      &quot;appEngineApis&quot;: True or False, # app_engine_apis allows Second Generation runtimes to access the App Engine APIs.
+      &quot;appEngineApis&quot;: True or False, # app_engine_apis allows second generation runtimes to access the App Engine APIs.
       &quot;automaticScaling&quot;: { # Automatic scaling is based on request rate, response latencies, and other application metrics. # Automatic scaling is based on request rate, response latencies, and other application metrics. Instances are dynamically created and destroyed as needed in order to handle traffic.
         &quot;coolDownPeriod&quot;: &quot;A String&quot;, # The time period that the Autoscaler (https://cloud.google.com/compute/docs/autoscaler/) should wait before it starts collecting information from a new instance. This prevents the autoscaler from collecting information when the instance is initializing, during which the collected usage would not be reliable. Only applicable in the App Engine flexible environment.
         &quot;cpuUtilization&quot;: { # Target scaling by CPU usage. # Target scaling by CPU usage.
@@ -837,6 +843,7 @@ Returns:
         &quot;forwardedPorts&quot;: [ # List of ports, or port pairs, to forward from the virtual machine to the application container. Only applicable in the App Engine flexible environment.
           &quot;A String&quot;,
         ],
+        &quot;instanceIpMode&quot;: &quot;A String&quot;, # The IP mode for instances. Only applicable in the App Engine flexible environment.
         &quot;instanceTag&quot;: &quot;A String&quot;, # Tag to apply to the instance during creation. Only applicable in the App Engine flexible environment.
         &quot;name&quot;: &quot;A String&quot;, # Google Compute Engine network where the virtual machines are created. Specify the short name, not the resource path.Defaults to default.
         &quot;sessionAffinity&quot;: True or False, # Enable session affinity. Only applicable in the App Engine flexible environment.
@@ -869,11 +876,13 @@ Returns:
       &quot;runtimeApiVersion&quot;: &quot;A String&quot;, # The version of the API in the given runtime environment. Please see the app.yaml reference for valid values at https://cloud.google.com/appengine/docs/standard//config/appref
       &quot;runtimeChannel&quot;: &quot;A String&quot;, # The channel of the runtime to use. Only available for some runtimes. Defaults to the default channel.
       &quot;runtimeMainExecutablePath&quot;: &quot;A String&quot;, # The path or name of the app&#x27;s main executable.
+      &quot;serviceAccount&quot;: &quot;A String&quot;, # The identity that the deployed version will run as. Admin API will use the App Engine Appspot service account as default if this field is neither provided in app.yaml file nor through CLI flag.
       &quot;servingStatus&quot;: &quot;A String&quot;, # Current serving status of this version. Only the versions with a SERVING status create instances and can be billed.SERVING_STATUS_UNSPECIFIED is an invalid value. Defaults to SERVING.
       &quot;threadsafe&quot;: True or False, # Whether multiple requests can be dispatched to this version at once.
       &quot;versionUrl&quot;: &quot;A String&quot;, # Serving URL for this version. Example: &quot;https://myversion-dot-myservice-dot-myapp.appspot.com&quot;@OutputOnly
       &quot;vm&quot;: True or False, # Whether to deploy this version in a container on a virtual machine.
       &quot;vpcAccessConnector&quot;: { # VPC access connector specification. # Enables VPC connectivity for standard apps.
+        &quot;egressSetting&quot;: &quot;A String&quot;, # The egress setting for the connector, controlling what traffic is diverted through it.
         &quot;name&quot;: &quot;A String&quot;, # Full Serverless VPC Access Connector name e.g. /projects/my-project/locations/us-central1/connectors/c1.
       },
       &quot;zones&quot;: [ # The Google Compute Engine zones that are supported by this version in the App Engine flexible environment. Deprecated.
@@ -917,7 +926,7 @@ Args:
     &quot;securityLevel&quot;: &quot;A String&quot;, # Security (HTTPS) enforcement for this URL.
     &quot;url&quot;: &quot;A String&quot;, # URL to serve the endpoint at.
   },
-  &quot;appEngineApis&quot;: True or False, # app_engine_apis allows Second Generation runtimes to access the App Engine APIs.
+  &quot;appEngineApis&quot;: True or False, # app_engine_apis allows second generation runtimes to access the App Engine APIs.
   &quot;automaticScaling&quot;: { # Automatic scaling is based on request rate, response latencies, and other application metrics. # Automatic scaling is based on request rate, response latencies, and other application metrics. Instances are dynamically created and destroyed as needed in order to handle traffic.
     &quot;coolDownPeriod&quot;: &quot;A String&quot;, # The time period that the Autoscaler (https://cloud.google.com/compute/docs/autoscaler/) should wait before it starts collecting information from a new instance. This prevents the autoscaler from collecting information when the instance is initializing, during which the collected usage would not be reliable. Only applicable in the App Engine flexible environment.
     &quot;cpuUtilization&quot;: { # Target scaling by CPU usage. # Target scaling by CPU usage.
@@ -1083,6 +1092,7 @@ Args:
     &quot;forwardedPorts&quot;: [ # List of ports, or port pairs, to forward from the virtual machine to the application container. Only applicable in the App Engine flexible environment.
       &quot;A String&quot;,
     ],
+    &quot;instanceIpMode&quot;: &quot;A String&quot;, # The IP mode for instances. Only applicable in the App Engine flexible environment.
     &quot;instanceTag&quot;: &quot;A String&quot;, # Tag to apply to the instance during creation. Only applicable in the App Engine flexible environment.
     &quot;name&quot;: &quot;A String&quot;, # Google Compute Engine network where the virtual machines are created. Specify the short name, not the resource path.Defaults to default.
     &quot;sessionAffinity&quot;: True or False, # Enable session affinity. Only applicable in the App Engine flexible environment.
@@ -1115,11 +1125,13 @@ Args:
   &quot;runtimeApiVersion&quot;: &quot;A String&quot;, # The version of the API in the given runtime environment. Please see the app.yaml reference for valid values at https://cloud.google.com/appengine/docs/standard//config/appref
   &quot;runtimeChannel&quot;: &quot;A String&quot;, # The channel of the runtime to use. Only available for some runtimes. Defaults to the default channel.
   &quot;runtimeMainExecutablePath&quot;: &quot;A String&quot;, # The path or name of the app&#x27;s main executable.
+  &quot;serviceAccount&quot;: &quot;A String&quot;, # The identity that the deployed version will run as. Admin API will use the App Engine Appspot service account as default if this field is neither provided in app.yaml file nor through CLI flag.
   &quot;servingStatus&quot;: &quot;A String&quot;, # Current serving status of this version. Only the versions with a SERVING status create instances and can be billed.SERVING_STATUS_UNSPECIFIED is an invalid value. Defaults to SERVING.
   &quot;threadsafe&quot;: True or False, # Whether multiple requests can be dispatched to this version at once.
   &quot;versionUrl&quot;: &quot;A String&quot;, # Serving URL for this version. Example: &quot;https://myversion-dot-myservice-dot-myapp.appspot.com&quot;@OutputOnly
   &quot;vm&quot;: True or False, # Whether to deploy this version in a container on a virtual machine.
   &quot;vpcAccessConnector&quot;: { # VPC access connector specification. # Enables VPC connectivity for standard apps.
+    &quot;egressSetting&quot;: &quot;A String&quot;, # The egress setting for the connector, controlling what traffic is diverted through it.
     &quot;name&quot;: &quot;A String&quot;, # Full Serverless VPC Access Connector name e.g. /projects/my-project/locations/us-central1/connectors/c1.
   },
   &quot;zones&quot;: [ # The Google Compute Engine zones that are supported by this version in the App Engine flexible environment. Deprecated.

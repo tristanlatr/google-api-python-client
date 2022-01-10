@@ -104,7 +104,7 @@ Args:
 
 { # A request to create a Cloud Dataflow job from a template.
   &quot;environment&quot;: { # The environment values to set at runtime. # The runtime environment for the job.
-    &quot;additionalExperiments&quot;: [ # Additional experiment flags for the job.
+    &quot;additionalExperiments&quot;: [ # Additional experiment flags for the job, specified with the `--experiments` option.
       &quot;A String&quot;,
     ],
     &quot;additionalUserLabels&quot;: { # Additional user labels to be specified for the job. Keys and values should follow the restrictions specified in the [labeling restrictions](https://cloud.google.com/compute/docs/labeling-resources#restrictions) page. An object containing a list of &quot;key&quot;: value pairs. Example: { &quot;name&quot;: &quot;wrench&quot;, &quot;mass&quot;: &quot;1kg&quot;, &quot;count&quot;: &quot;3&quot; }.
@@ -150,7 +150,10 @@ Returns:
   &quot;environment&quot;: { # Describes the environment in which a Dataflow Job runs. # The environment for the job.
     &quot;clusterManagerApiService&quot;: &quot;A String&quot;, # The type of cluster manager API to use. If unknown or unspecified, the service will attempt to choose a reasonable default. This should be in the form of the API service name, e.g. &quot;compute.googleapis.com&quot;.
     &quot;dataset&quot;: &quot;A String&quot;, # The dataset for the current project where various workflow related tables are stored. The supported resource type is: Google BigQuery: bigquery.googleapis.com/{dataset}
-    &quot;experiments&quot;: [ # The list of experiments to enable. This field should be used for SDK related experiments and not for service related experiments. The proper field for service related experiments is service_options. For more details see the rationale at go/user-specified-service-options.
+    &quot;debugOptions&quot;: { # Describes any options that have an effect on the debugging of pipelines. # Any debugging options to be supplied to the job.
+      &quot;enableHotKeyLogging&quot;: True or False, # When true, enables the logging of the literal hot key to the user&#x27;s Cloud Logging.
+    },
+    &quot;experiments&quot;: [ # The list of experiments to enable. This field should be used for SDK related experiments and not for service related experiments. The proper field for service related experiments is service_options.
       &quot;A String&quot;,
     ],
     &quot;flexResourceSchedulingGoal&quot;: &quot;A String&quot;, # Which Flexible Resource Scheduling mode to run in.
@@ -162,7 +165,7 @@ Returns:
     },
     &quot;serviceAccountEmail&quot;: &quot;A String&quot;, # Identity to run virtual machines as. Defaults to the default account.
     &quot;serviceKmsKeyName&quot;: &quot;A String&quot;, # If set, contains the Cloud KMS key identifier used to encrypt data at rest, AKA a Customer Managed Encryption Key (CMEK). Format: projects/PROJECT_ID/locations/LOCATION/keyRings/KEY_RING/cryptoKeys/KEY
-    &quot;serviceOptions&quot;: [ # The list of service options to enable. This field should be used for service related experiments only. These experiments, when graduating to GA, should be replaced by dedicated fields or become default (i.e. always on). For more details see the rationale at go/user-specified-service-options.
+    &quot;serviceOptions&quot;: [ # The list of service options to enable. This field should be used for service related experiments only. These experiments, when graduating to GA, should be replaced by dedicated fields or become default (i.e. always on).
       &quot;A String&quot;,
     ],
     &quot;shuffleMode&quot;: &quot;A String&quot;, # Output only. The shuffle mode used for the job.
@@ -266,8 +269,8 @@ Returns:
   },
   &quot;id&quot;: &quot;A String&quot;, # The unique ID of this job. This field is set by the Cloud Dataflow service when the Job is created, and is immutable for the life of the job.
   &quot;jobMetadata&quot;: { # Metadata available primarily for filtering jobs. Will be included in the ListJob response and Job SUMMARY view. # This field is populated by the Dataflow service to support filtering jobs by the metadata values provided here. Populated for ListJobs and all GetJob views SUMMARY and higher.
-    &quot;bigTableDetails&quot;: [ # Identification of a BigTable source used in the Dataflow job.
-      { # Metadata for a BigTable connector used by the job.
+    &quot;bigTableDetails&quot;: [ # Identification of a Cloud Bigtable source used in the Dataflow job.
+      { # Metadata for a Cloud Bigtable connector used by the job.
         &quot;instanceId&quot;: &quot;A String&quot;, # InstanceId accessed in the connection.
         &quot;projectId&quot;: &quot;A String&quot;, # ProjectId accessed in the connection.
         &quot;tableId&quot;: &quot;A String&quot;, # TableId accessed in the connection.
@@ -292,8 +295,8 @@ Returns:
         &quot;filePattern&quot;: &quot;A String&quot;, # File Pattern used to access files by the connector.
       },
     ],
-    &quot;pubsubDetails&quot;: [ # Identification of a PubSub source used in the Dataflow job.
-      { # Metadata for a PubSub connector used by the job.
+    &quot;pubsubDetails&quot;: [ # Identification of a Pub/Sub source used in the Dataflow job.
+      { # Metadata for a Pub/Sub connector used by the job.
         &quot;subscription&quot;: &quot;A String&quot;, # Subscription used in the connection.
         &quot;topic&quot;: &quot;A String&quot;, # Topic accessed in the connection.
       },
@@ -358,7 +361,7 @@ Returns:
             &quot;userName&quot;: &quot;A String&quot;, # Human-readable name for this source; may be user or system generated.
           },
         ],
-        &quot;kind&quot;: &quot;A String&quot;, # Type of tranform this stage is executing.
+        &quot;kind&quot;: &quot;A String&quot;, # Type of transform this stage is executing.
         &quot;name&quot;: &quot;A String&quot;, # Dataflow service generated name for this stage.
         &quot;outputSource&quot;: [ # Output sources for this stage.
           { # Description of an input or output of an execution stage.
@@ -425,7 +428,7 @@ Returns:
       },
     },
   ],
-  &quot;stepsLocation&quot;: &quot;A String&quot;, # The GCS location where the steps are stored.
+  &quot;stepsLocation&quot;: &quot;A String&quot;, # The Cloud Storage location where the steps are stored.
   &quot;tempFiles&quot;: [ # A set of files the system should be aware of that are used for temporary storage. These temporary files will be removed on job completion. No duplicates are allowed. No file patterns are supported. The supported files are: Google Cloud Storage: storage.googleapis.com/{bucket}/{object} bucket.storage.googleapis.com/{object}
     &quot;A String&quot;,
   ],
@@ -461,6 +464,9 @@ Returns:
     &quot;name&quot;: &quot;A String&quot;, # Required. The name of the template.
     &quot;parameters&quot;: [ # The parameters for the template.
       { # Metadata for a specific parameter.
+        &quot;customMetadata&quot;: { # Optional. Additional metadata for describing this parameter.
+          &quot;a_key&quot;: &quot;A String&quot;,
+        },
         &quot;helpText&quot;: &quot;A String&quot;, # Required. The help text to display for the parameter.
         &quot;isOptional&quot;: True or False, # Optional. Whether the parameter is optional. Defaults to false.
         &quot;label&quot;: &quot;A String&quot;, # Required. The label to display for the parameter.
@@ -475,6 +481,9 @@ Returns:
   &quot;runtimeMetadata&quot;: { # RuntimeMetadata describing a runtime environment. # Describes the runtime metadata with SDKInfo and available parameters.
     &quot;parameters&quot;: [ # The parameters for the template.
       { # Metadata for a specific parameter.
+        &quot;customMetadata&quot;: { # Optional. Additional metadata for describing this parameter.
+          &quot;a_key&quot;: &quot;A String&quot;,
+        },
         &quot;helpText&quot;: &quot;A String&quot;, # Required. The help text to display for the parameter.
         &quot;isOptional&quot;: True or False, # Optional. Whether the parameter is optional. Defaults to false.
         &quot;label&quot;: &quot;A String&quot;, # Required. The label to display for the parameter.
@@ -515,7 +524,7 @@ Args:
 
 { # Parameters to provide to the template being launched.
   &quot;environment&quot;: { # The environment values to set at runtime. # The runtime environment for the job.
-    &quot;additionalExperiments&quot;: [ # Additional experiment flags for the job.
+    &quot;additionalExperiments&quot;: [ # Additional experiment flags for the job, specified with the `--experiments` option.
       &quot;A String&quot;,
     ],
     &quot;additionalUserLabels&quot;: { # Additional user labels to be specified for the job. Keys and values should follow the restrictions specified in the [labeling restrictions](https://cloud.google.com/compute/docs/labeling-resources#restrictions) page. An object containing a list of &quot;key&quot;: value pairs. Example: { &quot;name&quot;: &quot;wrench&quot;, &quot;mass&quot;: &quot;1kg&quot;, &quot;count&quot;: &quot;3&quot; }.
@@ -546,7 +555,7 @@ Args:
   &quot;update&quot;: True or False, # If set, replace the existing pipeline with the name specified by jobName with this pipeline, preserving state.
 }
 
-  dynamicTemplate_gcsPath: string, Path to dynamic template spec file on GCS. The file must be a Json serialized DynamicTemplateFieSpec object.
+  dynamicTemplate_gcsPath: string, Path to dynamic template spec file on Cloud Storage. The file must be a Json serialized DynamicTemplateFieSpec object.
   dynamicTemplate_stagingLocation: string, Cloud Storage path for staging dependencies. Must be a valid Cloud Storage URL, beginning with `gs://`.
   gcsPath: string, A Cloud Storage path to the template from which to create the job. Must be valid Cloud Storage URL, beginning with &#x27;gs://&#x27;.
   validateOnly: boolean, If true, the request is validated but not actually executed. Defaults to false.
@@ -568,7 +577,10 @@ Returns:
     &quot;environment&quot;: { # Describes the environment in which a Dataflow Job runs. # The environment for the job.
       &quot;clusterManagerApiService&quot;: &quot;A String&quot;, # The type of cluster manager API to use. If unknown or unspecified, the service will attempt to choose a reasonable default. This should be in the form of the API service name, e.g. &quot;compute.googleapis.com&quot;.
       &quot;dataset&quot;: &quot;A String&quot;, # The dataset for the current project where various workflow related tables are stored. The supported resource type is: Google BigQuery: bigquery.googleapis.com/{dataset}
-      &quot;experiments&quot;: [ # The list of experiments to enable. This field should be used for SDK related experiments and not for service related experiments. The proper field for service related experiments is service_options. For more details see the rationale at go/user-specified-service-options.
+      &quot;debugOptions&quot;: { # Describes any options that have an effect on the debugging of pipelines. # Any debugging options to be supplied to the job.
+        &quot;enableHotKeyLogging&quot;: True or False, # When true, enables the logging of the literal hot key to the user&#x27;s Cloud Logging.
+      },
+      &quot;experiments&quot;: [ # The list of experiments to enable. This field should be used for SDK related experiments and not for service related experiments. The proper field for service related experiments is service_options.
         &quot;A String&quot;,
       ],
       &quot;flexResourceSchedulingGoal&quot;: &quot;A String&quot;, # Which Flexible Resource Scheduling mode to run in.
@@ -580,7 +592,7 @@ Returns:
       },
       &quot;serviceAccountEmail&quot;: &quot;A String&quot;, # Identity to run virtual machines as. Defaults to the default account.
       &quot;serviceKmsKeyName&quot;: &quot;A String&quot;, # If set, contains the Cloud KMS key identifier used to encrypt data at rest, AKA a Customer Managed Encryption Key (CMEK). Format: projects/PROJECT_ID/locations/LOCATION/keyRings/KEY_RING/cryptoKeys/KEY
-      &quot;serviceOptions&quot;: [ # The list of service options to enable. This field should be used for service related experiments only. These experiments, when graduating to GA, should be replaced by dedicated fields or become default (i.e. always on). For more details see the rationale at go/user-specified-service-options.
+      &quot;serviceOptions&quot;: [ # The list of service options to enable. This field should be used for service related experiments only. These experiments, when graduating to GA, should be replaced by dedicated fields or become default (i.e. always on).
         &quot;A String&quot;,
       ],
       &quot;shuffleMode&quot;: &quot;A String&quot;, # Output only. The shuffle mode used for the job.
@@ -684,8 +696,8 @@ Returns:
     },
     &quot;id&quot;: &quot;A String&quot;, # The unique ID of this job. This field is set by the Cloud Dataflow service when the Job is created, and is immutable for the life of the job.
     &quot;jobMetadata&quot;: { # Metadata available primarily for filtering jobs. Will be included in the ListJob response and Job SUMMARY view. # This field is populated by the Dataflow service to support filtering jobs by the metadata values provided here. Populated for ListJobs and all GetJob views SUMMARY and higher.
-      &quot;bigTableDetails&quot;: [ # Identification of a BigTable source used in the Dataflow job.
-        { # Metadata for a BigTable connector used by the job.
+      &quot;bigTableDetails&quot;: [ # Identification of a Cloud Bigtable source used in the Dataflow job.
+        { # Metadata for a Cloud Bigtable connector used by the job.
           &quot;instanceId&quot;: &quot;A String&quot;, # InstanceId accessed in the connection.
           &quot;projectId&quot;: &quot;A String&quot;, # ProjectId accessed in the connection.
           &quot;tableId&quot;: &quot;A String&quot;, # TableId accessed in the connection.
@@ -710,8 +722,8 @@ Returns:
           &quot;filePattern&quot;: &quot;A String&quot;, # File Pattern used to access files by the connector.
         },
       ],
-      &quot;pubsubDetails&quot;: [ # Identification of a PubSub source used in the Dataflow job.
-        { # Metadata for a PubSub connector used by the job.
+      &quot;pubsubDetails&quot;: [ # Identification of a Pub/Sub source used in the Dataflow job.
+        { # Metadata for a Pub/Sub connector used by the job.
           &quot;subscription&quot;: &quot;A String&quot;, # Subscription used in the connection.
           &quot;topic&quot;: &quot;A String&quot;, # Topic accessed in the connection.
         },
@@ -776,7 +788,7 @@ Returns:
               &quot;userName&quot;: &quot;A String&quot;, # Human-readable name for this source; may be user or system generated.
             },
           ],
-          &quot;kind&quot;: &quot;A String&quot;, # Type of tranform this stage is executing.
+          &quot;kind&quot;: &quot;A String&quot;, # Type of transform this stage is executing.
           &quot;name&quot;: &quot;A String&quot;, # Dataflow service generated name for this stage.
           &quot;outputSource&quot;: [ # Output sources for this stage.
             { # Description of an input or output of an execution stage.
@@ -843,7 +855,7 @@ Returns:
         },
       },
     ],
-    &quot;stepsLocation&quot;: &quot;A String&quot;, # The GCS location where the steps are stored.
+    &quot;stepsLocation&quot;: &quot;A String&quot;, # The Cloud Storage location where the steps are stored.
     &quot;tempFiles&quot;: [ # A set of files the system should be aware of that are used for temporary storage. These temporary files will be removed on job completion. No duplicates are allowed. No file patterns are supported. The supported files are: Google Cloud Storage: storage.googleapis.com/{bucket}/{object} bucket.storage.googleapis.com/{object}
       &quot;A String&quot;,
     ],

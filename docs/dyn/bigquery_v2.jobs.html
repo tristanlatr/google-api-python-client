@@ -81,6 +81,9 @@ h1, h2, h3 {
   <code><a href="#close">close()</a></code></p>
 <p class="firstline">Close httplib2 connections.</p>
 <p class="toc_element">
+  <code><a href="#delete">delete(projectId, jobId, location=None)</a></code></p>
+<p class="firstline">Requests the deletion of the metadata of a job. This call returns when the job's metadata is deleted.</p>
+<p class="toc_element">
   <code><a href="#get">get(projectId, jobId, location=None)</a></code></p>
 <p class="firstline">Returns information about a specific job. Job information is available for a six month period after creation. Requires that you're the person who ran the job, or have the Is Owner project role.</p>
 <p class="toc_element">
@@ -180,7 +183,7 @@ Returns:
           ],
         },
         &quot;createDisposition&quot;: &quot;A String&quot;, # [Optional] Specifies whether the job is allowed to create new tables. The following values are supported: CREATE_IF_NEEDED: If the table does not exist, BigQuery creates the table. CREATE_NEVER: The table must already exist. If it does not, a &#x27;notFound&#x27; error is returned in the job result. The default value is CREATE_IF_NEEDED. Creation, truncation and append actions occur as one atomic update upon job completion.
-        &quot;decimalTargetTypes&quot;: [ # Defines the list of possible SQL data types to which the source decimal values are converted. This list and the precision and the scale parameters of the decimal field determine the target type. In the order of NUMERIC, BIGNUMERIC ([Preview](/products/#product-launch-stages)), and STRING, a type is picked if it is in the specified list and if it supports the precision and the scale. STRING supports all precision and scale values. If none of the listed types supports the precision and the scale, the type supporting the widest range in the specified list is picked, and if a value exceeds the supported range when reading the data, an error will be thrown. Example: Suppose the value of this field is [&quot;NUMERIC&quot;, &quot;BIGNUMERIC&quot;]. If (precision,scale) is: * (38,9) -&gt; NUMERIC; * (39,9) -&gt; BIGNUMERIC (NUMERIC cannot hold 30 integer digits); * (38,10) -&gt; BIGNUMERIC (NUMERIC cannot hold 10 fractional digits); * (76,38) -&gt; BIGNUMERIC; * (77,38) -&gt; BIGNUMERIC (error if value exeeds supported range). This field cannot contain duplicate types. The order of the types in this field is ignored. For example, [&quot;BIGNUMERIC&quot;, &quot;NUMERIC&quot;] is the same as [&quot;NUMERIC&quot;, &quot;BIGNUMERIC&quot;] and NUMERIC always takes precedence over BIGNUMERIC. Defaults to [&quot;NUMERIC&quot;, &quot;STRING&quot;] for ORC and [&quot;NUMERIC&quot;] for the other file formats.
+        &quot;decimalTargetTypes&quot;: [ # [Optional] Defines the list of possible SQL data types to which the source decimal values are converted. This list and the precision and the scale parameters of the decimal field determine the target type. In the order of NUMERIC, BIGNUMERIC, and STRING, a type is picked if it is in the specified list and if it supports the precision and the scale. STRING supports all precision and scale values. If none of the listed types supports the precision and the scale, the type supporting the widest range in the specified list is picked, and if a value exceeds the supported range when reading the data, an error will be thrown. Example: Suppose the value of this field is [&quot;NUMERIC&quot;, &quot;BIGNUMERIC&quot;]. If (precision,scale) is: (38,9) -&gt; NUMERIC; (39,9) -&gt; BIGNUMERIC (NUMERIC cannot hold 30 integer digits); (38,10) -&gt; BIGNUMERIC (NUMERIC cannot hold 10 fractional digits); (76,38) -&gt; BIGNUMERIC; (77,38) -&gt; BIGNUMERIC (error if value exeeds supported range). This field cannot contain duplicate types. The order of the types in this field is ignored. For example, [&quot;BIGNUMERIC&quot;, &quot;NUMERIC&quot;] is the same as [&quot;NUMERIC&quot;, &quot;BIGNUMERIC&quot;] and NUMERIC always takes precedence over BIGNUMERIC. Defaults to [&quot;NUMERIC&quot;, &quot;STRING&quot;] for ORC and [&quot;NUMERIC&quot;] for the other file formats.
           &quot;A String&quot;,
         ],
         &quot;destinationEncryptionConfiguration&quot;: { # Custom encryption configuration (e.g., Cloud KMS keys).
@@ -193,6 +196,7 @@ Returns:
         },
         &quot;destinationTableProperties&quot;: { # [Beta] [Optional] Properties with which to create the destination table if it is new.
           &quot;description&quot;: &quot;A String&quot;, # [Optional] The description for the destination table. This will only be used if the destination table is newly created. If the table already exists and a value different than the current description is provided, the job will fail.
+          &quot;expirationTime&quot;: &quot;A String&quot;, # [Internal] This field is for Google internal use only.
           &quot;friendlyName&quot;: &quot;A String&quot;, # [Optional] The friendly name for the destination table. This will only be used if the destination table is newly created. If the table already exists and a value different than the current friendly name is provided, the job will fail.
           &quot;labels&quot;: { # [Optional] The labels associated with this table. You can use these to organize and group your tables. This will only be used if the destination table is newly created. If the table already exists and labels are different than the current labels are provided, the job will fail.
             &quot;a_key&quot;: &quot;A String&quot;,
@@ -233,18 +237,22 @@ Returns:
                   &quot;A String&quot;,
                 ],
               },
+              &quot;collationSpec&quot;: &quot;A String&quot;, # Optional. Collation specification of the field. It only can be set on string type field.
               &quot;description&quot;: &quot;A String&quot;, # [Optional] The field description. The maximum length is 1,024 characters.
               &quot;fields&quot;: [ # [Optional] Describes the nested schema fields if the type property is set to RECORD.
                 # Object with schema name: TableFieldSchema
               ],
+              &quot;maxLength&quot;: &quot;A String&quot;, # [Optional] Maximum length of values of this field for STRINGS or BYTES. If max_length is not specified, no maximum length constraint is imposed on this field. If type = &quot;STRING&quot;, then max_length represents the maximum UTF-8 length of strings in this field. If type = &quot;BYTES&quot;, then max_length represents the maximum number of bytes in this field. It is invalid to set this field if type ≠ &quot;STRING&quot; and ≠ &quot;BYTES&quot;.
               &quot;mode&quot;: &quot;A String&quot;, # [Optional] The field mode. Possible values include NULLABLE, REQUIRED and REPEATED. The default value is NULLABLE.
-              &quot;name&quot;: &quot;A String&quot;, # [Required] The field name. The name must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_), and must start with a letter or underscore. The maximum length is 128 characters.
+              &quot;name&quot;: &quot;A String&quot;, # [Required] The field name. The name must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_), and must start with a letter or underscore. The maximum length is 300 characters.
               &quot;policyTags&quot;: {
                 &quot;names&quot;: [ # A list of category resource names. For example, &quot;projects/1/location/eu/taxonomies/2/policyTags/3&quot;. At most 1 policy tag is allowed.
                   &quot;A String&quot;,
                 ],
               },
-              &quot;type&quot;: &quot;A String&quot;, # [Required] The field data type. Possible values include STRING, BYTES, INTEGER, INT64 (same as INTEGER), FLOAT, FLOAT64 (same as FLOAT), NUMERIC, BIGNUMERIC, BOOLEAN, BOOL (same as BOOLEAN), TIMESTAMP, DATE, TIME, DATETIME, RECORD (where RECORD indicates that the field contains a nested schema) or STRUCT (same as RECORD).
+              &quot;precision&quot;: &quot;A String&quot;, # [Optional] Precision (maximum number of total digits in base 10) and scale (maximum number of digits in the fractional part in base 10) constraints for values of this field for NUMERIC or BIGNUMERIC. It is invalid to set precision or scale if type ≠ &quot;NUMERIC&quot; and ≠ &quot;BIGNUMERIC&quot;. If precision and scale are not specified, no value range constraint is imposed on this field insofar as values are permitted by the type. Values of this NUMERIC or BIGNUMERIC field must be in this range when: - Precision (P) and scale (S) are specified: [-10P-S + 10-S, 10P-S - 10-S] - Precision (P) is specified but not scale (and thus scale is interpreted to be equal to zero): [-10P + 1, 10P - 1]. Acceptable values for precision and scale if both are specified: - If type = &quot;NUMERIC&quot;: 1 ≤ precision - scale ≤ 29 and 0 ≤ scale ≤ 9. - If type = &quot;BIGNUMERIC&quot;: 1 ≤ precision - scale ≤ 38 and 0 ≤ scale ≤ 38. Acceptable values for precision if only precision is specified but not scale (and thus scale is interpreted to be equal to zero): - If type = &quot;NUMERIC&quot;: 1 ≤ precision ≤ 29. - If type = &quot;BIGNUMERIC&quot;: 1 ≤ precision ≤ 38. If scale is specified but not precision, then it is invalid.
+              &quot;scale&quot;: &quot;A String&quot;, # [Optional] See documentation for precision.
+              &quot;type&quot;: &quot;A String&quot;, # [Required] The field data type. Possible values include STRING, BYTES, INTEGER, INT64 (same as INTEGER), FLOAT, FLOAT64 (same as FLOAT), NUMERIC, BIGNUMERIC, BOOLEAN, BOOL (same as BOOLEAN), TIMESTAMP, DATE, TIME, DATETIME, INTERVAL, RECORD (where RECORD indicates that the field contains a nested schema) or STRUCT (same as RECORD).
             },
           ],
         },
@@ -264,7 +272,7 @@ Returns:
           &quot;requirePartitionFilter&quot;: True or False,
           &quot;type&quot;: &quot;A String&quot;, # [Required] The supported types are DAY, HOUR, MONTH, and YEAR, which will generate one partition per day, hour, month, and year, respectively. When the type is not specified, the default behavior is DAY.
         },
-        &quot;useAvroLogicalTypes&quot;: True or False, # [Optional] If sourceFormat is set to &quot;AVRO&quot;, indicates whether to enable interpreting logical types into their corresponding types (ie. TIMESTAMP), instead of only using their raw types (ie. INTEGER).
+        &quot;useAvroLogicalTypes&quot;: True or False, # [Optional] If sourceFormat is set to &quot;AVRO&quot;, indicates whether to interpret logical types as the corresponding BigQuery data type (for example, TIMESTAMP), instead of using the raw type (for example, INTEGER).
         &quot;writeDisposition&quot;: &quot;A String&quot;, # [Optional] Specifies the action that occurs if the destination table already exists. The following values are supported: WRITE_TRUNCATE: If the table already exists, BigQuery overwrites the table data. WRITE_APPEND: If the table already exists, BigQuery appends the data to the table. WRITE_EMPTY: If the table already exists and contains data, a &#x27;duplicate&#x27; error is returned in the job result. The default value is WRITE_APPEND. Each action is atomic and only occurs if BigQuery is able to complete the job successfully. Creation, truncation and append actions occur as one atomic update upon job completion.
       },
       &quot;query&quot;: { # [Pick one] Configures a query job.
@@ -281,6 +289,7 @@ Returns:
           },
         ],
         &quot;createDisposition&quot;: &quot;A String&quot;, # [Optional] Specifies whether the job is allowed to create new tables. The following values are supported: CREATE_IF_NEEDED: If the table does not exist, BigQuery creates the table. CREATE_NEVER: The table must already exist. If it does not, a &#x27;notFound&#x27; error is returned in the job result. The default value is CREATE_IF_NEEDED. Creation, truncation and append actions occur as one atomic update upon job completion.
+        &quot;createSession&quot;: True or False, # If true, creates a new session, where session id will be a server generated random id. If false, runs query with an existing session_id passed in ConnectionProperty, otherwise runs query in non-session mode.
         &quot;defaultDataset&quot;: { # [Optional] Specifies the default dataset to use for unqualified table names in the query. Note that this does not alter behavior of unqualified dataset names.
           &quot;datasetId&quot;: &quot;A String&quot;, # [Required] A unique ID for this dataset, without the project name. The ID must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum length is 1,024 characters.
           &quot;projectId&quot;: &quot;A String&quot;, # [Optional] The ID of the project containing this dataset.
@@ -339,6 +348,9 @@ Returns:
         &quot;tableDefinitions&quot;: { # [Optional] If querying an external data source outside of BigQuery, describes the data format, location and other properties of the data source. By defining these properties, the data source can then be queried as if it were a standard BigQuery table.
           &quot;a_key&quot;: {
             &quot;autodetect&quot;: True or False, # Try to detect schema and format options automatically. Any option specified explicitly will be honored.
+            &quot;avroOptions&quot;: { # Additional properties to set if sourceFormat is set to Avro.
+              &quot;useAvroLogicalTypes&quot;: True or False, # [Optional] If sourceFormat is set to &quot;AVRO&quot;, indicates whether to interpret logical types as the corresponding BigQuery data type (for example, TIMESTAMP), instead of using the raw type (for example, INTEGER).
+            },
             &quot;bigtableOptions&quot;: { # [Optional] Additional options if sourceFormat is set to BIGTABLE.
               &quot;columnFamilies&quot;: [ # [Optional] List of column families to expose in the table schema along with their types. This list restricts the column families that can be referenced in queries and specifies their value types. You can use this list to do type conversions - see the &#x27;type&#x27; field for more details. If you leave this list empty, all column families are present in the table schema and their values are read as BYTES. During a query only the column families referenced in that query are read from Bigtable.
                 {
@@ -368,9 +380,13 @@ Returns:
               &quot;allowQuotedNewlines&quot;: True or False, # [Optional] Indicates if BigQuery should allow quoted data sections that contain newline characters in a CSV file. The default value is false.
               &quot;encoding&quot;: &quot;A String&quot;, # [Optional] The character encoding of the data. The supported values are UTF-8 or ISO-8859-1. The default value is UTF-8. BigQuery decodes the data after the raw, binary data has been split using the values of the quote and fieldDelimiter properties.
               &quot;fieldDelimiter&quot;: &quot;A String&quot;, # [Optional] The separator for fields in a CSV file. BigQuery converts the string to ISO-8859-1 encoding, and then uses the first byte of the encoded string to split the data in its raw, binary state. BigQuery also supports the escape sequence &quot;\t&quot; to specify a tab separator. The default value is a comma (&#x27;,&#x27;).
+              &quot;null_marker&quot;: &quot;A String&quot;, # [Optional] An custom string that will represent a NULL value in CSV import data.
               &quot;quote&quot;: &quot;&quot;&quot;, # [Optional] The value that is used to quote data sections in a CSV file. BigQuery converts the string to ISO-8859-1 encoding, and then uses the first byte of the encoded string to split the data in its raw, binary state. The default value is a double-quote (&#x27;&quot;&#x27;). If your data does not contain quoted sections, set the property value to an empty string. If your data contains quoted newline characters, you must also set the allowQuotedNewlines property to true.
               &quot;skipLeadingRows&quot;: &quot;A String&quot;, # [Optional] The number of rows at the top of a CSV file that BigQuery will skip when reading the data. The default value is 0. This property is useful if you have header rows in the file that should be skipped. When autodetect is on, the behavior is the following: * skipLeadingRows unspecified - Autodetect tries to detect headers in the first row. If they are not detected, the row is read as data. Otherwise data is read starting from the second row. * skipLeadingRows is 0 - Instructs autodetect that there are no headers and data should be read starting from the first row. * skipLeadingRows = N &gt; 0 - Autodetect skips N-1 rows and tries to detect headers in row N. If headers are not detected, row N is just skipped. Otherwise row N is used to extract column names for the detected schema.
             },
+            &quot;decimalTargetTypes&quot;: [ # [Optional] Defines the list of possible SQL data types to which the source decimal values are converted. This list and the precision and the scale parameters of the decimal field determine the target type. In the order of NUMERIC, BIGNUMERIC, and STRING, a type is picked if it is in the specified list and if it supports the precision and the scale. STRING supports all precision and scale values. If none of the listed types supports the precision and the scale, the type supporting the widest range in the specified list is picked, and if a value exceeds the supported range when reading the data, an error will be thrown. Example: Suppose the value of this field is [&quot;NUMERIC&quot;, &quot;BIGNUMERIC&quot;]. If (precision,scale) is: (38,9) -&gt; NUMERIC; (39,9) -&gt; BIGNUMERIC (NUMERIC cannot hold 30 integer digits); (38,10) -&gt; BIGNUMERIC (NUMERIC cannot hold 10 fractional digits); (76,38) -&gt; BIGNUMERIC; (77,38) -&gt; BIGNUMERIC (error if value exeeds supported range). This field cannot contain duplicate types. The order of the types in this field is ignored. For example, [&quot;BIGNUMERIC&quot;, &quot;NUMERIC&quot;] is the same as [&quot;NUMERIC&quot;, &quot;BIGNUMERIC&quot;] and NUMERIC always takes precedence over BIGNUMERIC. Defaults to [&quot;NUMERIC&quot;, &quot;STRING&quot;] for ORC and [&quot;NUMERIC&quot;] for the other file formats.
+              &quot;A String&quot;,
+            ],
             &quot;googleSheetsOptions&quot;: { # [Optional] Additional options if sourceFormat is set to GOOGLE_SHEETS.
               &quot;range&quot;: &quot;A String&quot;, # [Optional] Range of a sheet to query from. Only used when non-empty. Typical format: sheet_name!top_left_cell_id:bottom_right_cell_id For example: sheet1!A1:B20
               &quot;skipLeadingRows&quot;: &quot;A String&quot;, # [Optional] The number of rows at the top of a sheet that BigQuery will skip when reading the data. The default value is 0. This property is useful if you have header rows that should be skipped. When autodetect is on, behavior is the following: * skipLeadingRows unspecified - Autodetect tries to detect headers in the first row. If they are not detected, the row is read as data. Otherwise data is read starting from the second row. * skipLeadingRows is 0 - Instructs autodetect that there are no headers and data should be read starting from the first row. * skipLeadingRows = N &gt; 0 - Autodetect skips N-1 rows and tries to detect headers in row N. If headers are not detected, row N is just skipped. Otherwise row N is used to extract column names for the detected schema.
@@ -394,18 +410,22 @@ Returns:
                       &quot;A String&quot;,
                     ],
                   },
+                  &quot;collationSpec&quot;: &quot;A String&quot;, # Optional. Collation specification of the field. It only can be set on string type field.
                   &quot;description&quot;: &quot;A String&quot;, # [Optional] The field description. The maximum length is 1,024 characters.
                   &quot;fields&quot;: [ # [Optional] Describes the nested schema fields if the type property is set to RECORD.
                     # Object with schema name: TableFieldSchema
                   ],
+                  &quot;maxLength&quot;: &quot;A String&quot;, # [Optional] Maximum length of values of this field for STRINGS or BYTES. If max_length is not specified, no maximum length constraint is imposed on this field. If type = &quot;STRING&quot;, then max_length represents the maximum UTF-8 length of strings in this field. If type = &quot;BYTES&quot;, then max_length represents the maximum number of bytes in this field. It is invalid to set this field if type ≠ &quot;STRING&quot; and ≠ &quot;BYTES&quot;.
                   &quot;mode&quot;: &quot;A String&quot;, # [Optional] The field mode. Possible values include NULLABLE, REQUIRED and REPEATED. The default value is NULLABLE.
-                  &quot;name&quot;: &quot;A String&quot;, # [Required] The field name. The name must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_), and must start with a letter or underscore. The maximum length is 128 characters.
+                  &quot;name&quot;: &quot;A String&quot;, # [Required] The field name. The name must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_), and must start with a letter or underscore. The maximum length is 300 characters.
                   &quot;policyTags&quot;: {
                     &quot;names&quot;: [ # A list of category resource names. For example, &quot;projects/1/location/eu/taxonomies/2/policyTags/3&quot;. At most 1 policy tag is allowed.
                       &quot;A String&quot;,
                     ],
                   },
-                  &quot;type&quot;: &quot;A String&quot;, # [Required] The field data type. Possible values include STRING, BYTES, INTEGER, INT64 (same as INTEGER), FLOAT, FLOAT64 (same as FLOAT), NUMERIC, BIGNUMERIC, BOOLEAN, BOOL (same as BOOLEAN), TIMESTAMP, DATE, TIME, DATETIME, RECORD (where RECORD indicates that the field contains a nested schema) or STRUCT (same as RECORD).
+                  &quot;precision&quot;: &quot;A String&quot;, # [Optional] Precision (maximum number of total digits in base 10) and scale (maximum number of digits in the fractional part in base 10) constraints for values of this field for NUMERIC or BIGNUMERIC. It is invalid to set precision or scale if type ≠ &quot;NUMERIC&quot; and ≠ &quot;BIGNUMERIC&quot;. If precision and scale are not specified, no value range constraint is imposed on this field insofar as values are permitted by the type. Values of this NUMERIC or BIGNUMERIC field must be in this range when: - Precision (P) and scale (S) are specified: [-10P-S + 10-S, 10P-S - 10-S] - Precision (P) is specified but not scale (and thus scale is interpreted to be equal to zero): [-10P + 1, 10P - 1]. Acceptable values for precision and scale if both are specified: - If type = &quot;NUMERIC&quot;: 1 ≤ precision - scale ≤ 29 and 0 ≤ scale ≤ 9. - If type = &quot;BIGNUMERIC&quot;: 1 ≤ precision - scale ≤ 38 and 0 ≤ scale ≤ 38. Acceptable values for precision if only precision is specified but not scale (and thus scale is interpreted to be equal to zero): - If type = &quot;NUMERIC&quot;: 1 ≤ precision ≤ 29. - If type = &quot;BIGNUMERIC&quot;: 1 ≤ precision ≤ 38. If scale is specified but not precision, then it is invalid.
+                  &quot;scale&quot;: &quot;A String&quot;, # [Optional] See documentation for precision.
+                  &quot;type&quot;: &quot;A String&quot;, # [Required] The field data type. Possible values include STRING, BYTES, INTEGER, INT64 (same as INTEGER), FLOAT, FLOAT64 (same as FLOAT), NUMERIC, BIGNUMERIC, BOOLEAN, BOOL (same as BOOLEAN), TIMESTAMP, DATE, TIME, DATETIME, INTERVAL, RECORD (where RECORD indicates that the field contains a nested schema) or STRUCT (same as RECORD).
                 },
               ],
             },
@@ -461,9 +481,23 @@ Returns:
       &quot;numChildJobs&quot;: &quot;A String&quot;, # [Output-only] Number of child jobs executed.
       &quot;parentJobId&quot;: &quot;A String&quot;, # [Output-only] If this is a child job, the id of the parent.
       &quot;query&quot;: { # [Output-only] Statistics for a query job.
+        &quot;biEngineStatistics&quot;: { # BI Engine specific Statistics. [Output-only] BI Engine specific Statistics.
+          &quot;biEngineMode&quot;: &quot;$(stats.bi_engine_mode)&quot;, # [Output-only] Specifies which mode of BI Engine acceleration was performed (if any).
+          &quot;biEngineReasons&quot;: [ # In case of DISABLED or PARTIAL bi_engine_mode, these contain the explanatory reasons as to why BI Engine could not accelerate. In case the full query was accelerated, this field is not populated.
+            {
+              &quot;code&quot;: &quot;$(reason.code)&quot;, # [Output-only] High-level BI Engine reason for partial or disabled acceleration.
+              &quot;message&quot;: &quot;$(reason.message)&quot;, # [Output-only] Free form human-readable reason for partial or disabled acceleration.
+            },
+          ],
+        },
         &quot;billingTier&quot;: 42, # [Output-only] Billing tier for the job.
         &quot;cacheHit&quot;: True or False, # [Output-only] Whether the query result was fetched from the query cache.
         &quot;ddlAffectedRowAccessPolicyCount&quot;: &quot;A String&quot;, # [Output-only] [Preview] The number of row access policies affected by a DDL statement. Present only for DROP ALL ROW ACCESS POLICIES queries.
+        &quot;ddlDestinationTable&quot;: { # [Output-only] The DDL destination table. Present only for ALTER TABLE RENAME TO queries. Note that ddl_target_table is used just for its type information.
+          &quot;datasetId&quot;: &quot;A String&quot;, # [Required] The ID of the dataset containing this table.
+          &quot;projectId&quot;: &quot;A String&quot;, # [Required] The ID of the project containing this table.
+          &quot;tableId&quot;: &quot;A String&quot;, # [Required] The ID of the table. The ID must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum length is 1,024 characters.
+        },
         &quot;ddlOperationPerformed&quot;: &quot;A String&quot;, # The DDL operation performed, possibly dependent on the pre-existence of the DDL target. Possible values (new values might be added in the future): &quot;CREATE&quot;: The query created the DDL target. &quot;SKIP&quot;: No-op. Example cases: the query is CREATE TABLE IF NOT EXISTS while the table already exists, or the query is DROP TABLE IF EXISTS while the table does not exist. &quot;REPLACE&quot;: The query replaced the DDL target. Example case: the query is CREATE OR REPLACE TABLE, and the table already exists. &quot;DROP&quot;: The query deleted the DDL target.
         &quot;ddlTargetDataset&quot;: { # [Output-only] The DDL target dataset. Present only for CREATE/ALTER/DROP SCHEMA queries.
           &quot;datasetId&quot;: &quot;A String&quot;, # [Required] A unique ID for this dataset, without the project name. The ID must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum length is 1,024 characters.
@@ -485,7 +519,24 @@ Returns:
           &quot;projectId&quot;: &quot;A String&quot;, # [Required] The ID of the project containing this table.
           &quot;tableId&quot;: &quot;A String&quot;, # [Required] The ID of the table. The ID must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum length is 1,024 characters.
         },
+        &quot;dmlStats&quot;: { # [Output-only] Detailed statistics for DML statements Present only for DML statements INSERT, UPDATE, DELETE or TRUNCATE.
+          &quot;deletedRowCount&quot;: &quot;A String&quot;, # Number of deleted Rows. populated by DML DELETE, MERGE and TRUNCATE statements.
+          &quot;insertedRowCount&quot;: &quot;A String&quot;, # Number of inserted Rows. Populated by DML INSERT and MERGE statements.
+          &quot;updatedRowCount&quot;: &quot;A String&quot;, # Number of updated Rows. Populated by DML UPDATE and MERGE statements.
+        },
         &quot;estimatedBytesProcessed&quot;: &quot;A String&quot;, # [Output-only] The original estimate of bytes processed for the job.
+        &quot;mlStatistics&quot;: { # [Output-only] Statistics of a BigQuery ML training job.
+          &quot;iterationResults&quot;: [ # Results for all completed iterations.
+            {
+              &quot;durationMs&quot;: &quot;A String&quot;, # Time taken to run the iteration in milliseconds.
+              &quot;evalLoss&quot;: 3.14, # Loss computed on the eval data at the end of iteration.
+              &quot;index&quot;: 42, # Index of the iteration, 0 based.
+              &quot;learnRate&quot;: 3.14, # Learn rate used for this iteration.
+              &quot;trainingLoss&quot;: 3.14, # Loss computed on the training data at the end of iteration.
+            },
+          ],
+          &quot;maxIterations&quot;: &quot;A String&quot;, # Maximum number of iterations specified as max_iterations in the &#x27;CREATE MODEL&#x27; query. The actual number of iterations may be less than this number due to early stop.
+        },
         &quot;modelTraining&quot;: { # [Output-only, Beta] Information about create model query job progress.
           &quot;currentIteration&quot;: 42, # [Output-only, Beta] Index of current ML training iteration. Updated during create model query job to show job progress.
           &quot;expectedTotalIterations&quot;: &quot;A String&quot;, # [Output-only, Beta] Expected number of iterations for the create model query job specified as num_iterations in the input query. The actual total number of iterations may be less than this number due to early stop.
@@ -564,18 +615,22 @@ Returns:
                   &quot;A String&quot;,
                 ],
               },
+              &quot;collationSpec&quot;: &quot;A String&quot;, # Optional. Collation specification of the field. It only can be set on string type field.
               &quot;description&quot;: &quot;A String&quot;, # [Optional] The field description. The maximum length is 1,024 characters.
               &quot;fields&quot;: [ # [Optional] Describes the nested schema fields if the type property is set to RECORD.
                 # Object with schema name: TableFieldSchema
               ],
+              &quot;maxLength&quot;: &quot;A String&quot;, # [Optional] Maximum length of values of this field for STRINGS or BYTES. If max_length is not specified, no maximum length constraint is imposed on this field. If type = &quot;STRING&quot;, then max_length represents the maximum UTF-8 length of strings in this field. If type = &quot;BYTES&quot;, then max_length represents the maximum number of bytes in this field. It is invalid to set this field if type ≠ &quot;STRING&quot; and ≠ &quot;BYTES&quot;.
               &quot;mode&quot;: &quot;A String&quot;, # [Optional] The field mode. Possible values include NULLABLE, REQUIRED and REPEATED. The default value is NULLABLE.
-              &quot;name&quot;: &quot;A String&quot;, # [Required] The field name. The name must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_), and must start with a letter or underscore. The maximum length is 128 characters.
+              &quot;name&quot;: &quot;A String&quot;, # [Required] The field name. The name must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_), and must start with a letter or underscore. The maximum length is 300 characters.
               &quot;policyTags&quot;: {
                 &quot;names&quot;: [ # A list of category resource names. For example, &quot;projects/1/location/eu/taxonomies/2/policyTags/3&quot;. At most 1 policy tag is allowed.
                   &quot;A String&quot;,
                 ],
               },
-              &quot;type&quot;: &quot;A String&quot;, # [Required] The field data type. Possible values include STRING, BYTES, INTEGER, INT64 (same as INTEGER), FLOAT, FLOAT64 (same as FLOAT), NUMERIC, BIGNUMERIC, BOOLEAN, BOOL (same as BOOLEAN), TIMESTAMP, DATE, TIME, DATETIME, RECORD (where RECORD indicates that the field contains a nested schema) or STRUCT (same as RECORD).
+              &quot;precision&quot;: &quot;A String&quot;, # [Optional] Precision (maximum number of total digits in base 10) and scale (maximum number of digits in the fractional part in base 10) constraints for values of this field for NUMERIC or BIGNUMERIC. It is invalid to set precision or scale if type ≠ &quot;NUMERIC&quot; and ≠ &quot;BIGNUMERIC&quot;. If precision and scale are not specified, no value range constraint is imposed on this field insofar as values are permitted by the type. Values of this NUMERIC or BIGNUMERIC field must be in this range when: - Precision (P) and scale (S) are specified: [-10P-S + 10-S, 10P-S - 10-S] - Precision (P) is specified but not scale (and thus scale is interpreted to be equal to zero): [-10P + 1, 10P - 1]. Acceptable values for precision and scale if both are specified: - If type = &quot;NUMERIC&quot;: 1 ≤ precision - scale ≤ 29 and 0 ≤ scale ≤ 9. - If type = &quot;BIGNUMERIC&quot;: 1 ≤ precision - scale ≤ 38 and 0 ≤ scale ≤ 38. Acceptable values for precision if only precision is specified but not scale (and thus scale is interpreted to be equal to zero): - If type = &quot;NUMERIC&quot;: 1 ≤ precision ≤ 29. - If type = &quot;BIGNUMERIC&quot;: 1 ≤ precision ≤ 38. If scale is specified but not precision, then it is invalid.
+              &quot;scale&quot;: &quot;A String&quot;, # [Optional] See documentation for precision.
+              &quot;type&quot;: &quot;A String&quot;, # [Required] The field data type. Possible values include STRING, BYTES, INTEGER, INT64 (same as INTEGER), FLOAT, FLOAT64 (same as FLOAT), NUMERIC, BIGNUMERIC, BOOLEAN, BOOL (same as BOOLEAN), TIMESTAMP, DATE, TIME, DATETIME, INTERVAL, RECORD (where RECORD indicates that the field contains a nested schema) or STRUCT (same as RECORD).
             },
           ],
         },
@@ -646,10 +701,13 @@ Returns:
           },
         ],
       },
+      &quot;sessionInfo&quot;: { # [Output-only] [Preview] Information of the session if this job is part of one.
+        &quot;sessionId&quot;: &quot;A String&quot;, # [Output-only] // [Preview] Id of the session.
+      },
       &quot;startTime&quot;: &quot;A String&quot;, # [Output-only] Start time of this job, in milliseconds since the epoch. This field will be present when the job transitions from the PENDING state to either RUNNING or DONE.
       &quot;totalBytesProcessed&quot;: &quot;A String&quot;, # [Output-only] [Deprecated] Use the bytes processed in the query statistics instead.
       &quot;totalSlotMs&quot;: &quot;A String&quot;, # [Output-only] Slot-milliseconds for the job.
-      &quot;transactionInfoTemplate&quot;: { # [Output-only] [Alpha] Information of the multi-statement transaction if this job is part of one.
+      &quot;transactionInfo&quot;: { # [Output-only] [Alpha] Information of the multi-statement transaction if this job is part of one.
         &quot;transactionId&quot;: &quot;A String&quot;, # [Output-only] // [Alpha] Id of the transaction.
       },
     },
@@ -679,6 +737,17 @@ Returns:
 <div class="method">
     <code class="details" id="close">close()</code>
   <pre>Close httplib2 connections.</pre>
+</div>
+
+<div class="method">
+    <code class="details" id="delete">delete(projectId, jobId, location=None)</code>
+  <pre>Requests the deletion of the metadata of a job. This call returns when the job&#x27;s metadata is deleted.
+
+Args:
+  projectId: string, Required. Project ID of the job for which metadata is to be deleted. (required)
+  jobId: string, Required. Job ID of the job for which metadata is to be deleted. If this is a parent job which has child jobs, the metadata from all child jobs will be deleted as well. Direct deletion of the metadata of child jobs is not allowed. (required)
+  location: string, The geographic location of the job. Required. See details at: https://cloud.google.com/bigquery/docs/locations#specifying_your_location.
+</pre>
 </div>
 
 <div class="method">
@@ -758,7 +827,7 @@ Returns:
         ],
       },
       &quot;createDisposition&quot;: &quot;A String&quot;, # [Optional] Specifies whether the job is allowed to create new tables. The following values are supported: CREATE_IF_NEEDED: If the table does not exist, BigQuery creates the table. CREATE_NEVER: The table must already exist. If it does not, a &#x27;notFound&#x27; error is returned in the job result. The default value is CREATE_IF_NEEDED. Creation, truncation and append actions occur as one atomic update upon job completion.
-      &quot;decimalTargetTypes&quot;: [ # Defines the list of possible SQL data types to which the source decimal values are converted. This list and the precision and the scale parameters of the decimal field determine the target type. In the order of NUMERIC, BIGNUMERIC ([Preview](/products/#product-launch-stages)), and STRING, a type is picked if it is in the specified list and if it supports the precision and the scale. STRING supports all precision and scale values. If none of the listed types supports the precision and the scale, the type supporting the widest range in the specified list is picked, and if a value exceeds the supported range when reading the data, an error will be thrown. Example: Suppose the value of this field is [&quot;NUMERIC&quot;, &quot;BIGNUMERIC&quot;]. If (precision,scale) is: * (38,9) -&gt; NUMERIC; * (39,9) -&gt; BIGNUMERIC (NUMERIC cannot hold 30 integer digits); * (38,10) -&gt; BIGNUMERIC (NUMERIC cannot hold 10 fractional digits); * (76,38) -&gt; BIGNUMERIC; * (77,38) -&gt; BIGNUMERIC (error if value exeeds supported range). This field cannot contain duplicate types. The order of the types in this field is ignored. For example, [&quot;BIGNUMERIC&quot;, &quot;NUMERIC&quot;] is the same as [&quot;NUMERIC&quot;, &quot;BIGNUMERIC&quot;] and NUMERIC always takes precedence over BIGNUMERIC. Defaults to [&quot;NUMERIC&quot;, &quot;STRING&quot;] for ORC and [&quot;NUMERIC&quot;] for the other file formats.
+      &quot;decimalTargetTypes&quot;: [ # [Optional] Defines the list of possible SQL data types to which the source decimal values are converted. This list and the precision and the scale parameters of the decimal field determine the target type. In the order of NUMERIC, BIGNUMERIC, and STRING, a type is picked if it is in the specified list and if it supports the precision and the scale. STRING supports all precision and scale values. If none of the listed types supports the precision and the scale, the type supporting the widest range in the specified list is picked, and if a value exceeds the supported range when reading the data, an error will be thrown. Example: Suppose the value of this field is [&quot;NUMERIC&quot;, &quot;BIGNUMERIC&quot;]. If (precision,scale) is: (38,9) -&gt; NUMERIC; (39,9) -&gt; BIGNUMERIC (NUMERIC cannot hold 30 integer digits); (38,10) -&gt; BIGNUMERIC (NUMERIC cannot hold 10 fractional digits); (76,38) -&gt; BIGNUMERIC; (77,38) -&gt; BIGNUMERIC (error if value exeeds supported range). This field cannot contain duplicate types. The order of the types in this field is ignored. For example, [&quot;BIGNUMERIC&quot;, &quot;NUMERIC&quot;] is the same as [&quot;NUMERIC&quot;, &quot;BIGNUMERIC&quot;] and NUMERIC always takes precedence over BIGNUMERIC. Defaults to [&quot;NUMERIC&quot;, &quot;STRING&quot;] for ORC and [&quot;NUMERIC&quot;] for the other file formats.
         &quot;A String&quot;,
       ],
       &quot;destinationEncryptionConfiguration&quot;: { # Custom encryption configuration (e.g., Cloud KMS keys).
@@ -771,6 +840,7 @@ Returns:
       },
       &quot;destinationTableProperties&quot;: { # [Beta] [Optional] Properties with which to create the destination table if it is new.
         &quot;description&quot;: &quot;A String&quot;, # [Optional] The description for the destination table. This will only be used if the destination table is newly created. If the table already exists and a value different than the current description is provided, the job will fail.
+        &quot;expirationTime&quot;: &quot;A String&quot;, # [Internal] This field is for Google internal use only.
         &quot;friendlyName&quot;: &quot;A String&quot;, # [Optional] The friendly name for the destination table. This will only be used if the destination table is newly created. If the table already exists and a value different than the current friendly name is provided, the job will fail.
         &quot;labels&quot;: { # [Optional] The labels associated with this table. You can use these to organize and group your tables. This will only be used if the destination table is newly created. If the table already exists and labels are different than the current labels are provided, the job will fail.
           &quot;a_key&quot;: &quot;A String&quot;,
@@ -811,18 +881,22 @@ Returns:
                 &quot;A String&quot;,
               ],
             },
+            &quot;collationSpec&quot;: &quot;A String&quot;, # Optional. Collation specification of the field. It only can be set on string type field.
             &quot;description&quot;: &quot;A String&quot;, # [Optional] The field description. The maximum length is 1,024 characters.
             &quot;fields&quot;: [ # [Optional] Describes the nested schema fields if the type property is set to RECORD.
               # Object with schema name: TableFieldSchema
             ],
+            &quot;maxLength&quot;: &quot;A String&quot;, # [Optional] Maximum length of values of this field for STRINGS or BYTES. If max_length is not specified, no maximum length constraint is imposed on this field. If type = &quot;STRING&quot;, then max_length represents the maximum UTF-8 length of strings in this field. If type = &quot;BYTES&quot;, then max_length represents the maximum number of bytes in this field. It is invalid to set this field if type ≠ &quot;STRING&quot; and ≠ &quot;BYTES&quot;.
             &quot;mode&quot;: &quot;A String&quot;, # [Optional] The field mode. Possible values include NULLABLE, REQUIRED and REPEATED. The default value is NULLABLE.
-            &quot;name&quot;: &quot;A String&quot;, # [Required] The field name. The name must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_), and must start with a letter or underscore. The maximum length is 128 characters.
+            &quot;name&quot;: &quot;A String&quot;, # [Required] The field name. The name must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_), and must start with a letter or underscore. The maximum length is 300 characters.
             &quot;policyTags&quot;: {
               &quot;names&quot;: [ # A list of category resource names. For example, &quot;projects/1/location/eu/taxonomies/2/policyTags/3&quot;. At most 1 policy tag is allowed.
                 &quot;A String&quot;,
               ],
             },
-            &quot;type&quot;: &quot;A String&quot;, # [Required] The field data type. Possible values include STRING, BYTES, INTEGER, INT64 (same as INTEGER), FLOAT, FLOAT64 (same as FLOAT), NUMERIC, BIGNUMERIC, BOOLEAN, BOOL (same as BOOLEAN), TIMESTAMP, DATE, TIME, DATETIME, RECORD (where RECORD indicates that the field contains a nested schema) or STRUCT (same as RECORD).
+            &quot;precision&quot;: &quot;A String&quot;, # [Optional] Precision (maximum number of total digits in base 10) and scale (maximum number of digits in the fractional part in base 10) constraints for values of this field for NUMERIC or BIGNUMERIC. It is invalid to set precision or scale if type ≠ &quot;NUMERIC&quot; and ≠ &quot;BIGNUMERIC&quot;. If precision and scale are not specified, no value range constraint is imposed on this field insofar as values are permitted by the type. Values of this NUMERIC or BIGNUMERIC field must be in this range when: - Precision (P) and scale (S) are specified: [-10P-S + 10-S, 10P-S - 10-S] - Precision (P) is specified but not scale (and thus scale is interpreted to be equal to zero): [-10P + 1, 10P - 1]. Acceptable values for precision and scale if both are specified: - If type = &quot;NUMERIC&quot;: 1 ≤ precision - scale ≤ 29 and 0 ≤ scale ≤ 9. - If type = &quot;BIGNUMERIC&quot;: 1 ≤ precision - scale ≤ 38 and 0 ≤ scale ≤ 38. Acceptable values for precision if only precision is specified but not scale (and thus scale is interpreted to be equal to zero): - If type = &quot;NUMERIC&quot;: 1 ≤ precision ≤ 29. - If type = &quot;BIGNUMERIC&quot;: 1 ≤ precision ≤ 38. If scale is specified but not precision, then it is invalid.
+            &quot;scale&quot;: &quot;A String&quot;, # [Optional] See documentation for precision.
+            &quot;type&quot;: &quot;A String&quot;, # [Required] The field data type. Possible values include STRING, BYTES, INTEGER, INT64 (same as INTEGER), FLOAT, FLOAT64 (same as FLOAT), NUMERIC, BIGNUMERIC, BOOLEAN, BOOL (same as BOOLEAN), TIMESTAMP, DATE, TIME, DATETIME, INTERVAL, RECORD (where RECORD indicates that the field contains a nested schema) or STRUCT (same as RECORD).
           },
         ],
       },
@@ -842,7 +916,7 @@ Returns:
         &quot;requirePartitionFilter&quot;: True or False,
         &quot;type&quot;: &quot;A String&quot;, # [Required] The supported types are DAY, HOUR, MONTH, and YEAR, which will generate one partition per day, hour, month, and year, respectively. When the type is not specified, the default behavior is DAY.
       },
-      &quot;useAvroLogicalTypes&quot;: True or False, # [Optional] If sourceFormat is set to &quot;AVRO&quot;, indicates whether to enable interpreting logical types into their corresponding types (ie. TIMESTAMP), instead of only using their raw types (ie. INTEGER).
+      &quot;useAvroLogicalTypes&quot;: True or False, # [Optional] If sourceFormat is set to &quot;AVRO&quot;, indicates whether to interpret logical types as the corresponding BigQuery data type (for example, TIMESTAMP), instead of using the raw type (for example, INTEGER).
       &quot;writeDisposition&quot;: &quot;A String&quot;, # [Optional] Specifies the action that occurs if the destination table already exists. The following values are supported: WRITE_TRUNCATE: If the table already exists, BigQuery overwrites the table data. WRITE_APPEND: If the table already exists, BigQuery appends the data to the table. WRITE_EMPTY: If the table already exists and contains data, a &#x27;duplicate&#x27; error is returned in the job result. The default value is WRITE_APPEND. Each action is atomic and only occurs if BigQuery is able to complete the job successfully. Creation, truncation and append actions occur as one atomic update upon job completion.
     },
     &quot;query&quot;: { # [Pick one] Configures a query job.
@@ -859,6 +933,7 @@ Returns:
         },
       ],
       &quot;createDisposition&quot;: &quot;A String&quot;, # [Optional] Specifies whether the job is allowed to create new tables. The following values are supported: CREATE_IF_NEEDED: If the table does not exist, BigQuery creates the table. CREATE_NEVER: The table must already exist. If it does not, a &#x27;notFound&#x27; error is returned in the job result. The default value is CREATE_IF_NEEDED. Creation, truncation and append actions occur as one atomic update upon job completion.
+      &quot;createSession&quot;: True or False, # If true, creates a new session, where session id will be a server generated random id. If false, runs query with an existing session_id passed in ConnectionProperty, otherwise runs query in non-session mode.
       &quot;defaultDataset&quot;: { # [Optional] Specifies the default dataset to use for unqualified table names in the query. Note that this does not alter behavior of unqualified dataset names.
         &quot;datasetId&quot;: &quot;A String&quot;, # [Required] A unique ID for this dataset, without the project name. The ID must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum length is 1,024 characters.
         &quot;projectId&quot;: &quot;A String&quot;, # [Optional] The ID of the project containing this dataset.
@@ -917,6 +992,9 @@ Returns:
       &quot;tableDefinitions&quot;: { # [Optional] If querying an external data source outside of BigQuery, describes the data format, location and other properties of the data source. By defining these properties, the data source can then be queried as if it were a standard BigQuery table.
         &quot;a_key&quot;: {
           &quot;autodetect&quot;: True or False, # Try to detect schema and format options automatically. Any option specified explicitly will be honored.
+          &quot;avroOptions&quot;: { # Additional properties to set if sourceFormat is set to Avro.
+            &quot;useAvroLogicalTypes&quot;: True or False, # [Optional] If sourceFormat is set to &quot;AVRO&quot;, indicates whether to interpret logical types as the corresponding BigQuery data type (for example, TIMESTAMP), instead of using the raw type (for example, INTEGER).
+          },
           &quot;bigtableOptions&quot;: { # [Optional] Additional options if sourceFormat is set to BIGTABLE.
             &quot;columnFamilies&quot;: [ # [Optional] List of column families to expose in the table schema along with their types. This list restricts the column families that can be referenced in queries and specifies their value types. You can use this list to do type conversions - see the &#x27;type&#x27; field for more details. If you leave this list empty, all column families are present in the table schema and their values are read as BYTES. During a query only the column families referenced in that query are read from Bigtable.
               {
@@ -946,9 +1024,13 @@ Returns:
             &quot;allowQuotedNewlines&quot;: True or False, # [Optional] Indicates if BigQuery should allow quoted data sections that contain newline characters in a CSV file. The default value is false.
             &quot;encoding&quot;: &quot;A String&quot;, # [Optional] The character encoding of the data. The supported values are UTF-8 or ISO-8859-1. The default value is UTF-8. BigQuery decodes the data after the raw, binary data has been split using the values of the quote and fieldDelimiter properties.
             &quot;fieldDelimiter&quot;: &quot;A String&quot;, # [Optional] The separator for fields in a CSV file. BigQuery converts the string to ISO-8859-1 encoding, and then uses the first byte of the encoded string to split the data in its raw, binary state. BigQuery also supports the escape sequence &quot;\t&quot; to specify a tab separator. The default value is a comma (&#x27;,&#x27;).
+            &quot;null_marker&quot;: &quot;A String&quot;, # [Optional] An custom string that will represent a NULL value in CSV import data.
             &quot;quote&quot;: &quot;&quot;&quot;, # [Optional] The value that is used to quote data sections in a CSV file. BigQuery converts the string to ISO-8859-1 encoding, and then uses the first byte of the encoded string to split the data in its raw, binary state. The default value is a double-quote (&#x27;&quot;&#x27;). If your data does not contain quoted sections, set the property value to an empty string. If your data contains quoted newline characters, you must also set the allowQuotedNewlines property to true.
             &quot;skipLeadingRows&quot;: &quot;A String&quot;, # [Optional] The number of rows at the top of a CSV file that BigQuery will skip when reading the data. The default value is 0. This property is useful if you have header rows in the file that should be skipped. When autodetect is on, the behavior is the following: * skipLeadingRows unspecified - Autodetect tries to detect headers in the first row. If they are not detected, the row is read as data. Otherwise data is read starting from the second row. * skipLeadingRows is 0 - Instructs autodetect that there are no headers and data should be read starting from the first row. * skipLeadingRows = N &gt; 0 - Autodetect skips N-1 rows and tries to detect headers in row N. If headers are not detected, row N is just skipped. Otherwise row N is used to extract column names for the detected schema.
           },
+          &quot;decimalTargetTypes&quot;: [ # [Optional] Defines the list of possible SQL data types to which the source decimal values are converted. This list and the precision and the scale parameters of the decimal field determine the target type. In the order of NUMERIC, BIGNUMERIC, and STRING, a type is picked if it is in the specified list and if it supports the precision and the scale. STRING supports all precision and scale values. If none of the listed types supports the precision and the scale, the type supporting the widest range in the specified list is picked, and if a value exceeds the supported range when reading the data, an error will be thrown. Example: Suppose the value of this field is [&quot;NUMERIC&quot;, &quot;BIGNUMERIC&quot;]. If (precision,scale) is: (38,9) -&gt; NUMERIC; (39,9) -&gt; BIGNUMERIC (NUMERIC cannot hold 30 integer digits); (38,10) -&gt; BIGNUMERIC (NUMERIC cannot hold 10 fractional digits); (76,38) -&gt; BIGNUMERIC; (77,38) -&gt; BIGNUMERIC (error if value exeeds supported range). This field cannot contain duplicate types. The order of the types in this field is ignored. For example, [&quot;BIGNUMERIC&quot;, &quot;NUMERIC&quot;] is the same as [&quot;NUMERIC&quot;, &quot;BIGNUMERIC&quot;] and NUMERIC always takes precedence over BIGNUMERIC. Defaults to [&quot;NUMERIC&quot;, &quot;STRING&quot;] for ORC and [&quot;NUMERIC&quot;] for the other file formats.
+            &quot;A String&quot;,
+          ],
           &quot;googleSheetsOptions&quot;: { # [Optional] Additional options if sourceFormat is set to GOOGLE_SHEETS.
             &quot;range&quot;: &quot;A String&quot;, # [Optional] Range of a sheet to query from. Only used when non-empty. Typical format: sheet_name!top_left_cell_id:bottom_right_cell_id For example: sheet1!A1:B20
             &quot;skipLeadingRows&quot;: &quot;A String&quot;, # [Optional] The number of rows at the top of a sheet that BigQuery will skip when reading the data. The default value is 0. This property is useful if you have header rows that should be skipped. When autodetect is on, behavior is the following: * skipLeadingRows unspecified - Autodetect tries to detect headers in the first row. If they are not detected, the row is read as data. Otherwise data is read starting from the second row. * skipLeadingRows is 0 - Instructs autodetect that there are no headers and data should be read starting from the first row. * skipLeadingRows = N &gt; 0 - Autodetect skips N-1 rows and tries to detect headers in row N. If headers are not detected, row N is just skipped. Otherwise row N is used to extract column names for the detected schema.
@@ -972,18 +1054,22 @@ Returns:
                     &quot;A String&quot;,
                   ],
                 },
+                &quot;collationSpec&quot;: &quot;A String&quot;, # Optional. Collation specification of the field. It only can be set on string type field.
                 &quot;description&quot;: &quot;A String&quot;, # [Optional] The field description. The maximum length is 1,024 characters.
                 &quot;fields&quot;: [ # [Optional] Describes the nested schema fields if the type property is set to RECORD.
                   # Object with schema name: TableFieldSchema
                 ],
+                &quot;maxLength&quot;: &quot;A String&quot;, # [Optional] Maximum length of values of this field for STRINGS or BYTES. If max_length is not specified, no maximum length constraint is imposed on this field. If type = &quot;STRING&quot;, then max_length represents the maximum UTF-8 length of strings in this field. If type = &quot;BYTES&quot;, then max_length represents the maximum number of bytes in this field. It is invalid to set this field if type ≠ &quot;STRING&quot; and ≠ &quot;BYTES&quot;.
                 &quot;mode&quot;: &quot;A String&quot;, # [Optional] The field mode. Possible values include NULLABLE, REQUIRED and REPEATED. The default value is NULLABLE.
-                &quot;name&quot;: &quot;A String&quot;, # [Required] The field name. The name must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_), and must start with a letter or underscore. The maximum length is 128 characters.
+                &quot;name&quot;: &quot;A String&quot;, # [Required] The field name. The name must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_), and must start with a letter or underscore. The maximum length is 300 characters.
                 &quot;policyTags&quot;: {
                   &quot;names&quot;: [ # A list of category resource names. For example, &quot;projects/1/location/eu/taxonomies/2/policyTags/3&quot;. At most 1 policy tag is allowed.
                     &quot;A String&quot;,
                   ],
                 },
-                &quot;type&quot;: &quot;A String&quot;, # [Required] The field data type. Possible values include STRING, BYTES, INTEGER, INT64 (same as INTEGER), FLOAT, FLOAT64 (same as FLOAT), NUMERIC, BIGNUMERIC, BOOLEAN, BOOL (same as BOOLEAN), TIMESTAMP, DATE, TIME, DATETIME, RECORD (where RECORD indicates that the field contains a nested schema) or STRUCT (same as RECORD).
+                &quot;precision&quot;: &quot;A String&quot;, # [Optional] Precision (maximum number of total digits in base 10) and scale (maximum number of digits in the fractional part in base 10) constraints for values of this field for NUMERIC or BIGNUMERIC. It is invalid to set precision or scale if type ≠ &quot;NUMERIC&quot; and ≠ &quot;BIGNUMERIC&quot;. If precision and scale are not specified, no value range constraint is imposed on this field insofar as values are permitted by the type. Values of this NUMERIC or BIGNUMERIC field must be in this range when: - Precision (P) and scale (S) are specified: [-10P-S + 10-S, 10P-S - 10-S] - Precision (P) is specified but not scale (and thus scale is interpreted to be equal to zero): [-10P + 1, 10P - 1]. Acceptable values for precision and scale if both are specified: - If type = &quot;NUMERIC&quot;: 1 ≤ precision - scale ≤ 29 and 0 ≤ scale ≤ 9. - If type = &quot;BIGNUMERIC&quot;: 1 ≤ precision - scale ≤ 38 and 0 ≤ scale ≤ 38. Acceptable values for precision if only precision is specified but not scale (and thus scale is interpreted to be equal to zero): - If type = &quot;NUMERIC&quot;: 1 ≤ precision ≤ 29. - If type = &quot;BIGNUMERIC&quot;: 1 ≤ precision ≤ 38. If scale is specified but not precision, then it is invalid.
+                &quot;scale&quot;: &quot;A String&quot;, # [Optional] See documentation for precision.
+                &quot;type&quot;: &quot;A String&quot;, # [Required] The field data type. Possible values include STRING, BYTES, INTEGER, INT64 (same as INTEGER), FLOAT, FLOAT64 (same as FLOAT), NUMERIC, BIGNUMERIC, BOOLEAN, BOOL (same as BOOLEAN), TIMESTAMP, DATE, TIME, DATETIME, INTERVAL, RECORD (where RECORD indicates that the field contains a nested schema) or STRUCT (same as RECORD).
               },
             ],
           },
@@ -1039,9 +1125,23 @@ Returns:
     &quot;numChildJobs&quot;: &quot;A String&quot;, # [Output-only] Number of child jobs executed.
     &quot;parentJobId&quot;: &quot;A String&quot;, # [Output-only] If this is a child job, the id of the parent.
     &quot;query&quot;: { # [Output-only] Statistics for a query job.
+      &quot;biEngineStatistics&quot;: { # BI Engine specific Statistics. [Output-only] BI Engine specific Statistics.
+        &quot;biEngineMode&quot;: &quot;$(stats.bi_engine_mode)&quot;, # [Output-only] Specifies which mode of BI Engine acceleration was performed (if any).
+        &quot;biEngineReasons&quot;: [ # In case of DISABLED or PARTIAL bi_engine_mode, these contain the explanatory reasons as to why BI Engine could not accelerate. In case the full query was accelerated, this field is not populated.
+          {
+            &quot;code&quot;: &quot;$(reason.code)&quot;, # [Output-only] High-level BI Engine reason for partial or disabled acceleration.
+            &quot;message&quot;: &quot;$(reason.message)&quot;, # [Output-only] Free form human-readable reason for partial or disabled acceleration.
+          },
+        ],
+      },
       &quot;billingTier&quot;: 42, # [Output-only] Billing tier for the job.
       &quot;cacheHit&quot;: True or False, # [Output-only] Whether the query result was fetched from the query cache.
       &quot;ddlAffectedRowAccessPolicyCount&quot;: &quot;A String&quot;, # [Output-only] [Preview] The number of row access policies affected by a DDL statement. Present only for DROP ALL ROW ACCESS POLICIES queries.
+      &quot;ddlDestinationTable&quot;: { # [Output-only] The DDL destination table. Present only for ALTER TABLE RENAME TO queries. Note that ddl_target_table is used just for its type information.
+        &quot;datasetId&quot;: &quot;A String&quot;, # [Required] The ID of the dataset containing this table.
+        &quot;projectId&quot;: &quot;A String&quot;, # [Required] The ID of the project containing this table.
+        &quot;tableId&quot;: &quot;A String&quot;, # [Required] The ID of the table. The ID must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum length is 1,024 characters.
+      },
       &quot;ddlOperationPerformed&quot;: &quot;A String&quot;, # The DDL operation performed, possibly dependent on the pre-existence of the DDL target. Possible values (new values might be added in the future): &quot;CREATE&quot;: The query created the DDL target. &quot;SKIP&quot;: No-op. Example cases: the query is CREATE TABLE IF NOT EXISTS while the table already exists, or the query is DROP TABLE IF EXISTS while the table does not exist. &quot;REPLACE&quot;: The query replaced the DDL target. Example case: the query is CREATE OR REPLACE TABLE, and the table already exists. &quot;DROP&quot;: The query deleted the DDL target.
       &quot;ddlTargetDataset&quot;: { # [Output-only] The DDL target dataset. Present only for CREATE/ALTER/DROP SCHEMA queries.
         &quot;datasetId&quot;: &quot;A String&quot;, # [Required] A unique ID for this dataset, without the project name. The ID must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum length is 1,024 characters.
@@ -1063,7 +1163,24 @@ Returns:
         &quot;projectId&quot;: &quot;A String&quot;, # [Required] The ID of the project containing this table.
         &quot;tableId&quot;: &quot;A String&quot;, # [Required] The ID of the table. The ID must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum length is 1,024 characters.
       },
+      &quot;dmlStats&quot;: { # [Output-only] Detailed statistics for DML statements Present only for DML statements INSERT, UPDATE, DELETE or TRUNCATE.
+        &quot;deletedRowCount&quot;: &quot;A String&quot;, # Number of deleted Rows. populated by DML DELETE, MERGE and TRUNCATE statements.
+        &quot;insertedRowCount&quot;: &quot;A String&quot;, # Number of inserted Rows. Populated by DML INSERT and MERGE statements.
+        &quot;updatedRowCount&quot;: &quot;A String&quot;, # Number of updated Rows. Populated by DML UPDATE and MERGE statements.
+      },
       &quot;estimatedBytesProcessed&quot;: &quot;A String&quot;, # [Output-only] The original estimate of bytes processed for the job.
+      &quot;mlStatistics&quot;: { # [Output-only] Statistics of a BigQuery ML training job.
+        &quot;iterationResults&quot;: [ # Results for all completed iterations.
+          {
+            &quot;durationMs&quot;: &quot;A String&quot;, # Time taken to run the iteration in milliseconds.
+            &quot;evalLoss&quot;: 3.14, # Loss computed on the eval data at the end of iteration.
+            &quot;index&quot;: 42, # Index of the iteration, 0 based.
+            &quot;learnRate&quot;: 3.14, # Learn rate used for this iteration.
+            &quot;trainingLoss&quot;: 3.14, # Loss computed on the training data at the end of iteration.
+          },
+        ],
+        &quot;maxIterations&quot;: &quot;A String&quot;, # Maximum number of iterations specified as max_iterations in the &#x27;CREATE MODEL&#x27; query. The actual number of iterations may be less than this number due to early stop.
+      },
       &quot;modelTraining&quot;: { # [Output-only, Beta] Information about create model query job progress.
         &quot;currentIteration&quot;: 42, # [Output-only, Beta] Index of current ML training iteration. Updated during create model query job to show job progress.
         &quot;expectedTotalIterations&quot;: &quot;A String&quot;, # [Output-only, Beta] Expected number of iterations for the create model query job specified as num_iterations in the input query. The actual total number of iterations may be less than this number due to early stop.
@@ -1142,18 +1259,22 @@ Returns:
                 &quot;A String&quot;,
               ],
             },
+            &quot;collationSpec&quot;: &quot;A String&quot;, # Optional. Collation specification of the field. It only can be set on string type field.
             &quot;description&quot;: &quot;A String&quot;, # [Optional] The field description. The maximum length is 1,024 characters.
             &quot;fields&quot;: [ # [Optional] Describes the nested schema fields if the type property is set to RECORD.
               # Object with schema name: TableFieldSchema
             ],
+            &quot;maxLength&quot;: &quot;A String&quot;, # [Optional] Maximum length of values of this field for STRINGS or BYTES. If max_length is not specified, no maximum length constraint is imposed on this field. If type = &quot;STRING&quot;, then max_length represents the maximum UTF-8 length of strings in this field. If type = &quot;BYTES&quot;, then max_length represents the maximum number of bytes in this field. It is invalid to set this field if type ≠ &quot;STRING&quot; and ≠ &quot;BYTES&quot;.
             &quot;mode&quot;: &quot;A String&quot;, # [Optional] The field mode. Possible values include NULLABLE, REQUIRED and REPEATED. The default value is NULLABLE.
-            &quot;name&quot;: &quot;A String&quot;, # [Required] The field name. The name must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_), and must start with a letter or underscore. The maximum length is 128 characters.
+            &quot;name&quot;: &quot;A String&quot;, # [Required] The field name. The name must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_), and must start with a letter or underscore. The maximum length is 300 characters.
             &quot;policyTags&quot;: {
               &quot;names&quot;: [ # A list of category resource names. For example, &quot;projects/1/location/eu/taxonomies/2/policyTags/3&quot;. At most 1 policy tag is allowed.
                 &quot;A String&quot;,
               ],
             },
-            &quot;type&quot;: &quot;A String&quot;, # [Required] The field data type. Possible values include STRING, BYTES, INTEGER, INT64 (same as INTEGER), FLOAT, FLOAT64 (same as FLOAT), NUMERIC, BIGNUMERIC, BOOLEAN, BOOL (same as BOOLEAN), TIMESTAMP, DATE, TIME, DATETIME, RECORD (where RECORD indicates that the field contains a nested schema) or STRUCT (same as RECORD).
+            &quot;precision&quot;: &quot;A String&quot;, # [Optional] Precision (maximum number of total digits in base 10) and scale (maximum number of digits in the fractional part in base 10) constraints for values of this field for NUMERIC or BIGNUMERIC. It is invalid to set precision or scale if type ≠ &quot;NUMERIC&quot; and ≠ &quot;BIGNUMERIC&quot;. If precision and scale are not specified, no value range constraint is imposed on this field insofar as values are permitted by the type. Values of this NUMERIC or BIGNUMERIC field must be in this range when: - Precision (P) and scale (S) are specified: [-10P-S + 10-S, 10P-S - 10-S] - Precision (P) is specified but not scale (and thus scale is interpreted to be equal to zero): [-10P + 1, 10P - 1]. Acceptable values for precision and scale if both are specified: - If type = &quot;NUMERIC&quot;: 1 ≤ precision - scale ≤ 29 and 0 ≤ scale ≤ 9. - If type = &quot;BIGNUMERIC&quot;: 1 ≤ precision - scale ≤ 38 and 0 ≤ scale ≤ 38. Acceptable values for precision if only precision is specified but not scale (and thus scale is interpreted to be equal to zero): - If type = &quot;NUMERIC&quot;: 1 ≤ precision ≤ 29. - If type = &quot;BIGNUMERIC&quot;: 1 ≤ precision ≤ 38. If scale is specified but not precision, then it is invalid.
+            &quot;scale&quot;: &quot;A String&quot;, # [Optional] See documentation for precision.
+            &quot;type&quot;: &quot;A String&quot;, # [Required] The field data type. Possible values include STRING, BYTES, INTEGER, INT64 (same as INTEGER), FLOAT, FLOAT64 (same as FLOAT), NUMERIC, BIGNUMERIC, BOOLEAN, BOOL (same as BOOLEAN), TIMESTAMP, DATE, TIME, DATETIME, INTERVAL, RECORD (where RECORD indicates that the field contains a nested schema) or STRUCT (same as RECORD).
           },
         ],
       },
@@ -1224,10 +1345,13 @@ Returns:
         },
       ],
     },
+    &quot;sessionInfo&quot;: { # [Output-only] [Preview] Information of the session if this job is part of one.
+      &quot;sessionId&quot;: &quot;A String&quot;, # [Output-only] // [Preview] Id of the session.
+    },
     &quot;startTime&quot;: &quot;A String&quot;, # [Output-only] Start time of this job, in milliseconds since the epoch. This field will be present when the job transitions from the PENDING state to either RUNNING or DONE.
     &quot;totalBytesProcessed&quot;: &quot;A String&quot;, # [Output-only] [Deprecated] Use the bytes processed in the query statistics instead.
     &quot;totalSlotMs&quot;: &quot;A String&quot;, # [Output-only] Slot-milliseconds for the job.
-    &quot;transactionInfoTemplate&quot;: { # [Output-only] [Alpha] Information of the multi-statement transaction if this job is part of one.
+    &quot;transactionInfo&quot;: { # [Output-only] [Alpha] Information of the multi-statement transaction if this job is part of one.
       &quot;transactionId&quot;: &quot;A String&quot;, # [Output-only] // [Alpha] Id of the transaction.
     },
   },
@@ -1305,18 +1429,22 @@ Returns:
             &quot;A String&quot;,
           ],
         },
+        &quot;collationSpec&quot;: &quot;A String&quot;, # Optional. Collation specification of the field. It only can be set on string type field.
         &quot;description&quot;: &quot;A String&quot;, # [Optional] The field description. The maximum length is 1,024 characters.
         &quot;fields&quot;: [ # [Optional] Describes the nested schema fields if the type property is set to RECORD.
           # Object with schema name: TableFieldSchema
         ],
+        &quot;maxLength&quot;: &quot;A String&quot;, # [Optional] Maximum length of values of this field for STRINGS or BYTES. If max_length is not specified, no maximum length constraint is imposed on this field. If type = &quot;STRING&quot;, then max_length represents the maximum UTF-8 length of strings in this field. If type = &quot;BYTES&quot;, then max_length represents the maximum number of bytes in this field. It is invalid to set this field if type ≠ &quot;STRING&quot; and ≠ &quot;BYTES&quot;.
         &quot;mode&quot;: &quot;A String&quot;, # [Optional] The field mode. Possible values include NULLABLE, REQUIRED and REPEATED. The default value is NULLABLE.
-        &quot;name&quot;: &quot;A String&quot;, # [Required] The field name. The name must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_), and must start with a letter or underscore. The maximum length is 128 characters.
+        &quot;name&quot;: &quot;A String&quot;, # [Required] The field name. The name must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_), and must start with a letter or underscore. The maximum length is 300 characters.
         &quot;policyTags&quot;: {
           &quot;names&quot;: [ # A list of category resource names. For example, &quot;projects/1/location/eu/taxonomies/2/policyTags/3&quot;. At most 1 policy tag is allowed.
             &quot;A String&quot;,
           ],
         },
-        &quot;type&quot;: &quot;A String&quot;, # [Required] The field data type. Possible values include STRING, BYTES, INTEGER, INT64 (same as INTEGER), FLOAT, FLOAT64 (same as FLOAT), NUMERIC, BIGNUMERIC, BOOLEAN, BOOL (same as BOOLEAN), TIMESTAMP, DATE, TIME, DATETIME, RECORD (where RECORD indicates that the field contains a nested schema) or STRUCT (same as RECORD).
+        &quot;precision&quot;: &quot;A String&quot;, # [Optional] Precision (maximum number of total digits in base 10) and scale (maximum number of digits in the fractional part in base 10) constraints for values of this field for NUMERIC or BIGNUMERIC. It is invalid to set precision or scale if type ≠ &quot;NUMERIC&quot; and ≠ &quot;BIGNUMERIC&quot;. If precision and scale are not specified, no value range constraint is imposed on this field insofar as values are permitted by the type. Values of this NUMERIC or BIGNUMERIC field must be in this range when: - Precision (P) and scale (S) are specified: [-10P-S + 10-S, 10P-S - 10-S] - Precision (P) is specified but not scale (and thus scale is interpreted to be equal to zero): [-10P + 1, 10P - 1]. Acceptable values for precision and scale if both are specified: - If type = &quot;NUMERIC&quot;: 1 ≤ precision - scale ≤ 29 and 0 ≤ scale ≤ 9. - If type = &quot;BIGNUMERIC&quot;: 1 ≤ precision - scale ≤ 38 and 0 ≤ scale ≤ 38. Acceptable values for precision if only precision is specified but not scale (and thus scale is interpreted to be equal to zero): - If type = &quot;NUMERIC&quot;: 1 ≤ precision ≤ 29. - If type = &quot;BIGNUMERIC&quot;: 1 ≤ precision ≤ 38. If scale is specified but not precision, then it is invalid.
+        &quot;scale&quot;: &quot;A String&quot;, # [Optional] See documentation for precision.
+        &quot;type&quot;: &quot;A String&quot;, # [Required] The field data type. Possible values include STRING, BYTES, INTEGER, INT64 (same as INTEGER), FLOAT, FLOAT64 (same as FLOAT), NUMERIC, BIGNUMERIC, BOOLEAN, BOOL (same as BOOLEAN), TIMESTAMP, DATE, TIME, DATETIME, INTERVAL, RECORD (where RECORD indicates that the field contains a nested schema) or STRUCT (same as RECORD).
       },
     ],
   },
@@ -1413,7 +1541,7 @@ Args:
         ],
       },
       &quot;createDisposition&quot;: &quot;A String&quot;, # [Optional] Specifies whether the job is allowed to create new tables. The following values are supported: CREATE_IF_NEEDED: If the table does not exist, BigQuery creates the table. CREATE_NEVER: The table must already exist. If it does not, a &#x27;notFound&#x27; error is returned in the job result. The default value is CREATE_IF_NEEDED. Creation, truncation and append actions occur as one atomic update upon job completion.
-      &quot;decimalTargetTypes&quot;: [ # Defines the list of possible SQL data types to which the source decimal values are converted. This list and the precision and the scale parameters of the decimal field determine the target type. In the order of NUMERIC, BIGNUMERIC ([Preview](/products/#product-launch-stages)), and STRING, a type is picked if it is in the specified list and if it supports the precision and the scale. STRING supports all precision and scale values. If none of the listed types supports the precision and the scale, the type supporting the widest range in the specified list is picked, and if a value exceeds the supported range when reading the data, an error will be thrown. Example: Suppose the value of this field is [&quot;NUMERIC&quot;, &quot;BIGNUMERIC&quot;]. If (precision,scale) is: * (38,9) -&gt; NUMERIC; * (39,9) -&gt; BIGNUMERIC (NUMERIC cannot hold 30 integer digits); * (38,10) -&gt; BIGNUMERIC (NUMERIC cannot hold 10 fractional digits); * (76,38) -&gt; BIGNUMERIC; * (77,38) -&gt; BIGNUMERIC (error if value exeeds supported range). This field cannot contain duplicate types. The order of the types in this field is ignored. For example, [&quot;BIGNUMERIC&quot;, &quot;NUMERIC&quot;] is the same as [&quot;NUMERIC&quot;, &quot;BIGNUMERIC&quot;] and NUMERIC always takes precedence over BIGNUMERIC. Defaults to [&quot;NUMERIC&quot;, &quot;STRING&quot;] for ORC and [&quot;NUMERIC&quot;] for the other file formats.
+      &quot;decimalTargetTypes&quot;: [ # [Optional] Defines the list of possible SQL data types to which the source decimal values are converted. This list and the precision and the scale parameters of the decimal field determine the target type. In the order of NUMERIC, BIGNUMERIC, and STRING, a type is picked if it is in the specified list and if it supports the precision and the scale. STRING supports all precision and scale values. If none of the listed types supports the precision and the scale, the type supporting the widest range in the specified list is picked, and if a value exceeds the supported range when reading the data, an error will be thrown. Example: Suppose the value of this field is [&quot;NUMERIC&quot;, &quot;BIGNUMERIC&quot;]. If (precision,scale) is: (38,9) -&gt; NUMERIC; (39,9) -&gt; BIGNUMERIC (NUMERIC cannot hold 30 integer digits); (38,10) -&gt; BIGNUMERIC (NUMERIC cannot hold 10 fractional digits); (76,38) -&gt; BIGNUMERIC; (77,38) -&gt; BIGNUMERIC (error if value exeeds supported range). This field cannot contain duplicate types. The order of the types in this field is ignored. For example, [&quot;BIGNUMERIC&quot;, &quot;NUMERIC&quot;] is the same as [&quot;NUMERIC&quot;, &quot;BIGNUMERIC&quot;] and NUMERIC always takes precedence over BIGNUMERIC. Defaults to [&quot;NUMERIC&quot;, &quot;STRING&quot;] for ORC and [&quot;NUMERIC&quot;] for the other file formats.
         &quot;A String&quot;,
       ],
       &quot;destinationEncryptionConfiguration&quot;: { # Custom encryption configuration (e.g., Cloud KMS keys).
@@ -1426,6 +1554,7 @@ Args:
       },
       &quot;destinationTableProperties&quot;: { # [Beta] [Optional] Properties with which to create the destination table if it is new.
         &quot;description&quot;: &quot;A String&quot;, # [Optional] The description for the destination table. This will only be used if the destination table is newly created. If the table already exists and a value different than the current description is provided, the job will fail.
+        &quot;expirationTime&quot;: &quot;A String&quot;, # [Internal] This field is for Google internal use only.
         &quot;friendlyName&quot;: &quot;A String&quot;, # [Optional] The friendly name for the destination table. This will only be used if the destination table is newly created. If the table already exists and a value different than the current friendly name is provided, the job will fail.
         &quot;labels&quot;: { # [Optional] The labels associated with this table. You can use these to organize and group your tables. This will only be used if the destination table is newly created. If the table already exists and labels are different than the current labels are provided, the job will fail.
           &quot;a_key&quot;: &quot;A String&quot;,
@@ -1466,18 +1595,22 @@ Args:
                 &quot;A String&quot;,
               ],
             },
+            &quot;collationSpec&quot;: &quot;A String&quot;, # Optional. Collation specification of the field. It only can be set on string type field.
             &quot;description&quot;: &quot;A String&quot;, # [Optional] The field description. The maximum length is 1,024 characters.
             &quot;fields&quot;: [ # [Optional] Describes the nested schema fields if the type property is set to RECORD.
               # Object with schema name: TableFieldSchema
             ],
+            &quot;maxLength&quot;: &quot;A String&quot;, # [Optional] Maximum length of values of this field for STRINGS or BYTES. If max_length is not specified, no maximum length constraint is imposed on this field. If type = &quot;STRING&quot;, then max_length represents the maximum UTF-8 length of strings in this field. If type = &quot;BYTES&quot;, then max_length represents the maximum number of bytes in this field. It is invalid to set this field if type ≠ &quot;STRING&quot; and ≠ &quot;BYTES&quot;.
             &quot;mode&quot;: &quot;A String&quot;, # [Optional] The field mode. Possible values include NULLABLE, REQUIRED and REPEATED. The default value is NULLABLE.
-            &quot;name&quot;: &quot;A String&quot;, # [Required] The field name. The name must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_), and must start with a letter or underscore. The maximum length is 128 characters.
+            &quot;name&quot;: &quot;A String&quot;, # [Required] The field name. The name must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_), and must start with a letter or underscore. The maximum length is 300 characters.
             &quot;policyTags&quot;: {
               &quot;names&quot;: [ # A list of category resource names. For example, &quot;projects/1/location/eu/taxonomies/2/policyTags/3&quot;. At most 1 policy tag is allowed.
                 &quot;A String&quot;,
               ],
             },
-            &quot;type&quot;: &quot;A String&quot;, # [Required] The field data type. Possible values include STRING, BYTES, INTEGER, INT64 (same as INTEGER), FLOAT, FLOAT64 (same as FLOAT), NUMERIC, BIGNUMERIC, BOOLEAN, BOOL (same as BOOLEAN), TIMESTAMP, DATE, TIME, DATETIME, RECORD (where RECORD indicates that the field contains a nested schema) or STRUCT (same as RECORD).
+            &quot;precision&quot;: &quot;A String&quot;, # [Optional] Precision (maximum number of total digits in base 10) and scale (maximum number of digits in the fractional part in base 10) constraints for values of this field for NUMERIC or BIGNUMERIC. It is invalid to set precision or scale if type ≠ &quot;NUMERIC&quot; and ≠ &quot;BIGNUMERIC&quot;. If precision and scale are not specified, no value range constraint is imposed on this field insofar as values are permitted by the type. Values of this NUMERIC or BIGNUMERIC field must be in this range when: - Precision (P) and scale (S) are specified: [-10P-S + 10-S, 10P-S - 10-S] - Precision (P) is specified but not scale (and thus scale is interpreted to be equal to zero): [-10P + 1, 10P - 1]. Acceptable values for precision and scale if both are specified: - If type = &quot;NUMERIC&quot;: 1 ≤ precision - scale ≤ 29 and 0 ≤ scale ≤ 9. - If type = &quot;BIGNUMERIC&quot;: 1 ≤ precision - scale ≤ 38 and 0 ≤ scale ≤ 38. Acceptable values for precision if only precision is specified but not scale (and thus scale is interpreted to be equal to zero): - If type = &quot;NUMERIC&quot;: 1 ≤ precision ≤ 29. - If type = &quot;BIGNUMERIC&quot;: 1 ≤ precision ≤ 38. If scale is specified but not precision, then it is invalid.
+            &quot;scale&quot;: &quot;A String&quot;, # [Optional] See documentation for precision.
+            &quot;type&quot;: &quot;A String&quot;, # [Required] The field data type. Possible values include STRING, BYTES, INTEGER, INT64 (same as INTEGER), FLOAT, FLOAT64 (same as FLOAT), NUMERIC, BIGNUMERIC, BOOLEAN, BOOL (same as BOOLEAN), TIMESTAMP, DATE, TIME, DATETIME, INTERVAL, RECORD (where RECORD indicates that the field contains a nested schema) or STRUCT (same as RECORD).
           },
         ],
       },
@@ -1497,7 +1630,7 @@ Args:
         &quot;requirePartitionFilter&quot;: True or False,
         &quot;type&quot;: &quot;A String&quot;, # [Required] The supported types are DAY, HOUR, MONTH, and YEAR, which will generate one partition per day, hour, month, and year, respectively. When the type is not specified, the default behavior is DAY.
       },
-      &quot;useAvroLogicalTypes&quot;: True or False, # [Optional] If sourceFormat is set to &quot;AVRO&quot;, indicates whether to enable interpreting logical types into their corresponding types (ie. TIMESTAMP), instead of only using their raw types (ie. INTEGER).
+      &quot;useAvroLogicalTypes&quot;: True or False, # [Optional] If sourceFormat is set to &quot;AVRO&quot;, indicates whether to interpret logical types as the corresponding BigQuery data type (for example, TIMESTAMP), instead of using the raw type (for example, INTEGER).
       &quot;writeDisposition&quot;: &quot;A String&quot;, # [Optional] Specifies the action that occurs if the destination table already exists. The following values are supported: WRITE_TRUNCATE: If the table already exists, BigQuery overwrites the table data. WRITE_APPEND: If the table already exists, BigQuery appends the data to the table. WRITE_EMPTY: If the table already exists and contains data, a &#x27;duplicate&#x27; error is returned in the job result. The default value is WRITE_APPEND. Each action is atomic and only occurs if BigQuery is able to complete the job successfully. Creation, truncation and append actions occur as one atomic update upon job completion.
     },
     &quot;query&quot;: { # [Pick one] Configures a query job.
@@ -1514,6 +1647,7 @@ Args:
         },
       ],
       &quot;createDisposition&quot;: &quot;A String&quot;, # [Optional] Specifies whether the job is allowed to create new tables. The following values are supported: CREATE_IF_NEEDED: If the table does not exist, BigQuery creates the table. CREATE_NEVER: The table must already exist. If it does not, a &#x27;notFound&#x27; error is returned in the job result. The default value is CREATE_IF_NEEDED. Creation, truncation and append actions occur as one atomic update upon job completion.
+      &quot;createSession&quot;: True or False, # If true, creates a new session, where session id will be a server generated random id. If false, runs query with an existing session_id passed in ConnectionProperty, otherwise runs query in non-session mode.
       &quot;defaultDataset&quot;: { # [Optional] Specifies the default dataset to use for unqualified table names in the query. Note that this does not alter behavior of unqualified dataset names.
         &quot;datasetId&quot;: &quot;A String&quot;, # [Required] A unique ID for this dataset, without the project name. The ID must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum length is 1,024 characters.
         &quot;projectId&quot;: &quot;A String&quot;, # [Optional] The ID of the project containing this dataset.
@@ -1572,6 +1706,9 @@ Args:
       &quot;tableDefinitions&quot;: { # [Optional] If querying an external data source outside of BigQuery, describes the data format, location and other properties of the data source. By defining these properties, the data source can then be queried as if it were a standard BigQuery table.
         &quot;a_key&quot;: {
           &quot;autodetect&quot;: True or False, # Try to detect schema and format options automatically. Any option specified explicitly will be honored.
+          &quot;avroOptions&quot;: { # Additional properties to set if sourceFormat is set to Avro.
+            &quot;useAvroLogicalTypes&quot;: True or False, # [Optional] If sourceFormat is set to &quot;AVRO&quot;, indicates whether to interpret logical types as the corresponding BigQuery data type (for example, TIMESTAMP), instead of using the raw type (for example, INTEGER).
+          },
           &quot;bigtableOptions&quot;: { # [Optional] Additional options if sourceFormat is set to BIGTABLE.
             &quot;columnFamilies&quot;: [ # [Optional] List of column families to expose in the table schema along with their types. This list restricts the column families that can be referenced in queries and specifies their value types. You can use this list to do type conversions - see the &#x27;type&#x27; field for more details. If you leave this list empty, all column families are present in the table schema and their values are read as BYTES. During a query only the column families referenced in that query are read from Bigtable.
               {
@@ -1601,9 +1738,13 @@ Args:
             &quot;allowQuotedNewlines&quot;: True or False, # [Optional] Indicates if BigQuery should allow quoted data sections that contain newline characters in a CSV file. The default value is false.
             &quot;encoding&quot;: &quot;A String&quot;, # [Optional] The character encoding of the data. The supported values are UTF-8 or ISO-8859-1. The default value is UTF-8. BigQuery decodes the data after the raw, binary data has been split using the values of the quote and fieldDelimiter properties.
             &quot;fieldDelimiter&quot;: &quot;A String&quot;, # [Optional] The separator for fields in a CSV file. BigQuery converts the string to ISO-8859-1 encoding, and then uses the first byte of the encoded string to split the data in its raw, binary state. BigQuery also supports the escape sequence &quot;\t&quot; to specify a tab separator. The default value is a comma (&#x27;,&#x27;).
+            &quot;null_marker&quot;: &quot;A String&quot;, # [Optional] An custom string that will represent a NULL value in CSV import data.
             &quot;quote&quot;: &quot;&quot;&quot;, # [Optional] The value that is used to quote data sections in a CSV file. BigQuery converts the string to ISO-8859-1 encoding, and then uses the first byte of the encoded string to split the data in its raw, binary state. The default value is a double-quote (&#x27;&quot;&#x27;). If your data does not contain quoted sections, set the property value to an empty string. If your data contains quoted newline characters, you must also set the allowQuotedNewlines property to true.
             &quot;skipLeadingRows&quot;: &quot;A String&quot;, # [Optional] The number of rows at the top of a CSV file that BigQuery will skip when reading the data. The default value is 0. This property is useful if you have header rows in the file that should be skipped. When autodetect is on, the behavior is the following: * skipLeadingRows unspecified - Autodetect tries to detect headers in the first row. If they are not detected, the row is read as data. Otherwise data is read starting from the second row. * skipLeadingRows is 0 - Instructs autodetect that there are no headers and data should be read starting from the first row. * skipLeadingRows = N &gt; 0 - Autodetect skips N-1 rows and tries to detect headers in row N. If headers are not detected, row N is just skipped. Otherwise row N is used to extract column names for the detected schema.
           },
+          &quot;decimalTargetTypes&quot;: [ # [Optional] Defines the list of possible SQL data types to which the source decimal values are converted. This list and the precision and the scale parameters of the decimal field determine the target type. In the order of NUMERIC, BIGNUMERIC, and STRING, a type is picked if it is in the specified list and if it supports the precision and the scale. STRING supports all precision and scale values. If none of the listed types supports the precision and the scale, the type supporting the widest range in the specified list is picked, and if a value exceeds the supported range when reading the data, an error will be thrown. Example: Suppose the value of this field is [&quot;NUMERIC&quot;, &quot;BIGNUMERIC&quot;]. If (precision,scale) is: (38,9) -&gt; NUMERIC; (39,9) -&gt; BIGNUMERIC (NUMERIC cannot hold 30 integer digits); (38,10) -&gt; BIGNUMERIC (NUMERIC cannot hold 10 fractional digits); (76,38) -&gt; BIGNUMERIC; (77,38) -&gt; BIGNUMERIC (error if value exeeds supported range). This field cannot contain duplicate types. The order of the types in this field is ignored. For example, [&quot;BIGNUMERIC&quot;, &quot;NUMERIC&quot;] is the same as [&quot;NUMERIC&quot;, &quot;BIGNUMERIC&quot;] and NUMERIC always takes precedence over BIGNUMERIC. Defaults to [&quot;NUMERIC&quot;, &quot;STRING&quot;] for ORC and [&quot;NUMERIC&quot;] for the other file formats.
+            &quot;A String&quot;,
+          ],
           &quot;googleSheetsOptions&quot;: { # [Optional] Additional options if sourceFormat is set to GOOGLE_SHEETS.
             &quot;range&quot;: &quot;A String&quot;, # [Optional] Range of a sheet to query from. Only used when non-empty. Typical format: sheet_name!top_left_cell_id:bottom_right_cell_id For example: sheet1!A1:B20
             &quot;skipLeadingRows&quot;: &quot;A String&quot;, # [Optional] The number of rows at the top of a sheet that BigQuery will skip when reading the data. The default value is 0. This property is useful if you have header rows that should be skipped. When autodetect is on, behavior is the following: * skipLeadingRows unspecified - Autodetect tries to detect headers in the first row. If they are not detected, the row is read as data. Otherwise data is read starting from the second row. * skipLeadingRows is 0 - Instructs autodetect that there are no headers and data should be read starting from the first row. * skipLeadingRows = N &gt; 0 - Autodetect skips N-1 rows and tries to detect headers in row N. If headers are not detected, row N is just skipped. Otherwise row N is used to extract column names for the detected schema.
@@ -1627,18 +1768,22 @@ Args:
                     &quot;A String&quot;,
                   ],
                 },
+                &quot;collationSpec&quot;: &quot;A String&quot;, # Optional. Collation specification of the field. It only can be set on string type field.
                 &quot;description&quot;: &quot;A String&quot;, # [Optional] The field description. The maximum length is 1,024 characters.
                 &quot;fields&quot;: [ # [Optional] Describes the nested schema fields if the type property is set to RECORD.
                   # Object with schema name: TableFieldSchema
                 ],
+                &quot;maxLength&quot;: &quot;A String&quot;, # [Optional] Maximum length of values of this field for STRINGS or BYTES. If max_length is not specified, no maximum length constraint is imposed on this field. If type = &quot;STRING&quot;, then max_length represents the maximum UTF-8 length of strings in this field. If type = &quot;BYTES&quot;, then max_length represents the maximum number of bytes in this field. It is invalid to set this field if type ≠ &quot;STRING&quot; and ≠ &quot;BYTES&quot;.
                 &quot;mode&quot;: &quot;A String&quot;, # [Optional] The field mode. Possible values include NULLABLE, REQUIRED and REPEATED. The default value is NULLABLE.
-                &quot;name&quot;: &quot;A String&quot;, # [Required] The field name. The name must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_), and must start with a letter or underscore. The maximum length is 128 characters.
+                &quot;name&quot;: &quot;A String&quot;, # [Required] The field name. The name must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_), and must start with a letter or underscore. The maximum length is 300 characters.
                 &quot;policyTags&quot;: {
                   &quot;names&quot;: [ # A list of category resource names. For example, &quot;projects/1/location/eu/taxonomies/2/policyTags/3&quot;. At most 1 policy tag is allowed.
                     &quot;A String&quot;,
                   ],
                 },
-                &quot;type&quot;: &quot;A String&quot;, # [Required] The field data type. Possible values include STRING, BYTES, INTEGER, INT64 (same as INTEGER), FLOAT, FLOAT64 (same as FLOAT), NUMERIC, BIGNUMERIC, BOOLEAN, BOOL (same as BOOLEAN), TIMESTAMP, DATE, TIME, DATETIME, RECORD (where RECORD indicates that the field contains a nested schema) or STRUCT (same as RECORD).
+                &quot;precision&quot;: &quot;A String&quot;, # [Optional] Precision (maximum number of total digits in base 10) and scale (maximum number of digits in the fractional part in base 10) constraints for values of this field for NUMERIC or BIGNUMERIC. It is invalid to set precision or scale if type ≠ &quot;NUMERIC&quot; and ≠ &quot;BIGNUMERIC&quot;. If precision and scale are not specified, no value range constraint is imposed on this field insofar as values are permitted by the type. Values of this NUMERIC or BIGNUMERIC field must be in this range when: - Precision (P) and scale (S) are specified: [-10P-S + 10-S, 10P-S - 10-S] - Precision (P) is specified but not scale (and thus scale is interpreted to be equal to zero): [-10P + 1, 10P - 1]. Acceptable values for precision and scale if both are specified: - If type = &quot;NUMERIC&quot;: 1 ≤ precision - scale ≤ 29 and 0 ≤ scale ≤ 9. - If type = &quot;BIGNUMERIC&quot;: 1 ≤ precision - scale ≤ 38 and 0 ≤ scale ≤ 38. Acceptable values for precision if only precision is specified but not scale (and thus scale is interpreted to be equal to zero): - If type = &quot;NUMERIC&quot;: 1 ≤ precision ≤ 29. - If type = &quot;BIGNUMERIC&quot;: 1 ≤ precision ≤ 38. If scale is specified but not precision, then it is invalid.
+                &quot;scale&quot;: &quot;A String&quot;, # [Optional] See documentation for precision.
+                &quot;type&quot;: &quot;A String&quot;, # [Required] The field data type. Possible values include STRING, BYTES, INTEGER, INT64 (same as INTEGER), FLOAT, FLOAT64 (same as FLOAT), NUMERIC, BIGNUMERIC, BOOLEAN, BOOL (same as BOOLEAN), TIMESTAMP, DATE, TIME, DATETIME, INTERVAL, RECORD (where RECORD indicates that the field contains a nested schema) or STRUCT (same as RECORD).
               },
             ],
           },
@@ -1694,9 +1839,23 @@ Args:
     &quot;numChildJobs&quot;: &quot;A String&quot;, # [Output-only] Number of child jobs executed.
     &quot;parentJobId&quot;: &quot;A String&quot;, # [Output-only] If this is a child job, the id of the parent.
     &quot;query&quot;: { # [Output-only] Statistics for a query job.
+      &quot;biEngineStatistics&quot;: { # BI Engine specific Statistics. [Output-only] BI Engine specific Statistics.
+        &quot;biEngineMode&quot;: &quot;$(stats.bi_engine_mode)&quot;, # [Output-only] Specifies which mode of BI Engine acceleration was performed (if any).
+        &quot;biEngineReasons&quot;: [ # In case of DISABLED or PARTIAL bi_engine_mode, these contain the explanatory reasons as to why BI Engine could not accelerate. In case the full query was accelerated, this field is not populated.
+          {
+            &quot;code&quot;: &quot;$(reason.code)&quot;, # [Output-only] High-level BI Engine reason for partial or disabled acceleration.
+            &quot;message&quot;: &quot;$(reason.message)&quot;, # [Output-only] Free form human-readable reason for partial or disabled acceleration.
+          },
+        ],
+      },
       &quot;billingTier&quot;: 42, # [Output-only] Billing tier for the job.
       &quot;cacheHit&quot;: True or False, # [Output-only] Whether the query result was fetched from the query cache.
       &quot;ddlAffectedRowAccessPolicyCount&quot;: &quot;A String&quot;, # [Output-only] [Preview] The number of row access policies affected by a DDL statement. Present only for DROP ALL ROW ACCESS POLICIES queries.
+      &quot;ddlDestinationTable&quot;: { # [Output-only] The DDL destination table. Present only for ALTER TABLE RENAME TO queries. Note that ddl_target_table is used just for its type information.
+        &quot;datasetId&quot;: &quot;A String&quot;, # [Required] The ID of the dataset containing this table.
+        &quot;projectId&quot;: &quot;A String&quot;, # [Required] The ID of the project containing this table.
+        &quot;tableId&quot;: &quot;A String&quot;, # [Required] The ID of the table. The ID must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum length is 1,024 characters.
+      },
       &quot;ddlOperationPerformed&quot;: &quot;A String&quot;, # The DDL operation performed, possibly dependent on the pre-existence of the DDL target. Possible values (new values might be added in the future): &quot;CREATE&quot;: The query created the DDL target. &quot;SKIP&quot;: No-op. Example cases: the query is CREATE TABLE IF NOT EXISTS while the table already exists, or the query is DROP TABLE IF EXISTS while the table does not exist. &quot;REPLACE&quot;: The query replaced the DDL target. Example case: the query is CREATE OR REPLACE TABLE, and the table already exists. &quot;DROP&quot;: The query deleted the DDL target.
       &quot;ddlTargetDataset&quot;: { # [Output-only] The DDL target dataset. Present only for CREATE/ALTER/DROP SCHEMA queries.
         &quot;datasetId&quot;: &quot;A String&quot;, # [Required] A unique ID for this dataset, without the project name. The ID must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum length is 1,024 characters.
@@ -1718,7 +1877,24 @@ Args:
         &quot;projectId&quot;: &quot;A String&quot;, # [Required] The ID of the project containing this table.
         &quot;tableId&quot;: &quot;A String&quot;, # [Required] The ID of the table. The ID must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum length is 1,024 characters.
       },
+      &quot;dmlStats&quot;: { # [Output-only] Detailed statistics for DML statements Present only for DML statements INSERT, UPDATE, DELETE or TRUNCATE.
+        &quot;deletedRowCount&quot;: &quot;A String&quot;, # Number of deleted Rows. populated by DML DELETE, MERGE and TRUNCATE statements.
+        &quot;insertedRowCount&quot;: &quot;A String&quot;, # Number of inserted Rows. Populated by DML INSERT and MERGE statements.
+        &quot;updatedRowCount&quot;: &quot;A String&quot;, # Number of updated Rows. Populated by DML UPDATE and MERGE statements.
+      },
       &quot;estimatedBytesProcessed&quot;: &quot;A String&quot;, # [Output-only] The original estimate of bytes processed for the job.
+      &quot;mlStatistics&quot;: { # [Output-only] Statistics of a BigQuery ML training job.
+        &quot;iterationResults&quot;: [ # Results for all completed iterations.
+          {
+            &quot;durationMs&quot;: &quot;A String&quot;, # Time taken to run the iteration in milliseconds.
+            &quot;evalLoss&quot;: 3.14, # Loss computed on the eval data at the end of iteration.
+            &quot;index&quot;: 42, # Index of the iteration, 0 based.
+            &quot;learnRate&quot;: 3.14, # Learn rate used for this iteration.
+            &quot;trainingLoss&quot;: 3.14, # Loss computed on the training data at the end of iteration.
+          },
+        ],
+        &quot;maxIterations&quot;: &quot;A String&quot;, # Maximum number of iterations specified as max_iterations in the &#x27;CREATE MODEL&#x27; query. The actual number of iterations may be less than this number due to early stop.
+      },
       &quot;modelTraining&quot;: { # [Output-only, Beta] Information about create model query job progress.
         &quot;currentIteration&quot;: 42, # [Output-only, Beta] Index of current ML training iteration. Updated during create model query job to show job progress.
         &quot;expectedTotalIterations&quot;: &quot;A String&quot;, # [Output-only, Beta] Expected number of iterations for the create model query job specified as num_iterations in the input query. The actual total number of iterations may be less than this number due to early stop.
@@ -1797,18 +1973,22 @@ Args:
                 &quot;A String&quot;,
               ],
             },
+            &quot;collationSpec&quot;: &quot;A String&quot;, # Optional. Collation specification of the field. It only can be set on string type field.
             &quot;description&quot;: &quot;A String&quot;, # [Optional] The field description. The maximum length is 1,024 characters.
             &quot;fields&quot;: [ # [Optional] Describes the nested schema fields if the type property is set to RECORD.
               # Object with schema name: TableFieldSchema
             ],
+            &quot;maxLength&quot;: &quot;A String&quot;, # [Optional] Maximum length of values of this field for STRINGS or BYTES. If max_length is not specified, no maximum length constraint is imposed on this field. If type = &quot;STRING&quot;, then max_length represents the maximum UTF-8 length of strings in this field. If type = &quot;BYTES&quot;, then max_length represents the maximum number of bytes in this field. It is invalid to set this field if type ≠ &quot;STRING&quot; and ≠ &quot;BYTES&quot;.
             &quot;mode&quot;: &quot;A String&quot;, # [Optional] The field mode. Possible values include NULLABLE, REQUIRED and REPEATED. The default value is NULLABLE.
-            &quot;name&quot;: &quot;A String&quot;, # [Required] The field name. The name must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_), and must start with a letter or underscore. The maximum length is 128 characters.
+            &quot;name&quot;: &quot;A String&quot;, # [Required] The field name. The name must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_), and must start with a letter or underscore. The maximum length is 300 characters.
             &quot;policyTags&quot;: {
               &quot;names&quot;: [ # A list of category resource names. For example, &quot;projects/1/location/eu/taxonomies/2/policyTags/3&quot;. At most 1 policy tag is allowed.
                 &quot;A String&quot;,
               ],
             },
-            &quot;type&quot;: &quot;A String&quot;, # [Required] The field data type. Possible values include STRING, BYTES, INTEGER, INT64 (same as INTEGER), FLOAT, FLOAT64 (same as FLOAT), NUMERIC, BIGNUMERIC, BOOLEAN, BOOL (same as BOOLEAN), TIMESTAMP, DATE, TIME, DATETIME, RECORD (where RECORD indicates that the field contains a nested schema) or STRUCT (same as RECORD).
+            &quot;precision&quot;: &quot;A String&quot;, # [Optional] Precision (maximum number of total digits in base 10) and scale (maximum number of digits in the fractional part in base 10) constraints for values of this field for NUMERIC or BIGNUMERIC. It is invalid to set precision or scale if type ≠ &quot;NUMERIC&quot; and ≠ &quot;BIGNUMERIC&quot;. If precision and scale are not specified, no value range constraint is imposed on this field insofar as values are permitted by the type. Values of this NUMERIC or BIGNUMERIC field must be in this range when: - Precision (P) and scale (S) are specified: [-10P-S + 10-S, 10P-S - 10-S] - Precision (P) is specified but not scale (and thus scale is interpreted to be equal to zero): [-10P + 1, 10P - 1]. Acceptable values for precision and scale if both are specified: - If type = &quot;NUMERIC&quot;: 1 ≤ precision - scale ≤ 29 and 0 ≤ scale ≤ 9. - If type = &quot;BIGNUMERIC&quot;: 1 ≤ precision - scale ≤ 38 and 0 ≤ scale ≤ 38. Acceptable values for precision if only precision is specified but not scale (and thus scale is interpreted to be equal to zero): - If type = &quot;NUMERIC&quot;: 1 ≤ precision ≤ 29. - If type = &quot;BIGNUMERIC&quot;: 1 ≤ precision ≤ 38. If scale is specified but not precision, then it is invalid.
+            &quot;scale&quot;: &quot;A String&quot;, # [Optional] See documentation for precision.
+            &quot;type&quot;: &quot;A String&quot;, # [Required] The field data type. Possible values include STRING, BYTES, INTEGER, INT64 (same as INTEGER), FLOAT, FLOAT64 (same as FLOAT), NUMERIC, BIGNUMERIC, BOOLEAN, BOOL (same as BOOLEAN), TIMESTAMP, DATE, TIME, DATETIME, INTERVAL, RECORD (where RECORD indicates that the field contains a nested schema) or STRUCT (same as RECORD).
           },
         ],
       },
@@ -1879,10 +2059,13 @@ Args:
         },
       ],
     },
+    &quot;sessionInfo&quot;: { # [Output-only] [Preview] Information of the session if this job is part of one.
+      &quot;sessionId&quot;: &quot;A String&quot;, # [Output-only] // [Preview] Id of the session.
+    },
     &quot;startTime&quot;: &quot;A String&quot;, # [Output-only] Start time of this job, in milliseconds since the epoch. This field will be present when the job transitions from the PENDING state to either RUNNING or DONE.
     &quot;totalBytesProcessed&quot;: &quot;A String&quot;, # [Output-only] [Deprecated] Use the bytes processed in the query statistics instead.
     &quot;totalSlotMs&quot;: &quot;A String&quot;, # [Output-only] Slot-milliseconds for the job.
-    &quot;transactionInfoTemplate&quot;: { # [Output-only] [Alpha] Information of the multi-statement transaction if this job is part of one.
+    &quot;transactionInfo&quot;: { # [Output-only] [Alpha] Information of the multi-statement transaction if this job is part of one.
       &quot;transactionId&quot;: &quot;A String&quot;, # [Output-only] // [Alpha] Id of the transaction.
     },
   },
@@ -1977,7 +2160,7 @@ Returns:
         ],
       },
       &quot;createDisposition&quot;: &quot;A String&quot;, # [Optional] Specifies whether the job is allowed to create new tables. The following values are supported: CREATE_IF_NEEDED: If the table does not exist, BigQuery creates the table. CREATE_NEVER: The table must already exist. If it does not, a &#x27;notFound&#x27; error is returned in the job result. The default value is CREATE_IF_NEEDED. Creation, truncation and append actions occur as one atomic update upon job completion.
-      &quot;decimalTargetTypes&quot;: [ # Defines the list of possible SQL data types to which the source decimal values are converted. This list and the precision and the scale parameters of the decimal field determine the target type. In the order of NUMERIC, BIGNUMERIC ([Preview](/products/#product-launch-stages)), and STRING, a type is picked if it is in the specified list and if it supports the precision and the scale. STRING supports all precision and scale values. If none of the listed types supports the precision and the scale, the type supporting the widest range in the specified list is picked, and if a value exceeds the supported range when reading the data, an error will be thrown. Example: Suppose the value of this field is [&quot;NUMERIC&quot;, &quot;BIGNUMERIC&quot;]. If (precision,scale) is: * (38,9) -&gt; NUMERIC; * (39,9) -&gt; BIGNUMERIC (NUMERIC cannot hold 30 integer digits); * (38,10) -&gt; BIGNUMERIC (NUMERIC cannot hold 10 fractional digits); * (76,38) -&gt; BIGNUMERIC; * (77,38) -&gt; BIGNUMERIC (error if value exeeds supported range). This field cannot contain duplicate types. The order of the types in this field is ignored. For example, [&quot;BIGNUMERIC&quot;, &quot;NUMERIC&quot;] is the same as [&quot;NUMERIC&quot;, &quot;BIGNUMERIC&quot;] and NUMERIC always takes precedence over BIGNUMERIC. Defaults to [&quot;NUMERIC&quot;, &quot;STRING&quot;] for ORC and [&quot;NUMERIC&quot;] for the other file formats.
+      &quot;decimalTargetTypes&quot;: [ # [Optional] Defines the list of possible SQL data types to which the source decimal values are converted. This list and the precision and the scale parameters of the decimal field determine the target type. In the order of NUMERIC, BIGNUMERIC, and STRING, a type is picked if it is in the specified list and if it supports the precision and the scale. STRING supports all precision and scale values. If none of the listed types supports the precision and the scale, the type supporting the widest range in the specified list is picked, and if a value exceeds the supported range when reading the data, an error will be thrown. Example: Suppose the value of this field is [&quot;NUMERIC&quot;, &quot;BIGNUMERIC&quot;]. If (precision,scale) is: (38,9) -&gt; NUMERIC; (39,9) -&gt; BIGNUMERIC (NUMERIC cannot hold 30 integer digits); (38,10) -&gt; BIGNUMERIC (NUMERIC cannot hold 10 fractional digits); (76,38) -&gt; BIGNUMERIC; (77,38) -&gt; BIGNUMERIC (error if value exeeds supported range). This field cannot contain duplicate types. The order of the types in this field is ignored. For example, [&quot;BIGNUMERIC&quot;, &quot;NUMERIC&quot;] is the same as [&quot;NUMERIC&quot;, &quot;BIGNUMERIC&quot;] and NUMERIC always takes precedence over BIGNUMERIC. Defaults to [&quot;NUMERIC&quot;, &quot;STRING&quot;] for ORC and [&quot;NUMERIC&quot;] for the other file formats.
         &quot;A String&quot;,
       ],
       &quot;destinationEncryptionConfiguration&quot;: { # Custom encryption configuration (e.g., Cloud KMS keys).
@@ -1990,6 +2173,7 @@ Returns:
       },
       &quot;destinationTableProperties&quot;: { # [Beta] [Optional] Properties with which to create the destination table if it is new.
         &quot;description&quot;: &quot;A String&quot;, # [Optional] The description for the destination table. This will only be used if the destination table is newly created. If the table already exists and a value different than the current description is provided, the job will fail.
+        &quot;expirationTime&quot;: &quot;A String&quot;, # [Internal] This field is for Google internal use only.
         &quot;friendlyName&quot;: &quot;A String&quot;, # [Optional] The friendly name for the destination table. This will only be used if the destination table is newly created. If the table already exists and a value different than the current friendly name is provided, the job will fail.
         &quot;labels&quot;: { # [Optional] The labels associated with this table. You can use these to organize and group your tables. This will only be used if the destination table is newly created. If the table already exists and labels are different than the current labels are provided, the job will fail.
           &quot;a_key&quot;: &quot;A String&quot;,
@@ -2030,18 +2214,22 @@ Returns:
                 &quot;A String&quot;,
               ],
             },
+            &quot;collationSpec&quot;: &quot;A String&quot;, # Optional. Collation specification of the field. It only can be set on string type field.
             &quot;description&quot;: &quot;A String&quot;, # [Optional] The field description. The maximum length is 1,024 characters.
             &quot;fields&quot;: [ # [Optional] Describes the nested schema fields if the type property is set to RECORD.
               # Object with schema name: TableFieldSchema
             ],
+            &quot;maxLength&quot;: &quot;A String&quot;, # [Optional] Maximum length of values of this field for STRINGS or BYTES. If max_length is not specified, no maximum length constraint is imposed on this field. If type = &quot;STRING&quot;, then max_length represents the maximum UTF-8 length of strings in this field. If type = &quot;BYTES&quot;, then max_length represents the maximum number of bytes in this field. It is invalid to set this field if type ≠ &quot;STRING&quot; and ≠ &quot;BYTES&quot;.
             &quot;mode&quot;: &quot;A String&quot;, # [Optional] The field mode. Possible values include NULLABLE, REQUIRED and REPEATED. The default value is NULLABLE.
-            &quot;name&quot;: &quot;A String&quot;, # [Required] The field name. The name must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_), and must start with a letter or underscore. The maximum length is 128 characters.
+            &quot;name&quot;: &quot;A String&quot;, # [Required] The field name. The name must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_), and must start with a letter or underscore. The maximum length is 300 characters.
             &quot;policyTags&quot;: {
               &quot;names&quot;: [ # A list of category resource names. For example, &quot;projects/1/location/eu/taxonomies/2/policyTags/3&quot;. At most 1 policy tag is allowed.
                 &quot;A String&quot;,
               ],
             },
-            &quot;type&quot;: &quot;A String&quot;, # [Required] The field data type. Possible values include STRING, BYTES, INTEGER, INT64 (same as INTEGER), FLOAT, FLOAT64 (same as FLOAT), NUMERIC, BIGNUMERIC, BOOLEAN, BOOL (same as BOOLEAN), TIMESTAMP, DATE, TIME, DATETIME, RECORD (where RECORD indicates that the field contains a nested schema) or STRUCT (same as RECORD).
+            &quot;precision&quot;: &quot;A String&quot;, # [Optional] Precision (maximum number of total digits in base 10) and scale (maximum number of digits in the fractional part in base 10) constraints for values of this field for NUMERIC or BIGNUMERIC. It is invalid to set precision or scale if type ≠ &quot;NUMERIC&quot; and ≠ &quot;BIGNUMERIC&quot;. If precision and scale are not specified, no value range constraint is imposed on this field insofar as values are permitted by the type. Values of this NUMERIC or BIGNUMERIC field must be in this range when: - Precision (P) and scale (S) are specified: [-10P-S + 10-S, 10P-S - 10-S] - Precision (P) is specified but not scale (and thus scale is interpreted to be equal to zero): [-10P + 1, 10P - 1]. Acceptable values for precision and scale if both are specified: - If type = &quot;NUMERIC&quot;: 1 ≤ precision - scale ≤ 29 and 0 ≤ scale ≤ 9. - If type = &quot;BIGNUMERIC&quot;: 1 ≤ precision - scale ≤ 38 and 0 ≤ scale ≤ 38. Acceptable values for precision if only precision is specified but not scale (and thus scale is interpreted to be equal to zero): - If type = &quot;NUMERIC&quot;: 1 ≤ precision ≤ 29. - If type = &quot;BIGNUMERIC&quot;: 1 ≤ precision ≤ 38. If scale is specified but not precision, then it is invalid.
+            &quot;scale&quot;: &quot;A String&quot;, # [Optional] See documentation for precision.
+            &quot;type&quot;: &quot;A String&quot;, # [Required] The field data type. Possible values include STRING, BYTES, INTEGER, INT64 (same as INTEGER), FLOAT, FLOAT64 (same as FLOAT), NUMERIC, BIGNUMERIC, BOOLEAN, BOOL (same as BOOLEAN), TIMESTAMP, DATE, TIME, DATETIME, INTERVAL, RECORD (where RECORD indicates that the field contains a nested schema) or STRUCT (same as RECORD).
           },
         ],
       },
@@ -2061,7 +2249,7 @@ Returns:
         &quot;requirePartitionFilter&quot;: True or False,
         &quot;type&quot;: &quot;A String&quot;, # [Required] The supported types are DAY, HOUR, MONTH, and YEAR, which will generate one partition per day, hour, month, and year, respectively. When the type is not specified, the default behavior is DAY.
       },
-      &quot;useAvroLogicalTypes&quot;: True or False, # [Optional] If sourceFormat is set to &quot;AVRO&quot;, indicates whether to enable interpreting logical types into their corresponding types (ie. TIMESTAMP), instead of only using their raw types (ie. INTEGER).
+      &quot;useAvroLogicalTypes&quot;: True or False, # [Optional] If sourceFormat is set to &quot;AVRO&quot;, indicates whether to interpret logical types as the corresponding BigQuery data type (for example, TIMESTAMP), instead of using the raw type (for example, INTEGER).
       &quot;writeDisposition&quot;: &quot;A String&quot;, # [Optional] Specifies the action that occurs if the destination table already exists. The following values are supported: WRITE_TRUNCATE: If the table already exists, BigQuery overwrites the table data. WRITE_APPEND: If the table already exists, BigQuery appends the data to the table. WRITE_EMPTY: If the table already exists and contains data, a &#x27;duplicate&#x27; error is returned in the job result. The default value is WRITE_APPEND. Each action is atomic and only occurs if BigQuery is able to complete the job successfully. Creation, truncation and append actions occur as one atomic update upon job completion.
     },
     &quot;query&quot;: { # [Pick one] Configures a query job.
@@ -2078,6 +2266,7 @@ Returns:
         },
       ],
       &quot;createDisposition&quot;: &quot;A String&quot;, # [Optional] Specifies whether the job is allowed to create new tables. The following values are supported: CREATE_IF_NEEDED: If the table does not exist, BigQuery creates the table. CREATE_NEVER: The table must already exist. If it does not, a &#x27;notFound&#x27; error is returned in the job result. The default value is CREATE_IF_NEEDED. Creation, truncation and append actions occur as one atomic update upon job completion.
+      &quot;createSession&quot;: True or False, # If true, creates a new session, where session id will be a server generated random id. If false, runs query with an existing session_id passed in ConnectionProperty, otherwise runs query in non-session mode.
       &quot;defaultDataset&quot;: { # [Optional] Specifies the default dataset to use for unqualified table names in the query. Note that this does not alter behavior of unqualified dataset names.
         &quot;datasetId&quot;: &quot;A String&quot;, # [Required] A unique ID for this dataset, without the project name. The ID must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum length is 1,024 characters.
         &quot;projectId&quot;: &quot;A String&quot;, # [Optional] The ID of the project containing this dataset.
@@ -2136,6 +2325,9 @@ Returns:
       &quot;tableDefinitions&quot;: { # [Optional] If querying an external data source outside of BigQuery, describes the data format, location and other properties of the data source. By defining these properties, the data source can then be queried as if it were a standard BigQuery table.
         &quot;a_key&quot;: {
           &quot;autodetect&quot;: True or False, # Try to detect schema and format options automatically. Any option specified explicitly will be honored.
+          &quot;avroOptions&quot;: { # Additional properties to set if sourceFormat is set to Avro.
+            &quot;useAvroLogicalTypes&quot;: True or False, # [Optional] If sourceFormat is set to &quot;AVRO&quot;, indicates whether to interpret logical types as the corresponding BigQuery data type (for example, TIMESTAMP), instead of using the raw type (for example, INTEGER).
+          },
           &quot;bigtableOptions&quot;: { # [Optional] Additional options if sourceFormat is set to BIGTABLE.
             &quot;columnFamilies&quot;: [ # [Optional] List of column families to expose in the table schema along with their types. This list restricts the column families that can be referenced in queries and specifies their value types. You can use this list to do type conversions - see the &#x27;type&#x27; field for more details. If you leave this list empty, all column families are present in the table schema and their values are read as BYTES. During a query only the column families referenced in that query are read from Bigtable.
               {
@@ -2165,9 +2357,13 @@ Returns:
             &quot;allowQuotedNewlines&quot;: True or False, # [Optional] Indicates if BigQuery should allow quoted data sections that contain newline characters in a CSV file. The default value is false.
             &quot;encoding&quot;: &quot;A String&quot;, # [Optional] The character encoding of the data. The supported values are UTF-8 or ISO-8859-1. The default value is UTF-8. BigQuery decodes the data after the raw, binary data has been split using the values of the quote and fieldDelimiter properties.
             &quot;fieldDelimiter&quot;: &quot;A String&quot;, # [Optional] The separator for fields in a CSV file. BigQuery converts the string to ISO-8859-1 encoding, and then uses the first byte of the encoded string to split the data in its raw, binary state. BigQuery also supports the escape sequence &quot;\t&quot; to specify a tab separator. The default value is a comma (&#x27;,&#x27;).
+            &quot;null_marker&quot;: &quot;A String&quot;, # [Optional] An custom string that will represent a NULL value in CSV import data.
             &quot;quote&quot;: &quot;&quot;&quot;, # [Optional] The value that is used to quote data sections in a CSV file. BigQuery converts the string to ISO-8859-1 encoding, and then uses the first byte of the encoded string to split the data in its raw, binary state. The default value is a double-quote (&#x27;&quot;&#x27;). If your data does not contain quoted sections, set the property value to an empty string. If your data contains quoted newline characters, you must also set the allowQuotedNewlines property to true.
             &quot;skipLeadingRows&quot;: &quot;A String&quot;, # [Optional] The number of rows at the top of a CSV file that BigQuery will skip when reading the data. The default value is 0. This property is useful if you have header rows in the file that should be skipped. When autodetect is on, the behavior is the following: * skipLeadingRows unspecified - Autodetect tries to detect headers in the first row. If they are not detected, the row is read as data. Otherwise data is read starting from the second row. * skipLeadingRows is 0 - Instructs autodetect that there are no headers and data should be read starting from the first row. * skipLeadingRows = N &gt; 0 - Autodetect skips N-1 rows and tries to detect headers in row N. If headers are not detected, row N is just skipped. Otherwise row N is used to extract column names for the detected schema.
           },
+          &quot;decimalTargetTypes&quot;: [ # [Optional] Defines the list of possible SQL data types to which the source decimal values are converted. This list and the precision and the scale parameters of the decimal field determine the target type. In the order of NUMERIC, BIGNUMERIC, and STRING, a type is picked if it is in the specified list and if it supports the precision and the scale. STRING supports all precision and scale values. If none of the listed types supports the precision and the scale, the type supporting the widest range in the specified list is picked, and if a value exceeds the supported range when reading the data, an error will be thrown. Example: Suppose the value of this field is [&quot;NUMERIC&quot;, &quot;BIGNUMERIC&quot;]. If (precision,scale) is: (38,9) -&gt; NUMERIC; (39,9) -&gt; BIGNUMERIC (NUMERIC cannot hold 30 integer digits); (38,10) -&gt; BIGNUMERIC (NUMERIC cannot hold 10 fractional digits); (76,38) -&gt; BIGNUMERIC; (77,38) -&gt; BIGNUMERIC (error if value exeeds supported range). This field cannot contain duplicate types. The order of the types in this field is ignored. For example, [&quot;BIGNUMERIC&quot;, &quot;NUMERIC&quot;] is the same as [&quot;NUMERIC&quot;, &quot;BIGNUMERIC&quot;] and NUMERIC always takes precedence over BIGNUMERIC. Defaults to [&quot;NUMERIC&quot;, &quot;STRING&quot;] for ORC and [&quot;NUMERIC&quot;] for the other file formats.
+            &quot;A String&quot;,
+          ],
           &quot;googleSheetsOptions&quot;: { # [Optional] Additional options if sourceFormat is set to GOOGLE_SHEETS.
             &quot;range&quot;: &quot;A String&quot;, # [Optional] Range of a sheet to query from. Only used when non-empty. Typical format: sheet_name!top_left_cell_id:bottom_right_cell_id For example: sheet1!A1:B20
             &quot;skipLeadingRows&quot;: &quot;A String&quot;, # [Optional] The number of rows at the top of a sheet that BigQuery will skip when reading the data. The default value is 0. This property is useful if you have header rows that should be skipped. When autodetect is on, behavior is the following: * skipLeadingRows unspecified - Autodetect tries to detect headers in the first row. If they are not detected, the row is read as data. Otherwise data is read starting from the second row. * skipLeadingRows is 0 - Instructs autodetect that there are no headers and data should be read starting from the first row. * skipLeadingRows = N &gt; 0 - Autodetect skips N-1 rows and tries to detect headers in row N. If headers are not detected, row N is just skipped. Otherwise row N is used to extract column names for the detected schema.
@@ -2191,18 +2387,22 @@ Returns:
                     &quot;A String&quot;,
                   ],
                 },
+                &quot;collationSpec&quot;: &quot;A String&quot;, # Optional. Collation specification of the field. It only can be set on string type field.
                 &quot;description&quot;: &quot;A String&quot;, # [Optional] The field description. The maximum length is 1,024 characters.
                 &quot;fields&quot;: [ # [Optional] Describes the nested schema fields if the type property is set to RECORD.
                   # Object with schema name: TableFieldSchema
                 ],
+                &quot;maxLength&quot;: &quot;A String&quot;, # [Optional] Maximum length of values of this field for STRINGS or BYTES. If max_length is not specified, no maximum length constraint is imposed on this field. If type = &quot;STRING&quot;, then max_length represents the maximum UTF-8 length of strings in this field. If type = &quot;BYTES&quot;, then max_length represents the maximum number of bytes in this field. It is invalid to set this field if type ≠ &quot;STRING&quot; and ≠ &quot;BYTES&quot;.
                 &quot;mode&quot;: &quot;A String&quot;, # [Optional] The field mode. Possible values include NULLABLE, REQUIRED and REPEATED. The default value is NULLABLE.
-                &quot;name&quot;: &quot;A String&quot;, # [Required] The field name. The name must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_), and must start with a letter or underscore. The maximum length is 128 characters.
+                &quot;name&quot;: &quot;A String&quot;, # [Required] The field name. The name must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_), and must start with a letter or underscore. The maximum length is 300 characters.
                 &quot;policyTags&quot;: {
                   &quot;names&quot;: [ # A list of category resource names. For example, &quot;projects/1/location/eu/taxonomies/2/policyTags/3&quot;. At most 1 policy tag is allowed.
                     &quot;A String&quot;,
                   ],
                 },
-                &quot;type&quot;: &quot;A String&quot;, # [Required] The field data type. Possible values include STRING, BYTES, INTEGER, INT64 (same as INTEGER), FLOAT, FLOAT64 (same as FLOAT), NUMERIC, BIGNUMERIC, BOOLEAN, BOOL (same as BOOLEAN), TIMESTAMP, DATE, TIME, DATETIME, RECORD (where RECORD indicates that the field contains a nested schema) or STRUCT (same as RECORD).
+                &quot;precision&quot;: &quot;A String&quot;, # [Optional] Precision (maximum number of total digits in base 10) and scale (maximum number of digits in the fractional part in base 10) constraints for values of this field for NUMERIC or BIGNUMERIC. It is invalid to set precision or scale if type ≠ &quot;NUMERIC&quot; and ≠ &quot;BIGNUMERIC&quot;. If precision and scale are not specified, no value range constraint is imposed on this field insofar as values are permitted by the type. Values of this NUMERIC or BIGNUMERIC field must be in this range when: - Precision (P) and scale (S) are specified: [-10P-S + 10-S, 10P-S - 10-S] - Precision (P) is specified but not scale (and thus scale is interpreted to be equal to zero): [-10P + 1, 10P - 1]. Acceptable values for precision and scale if both are specified: - If type = &quot;NUMERIC&quot;: 1 ≤ precision - scale ≤ 29 and 0 ≤ scale ≤ 9. - If type = &quot;BIGNUMERIC&quot;: 1 ≤ precision - scale ≤ 38 and 0 ≤ scale ≤ 38. Acceptable values for precision if only precision is specified but not scale (and thus scale is interpreted to be equal to zero): - If type = &quot;NUMERIC&quot;: 1 ≤ precision ≤ 29. - If type = &quot;BIGNUMERIC&quot;: 1 ≤ precision ≤ 38. If scale is specified but not precision, then it is invalid.
+                &quot;scale&quot;: &quot;A String&quot;, # [Optional] See documentation for precision.
+                &quot;type&quot;: &quot;A String&quot;, # [Required] The field data type. Possible values include STRING, BYTES, INTEGER, INT64 (same as INTEGER), FLOAT, FLOAT64 (same as FLOAT), NUMERIC, BIGNUMERIC, BOOLEAN, BOOL (same as BOOLEAN), TIMESTAMP, DATE, TIME, DATETIME, INTERVAL, RECORD (where RECORD indicates that the field contains a nested schema) or STRUCT (same as RECORD).
               },
             ],
           },
@@ -2258,9 +2458,23 @@ Returns:
     &quot;numChildJobs&quot;: &quot;A String&quot;, # [Output-only] Number of child jobs executed.
     &quot;parentJobId&quot;: &quot;A String&quot;, # [Output-only] If this is a child job, the id of the parent.
     &quot;query&quot;: { # [Output-only] Statistics for a query job.
+      &quot;biEngineStatistics&quot;: { # BI Engine specific Statistics. [Output-only] BI Engine specific Statistics.
+        &quot;biEngineMode&quot;: &quot;$(stats.bi_engine_mode)&quot;, # [Output-only] Specifies which mode of BI Engine acceleration was performed (if any).
+        &quot;biEngineReasons&quot;: [ # In case of DISABLED or PARTIAL bi_engine_mode, these contain the explanatory reasons as to why BI Engine could not accelerate. In case the full query was accelerated, this field is not populated.
+          {
+            &quot;code&quot;: &quot;$(reason.code)&quot;, # [Output-only] High-level BI Engine reason for partial or disabled acceleration.
+            &quot;message&quot;: &quot;$(reason.message)&quot;, # [Output-only] Free form human-readable reason for partial or disabled acceleration.
+          },
+        ],
+      },
       &quot;billingTier&quot;: 42, # [Output-only] Billing tier for the job.
       &quot;cacheHit&quot;: True or False, # [Output-only] Whether the query result was fetched from the query cache.
       &quot;ddlAffectedRowAccessPolicyCount&quot;: &quot;A String&quot;, # [Output-only] [Preview] The number of row access policies affected by a DDL statement. Present only for DROP ALL ROW ACCESS POLICIES queries.
+      &quot;ddlDestinationTable&quot;: { # [Output-only] The DDL destination table. Present only for ALTER TABLE RENAME TO queries. Note that ddl_target_table is used just for its type information.
+        &quot;datasetId&quot;: &quot;A String&quot;, # [Required] The ID of the dataset containing this table.
+        &quot;projectId&quot;: &quot;A String&quot;, # [Required] The ID of the project containing this table.
+        &quot;tableId&quot;: &quot;A String&quot;, # [Required] The ID of the table. The ID must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum length is 1,024 characters.
+      },
       &quot;ddlOperationPerformed&quot;: &quot;A String&quot;, # The DDL operation performed, possibly dependent on the pre-existence of the DDL target. Possible values (new values might be added in the future): &quot;CREATE&quot;: The query created the DDL target. &quot;SKIP&quot;: No-op. Example cases: the query is CREATE TABLE IF NOT EXISTS while the table already exists, or the query is DROP TABLE IF EXISTS while the table does not exist. &quot;REPLACE&quot;: The query replaced the DDL target. Example case: the query is CREATE OR REPLACE TABLE, and the table already exists. &quot;DROP&quot;: The query deleted the DDL target.
       &quot;ddlTargetDataset&quot;: { # [Output-only] The DDL target dataset. Present only for CREATE/ALTER/DROP SCHEMA queries.
         &quot;datasetId&quot;: &quot;A String&quot;, # [Required] A unique ID for this dataset, without the project name. The ID must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum length is 1,024 characters.
@@ -2282,7 +2496,24 @@ Returns:
         &quot;projectId&quot;: &quot;A String&quot;, # [Required] The ID of the project containing this table.
         &quot;tableId&quot;: &quot;A String&quot;, # [Required] The ID of the table. The ID must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum length is 1,024 characters.
       },
+      &quot;dmlStats&quot;: { # [Output-only] Detailed statistics for DML statements Present only for DML statements INSERT, UPDATE, DELETE or TRUNCATE.
+        &quot;deletedRowCount&quot;: &quot;A String&quot;, # Number of deleted Rows. populated by DML DELETE, MERGE and TRUNCATE statements.
+        &quot;insertedRowCount&quot;: &quot;A String&quot;, # Number of inserted Rows. Populated by DML INSERT and MERGE statements.
+        &quot;updatedRowCount&quot;: &quot;A String&quot;, # Number of updated Rows. Populated by DML UPDATE and MERGE statements.
+      },
       &quot;estimatedBytesProcessed&quot;: &quot;A String&quot;, # [Output-only] The original estimate of bytes processed for the job.
+      &quot;mlStatistics&quot;: { # [Output-only] Statistics of a BigQuery ML training job.
+        &quot;iterationResults&quot;: [ # Results for all completed iterations.
+          {
+            &quot;durationMs&quot;: &quot;A String&quot;, # Time taken to run the iteration in milliseconds.
+            &quot;evalLoss&quot;: 3.14, # Loss computed on the eval data at the end of iteration.
+            &quot;index&quot;: 42, # Index of the iteration, 0 based.
+            &quot;learnRate&quot;: 3.14, # Learn rate used for this iteration.
+            &quot;trainingLoss&quot;: 3.14, # Loss computed on the training data at the end of iteration.
+          },
+        ],
+        &quot;maxIterations&quot;: &quot;A String&quot;, # Maximum number of iterations specified as max_iterations in the &#x27;CREATE MODEL&#x27; query. The actual number of iterations may be less than this number due to early stop.
+      },
       &quot;modelTraining&quot;: { # [Output-only, Beta] Information about create model query job progress.
         &quot;currentIteration&quot;: 42, # [Output-only, Beta] Index of current ML training iteration. Updated during create model query job to show job progress.
         &quot;expectedTotalIterations&quot;: &quot;A String&quot;, # [Output-only, Beta] Expected number of iterations for the create model query job specified as num_iterations in the input query. The actual total number of iterations may be less than this number due to early stop.
@@ -2361,18 +2592,22 @@ Returns:
                 &quot;A String&quot;,
               ],
             },
+            &quot;collationSpec&quot;: &quot;A String&quot;, # Optional. Collation specification of the field. It only can be set on string type field.
             &quot;description&quot;: &quot;A String&quot;, # [Optional] The field description. The maximum length is 1,024 characters.
             &quot;fields&quot;: [ # [Optional] Describes the nested schema fields if the type property is set to RECORD.
               # Object with schema name: TableFieldSchema
             ],
+            &quot;maxLength&quot;: &quot;A String&quot;, # [Optional] Maximum length of values of this field for STRINGS or BYTES. If max_length is not specified, no maximum length constraint is imposed on this field. If type = &quot;STRING&quot;, then max_length represents the maximum UTF-8 length of strings in this field. If type = &quot;BYTES&quot;, then max_length represents the maximum number of bytes in this field. It is invalid to set this field if type ≠ &quot;STRING&quot; and ≠ &quot;BYTES&quot;.
             &quot;mode&quot;: &quot;A String&quot;, # [Optional] The field mode. Possible values include NULLABLE, REQUIRED and REPEATED. The default value is NULLABLE.
-            &quot;name&quot;: &quot;A String&quot;, # [Required] The field name. The name must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_), and must start with a letter or underscore. The maximum length is 128 characters.
+            &quot;name&quot;: &quot;A String&quot;, # [Required] The field name. The name must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_), and must start with a letter or underscore. The maximum length is 300 characters.
             &quot;policyTags&quot;: {
               &quot;names&quot;: [ # A list of category resource names. For example, &quot;projects/1/location/eu/taxonomies/2/policyTags/3&quot;. At most 1 policy tag is allowed.
                 &quot;A String&quot;,
               ],
             },
-            &quot;type&quot;: &quot;A String&quot;, # [Required] The field data type. Possible values include STRING, BYTES, INTEGER, INT64 (same as INTEGER), FLOAT, FLOAT64 (same as FLOAT), NUMERIC, BIGNUMERIC, BOOLEAN, BOOL (same as BOOLEAN), TIMESTAMP, DATE, TIME, DATETIME, RECORD (where RECORD indicates that the field contains a nested schema) or STRUCT (same as RECORD).
+            &quot;precision&quot;: &quot;A String&quot;, # [Optional] Precision (maximum number of total digits in base 10) and scale (maximum number of digits in the fractional part in base 10) constraints for values of this field for NUMERIC or BIGNUMERIC. It is invalid to set precision or scale if type ≠ &quot;NUMERIC&quot; and ≠ &quot;BIGNUMERIC&quot;. If precision and scale are not specified, no value range constraint is imposed on this field insofar as values are permitted by the type. Values of this NUMERIC or BIGNUMERIC field must be in this range when: - Precision (P) and scale (S) are specified: [-10P-S + 10-S, 10P-S - 10-S] - Precision (P) is specified but not scale (and thus scale is interpreted to be equal to zero): [-10P + 1, 10P - 1]. Acceptable values for precision and scale if both are specified: - If type = &quot;NUMERIC&quot;: 1 ≤ precision - scale ≤ 29 and 0 ≤ scale ≤ 9. - If type = &quot;BIGNUMERIC&quot;: 1 ≤ precision - scale ≤ 38 and 0 ≤ scale ≤ 38. Acceptable values for precision if only precision is specified but not scale (and thus scale is interpreted to be equal to zero): - If type = &quot;NUMERIC&quot;: 1 ≤ precision ≤ 29. - If type = &quot;BIGNUMERIC&quot;: 1 ≤ precision ≤ 38. If scale is specified but not precision, then it is invalid.
+            &quot;scale&quot;: &quot;A String&quot;, # [Optional] See documentation for precision.
+            &quot;type&quot;: &quot;A String&quot;, # [Required] The field data type. Possible values include STRING, BYTES, INTEGER, INT64 (same as INTEGER), FLOAT, FLOAT64 (same as FLOAT), NUMERIC, BIGNUMERIC, BOOLEAN, BOOL (same as BOOLEAN), TIMESTAMP, DATE, TIME, DATETIME, INTERVAL, RECORD (where RECORD indicates that the field contains a nested schema) or STRUCT (same as RECORD).
           },
         ],
       },
@@ -2443,10 +2678,13 @@ Returns:
         },
       ],
     },
+    &quot;sessionInfo&quot;: { # [Output-only] [Preview] Information of the session if this job is part of one.
+      &quot;sessionId&quot;: &quot;A String&quot;, # [Output-only] // [Preview] Id of the session.
+    },
     &quot;startTime&quot;: &quot;A String&quot;, # [Output-only] Start time of this job, in milliseconds since the epoch. This field will be present when the job transitions from the PENDING state to either RUNNING or DONE.
     &quot;totalBytesProcessed&quot;: &quot;A String&quot;, # [Output-only] [Deprecated] Use the bytes processed in the query statistics instead.
     &quot;totalSlotMs&quot;: &quot;A String&quot;, # [Output-only] Slot-milliseconds for the job.
-    &quot;transactionInfoTemplate&quot;: { # [Output-only] [Alpha] Information of the multi-statement transaction if this job is part of one.
+    &quot;transactionInfo&quot;: { # [Output-only] [Alpha] Information of the multi-statement transaction if this job is part of one.
       &quot;transactionId&quot;: &quot;A String&quot;, # [Output-only] // [Alpha] Id of the transaction.
     },
   },
@@ -2564,7 +2802,7 @@ Returns:
             ],
           },
           &quot;createDisposition&quot;: &quot;A String&quot;, # [Optional] Specifies whether the job is allowed to create new tables. The following values are supported: CREATE_IF_NEEDED: If the table does not exist, BigQuery creates the table. CREATE_NEVER: The table must already exist. If it does not, a &#x27;notFound&#x27; error is returned in the job result. The default value is CREATE_IF_NEEDED. Creation, truncation and append actions occur as one atomic update upon job completion.
-          &quot;decimalTargetTypes&quot;: [ # Defines the list of possible SQL data types to which the source decimal values are converted. This list and the precision and the scale parameters of the decimal field determine the target type. In the order of NUMERIC, BIGNUMERIC ([Preview](/products/#product-launch-stages)), and STRING, a type is picked if it is in the specified list and if it supports the precision and the scale. STRING supports all precision and scale values. If none of the listed types supports the precision and the scale, the type supporting the widest range in the specified list is picked, and if a value exceeds the supported range when reading the data, an error will be thrown. Example: Suppose the value of this field is [&quot;NUMERIC&quot;, &quot;BIGNUMERIC&quot;]. If (precision,scale) is: * (38,9) -&gt; NUMERIC; * (39,9) -&gt; BIGNUMERIC (NUMERIC cannot hold 30 integer digits); * (38,10) -&gt; BIGNUMERIC (NUMERIC cannot hold 10 fractional digits); * (76,38) -&gt; BIGNUMERIC; * (77,38) -&gt; BIGNUMERIC (error if value exeeds supported range). This field cannot contain duplicate types. The order of the types in this field is ignored. For example, [&quot;BIGNUMERIC&quot;, &quot;NUMERIC&quot;] is the same as [&quot;NUMERIC&quot;, &quot;BIGNUMERIC&quot;] and NUMERIC always takes precedence over BIGNUMERIC. Defaults to [&quot;NUMERIC&quot;, &quot;STRING&quot;] for ORC and [&quot;NUMERIC&quot;] for the other file formats.
+          &quot;decimalTargetTypes&quot;: [ # [Optional] Defines the list of possible SQL data types to which the source decimal values are converted. This list and the precision and the scale parameters of the decimal field determine the target type. In the order of NUMERIC, BIGNUMERIC, and STRING, a type is picked if it is in the specified list and if it supports the precision and the scale. STRING supports all precision and scale values. If none of the listed types supports the precision and the scale, the type supporting the widest range in the specified list is picked, and if a value exceeds the supported range when reading the data, an error will be thrown. Example: Suppose the value of this field is [&quot;NUMERIC&quot;, &quot;BIGNUMERIC&quot;]. If (precision,scale) is: (38,9) -&gt; NUMERIC; (39,9) -&gt; BIGNUMERIC (NUMERIC cannot hold 30 integer digits); (38,10) -&gt; BIGNUMERIC (NUMERIC cannot hold 10 fractional digits); (76,38) -&gt; BIGNUMERIC; (77,38) -&gt; BIGNUMERIC (error if value exeeds supported range). This field cannot contain duplicate types. The order of the types in this field is ignored. For example, [&quot;BIGNUMERIC&quot;, &quot;NUMERIC&quot;] is the same as [&quot;NUMERIC&quot;, &quot;BIGNUMERIC&quot;] and NUMERIC always takes precedence over BIGNUMERIC. Defaults to [&quot;NUMERIC&quot;, &quot;STRING&quot;] for ORC and [&quot;NUMERIC&quot;] for the other file formats.
             &quot;A String&quot;,
           ],
           &quot;destinationEncryptionConfiguration&quot;: { # Custom encryption configuration (e.g., Cloud KMS keys).
@@ -2577,6 +2815,7 @@ Returns:
           },
           &quot;destinationTableProperties&quot;: { # [Beta] [Optional] Properties with which to create the destination table if it is new.
             &quot;description&quot;: &quot;A String&quot;, # [Optional] The description for the destination table. This will only be used if the destination table is newly created. If the table already exists and a value different than the current description is provided, the job will fail.
+            &quot;expirationTime&quot;: &quot;A String&quot;, # [Internal] This field is for Google internal use only.
             &quot;friendlyName&quot;: &quot;A String&quot;, # [Optional] The friendly name for the destination table. This will only be used if the destination table is newly created. If the table already exists and a value different than the current friendly name is provided, the job will fail.
             &quot;labels&quot;: { # [Optional] The labels associated with this table. You can use these to organize and group your tables. This will only be used if the destination table is newly created. If the table already exists and labels are different than the current labels are provided, the job will fail.
               &quot;a_key&quot;: &quot;A String&quot;,
@@ -2617,18 +2856,22 @@ Returns:
                     &quot;A String&quot;,
                   ],
                 },
+                &quot;collationSpec&quot;: &quot;A String&quot;, # Optional. Collation specification of the field. It only can be set on string type field.
                 &quot;description&quot;: &quot;A String&quot;, # [Optional] The field description. The maximum length is 1,024 characters.
                 &quot;fields&quot;: [ # [Optional] Describes the nested schema fields if the type property is set to RECORD.
                   # Object with schema name: TableFieldSchema
                 ],
+                &quot;maxLength&quot;: &quot;A String&quot;, # [Optional] Maximum length of values of this field for STRINGS or BYTES. If max_length is not specified, no maximum length constraint is imposed on this field. If type = &quot;STRING&quot;, then max_length represents the maximum UTF-8 length of strings in this field. If type = &quot;BYTES&quot;, then max_length represents the maximum number of bytes in this field. It is invalid to set this field if type ≠ &quot;STRING&quot; and ≠ &quot;BYTES&quot;.
                 &quot;mode&quot;: &quot;A String&quot;, # [Optional] The field mode. Possible values include NULLABLE, REQUIRED and REPEATED. The default value is NULLABLE.
-                &quot;name&quot;: &quot;A String&quot;, # [Required] The field name. The name must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_), and must start with a letter or underscore. The maximum length is 128 characters.
+                &quot;name&quot;: &quot;A String&quot;, # [Required] The field name. The name must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_), and must start with a letter or underscore. The maximum length is 300 characters.
                 &quot;policyTags&quot;: {
                   &quot;names&quot;: [ # A list of category resource names. For example, &quot;projects/1/location/eu/taxonomies/2/policyTags/3&quot;. At most 1 policy tag is allowed.
                     &quot;A String&quot;,
                   ],
                 },
-                &quot;type&quot;: &quot;A String&quot;, # [Required] The field data type. Possible values include STRING, BYTES, INTEGER, INT64 (same as INTEGER), FLOAT, FLOAT64 (same as FLOAT), NUMERIC, BIGNUMERIC, BOOLEAN, BOOL (same as BOOLEAN), TIMESTAMP, DATE, TIME, DATETIME, RECORD (where RECORD indicates that the field contains a nested schema) or STRUCT (same as RECORD).
+                &quot;precision&quot;: &quot;A String&quot;, # [Optional] Precision (maximum number of total digits in base 10) and scale (maximum number of digits in the fractional part in base 10) constraints for values of this field for NUMERIC or BIGNUMERIC. It is invalid to set precision or scale if type ≠ &quot;NUMERIC&quot; and ≠ &quot;BIGNUMERIC&quot;. If precision and scale are not specified, no value range constraint is imposed on this field insofar as values are permitted by the type. Values of this NUMERIC or BIGNUMERIC field must be in this range when: - Precision (P) and scale (S) are specified: [-10P-S + 10-S, 10P-S - 10-S] - Precision (P) is specified but not scale (and thus scale is interpreted to be equal to zero): [-10P + 1, 10P - 1]. Acceptable values for precision and scale if both are specified: - If type = &quot;NUMERIC&quot;: 1 ≤ precision - scale ≤ 29 and 0 ≤ scale ≤ 9. - If type = &quot;BIGNUMERIC&quot;: 1 ≤ precision - scale ≤ 38 and 0 ≤ scale ≤ 38. Acceptable values for precision if only precision is specified but not scale (and thus scale is interpreted to be equal to zero): - If type = &quot;NUMERIC&quot;: 1 ≤ precision ≤ 29. - If type = &quot;BIGNUMERIC&quot;: 1 ≤ precision ≤ 38. If scale is specified but not precision, then it is invalid.
+                &quot;scale&quot;: &quot;A String&quot;, # [Optional] See documentation for precision.
+                &quot;type&quot;: &quot;A String&quot;, # [Required] The field data type. Possible values include STRING, BYTES, INTEGER, INT64 (same as INTEGER), FLOAT, FLOAT64 (same as FLOAT), NUMERIC, BIGNUMERIC, BOOLEAN, BOOL (same as BOOLEAN), TIMESTAMP, DATE, TIME, DATETIME, INTERVAL, RECORD (where RECORD indicates that the field contains a nested schema) or STRUCT (same as RECORD).
               },
             ],
           },
@@ -2648,7 +2891,7 @@ Returns:
             &quot;requirePartitionFilter&quot;: True or False,
             &quot;type&quot;: &quot;A String&quot;, # [Required] The supported types are DAY, HOUR, MONTH, and YEAR, which will generate one partition per day, hour, month, and year, respectively. When the type is not specified, the default behavior is DAY.
           },
-          &quot;useAvroLogicalTypes&quot;: True or False, # [Optional] If sourceFormat is set to &quot;AVRO&quot;, indicates whether to enable interpreting logical types into their corresponding types (ie. TIMESTAMP), instead of only using their raw types (ie. INTEGER).
+          &quot;useAvroLogicalTypes&quot;: True or False, # [Optional] If sourceFormat is set to &quot;AVRO&quot;, indicates whether to interpret logical types as the corresponding BigQuery data type (for example, TIMESTAMP), instead of using the raw type (for example, INTEGER).
           &quot;writeDisposition&quot;: &quot;A String&quot;, # [Optional] Specifies the action that occurs if the destination table already exists. The following values are supported: WRITE_TRUNCATE: If the table already exists, BigQuery overwrites the table data. WRITE_APPEND: If the table already exists, BigQuery appends the data to the table. WRITE_EMPTY: If the table already exists and contains data, a &#x27;duplicate&#x27; error is returned in the job result. The default value is WRITE_APPEND. Each action is atomic and only occurs if BigQuery is able to complete the job successfully. Creation, truncation and append actions occur as one atomic update upon job completion.
         },
         &quot;query&quot;: { # [Pick one] Configures a query job.
@@ -2665,6 +2908,7 @@ Returns:
             },
           ],
           &quot;createDisposition&quot;: &quot;A String&quot;, # [Optional] Specifies whether the job is allowed to create new tables. The following values are supported: CREATE_IF_NEEDED: If the table does not exist, BigQuery creates the table. CREATE_NEVER: The table must already exist. If it does not, a &#x27;notFound&#x27; error is returned in the job result. The default value is CREATE_IF_NEEDED. Creation, truncation and append actions occur as one atomic update upon job completion.
+          &quot;createSession&quot;: True or False, # If true, creates a new session, where session id will be a server generated random id. If false, runs query with an existing session_id passed in ConnectionProperty, otherwise runs query in non-session mode.
           &quot;defaultDataset&quot;: { # [Optional] Specifies the default dataset to use for unqualified table names in the query. Note that this does not alter behavior of unqualified dataset names.
             &quot;datasetId&quot;: &quot;A String&quot;, # [Required] A unique ID for this dataset, without the project name. The ID must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum length is 1,024 characters.
             &quot;projectId&quot;: &quot;A String&quot;, # [Optional] The ID of the project containing this dataset.
@@ -2723,6 +2967,9 @@ Returns:
           &quot;tableDefinitions&quot;: { # [Optional] If querying an external data source outside of BigQuery, describes the data format, location and other properties of the data source. By defining these properties, the data source can then be queried as if it were a standard BigQuery table.
             &quot;a_key&quot;: {
               &quot;autodetect&quot;: True or False, # Try to detect schema and format options automatically. Any option specified explicitly will be honored.
+              &quot;avroOptions&quot;: { # Additional properties to set if sourceFormat is set to Avro.
+                &quot;useAvroLogicalTypes&quot;: True or False, # [Optional] If sourceFormat is set to &quot;AVRO&quot;, indicates whether to interpret logical types as the corresponding BigQuery data type (for example, TIMESTAMP), instead of using the raw type (for example, INTEGER).
+              },
               &quot;bigtableOptions&quot;: { # [Optional] Additional options if sourceFormat is set to BIGTABLE.
                 &quot;columnFamilies&quot;: [ # [Optional] List of column families to expose in the table schema along with their types. This list restricts the column families that can be referenced in queries and specifies their value types. You can use this list to do type conversions - see the &#x27;type&#x27; field for more details. If you leave this list empty, all column families are present in the table schema and their values are read as BYTES. During a query only the column families referenced in that query are read from Bigtable.
                   {
@@ -2752,9 +2999,13 @@ Returns:
                 &quot;allowQuotedNewlines&quot;: True or False, # [Optional] Indicates if BigQuery should allow quoted data sections that contain newline characters in a CSV file. The default value is false.
                 &quot;encoding&quot;: &quot;A String&quot;, # [Optional] The character encoding of the data. The supported values are UTF-8 or ISO-8859-1. The default value is UTF-8. BigQuery decodes the data after the raw, binary data has been split using the values of the quote and fieldDelimiter properties.
                 &quot;fieldDelimiter&quot;: &quot;A String&quot;, # [Optional] The separator for fields in a CSV file. BigQuery converts the string to ISO-8859-1 encoding, and then uses the first byte of the encoded string to split the data in its raw, binary state. BigQuery also supports the escape sequence &quot;\t&quot; to specify a tab separator. The default value is a comma (&#x27;,&#x27;).
+                &quot;null_marker&quot;: &quot;A String&quot;, # [Optional] An custom string that will represent a NULL value in CSV import data.
                 &quot;quote&quot;: &quot;&quot;&quot;, # [Optional] The value that is used to quote data sections in a CSV file. BigQuery converts the string to ISO-8859-1 encoding, and then uses the first byte of the encoded string to split the data in its raw, binary state. The default value is a double-quote (&#x27;&quot;&#x27;). If your data does not contain quoted sections, set the property value to an empty string. If your data contains quoted newline characters, you must also set the allowQuotedNewlines property to true.
                 &quot;skipLeadingRows&quot;: &quot;A String&quot;, # [Optional] The number of rows at the top of a CSV file that BigQuery will skip when reading the data. The default value is 0. This property is useful if you have header rows in the file that should be skipped. When autodetect is on, the behavior is the following: * skipLeadingRows unspecified - Autodetect tries to detect headers in the first row. If they are not detected, the row is read as data. Otherwise data is read starting from the second row. * skipLeadingRows is 0 - Instructs autodetect that there are no headers and data should be read starting from the first row. * skipLeadingRows = N &gt; 0 - Autodetect skips N-1 rows and tries to detect headers in row N. If headers are not detected, row N is just skipped. Otherwise row N is used to extract column names for the detected schema.
               },
+              &quot;decimalTargetTypes&quot;: [ # [Optional] Defines the list of possible SQL data types to which the source decimal values are converted. This list and the precision and the scale parameters of the decimal field determine the target type. In the order of NUMERIC, BIGNUMERIC, and STRING, a type is picked if it is in the specified list and if it supports the precision and the scale. STRING supports all precision and scale values. If none of the listed types supports the precision and the scale, the type supporting the widest range in the specified list is picked, and if a value exceeds the supported range when reading the data, an error will be thrown. Example: Suppose the value of this field is [&quot;NUMERIC&quot;, &quot;BIGNUMERIC&quot;]. If (precision,scale) is: (38,9) -&gt; NUMERIC; (39,9) -&gt; BIGNUMERIC (NUMERIC cannot hold 30 integer digits); (38,10) -&gt; BIGNUMERIC (NUMERIC cannot hold 10 fractional digits); (76,38) -&gt; BIGNUMERIC; (77,38) -&gt; BIGNUMERIC (error if value exeeds supported range). This field cannot contain duplicate types. The order of the types in this field is ignored. For example, [&quot;BIGNUMERIC&quot;, &quot;NUMERIC&quot;] is the same as [&quot;NUMERIC&quot;, &quot;BIGNUMERIC&quot;] and NUMERIC always takes precedence over BIGNUMERIC. Defaults to [&quot;NUMERIC&quot;, &quot;STRING&quot;] for ORC and [&quot;NUMERIC&quot;] for the other file formats.
+                &quot;A String&quot;,
+              ],
               &quot;googleSheetsOptions&quot;: { # [Optional] Additional options if sourceFormat is set to GOOGLE_SHEETS.
                 &quot;range&quot;: &quot;A String&quot;, # [Optional] Range of a sheet to query from. Only used when non-empty. Typical format: sheet_name!top_left_cell_id:bottom_right_cell_id For example: sheet1!A1:B20
                 &quot;skipLeadingRows&quot;: &quot;A String&quot;, # [Optional] The number of rows at the top of a sheet that BigQuery will skip when reading the data. The default value is 0. This property is useful if you have header rows that should be skipped. When autodetect is on, behavior is the following: * skipLeadingRows unspecified - Autodetect tries to detect headers in the first row. If they are not detected, the row is read as data. Otherwise data is read starting from the second row. * skipLeadingRows is 0 - Instructs autodetect that there are no headers and data should be read starting from the first row. * skipLeadingRows = N &gt; 0 - Autodetect skips N-1 rows and tries to detect headers in row N. If headers are not detected, row N is just skipped. Otherwise row N is used to extract column names for the detected schema.
@@ -2778,18 +3029,22 @@ Returns:
                         &quot;A String&quot;,
                       ],
                     },
+                    &quot;collationSpec&quot;: &quot;A String&quot;, # Optional. Collation specification of the field. It only can be set on string type field.
                     &quot;description&quot;: &quot;A String&quot;, # [Optional] The field description. The maximum length is 1,024 characters.
                     &quot;fields&quot;: [ # [Optional] Describes the nested schema fields if the type property is set to RECORD.
                       # Object with schema name: TableFieldSchema
                     ],
+                    &quot;maxLength&quot;: &quot;A String&quot;, # [Optional] Maximum length of values of this field for STRINGS or BYTES. If max_length is not specified, no maximum length constraint is imposed on this field. If type = &quot;STRING&quot;, then max_length represents the maximum UTF-8 length of strings in this field. If type = &quot;BYTES&quot;, then max_length represents the maximum number of bytes in this field. It is invalid to set this field if type ≠ &quot;STRING&quot; and ≠ &quot;BYTES&quot;.
                     &quot;mode&quot;: &quot;A String&quot;, # [Optional] The field mode. Possible values include NULLABLE, REQUIRED and REPEATED. The default value is NULLABLE.
-                    &quot;name&quot;: &quot;A String&quot;, # [Required] The field name. The name must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_), and must start with a letter or underscore. The maximum length is 128 characters.
+                    &quot;name&quot;: &quot;A String&quot;, # [Required] The field name. The name must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_), and must start with a letter or underscore. The maximum length is 300 characters.
                     &quot;policyTags&quot;: {
                       &quot;names&quot;: [ # A list of category resource names. For example, &quot;projects/1/location/eu/taxonomies/2/policyTags/3&quot;. At most 1 policy tag is allowed.
                         &quot;A String&quot;,
                       ],
                     },
-                    &quot;type&quot;: &quot;A String&quot;, # [Required] The field data type. Possible values include STRING, BYTES, INTEGER, INT64 (same as INTEGER), FLOAT, FLOAT64 (same as FLOAT), NUMERIC, BIGNUMERIC, BOOLEAN, BOOL (same as BOOLEAN), TIMESTAMP, DATE, TIME, DATETIME, RECORD (where RECORD indicates that the field contains a nested schema) or STRUCT (same as RECORD).
+                    &quot;precision&quot;: &quot;A String&quot;, # [Optional] Precision (maximum number of total digits in base 10) and scale (maximum number of digits in the fractional part in base 10) constraints for values of this field for NUMERIC or BIGNUMERIC. It is invalid to set precision or scale if type ≠ &quot;NUMERIC&quot; and ≠ &quot;BIGNUMERIC&quot;. If precision and scale are not specified, no value range constraint is imposed on this field insofar as values are permitted by the type. Values of this NUMERIC or BIGNUMERIC field must be in this range when: - Precision (P) and scale (S) are specified: [-10P-S + 10-S, 10P-S - 10-S] - Precision (P) is specified but not scale (and thus scale is interpreted to be equal to zero): [-10P + 1, 10P - 1]. Acceptable values for precision and scale if both are specified: - If type = &quot;NUMERIC&quot;: 1 ≤ precision - scale ≤ 29 and 0 ≤ scale ≤ 9. - If type = &quot;BIGNUMERIC&quot;: 1 ≤ precision - scale ≤ 38 and 0 ≤ scale ≤ 38. Acceptable values for precision if only precision is specified but not scale (and thus scale is interpreted to be equal to zero): - If type = &quot;NUMERIC&quot;: 1 ≤ precision ≤ 29. - If type = &quot;BIGNUMERIC&quot;: 1 ≤ precision ≤ 38. If scale is specified but not precision, then it is invalid.
+                    &quot;scale&quot;: &quot;A String&quot;, # [Optional] See documentation for precision.
+                    &quot;type&quot;: &quot;A String&quot;, # [Required] The field data type. Possible values include STRING, BYTES, INTEGER, INT64 (same as INTEGER), FLOAT, FLOAT64 (same as FLOAT), NUMERIC, BIGNUMERIC, BOOLEAN, BOOL (same as BOOLEAN), TIMESTAMP, DATE, TIME, DATETIME, INTERVAL, RECORD (where RECORD indicates that the field contains a nested schema) or STRUCT (same as RECORD).
                   },
                 ],
               },
@@ -2850,9 +3105,23 @@ Returns:
         &quot;numChildJobs&quot;: &quot;A String&quot;, # [Output-only] Number of child jobs executed.
         &quot;parentJobId&quot;: &quot;A String&quot;, # [Output-only] If this is a child job, the id of the parent.
         &quot;query&quot;: { # [Output-only] Statistics for a query job.
+          &quot;biEngineStatistics&quot;: { # BI Engine specific Statistics. [Output-only] BI Engine specific Statistics.
+            &quot;biEngineMode&quot;: &quot;$(stats.bi_engine_mode)&quot;, # [Output-only] Specifies which mode of BI Engine acceleration was performed (if any).
+            &quot;biEngineReasons&quot;: [ # In case of DISABLED or PARTIAL bi_engine_mode, these contain the explanatory reasons as to why BI Engine could not accelerate. In case the full query was accelerated, this field is not populated.
+              {
+                &quot;code&quot;: &quot;$(reason.code)&quot;, # [Output-only] High-level BI Engine reason for partial or disabled acceleration.
+                &quot;message&quot;: &quot;$(reason.message)&quot;, # [Output-only] Free form human-readable reason for partial or disabled acceleration.
+              },
+            ],
+          },
           &quot;billingTier&quot;: 42, # [Output-only] Billing tier for the job.
           &quot;cacheHit&quot;: True or False, # [Output-only] Whether the query result was fetched from the query cache.
           &quot;ddlAffectedRowAccessPolicyCount&quot;: &quot;A String&quot;, # [Output-only] [Preview] The number of row access policies affected by a DDL statement. Present only for DROP ALL ROW ACCESS POLICIES queries.
+          &quot;ddlDestinationTable&quot;: { # [Output-only] The DDL destination table. Present only for ALTER TABLE RENAME TO queries. Note that ddl_target_table is used just for its type information.
+            &quot;datasetId&quot;: &quot;A String&quot;, # [Required] The ID of the dataset containing this table.
+            &quot;projectId&quot;: &quot;A String&quot;, # [Required] The ID of the project containing this table.
+            &quot;tableId&quot;: &quot;A String&quot;, # [Required] The ID of the table. The ID must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum length is 1,024 characters.
+          },
           &quot;ddlOperationPerformed&quot;: &quot;A String&quot;, # The DDL operation performed, possibly dependent on the pre-existence of the DDL target. Possible values (new values might be added in the future): &quot;CREATE&quot;: The query created the DDL target. &quot;SKIP&quot;: No-op. Example cases: the query is CREATE TABLE IF NOT EXISTS while the table already exists, or the query is DROP TABLE IF EXISTS while the table does not exist. &quot;REPLACE&quot;: The query replaced the DDL target. Example case: the query is CREATE OR REPLACE TABLE, and the table already exists. &quot;DROP&quot;: The query deleted the DDL target.
           &quot;ddlTargetDataset&quot;: { # [Output-only] The DDL target dataset. Present only for CREATE/ALTER/DROP SCHEMA queries.
             &quot;datasetId&quot;: &quot;A String&quot;, # [Required] A unique ID for this dataset, without the project name. The ID must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum length is 1,024 characters.
@@ -2874,7 +3143,24 @@ Returns:
             &quot;projectId&quot;: &quot;A String&quot;, # [Required] The ID of the project containing this table.
             &quot;tableId&quot;: &quot;A String&quot;, # [Required] The ID of the table. The ID must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum length is 1,024 characters.
           },
+          &quot;dmlStats&quot;: { # [Output-only] Detailed statistics for DML statements Present only for DML statements INSERT, UPDATE, DELETE or TRUNCATE.
+            &quot;deletedRowCount&quot;: &quot;A String&quot;, # Number of deleted Rows. populated by DML DELETE, MERGE and TRUNCATE statements.
+            &quot;insertedRowCount&quot;: &quot;A String&quot;, # Number of inserted Rows. Populated by DML INSERT and MERGE statements.
+            &quot;updatedRowCount&quot;: &quot;A String&quot;, # Number of updated Rows. Populated by DML UPDATE and MERGE statements.
+          },
           &quot;estimatedBytesProcessed&quot;: &quot;A String&quot;, # [Output-only] The original estimate of bytes processed for the job.
+          &quot;mlStatistics&quot;: { # [Output-only] Statistics of a BigQuery ML training job.
+            &quot;iterationResults&quot;: [ # Results for all completed iterations.
+              {
+                &quot;durationMs&quot;: &quot;A String&quot;, # Time taken to run the iteration in milliseconds.
+                &quot;evalLoss&quot;: 3.14, # Loss computed on the eval data at the end of iteration.
+                &quot;index&quot;: 42, # Index of the iteration, 0 based.
+                &quot;learnRate&quot;: 3.14, # Learn rate used for this iteration.
+                &quot;trainingLoss&quot;: 3.14, # Loss computed on the training data at the end of iteration.
+              },
+            ],
+            &quot;maxIterations&quot;: &quot;A String&quot;, # Maximum number of iterations specified as max_iterations in the &#x27;CREATE MODEL&#x27; query. The actual number of iterations may be less than this number due to early stop.
+          },
           &quot;modelTraining&quot;: { # [Output-only, Beta] Information about create model query job progress.
             &quot;currentIteration&quot;: 42, # [Output-only, Beta] Index of current ML training iteration. Updated during create model query job to show job progress.
             &quot;expectedTotalIterations&quot;: &quot;A String&quot;, # [Output-only, Beta] Expected number of iterations for the create model query job specified as num_iterations in the input query. The actual total number of iterations may be less than this number due to early stop.
@@ -2953,18 +3239,22 @@ Returns:
                     &quot;A String&quot;,
                   ],
                 },
+                &quot;collationSpec&quot;: &quot;A String&quot;, # Optional. Collation specification of the field. It only can be set on string type field.
                 &quot;description&quot;: &quot;A String&quot;, # [Optional] The field description. The maximum length is 1,024 characters.
                 &quot;fields&quot;: [ # [Optional] Describes the nested schema fields if the type property is set to RECORD.
                   # Object with schema name: TableFieldSchema
                 ],
+                &quot;maxLength&quot;: &quot;A String&quot;, # [Optional] Maximum length of values of this field for STRINGS or BYTES. If max_length is not specified, no maximum length constraint is imposed on this field. If type = &quot;STRING&quot;, then max_length represents the maximum UTF-8 length of strings in this field. If type = &quot;BYTES&quot;, then max_length represents the maximum number of bytes in this field. It is invalid to set this field if type ≠ &quot;STRING&quot; and ≠ &quot;BYTES&quot;.
                 &quot;mode&quot;: &quot;A String&quot;, # [Optional] The field mode. Possible values include NULLABLE, REQUIRED and REPEATED. The default value is NULLABLE.
-                &quot;name&quot;: &quot;A String&quot;, # [Required] The field name. The name must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_), and must start with a letter or underscore. The maximum length is 128 characters.
+                &quot;name&quot;: &quot;A String&quot;, # [Required] The field name. The name must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_), and must start with a letter or underscore. The maximum length is 300 characters.
                 &quot;policyTags&quot;: {
                   &quot;names&quot;: [ # A list of category resource names. For example, &quot;projects/1/location/eu/taxonomies/2/policyTags/3&quot;. At most 1 policy tag is allowed.
                     &quot;A String&quot;,
                   ],
                 },
-                &quot;type&quot;: &quot;A String&quot;, # [Required] The field data type. Possible values include STRING, BYTES, INTEGER, INT64 (same as INTEGER), FLOAT, FLOAT64 (same as FLOAT), NUMERIC, BIGNUMERIC, BOOLEAN, BOOL (same as BOOLEAN), TIMESTAMP, DATE, TIME, DATETIME, RECORD (where RECORD indicates that the field contains a nested schema) or STRUCT (same as RECORD).
+                &quot;precision&quot;: &quot;A String&quot;, # [Optional] Precision (maximum number of total digits in base 10) and scale (maximum number of digits in the fractional part in base 10) constraints for values of this field for NUMERIC or BIGNUMERIC. It is invalid to set precision or scale if type ≠ &quot;NUMERIC&quot; and ≠ &quot;BIGNUMERIC&quot;. If precision and scale are not specified, no value range constraint is imposed on this field insofar as values are permitted by the type. Values of this NUMERIC or BIGNUMERIC field must be in this range when: - Precision (P) and scale (S) are specified: [-10P-S + 10-S, 10P-S - 10-S] - Precision (P) is specified but not scale (and thus scale is interpreted to be equal to zero): [-10P + 1, 10P - 1]. Acceptable values for precision and scale if both are specified: - If type = &quot;NUMERIC&quot;: 1 ≤ precision - scale ≤ 29 and 0 ≤ scale ≤ 9. - If type = &quot;BIGNUMERIC&quot;: 1 ≤ precision - scale ≤ 38 and 0 ≤ scale ≤ 38. Acceptable values for precision if only precision is specified but not scale (and thus scale is interpreted to be equal to zero): - If type = &quot;NUMERIC&quot;: 1 ≤ precision ≤ 29. - If type = &quot;BIGNUMERIC&quot;: 1 ≤ precision ≤ 38. If scale is specified but not precision, then it is invalid.
+                &quot;scale&quot;: &quot;A String&quot;, # [Optional] See documentation for precision.
+                &quot;type&quot;: &quot;A String&quot;, # [Required] The field data type. Possible values include STRING, BYTES, INTEGER, INT64 (same as INTEGER), FLOAT, FLOAT64 (same as FLOAT), NUMERIC, BIGNUMERIC, BOOLEAN, BOOL (same as BOOLEAN), TIMESTAMP, DATE, TIME, DATETIME, INTERVAL, RECORD (where RECORD indicates that the field contains a nested schema) or STRUCT (same as RECORD).
               },
             ],
           },
@@ -3035,10 +3325,13 @@ Returns:
             },
           ],
         },
+        &quot;sessionInfo&quot;: { # [Output-only] [Preview] Information of the session if this job is part of one.
+          &quot;sessionId&quot;: &quot;A String&quot;, # [Output-only] // [Preview] Id of the session.
+        },
         &quot;startTime&quot;: &quot;A String&quot;, # [Output-only] Start time of this job, in milliseconds since the epoch. This field will be present when the job transitions from the PENDING state to either RUNNING or DONE.
         &quot;totalBytesProcessed&quot;: &quot;A String&quot;, # [Output-only] [Deprecated] Use the bytes processed in the query statistics instead.
         &quot;totalSlotMs&quot;: &quot;A String&quot;, # [Output-only] Slot-milliseconds for the job.
-        &quot;transactionInfoTemplate&quot;: { # [Output-only] [Alpha] Information of the multi-statement transaction if this job is part of one.
+        &quot;transactionInfo&quot;: { # [Output-only] [Alpha] Information of the multi-statement transaction if this job is part of one.
           &quot;transactionId&quot;: &quot;A String&quot;, # [Output-only] // [Alpha] Id of the transaction.
         },
       },
@@ -3097,6 +3390,7 @@ Args:
       &quot;value&quot;: &quot;A String&quot;, # [Required] Value of the connection property.
     },
   ],
+  &quot;createSession&quot;: True or False, # If true, creates a new session, where session id will be a server generated random id. If false, runs query with an existing session_id passed in ConnectionProperty, otherwise runs query in non-session mode.
   &quot;defaultDataset&quot;: { # [Optional] Specifies the default datasetId and projectId to assume for any unqualified table names in the query. If not set, all table names in the query string must be qualified in the format &#x27;datasetId.tableId&#x27;.
     &quot;datasetId&quot;: &quot;A String&quot;, # [Required] A unique ID for this dataset, without the project name. The ID must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum length is 1,024 characters.
     &quot;projectId&quot;: &quot;A String&quot;, # [Optional] The ID of the project containing this dataset.
@@ -3149,6 +3443,11 @@ Returns:
 
     {
   &quot;cacheHit&quot;: True or False, # Whether the query result was fetched from the query cache.
+  &quot;dmlStats&quot;: { # [Output-only] Detailed statistics for DML statements Present only for DML statements INSERT, UPDATE, DELETE or TRUNCATE.
+    &quot;deletedRowCount&quot;: &quot;A String&quot;, # Number of deleted Rows. populated by DML DELETE, MERGE and TRUNCATE statements.
+    &quot;insertedRowCount&quot;: &quot;A String&quot;, # Number of inserted Rows. Populated by DML INSERT and MERGE statements.
+    &quot;updatedRowCount&quot;: &quot;A String&quot;, # Number of updated Rows. Populated by DML UPDATE and MERGE statements.
+  },
   &quot;errors&quot;: [ # [Output-only] The first errors or warnings encountered during the running of the job. The final message includes the number of errors that caused the process to stop. Errors here do not necessarily mean that the job has completed or was unsuccessful.
     {
       &quot;debugInfo&quot;: &quot;A String&quot;, # Debugging information. This property is internal to Google and should not be used.
@@ -3183,20 +3482,27 @@ Returns:
             &quot;A String&quot;,
           ],
         },
+        &quot;collationSpec&quot;: &quot;A String&quot;, # Optional. Collation specification of the field. It only can be set on string type field.
         &quot;description&quot;: &quot;A String&quot;, # [Optional] The field description. The maximum length is 1,024 characters.
         &quot;fields&quot;: [ # [Optional] Describes the nested schema fields if the type property is set to RECORD.
           # Object with schema name: TableFieldSchema
         ],
+        &quot;maxLength&quot;: &quot;A String&quot;, # [Optional] Maximum length of values of this field for STRINGS or BYTES. If max_length is not specified, no maximum length constraint is imposed on this field. If type = &quot;STRING&quot;, then max_length represents the maximum UTF-8 length of strings in this field. If type = &quot;BYTES&quot;, then max_length represents the maximum number of bytes in this field. It is invalid to set this field if type ≠ &quot;STRING&quot; and ≠ &quot;BYTES&quot;.
         &quot;mode&quot;: &quot;A String&quot;, # [Optional] The field mode. Possible values include NULLABLE, REQUIRED and REPEATED. The default value is NULLABLE.
-        &quot;name&quot;: &quot;A String&quot;, # [Required] The field name. The name must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_), and must start with a letter or underscore. The maximum length is 128 characters.
+        &quot;name&quot;: &quot;A String&quot;, # [Required] The field name. The name must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_), and must start with a letter or underscore. The maximum length is 300 characters.
         &quot;policyTags&quot;: {
           &quot;names&quot;: [ # A list of category resource names. For example, &quot;projects/1/location/eu/taxonomies/2/policyTags/3&quot;. At most 1 policy tag is allowed.
             &quot;A String&quot;,
           ],
         },
-        &quot;type&quot;: &quot;A String&quot;, # [Required] The field data type. Possible values include STRING, BYTES, INTEGER, INT64 (same as INTEGER), FLOAT, FLOAT64 (same as FLOAT), NUMERIC, BIGNUMERIC, BOOLEAN, BOOL (same as BOOLEAN), TIMESTAMP, DATE, TIME, DATETIME, RECORD (where RECORD indicates that the field contains a nested schema) or STRUCT (same as RECORD).
+        &quot;precision&quot;: &quot;A String&quot;, # [Optional] Precision (maximum number of total digits in base 10) and scale (maximum number of digits in the fractional part in base 10) constraints for values of this field for NUMERIC or BIGNUMERIC. It is invalid to set precision or scale if type ≠ &quot;NUMERIC&quot; and ≠ &quot;BIGNUMERIC&quot;. If precision and scale are not specified, no value range constraint is imposed on this field insofar as values are permitted by the type. Values of this NUMERIC or BIGNUMERIC field must be in this range when: - Precision (P) and scale (S) are specified: [-10P-S + 10-S, 10P-S - 10-S] - Precision (P) is specified but not scale (and thus scale is interpreted to be equal to zero): [-10P + 1, 10P - 1]. Acceptable values for precision and scale if both are specified: - If type = &quot;NUMERIC&quot;: 1 ≤ precision - scale ≤ 29 and 0 ≤ scale ≤ 9. - If type = &quot;BIGNUMERIC&quot;: 1 ≤ precision - scale ≤ 38 and 0 ≤ scale ≤ 38. Acceptable values for precision if only precision is specified but not scale (and thus scale is interpreted to be equal to zero): - If type = &quot;NUMERIC&quot;: 1 ≤ precision ≤ 29. - If type = &quot;BIGNUMERIC&quot;: 1 ≤ precision ≤ 38. If scale is specified but not precision, then it is invalid.
+        &quot;scale&quot;: &quot;A String&quot;, # [Optional] See documentation for precision.
+        &quot;type&quot;: &quot;A String&quot;, # [Required] The field data type. Possible values include STRING, BYTES, INTEGER, INT64 (same as INTEGER), FLOAT, FLOAT64 (same as FLOAT), NUMERIC, BIGNUMERIC, BOOLEAN, BOOL (same as BOOLEAN), TIMESTAMP, DATE, TIME, DATETIME, INTERVAL, RECORD (where RECORD indicates that the field contains a nested schema) or STRUCT (same as RECORD).
       },
     ],
+  },
+  &quot;sessionInfo&quot;: { # [Output-only] [Preview] Information of the session if this job is part of one.
+    &quot;sessionId&quot;: &quot;A String&quot;, # [Output-only] // [Preview] Id of the session.
   },
   &quot;totalBytesProcessed&quot;: &quot;A String&quot;, # The total number of bytes processed for this query. If this query was a dry run, this is the number of bytes that would be processed if the query were run.
   &quot;totalRows&quot;: &quot;A String&quot;, # The total number of rows in the complete query result set, which can be more than the number of rows in this single page of results.

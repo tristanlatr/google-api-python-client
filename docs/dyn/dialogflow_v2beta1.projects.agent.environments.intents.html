@@ -94,7 +94,7 @@ h1, h2, h3 {
   <pre>Returns the list of all intents in the specified agent.
 
 Args:
-  parent: string, Required. The agent to list all intents from. Format: `projects//agent`. (required)
+  parent: string, Required. The agent to list all intents from. Format: `projects//agent` or `projects//locations//agent`. Alternatively, you can specify the environment to list intents for. Format: `projects//agent/environments/` or `projects//locations//agent/environments/`. Note: training phrases of the intents will not be returned for non-draft environment. (required)
   intentView: string, Optional. The resource view to apply to the returned intent.
     Allowed values
       INTENT_VIEW_UNSPECIFIED - Training phrases field is not populated in the response.
@@ -132,6 +132,7 @@ Returns:
         &quot;A String&quot;,
       ],
       &quot;isFallback&quot;: True or False, # Optional. Indicates whether this is a fallback intent.
+      &quot;liveAgentHandoff&quot;: True or False, # Optional. Indicates that a live agent should be brought in to handle the interaction with the user. In most cases, when you set this flag to true, you would also want to set end_interaction to true as well. Default is false.
       &quot;messages&quot;: [ # Optional. The collection of rich messages corresponding to the `Response` field in the Dialogflow console.
         { # Corresponds to the `Response` field in the Dialogflow console.
           &quot;basicCard&quot;: { # The basic card message. Useful for displaying information. # Displays a basic card for Actions on Google.

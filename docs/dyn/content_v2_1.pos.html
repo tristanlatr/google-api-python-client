@@ -126,7 +126,7 @@ Args:
           &quot;value&quot;: &quot;A String&quot;, # The price represented as a number.
         },
         &quot;quantity&quot;: &quot;A String&quot;, # Required. The available quantity of the item.
-        &quot;storeCode&quot;: &quot;A String&quot;, # Required. The identifier of the merchant&#x27;s store. Either a `storeCode` inserted via the API or the code of the store in Google My Business.
+        &quot;storeCode&quot;: &quot;A String&quot;, # Required. The identifier of the merchant&#x27;s store. Either a `storeCode` inserted via the API or the code of the store in a Business Profile.
         &quot;targetCountry&quot;: &quot;A String&quot;, # Required. The CLDR territory code for the item.
         &quot;timestamp&quot;: &quot;A String&quot;, # Required. The inventory timestamp, in ISO 8601 format.
       },
@@ -143,7 +143,7 @@ Args:
         },
         &quot;quantity&quot;: &quot;A String&quot;, # Required. The relative change of the available quantity. Negative for items returned.
         &quot;saleId&quot;: &quot;A String&quot;, # A unique ID to group items from the same sale event.
-        &quot;storeCode&quot;: &quot;A String&quot;, # Required. The identifier of the merchant&#x27;s store. Either a `storeCode` inserted via the API or the code of the store in Google My Business.
+        &quot;storeCode&quot;: &quot;A String&quot;, # Required. The identifier of the merchant&#x27;s store. Either a `storeCode` inserted via the API or the code of the store in a Business Profile.
         &quot;targetCountry&quot;: &quot;A String&quot;, # Required. The CLDR territory code for the item.
         &quot;timestamp&quot;: &quot;A String&quot;, # Required. The inventory timestamp, in ISO 8601 format.
       },
@@ -191,7 +191,7 @@ Returns:
           &quot;value&quot;: &quot;A String&quot;, # The price represented as a number.
         },
         &quot;quantity&quot;: &quot;A String&quot;, # Required. The available quantity of the item.
-        &quot;storeCode&quot;: &quot;A String&quot;, # Required. The identifier of the merchant&#x27;s store. Either a `storeCode` inserted via the API or the code of the store in Google My Business.
+        &quot;storeCode&quot;: &quot;A String&quot;, # Required. The identifier of the merchant&#x27;s store. Either a `storeCode` inserted via the API or the code of the store in a Business Profile.
         &quot;targetCountry&quot;: &quot;A String&quot;, # Required. The CLDR territory code for the item.
         &quot;timestamp&quot;: &quot;A String&quot;, # Required. The inventory timestamp, in ISO 8601 format.
       },
@@ -207,7 +207,7 @@ Returns:
         },
         &quot;quantity&quot;: &quot;A String&quot;, # Required. The relative change of the available quantity. Negative for items returned.
         &quot;saleId&quot;: &quot;A String&quot;, # A unique ID to group items from the same sale event.
-        &quot;storeCode&quot;: &quot;A String&quot;, # Required. The identifier of the merchant&#x27;s store. Either a `storeCode` inserted via the API or the code of the store in Google My Business.
+        &quot;storeCode&quot;: &quot;A String&quot;, # Required. The identifier of the merchant&#x27;s store. Either a `storeCode` inserted via the API or the code of the store in a Business Profile.
         &quot;targetCountry&quot;: &quot;A String&quot;, # Required. The CLDR territory code for the item.
         &quot;timestamp&quot;: &quot;A String&quot;, # Required. The inventory timestamp, in ISO 8601 format.
       },
@@ -218,7 +218,7 @@ Returns:
       },
     },
   ],
-  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;content#posCustomBatchResponse&quot;.
+  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;`content#posCustomBatchResponse`&quot;.
 }</pre>
 </div>
 
@@ -310,7 +310,7 @@ Args:
     &quot;value&quot;: &quot;A String&quot;, # The price represented as a number.
   },
   &quot;quantity&quot;: &quot;A String&quot;, # Required. The available quantity of the item.
-  &quot;storeCode&quot;: &quot;A String&quot;, # Required. The identifier of the merchant&#x27;s store. Either a `storeCode` inserted via the API or the code of the store in Google My Business.
+  &quot;storeCode&quot;: &quot;A String&quot;, # Required. The identifier of the merchant&#x27;s store. Either a `storeCode` inserted via the API or the code of the store in a Business Profile.
   &quot;targetCountry&quot;: &quot;A String&quot;, # Required. The CLDR territory code for the item.
   &quot;timestamp&quot;: &quot;A String&quot;, # Required. The inventory timestamp, in ISO 8601 format.
 }
@@ -327,13 +327,13 @@ Returns:
   &quot;contentLanguage&quot;: &quot;A String&quot;, # Required. The two-letter ISO 639-1 language code for the item.
   &quot;gtin&quot;: &quot;A String&quot;, # Global Trade Item Number.
   &quot;itemId&quot;: &quot;A String&quot;, # Required. A unique identifier for the item.
-  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;content#posInventoryResponse&quot;.
+  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;`content#posInventoryResponse`&quot;.
   &quot;price&quot;: { # Required. The current price of the item.
     &quot;currency&quot;: &quot;A String&quot;, # The currency of the price.
     &quot;value&quot;: &quot;A String&quot;, # The price represented as a number.
   },
   &quot;quantity&quot;: &quot;A String&quot;, # Required. The available quantity of the item.
-  &quot;storeCode&quot;: &quot;A String&quot;, # Required. The identifier of the merchant&#x27;s store. Either a `storeCode` inserted via the API or the code of the store in Google My Business.
+  &quot;storeCode&quot;: &quot;A String&quot;, # Required. The identifier of the merchant&#x27;s store. Either a `storeCode` inserted via the API or the code of the store in a Business Profile.
   &quot;targetCountry&quot;: &quot;A String&quot;, # Required. The CLDR territory code for the item.
   &quot;timestamp&quot;: &quot;A String&quot;, # Required. The inventory timestamp, in ISO 8601 format.
 }</pre>
@@ -355,7 +355,7 @@ Returns:
   An object of the form:
 
     {
-  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;content#posListResponse&quot;.
+  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;`content#posListResponse`&quot;.
   &quot;resources&quot;: [
     { # Store resource.
       &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;`content#posStore`&quot;
@@ -386,7 +386,7 @@ Args:
   },
   &quot;quantity&quot;: &quot;A String&quot;, # Required. The relative change of the available quantity. Negative for items returned.
   &quot;saleId&quot;: &quot;A String&quot;, # A unique ID to group items from the same sale event.
-  &quot;storeCode&quot;: &quot;A String&quot;, # Required. The identifier of the merchant&#x27;s store. Either a `storeCode` inserted via the API or the code of the store in Google My Business.
+  &quot;storeCode&quot;: &quot;A String&quot;, # Required. The identifier of the merchant&#x27;s store. Either a `storeCode` inserted via the API or the code of the store in a Business Profile.
   &quot;targetCountry&quot;: &quot;A String&quot;, # Required. The CLDR territory code for the item.
   &quot;timestamp&quot;: &quot;A String&quot;, # Required. The inventory timestamp, in ISO 8601 format.
 }
@@ -403,14 +403,14 @@ Returns:
   &quot;contentLanguage&quot;: &quot;A String&quot;, # Required. The two-letter ISO 639-1 language code for the item.
   &quot;gtin&quot;: &quot;A String&quot;, # Global Trade Item Number.
   &quot;itemId&quot;: &quot;A String&quot;, # Required. A unique identifier for the item.
-  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;content#posSaleResponse&quot;.
+  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;`content#posSaleResponse`&quot;.
   &quot;price&quot;: { # Required. The price of the item.
     &quot;currency&quot;: &quot;A String&quot;, # The currency of the price.
     &quot;value&quot;: &quot;A String&quot;, # The price represented as a number.
   },
   &quot;quantity&quot;: &quot;A String&quot;, # Required. The relative change of the available quantity. Negative for items returned.
   &quot;saleId&quot;: &quot;A String&quot;, # A unique ID to group items from the same sale event.
-  &quot;storeCode&quot;: &quot;A String&quot;, # Required. The identifier of the merchant&#x27;s store. Either a `storeCode` inserted via the API or the code of the store in Google My Business.
+  &quot;storeCode&quot;: &quot;A String&quot;, # Required. The identifier of the merchant&#x27;s store. Either a `storeCode` inserted via the API or the code of the store in a Business Profile.
   &quot;targetCountry&quot;: &quot;A String&quot;, # Required. The CLDR territory code for the item.
   &quot;timestamp&quot;: &quot;A String&quot;, # Required. The inventory timestamp, in ISO 8601 format.
 }</pre>

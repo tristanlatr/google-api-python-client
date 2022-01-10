@@ -126,7 +126,7 @@ Args:
       UNSPECIFIED - Priority is not specified in the update request. Leaving priority unspecified results in an update failure.
       SYNCHRONOUS - For real-time updates.
       ASYNCHRONOUS - For changes that are executed after the response is sent back to the caller.
-  version: string, Required. The incremented version of the item to delete from the index. The indexing system stores the version from the datasource as a byte string and compares the Item version in the index to the version of the queued Item using lexical ordering. Cloud Search Indexing won&#x27;t delete any queued item with a version value that is less than or equal to the version of the currently indexed item. The maximum length for this field is 1024 bytes.
+  version: string, Required. The incremented version of the item to delete from the index. The indexing system stores the version from the datasource as a byte string and compares the Item version in the index to the version of the queued Item using lexical ordering. Cloud Search Indexing won&#x27;t delete any queued item with a version value that is less than or equal to the version of the currently indexed item. The maximum length for this field is 1024 bytes. See [this guide](https://developers.devsite.corp.google.com/cloud-search/docs/guides/operations) to understand how item version affects reindexing after delete item.
   x__xgafv: string, V1 error format.
     Allowed values
       1 - v1 error format
@@ -268,6 +268,14 @@ Returns:
   &quot;metadata&quot;: { # Available metadata fields for the item. # Metadata information.
     &quot;containerName&quot;: &quot;A String&quot;, # The name of the container for this item. Deletion of the container item leads to automatic deletion of this item. Note: ACLs are not inherited from a container item. To provide ACL inheritance for an item, use the inheritAclFrom field. The maximum length is 1536 characters.
     &quot;contentLanguage&quot;: &quot;A String&quot;, # The BCP-47 language code for the item, such as &quot;en-US&quot; or &quot;sr-Latn&quot;. For more information, see http://www.unicode.org/reports/tr35/#Unicode_locale_identifier. The maximum length is 32 characters.
+    &quot;contextAttributes&quot;: [ # A set of named attributes associated with the item. This can be used for influencing the ranking of the item based on the context in the request. The maximum number of elements is 10.
+      { # A named attribute associated with an item which can be used for influencing the ranking of the item based on the context in the request.
+        &quot;name&quot;: &quot;A String&quot;, # The name of the attribute. It should not be empty. The maximum length is 32 characters. The name must start with a letter and can only contain letters (A-Z, a-z) or numbers (0-9). The name will be normalized (lower-cased) before being matched.
+        &quot;values&quot;: [ # Text values of the attribute. The maximum number of elements is 10. The maximum length of an element in the array is 32 characters. The value will be normalized (lower-cased) before being matched.
+          &quot;A String&quot;,
+        ],
+      },
+    ],
     &quot;createTime&quot;: &quot;A String&quot;, # The time when the item was created in the source repository.
     &quot;hash&quot;: &quot;A String&quot;, # Hashing value provided by the API caller. This can be used with the items.push method to calculate modified state. The maximum length is 2048 characters.
     &quot;interactions&quot;: [ # A list of interactions for the item. Interactions are used to improve Search quality, but are not exposed to end users. The maximum number of elements is 1000.
@@ -377,7 +385,7 @@ Returns:
       ],
     },
   },
-  &quot;version&quot;: &quot;A String&quot;, # Required. The indexing system stores the version from the datasource as a byte string and compares the Item version in the index to the version of the queued Item using lexical ordering. Cloud Search Indexing won&#x27;t index or delete any queued item with a version value that is less than or equal to the version of the currently indexed item. The maximum length for this field is 1024 bytes.
+  &quot;version&quot;: &quot;A String&quot;, # Required. The indexing system stores the version from the datasource as a byte string and compares the Item version in the index to the version of the queued Item using lexical ordering. Cloud Search Indexing won&#x27;t index or delete any queued item with a version value that is less than or equal to the version of the currently indexed item. The maximum length for this field is 1024 bytes. See [this guide](https://developers.devsite.corp.google.com/cloud-search/docs/guides/operations) to understand how item version affects reindexing after delete item.
 }</pre>
 </div>
 
@@ -448,6 +456,14 @@ Args:
     &quot;metadata&quot;: { # Available metadata fields for the item. # Metadata information.
       &quot;containerName&quot;: &quot;A String&quot;, # The name of the container for this item. Deletion of the container item leads to automatic deletion of this item. Note: ACLs are not inherited from a container item. To provide ACL inheritance for an item, use the inheritAclFrom field. The maximum length is 1536 characters.
       &quot;contentLanguage&quot;: &quot;A String&quot;, # The BCP-47 language code for the item, such as &quot;en-US&quot; or &quot;sr-Latn&quot;. For more information, see http://www.unicode.org/reports/tr35/#Unicode_locale_identifier. The maximum length is 32 characters.
+      &quot;contextAttributes&quot;: [ # A set of named attributes associated with the item. This can be used for influencing the ranking of the item based on the context in the request. The maximum number of elements is 10.
+        { # A named attribute associated with an item which can be used for influencing the ranking of the item based on the context in the request.
+          &quot;name&quot;: &quot;A String&quot;, # The name of the attribute. It should not be empty. The maximum length is 32 characters. The name must start with a letter and can only contain letters (A-Z, a-z) or numbers (0-9). The name will be normalized (lower-cased) before being matched.
+          &quot;values&quot;: [ # Text values of the attribute. The maximum number of elements is 10. The maximum length of an element in the array is 32 characters. The value will be normalized (lower-cased) before being matched.
+            &quot;A String&quot;,
+          ],
+        },
+      ],
       &quot;createTime&quot;: &quot;A String&quot;, # The time when the item was created in the source repository.
       &quot;hash&quot;: &quot;A String&quot;, # Hashing value provided by the API caller. This can be used with the items.push method to calculate modified state. The maximum length is 2048 characters.
       &quot;interactions&quot;: [ # A list of interactions for the item. Interactions are used to improve Search quality, but are not exposed to end users. The maximum number of elements is 1000.
@@ -557,7 +573,7 @@ Args:
         ],
       },
     },
-    &quot;version&quot;: &quot;A String&quot;, # Required. The indexing system stores the version from the datasource as a byte string and compares the Item version in the index to the version of the queued Item using lexical ordering. Cloud Search Indexing won&#x27;t index or delete any queued item with a version value that is less than or equal to the version of the currently indexed item. The maximum length for this field is 1024 bytes.
+    &quot;version&quot;: &quot;A String&quot;, # Required. The indexing system stores the version from the datasource as a byte string and compares the Item version in the index to the version of the queued Item using lexical ordering. Cloud Search Indexing won&#x27;t index or delete any queued item with a version value that is less than or equal to the version of the currently indexed item. The maximum length for this field is 1024 bytes. See [this guide](https://developers.devsite.corp.google.com/cloud-search/docs/guides/operations) to understand how item version affects reindexing after delete item.
   },
   &quot;mode&quot;: &quot;A String&quot;, # Required. The RequestMode for this request.
 }
@@ -662,6 +678,14 @@ Returns:
       &quot;metadata&quot;: { # Available metadata fields for the item. # Metadata information.
         &quot;containerName&quot;: &quot;A String&quot;, # The name of the container for this item. Deletion of the container item leads to automatic deletion of this item. Note: ACLs are not inherited from a container item. To provide ACL inheritance for an item, use the inheritAclFrom field. The maximum length is 1536 characters.
         &quot;contentLanguage&quot;: &quot;A String&quot;, # The BCP-47 language code for the item, such as &quot;en-US&quot; or &quot;sr-Latn&quot;. For more information, see http://www.unicode.org/reports/tr35/#Unicode_locale_identifier. The maximum length is 32 characters.
+        &quot;contextAttributes&quot;: [ # A set of named attributes associated with the item. This can be used for influencing the ranking of the item based on the context in the request. The maximum number of elements is 10.
+          { # A named attribute associated with an item which can be used for influencing the ranking of the item based on the context in the request.
+            &quot;name&quot;: &quot;A String&quot;, # The name of the attribute. It should not be empty. The maximum length is 32 characters. The name must start with a letter and can only contain letters (A-Z, a-z) or numbers (0-9). The name will be normalized (lower-cased) before being matched.
+            &quot;values&quot;: [ # Text values of the attribute. The maximum number of elements is 10. The maximum length of an element in the array is 32 characters. The value will be normalized (lower-cased) before being matched.
+              &quot;A String&quot;,
+            ],
+          },
+        ],
         &quot;createTime&quot;: &quot;A String&quot;, # The time when the item was created in the source repository.
         &quot;hash&quot;: &quot;A String&quot;, # Hashing value provided by the API caller. This can be used with the items.push method to calculate modified state. The maximum length is 2048 characters.
         &quot;interactions&quot;: [ # A list of interactions for the item. Interactions are used to improve Search quality, but are not exposed to end users. The maximum number of elements is 1000.
@@ -771,7 +795,7 @@ Returns:
           ],
         },
       },
-      &quot;version&quot;: &quot;A String&quot;, # Required. The indexing system stores the version from the datasource as a byte string and compares the Item version in the index to the version of the queued Item using lexical ordering. Cloud Search Indexing won&#x27;t index or delete any queued item with a version value that is less than or equal to the version of the currently indexed item. The maximum length for this field is 1024 bytes.
+      &quot;version&quot;: &quot;A String&quot;, # Required. The indexing system stores the version from the datasource as a byte string and compares the Item version in the index to the version of the queued Item using lexical ordering. Cloud Search Indexing won&#x27;t index or delete any queued item with a version value that is less than or equal to the version of the currently indexed item. The maximum length for this field is 1024 bytes. See [this guide](https://developers.devsite.corp.google.com/cloud-search/docs/guides/operations) to understand how item version affects reindexing after delete item.
     },
   ],
   &quot;nextPageToken&quot;: &quot;A String&quot;, # Token to retrieve the next page of results, or empty if there are no more results in the list.
@@ -873,6 +897,14 @@ Returns:
       &quot;metadata&quot;: { # Available metadata fields for the item. # Metadata information.
         &quot;containerName&quot;: &quot;A String&quot;, # The name of the container for this item. Deletion of the container item leads to automatic deletion of this item. Note: ACLs are not inherited from a container item. To provide ACL inheritance for an item, use the inheritAclFrom field. The maximum length is 1536 characters.
         &quot;contentLanguage&quot;: &quot;A String&quot;, # The BCP-47 language code for the item, such as &quot;en-US&quot; or &quot;sr-Latn&quot;. For more information, see http://www.unicode.org/reports/tr35/#Unicode_locale_identifier. The maximum length is 32 characters.
+        &quot;contextAttributes&quot;: [ # A set of named attributes associated with the item. This can be used for influencing the ranking of the item based on the context in the request. The maximum number of elements is 10.
+          { # A named attribute associated with an item which can be used for influencing the ranking of the item based on the context in the request.
+            &quot;name&quot;: &quot;A String&quot;, # The name of the attribute. It should not be empty. The maximum length is 32 characters. The name must start with a letter and can only contain letters (A-Z, a-z) or numbers (0-9). The name will be normalized (lower-cased) before being matched.
+            &quot;values&quot;: [ # Text values of the attribute. The maximum number of elements is 10. The maximum length of an element in the array is 32 characters. The value will be normalized (lower-cased) before being matched.
+              &quot;A String&quot;,
+            ],
+          },
+        ],
         &quot;createTime&quot;: &quot;A String&quot;, # The time when the item was created in the source repository.
         &quot;hash&quot;: &quot;A String&quot;, # Hashing value provided by the API caller. This can be used with the items.push method to calculate modified state. The maximum length is 2048 characters.
         &quot;interactions&quot;: [ # A list of interactions for the item. Interactions are used to improve Search quality, but are not exposed to end users. The maximum number of elements is 1000.
@@ -982,7 +1014,7 @@ Returns:
           ],
         },
       },
-      &quot;version&quot;: &quot;A String&quot;, # Required. The indexing system stores the version from the datasource as a byte string and compares the Item version in the index to the version of the queued Item using lexical ordering. Cloud Search Indexing won&#x27;t index or delete any queued item with a version value that is less than or equal to the version of the currently indexed item. The maximum length for this field is 1024 bytes.
+      &quot;version&quot;: &quot;A String&quot;, # Required. The indexing system stores the version from the datasource as a byte string and compares the Item version in the index to the version of the queued Item using lexical ordering. Cloud Search Indexing won&#x27;t index or delete any queued item with a version value that is less than or equal to the version of the currently indexed item. The maximum length for this field is 1024 bytes. See [this guide](https://developers.devsite.corp.google.com/cloud-search/docs/guides/operations) to understand how item version affects reindexing after delete item.
     },
   ],
 }</pre>
@@ -1075,6 +1107,14 @@ Returns:
   &quot;metadata&quot;: { # Available metadata fields for the item. # Metadata information.
     &quot;containerName&quot;: &quot;A String&quot;, # The name of the container for this item. Deletion of the container item leads to automatic deletion of this item. Note: ACLs are not inherited from a container item. To provide ACL inheritance for an item, use the inheritAclFrom field. The maximum length is 1536 characters.
     &quot;contentLanguage&quot;: &quot;A String&quot;, # The BCP-47 language code for the item, such as &quot;en-US&quot; or &quot;sr-Latn&quot;. For more information, see http://www.unicode.org/reports/tr35/#Unicode_locale_identifier. The maximum length is 32 characters.
+    &quot;contextAttributes&quot;: [ # A set of named attributes associated with the item. This can be used for influencing the ranking of the item based on the context in the request. The maximum number of elements is 10.
+      { # A named attribute associated with an item which can be used for influencing the ranking of the item based on the context in the request.
+        &quot;name&quot;: &quot;A String&quot;, # The name of the attribute. It should not be empty. The maximum length is 32 characters. The name must start with a letter and can only contain letters (A-Z, a-z) or numbers (0-9). The name will be normalized (lower-cased) before being matched.
+        &quot;values&quot;: [ # Text values of the attribute. The maximum number of elements is 10. The maximum length of an element in the array is 32 characters. The value will be normalized (lower-cased) before being matched.
+          &quot;A String&quot;,
+        ],
+      },
+    ],
     &quot;createTime&quot;: &quot;A String&quot;, # The time when the item was created in the source repository.
     &quot;hash&quot;: &quot;A String&quot;, # Hashing value provided by the API caller. This can be used with the items.push method to calculate modified state. The maximum length is 2048 characters.
     &quot;interactions&quot;: [ # A list of interactions for the item. Interactions are used to improve Search quality, but are not exposed to end users. The maximum number of elements is 1000.
@@ -1184,7 +1224,7 @@ Returns:
       ],
     },
   },
-  &quot;version&quot;: &quot;A String&quot;, # Required. The indexing system stores the version from the datasource as a byte string and compares the Item version in the index to the version of the queued Item using lexical ordering. Cloud Search Indexing won&#x27;t index or delete any queued item with a version value that is less than or equal to the version of the currently indexed item. The maximum length for this field is 1024 bytes.
+  &quot;version&quot;: &quot;A String&quot;, # Required. The indexing system stores the version from the datasource as a byte string and compares the Item version in the index to the version of the queued Item using lexical ordering. Cloud Search Indexing won&#x27;t index or delete any queued item with a version value that is less than or equal to the version of the currently indexed item. The maximum length for this field is 1024 bytes. See [this guide](https://developers.devsite.corp.google.com/cloud-search/docs/guides/operations) to understand how item version affects reindexing after delete item.
 }</pre>
 </div>
 

@@ -78,7 +78,7 @@ h1, h2, h3 {
   <code><a href="#close">close()</a></code></p>
 <p class="firstline">Close httplib2 connections.</p>
 <p class="toc_element">
-  <code><a href="#create">create(parent, body=None, x__xgafv=None)</a></code></p>
+  <code><a href="#create">create(parent, assignmentId=None, body=None, x__xgafv=None)</a></code></p>
 <p class="firstline">Creates an assignment object which allows the given project to submit jobs of a certain type using slots from the specified reservation. Currently a resource (project, folder, organization) can only have one assignment per each (job_type, location) combination, and that reservation will be used for all jobs of the matching type. Different assignments can be created on different levels of the projects, folders or organization hierarchy. During query execution, the assignment is looked up at the project, folder and organization levels in that order. The first assignment found is applied to the query. When creating assignments, it does not matter if other assignments exist at higher levels. Example: * The organization `organizationA` contains two projects, `project1` and `project2`. * Assignments for all three entities (`organizationA`, `project1`, and `project2`) could all be created and mapped to the same or different reservations. "None" assignments represent an absence of the assignment. Projects assigned to None use on-demand pricing. To create a "None" assignment, use "none" as a reservation_id in the parent. Example parent: `projects/myproject/locations/US/reservations/none`. Returns `google.rpc.Code.PERMISSION_DENIED` if user does not have 'bigquery.admin' permissions on the project using the reservation and the project that owns this reservation. Returns `google.rpc.Code.INVALID_ARGUMENT` when location of the assignment does not match location of the reservation.</p>
 <p class="toc_element">
   <code><a href="#delete">delete(name, x__xgafv=None)</a></code></p>
@@ -99,7 +99,7 @@ h1, h2, h3 {
 </div>
 
 <div class="method">
-    <code class="details" id="create">create(parent, body=None, x__xgafv=None)</code>
+    <code class="details" id="create">create(parent, assignmentId=None, body=None, x__xgafv=None)</code>
   <pre>Creates an assignment object which allows the given project to submit jobs of a certain type using slots from the specified reservation. Currently a resource (project, folder, organization) can only have one assignment per each (job_type, location) combination, and that reservation will be used for all jobs of the matching type. Different assignments can be created on different levels of the projects, folders or organization hierarchy. During query execution, the assignment is looked up at the project, folder and organization levels in that order. The first assignment found is applied to the query. When creating assignments, it does not matter if other assignments exist at higher levels. Example: * The organization `organizationA` contains two projects, `project1` and `project2`. * Assignments for all three entities (`organizationA`, `project1`, and `project2`) could all be created and mapped to the same or different reservations. &quot;None&quot; assignments represent an absence of the assignment. Projects assigned to None use on-demand pricing. To create a &quot;None&quot; assignment, use &quot;none&quot; as a reservation_id in the parent. Example parent: `projects/myproject/locations/US/reservations/none`. Returns `google.rpc.Code.PERMISSION_DENIED` if user does not have &#x27;bigquery.admin&#x27; permissions on the project using the reservation and the project that owns this reservation. Returns `google.rpc.Code.INVALID_ARGUMENT` when location of the assignment does not match location of the reservation.
 
 Args:
@@ -107,13 +107,14 @@ Args:
   body: object, The request body.
     The object takes the form of:
 
-{ # A Assignment allows a project to submit jobs of a certain type using slots from the specified reservation.
+{ # An assignment allows a project to submit jobs of a certain type using slots from the specified reservation.
   &quot;assignee&quot;: &quot;A String&quot;, # The resource which will use the reservation. E.g. `projects/myproject`, `folders/123`, or `organizations/456`.
   &quot;jobType&quot;: &quot;A String&quot;, # Which type of jobs will use the reservation.
   &quot;name&quot;: &quot;A String&quot;, # Output only. Name of the resource. E.g.: `projects/myproject/locations/US/reservations/team1-prod/assignments/123`.
   &quot;state&quot;: &quot;A String&quot;, # Output only. State of the assignment.
 }
 
+  assignmentId: string, The optional assignment ID. Assignment name will be generated automatically if this field is empty. This field must only contain lower case alphanumeric characters or dash. Max length is 64 characters.
   x__xgafv: string, V1 error format.
     Allowed values
       1 - v1 error format
@@ -122,7 +123,7 @@ Args:
 Returns:
   An object of the form:
 
-    { # A Assignment allows a project to submit jobs of a certain type using slots from the specified reservation.
+    { # An assignment allows a project to submit jobs of a certain type using slots from the specified reservation.
   &quot;assignee&quot;: &quot;A String&quot;, # The resource which will use the reservation. E.g. `projects/myproject`, `folders/123`, or `organizations/456`.
   &quot;jobType&quot;: &quot;A String&quot;, # Which type of jobs will use the reservation.
   &quot;name&quot;: &quot;A String&quot;, # Output only. Name of the resource. E.g.: `projects/myproject/locations/US/reservations/team1-prod/assignments/123`.
@@ -166,7 +167,7 @@ Returns:
 
     { # The response for ReservationService.ListAssignments.
   &quot;assignments&quot;: [ # List of assignments visible to the user.
-    { # A Assignment allows a project to submit jobs of a certain type using slots from the specified reservation.
+    { # An assignment allows a project to submit jobs of a certain type using slots from the specified reservation.
       &quot;assignee&quot;: &quot;A String&quot;, # The resource which will use the reservation. E.g. `projects/myproject`, `folders/123`, or `organizations/456`.
       &quot;jobType&quot;: &quot;A String&quot;, # Which type of jobs will use the reservation.
       &quot;name&quot;: &quot;A String&quot;, # Output only. Name of the resource. E.g.: `projects/myproject/locations/US/reservations/team1-prod/assignments/123`.
@@ -212,7 +213,7 @@ Args:
 Returns:
   An object of the form:
 
-    { # A Assignment allows a project to submit jobs of a certain type using slots from the specified reservation.
+    { # An assignment allows a project to submit jobs of a certain type using slots from the specified reservation.
   &quot;assignee&quot;: &quot;A String&quot;, # The resource which will use the reservation. E.g. `projects/myproject`, `folders/123`, or `organizations/456`.
   &quot;jobType&quot;: &quot;A String&quot;, # Which type of jobs will use the reservation.
   &quot;name&quot;: &quot;A String&quot;, # Output only. Name of the resource. E.g.: `projects/myproject/locations/US/reservations/team1-prod/assignments/123`.

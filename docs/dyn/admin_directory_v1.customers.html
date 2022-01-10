@@ -75,6 +75,11 @@ h1, h2, h3 {
 <h1><a href="admin_directory_v1.html">Admin SDK API</a> . <a href="admin_directory_v1.customers.html">customers</a></h1>
 <h2>Instance Methods</h2>
 <p class="toc_element">
+  <code><a href="admin_directory_v1.customers.chrome.html">chrome()</a></code>
+</p>
+<p class="firstline">Returns the chrome Resource.</p>
+
+<p class="toc_element">
   <code><a href="#close">close()</a></code></p>
 <p class="firstline">Close httplib2 connections.</p>
 <p class="toc_element">
@@ -82,7 +87,7 @@ h1, h2, h3 {
 <p class="firstline">Retrieves a customer.</p>
 <p class="toc_element">
   <code><a href="#patch">patch(customerKey, body=None, x__xgafv=None)</a></code></p>
-<p class="firstline">Patch Customers via Apiary Patch Orchestration</p>
+<p class="firstline">Patches a customer.</p>
 <p class="toc_element">
   <code><a href="#update">update(customerKey, body=None, x__xgafv=None)</a></code></p>
 <p class="firstline">Updates a customer.</p>
@@ -131,7 +136,7 @@ Returns:
 
 <div class="method">
     <code class="details" id="patch">patch(customerKey, body=None, x__xgafv=None)</code>
-  <pre>Patch Customers via Apiary Patch Orchestration
+  <pre>Patches a customer.
 
 Args:
   customerKey: string, Id of the customer to be updated (required)

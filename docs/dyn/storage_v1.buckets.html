@@ -177,6 +177,10 @@ Returns:
       &quot;selfLink&quot;: &quot;A String&quot;, # The link to this access-control entry.
     },
   ],
+  &quot;autoclass&quot;: { # The bucket&#x27;s Autoclass configuration.
+    &quot;enabled&quot;: True or False, # Whether or not Autoclass is enabled on this bucket
+    &quot;toggleTime&quot;: &quot;A String&quot;, # A date and time in RFC 3339 format representing the instant at which &quot;enabled&quot; was last toggled.
+  },
   &quot;billing&quot;: { # The bucket&#x27;s billing configuration.
     &quot;requesterPays&quot;: True or False, # When set to true, Requester Pays is enabled for this bucket.
   },
@@ -194,6 +198,11 @@ Returns:
       ],
     },
   ],
+  &quot;customPlacementConfig&quot;: { # The bucket&#x27;s custom placement configuration for Custom Dual Regions.
+    &quot;dataLocations&quot;: [ # The list of regional locations in which data is placed.
+      &quot;A String&quot;,
+    ],
+  },
   &quot;defaultEventBasedHold&quot;: True or False, # The default value for event-based hold on newly created objects in this bucket. Event-based hold is a way to retain objects indefinitely until an event occurs, signified by the hold&#x27;s release. After being released, such objects will be subject to bucket-level retention (if any). One sample use case of this flag is for banks to hold loan documents for at least 3 years after loan is paid in full. Here, bucket-level retention is 3 years and the event is loan being paid in full. In this example, these objects will be held intact for any number of years until the event has occurred (event-based hold on the object is released) and then 3 more years after that. That means retention duration of the objects begins from the moment event-based hold transitioned from true to false. Objects under event-based hold cannot be deleted, overwritten or archived until the hold is removed.
   &quot;defaultObjectAcl&quot;: [ # Default access controls to apply to new objects when no ACL is provided.
     { # An access-control entry.
@@ -235,7 +244,7 @@ Returns:
       &quot;enabled&quot;: True or False, # If set, access is controlled only by bucket-level or above IAM policies.
       &quot;lockedTime&quot;: &quot;A String&quot;, # The deadline for changing iamConfiguration.bucketPolicyOnly.enabled from true to false in RFC 3339 format. iamConfiguration.bucketPolicyOnly.enabled may be changed from true to false until the locked time, after which the field is immutable.
     },
-    &quot;publicAccessPrevention&quot;: &quot;A String&quot;, # The bucket&#x27;s Public Access Prevention configuration. Currently, &#x27;unspecified&#x27; and &#x27;enforced&#x27; are supported.
+    &quot;publicAccessPrevention&quot;: &quot;A String&quot;, # The bucket&#x27;s Public Access Prevention configuration. Currently, &#x27;inherited&#x27; and &#x27;enforced&#x27; are supported.
     &quot;uniformBucketLevelAccess&quot;: { # The bucket&#x27;s uniform bucket-level access configuration.
       &quot;enabled&quot;: True or False, # If set, access is controlled only by bucket-level or above IAM policies.
       &quot;lockedTime&quot;: &quot;A String&quot;, # The deadline for changing iamConfiguration.uniformBucketLevelAccess.enabled from true to false in RFC 3339  format. iamConfiguration.uniformBucketLevelAccess.enabled may be changed from true to false until the locked time, after which the field is immutable.
@@ -288,6 +297,7 @@ Returns:
     &quot;isLocked&quot;: True or False, # Once locked, an object retention policy cannot be modified.
     &quot;retentionPeriod&quot;: &quot;A String&quot;, # The duration in seconds that objects need to be retained. Retention duration must be greater than zero and less than 100 years. Note that enforcement of retention periods less than a day is not guaranteed. Such periods should only be used for testing purposes.
   },
+  &quot;rpo&quot;: &quot;A String&quot;, # The Recovery Point Objective (RPO) of this bucket. Set to ASYNC_TURBO to turn on Turbo Replication on a bucket.
   &quot;satisfiesPZS&quot;: True or False, # Reserved for future use.
   &quot;selfLink&quot;: &quot;A String&quot;, # The URI of this bucket.
   &quot;storageClass&quot;: &quot;A String&quot;, # The bucket&#x27;s default storage class, used whenever no storageClass is specified for a newly-created object. This defines how objects in the bucket are stored and determines the SLA and the cost of storage. Values include MULTI_REGIONAL, REGIONAL, STANDARD, NEARLINE, COLDLINE, ARCHIVE, and DURABLE_REDUCED_AVAILABILITY. If this value is not specified when the bucket is created, it will default to STANDARD. For more information, see storage classes.
@@ -300,9 +310,6 @@ Returns:
     &quot;mainPageSuffix&quot;: &quot;A String&quot;, # If the requested object path is missing, the service will ensure the path has a trailing &#x27;/&#x27;, append this suffix, and attempt to retrieve the resulting object. This allows the creation of index.html objects to represent directory pages.
     &quot;notFoundPage&quot;: &quot;A String&quot;, # If the requested object path is missing, and any mainPageSuffix object is missing, if applicable, the service will return the named object from this bucket as the content for a 404 Not Found result.
   },
-  &quot;zoneAffinity&quot;: [ # The zone or zones from which the bucket is intended to use zonal quota. Requests for data from outside the specified affinities are still allowed but won&#x27;t be able to use zonal quota. The zone or zones need to be within the bucket location otherwise the requests will fail with a 400 Bad Request response.
-    &quot;A String&quot;,
-  ],
 }</pre>
 </div>
 
@@ -399,6 +406,10 @@ Args:
       &quot;selfLink&quot;: &quot;A String&quot;, # The link to this access-control entry.
     },
   ],
+  &quot;autoclass&quot;: { # The bucket&#x27;s Autoclass configuration.
+    &quot;enabled&quot;: True or False, # Whether or not Autoclass is enabled on this bucket
+    &quot;toggleTime&quot;: &quot;A String&quot;, # A date and time in RFC 3339 format representing the instant at which &quot;enabled&quot; was last toggled.
+  },
   &quot;billing&quot;: { # The bucket&#x27;s billing configuration.
     &quot;requesterPays&quot;: True or False, # When set to true, Requester Pays is enabled for this bucket.
   },
@@ -416,6 +427,11 @@ Args:
       ],
     },
   ],
+  &quot;customPlacementConfig&quot;: { # The bucket&#x27;s custom placement configuration for Custom Dual Regions.
+    &quot;dataLocations&quot;: [ # The list of regional locations in which data is placed.
+      &quot;A String&quot;,
+    ],
+  },
   &quot;defaultEventBasedHold&quot;: True or False, # The default value for event-based hold on newly created objects in this bucket. Event-based hold is a way to retain objects indefinitely until an event occurs, signified by the hold&#x27;s release. After being released, such objects will be subject to bucket-level retention (if any). One sample use case of this flag is for banks to hold loan documents for at least 3 years after loan is paid in full. Here, bucket-level retention is 3 years and the event is loan being paid in full. In this example, these objects will be held intact for any number of years until the event has occurred (event-based hold on the object is released) and then 3 more years after that. That means retention duration of the objects begins from the moment event-based hold transitioned from true to false. Objects under event-based hold cannot be deleted, overwritten or archived until the hold is removed.
   &quot;defaultObjectAcl&quot;: [ # Default access controls to apply to new objects when no ACL is provided.
     { # An access-control entry.
@@ -457,7 +473,7 @@ Args:
       &quot;enabled&quot;: True or False, # If set, access is controlled only by bucket-level or above IAM policies.
       &quot;lockedTime&quot;: &quot;A String&quot;, # The deadline for changing iamConfiguration.bucketPolicyOnly.enabled from true to false in RFC 3339 format. iamConfiguration.bucketPolicyOnly.enabled may be changed from true to false until the locked time, after which the field is immutable.
     },
-    &quot;publicAccessPrevention&quot;: &quot;A String&quot;, # The bucket&#x27;s Public Access Prevention configuration. Currently, &#x27;unspecified&#x27; and &#x27;enforced&#x27; are supported.
+    &quot;publicAccessPrevention&quot;: &quot;A String&quot;, # The bucket&#x27;s Public Access Prevention configuration. Currently, &#x27;inherited&#x27; and &#x27;enforced&#x27; are supported.
     &quot;uniformBucketLevelAccess&quot;: { # The bucket&#x27;s uniform bucket-level access configuration.
       &quot;enabled&quot;: True or False, # If set, access is controlled only by bucket-level or above IAM policies.
       &quot;lockedTime&quot;: &quot;A String&quot;, # The deadline for changing iamConfiguration.uniformBucketLevelAccess.enabled from true to false in RFC 3339  format. iamConfiguration.uniformBucketLevelAccess.enabled may be changed from true to false until the locked time, after which the field is immutable.
@@ -510,6 +526,7 @@ Args:
     &quot;isLocked&quot;: True or False, # Once locked, an object retention policy cannot be modified.
     &quot;retentionPeriod&quot;: &quot;A String&quot;, # The duration in seconds that objects need to be retained. Retention duration must be greater than zero and less than 100 years. Note that enforcement of retention periods less than a day is not guaranteed. Such periods should only be used for testing purposes.
   },
+  &quot;rpo&quot;: &quot;A String&quot;, # The Recovery Point Objective (RPO) of this bucket. Set to ASYNC_TURBO to turn on Turbo Replication on a bucket.
   &quot;satisfiesPZS&quot;: True or False, # Reserved for future use.
   &quot;selfLink&quot;: &quot;A String&quot;, # The URI of this bucket.
   &quot;storageClass&quot;: &quot;A String&quot;, # The bucket&#x27;s default storage class, used whenever no storageClass is specified for a newly-created object. This defines how objects in the bucket are stored and determines the SLA and the cost of storage. Values include MULTI_REGIONAL, REGIONAL, STANDARD, NEARLINE, COLDLINE, ARCHIVE, and DURABLE_REDUCED_AVAILABILITY. If this value is not specified when the bucket is created, it will default to STANDARD. For more information, see storage classes.
@@ -522,9 +539,6 @@ Args:
     &quot;mainPageSuffix&quot;: &quot;A String&quot;, # If the requested object path is missing, the service will ensure the path has a trailing &#x27;/&#x27;, append this suffix, and attempt to retrieve the resulting object. This allows the creation of index.html objects to represent directory pages.
     &quot;notFoundPage&quot;: &quot;A String&quot;, # If the requested object path is missing, and any mainPageSuffix object is missing, if applicable, the service will return the named object from this bucket as the content for a 404 Not Found result.
   },
-  &quot;zoneAffinity&quot;: [ # The zone or zones from which the bucket is intended to use zonal quota. Requests for data from outside the specified affinities are still allowed but won&#x27;t be able to use zonal quota. The zone or zones need to be within the bucket location otherwise the requests will fail with a 400 Bad Request response.
-    &quot;A String&quot;,
-  ],
 }
 
   predefinedAcl: string, Apply a predefined set of access controls to this bucket.
@@ -582,6 +596,10 @@ Returns:
       &quot;selfLink&quot;: &quot;A String&quot;, # The link to this access-control entry.
     },
   ],
+  &quot;autoclass&quot;: { # The bucket&#x27;s Autoclass configuration.
+    &quot;enabled&quot;: True or False, # Whether or not Autoclass is enabled on this bucket
+    &quot;toggleTime&quot;: &quot;A String&quot;, # A date and time in RFC 3339 format representing the instant at which &quot;enabled&quot; was last toggled.
+  },
   &quot;billing&quot;: { # The bucket&#x27;s billing configuration.
     &quot;requesterPays&quot;: True or False, # When set to true, Requester Pays is enabled for this bucket.
   },
@@ -599,6 +617,11 @@ Returns:
       ],
     },
   ],
+  &quot;customPlacementConfig&quot;: { # The bucket&#x27;s custom placement configuration for Custom Dual Regions.
+    &quot;dataLocations&quot;: [ # The list of regional locations in which data is placed.
+      &quot;A String&quot;,
+    ],
+  },
   &quot;defaultEventBasedHold&quot;: True or False, # The default value for event-based hold on newly created objects in this bucket. Event-based hold is a way to retain objects indefinitely until an event occurs, signified by the hold&#x27;s release. After being released, such objects will be subject to bucket-level retention (if any). One sample use case of this flag is for banks to hold loan documents for at least 3 years after loan is paid in full. Here, bucket-level retention is 3 years and the event is loan being paid in full. In this example, these objects will be held intact for any number of years until the event has occurred (event-based hold on the object is released) and then 3 more years after that. That means retention duration of the objects begins from the moment event-based hold transitioned from true to false. Objects under event-based hold cannot be deleted, overwritten or archived until the hold is removed.
   &quot;defaultObjectAcl&quot;: [ # Default access controls to apply to new objects when no ACL is provided.
     { # An access-control entry.
@@ -640,7 +663,7 @@ Returns:
       &quot;enabled&quot;: True or False, # If set, access is controlled only by bucket-level or above IAM policies.
       &quot;lockedTime&quot;: &quot;A String&quot;, # The deadline for changing iamConfiguration.bucketPolicyOnly.enabled from true to false in RFC 3339 format. iamConfiguration.bucketPolicyOnly.enabled may be changed from true to false until the locked time, after which the field is immutable.
     },
-    &quot;publicAccessPrevention&quot;: &quot;A String&quot;, # The bucket&#x27;s Public Access Prevention configuration. Currently, &#x27;unspecified&#x27; and &#x27;enforced&#x27; are supported.
+    &quot;publicAccessPrevention&quot;: &quot;A String&quot;, # The bucket&#x27;s Public Access Prevention configuration. Currently, &#x27;inherited&#x27; and &#x27;enforced&#x27; are supported.
     &quot;uniformBucketLevelAccess&quot;: { # The bucket&#x27;s uniform bucket-level access configuration.
       &quot;enabled&quot;: True or False, # If set, access is controlled only by bucket-level or above IAM policies.
       &quot;lockedTime&quot;: &quot;A String&quot;, # The deadline for changing iamConfiguration.uniformBucketLevelAccess.enabled from true to false in RFC 3339  format. iamConfiguration.uniformBucketLevelAccess.enabled may be changed from true to false until the locked time, after which the field is immutable.
@@ -693,6 +716,7 @@ Returns:
     &quot;isLocked&quot;: True or False, # Once locked, an object retention policy cannot be modified.
     &quot;retentionPeriod&quot;: &quot;A String&quot;, # The duration in seconds that objects need to be retained. Retention duration must be greater than zero and less than 100 years. Note that enforcement of retention periods less than a day is not guaranteed. Such periods should only be used for testing purposes.
   },
+  &quot;rpo&quot;: &quot;A String&quot;, # The Recovery Point Objective (RPO) of this bucket. Set to ASYNC_TURBO to turn on Turbo Replication on a bucket.
   &quot;satisfiesPZS&quot;: True or False, # Reserved for future use.
   &quot;selfLink&quot;: &quot;A String&quot;, # The URI of this bucket.
   &quot;storageClass&quot;: &quot;A String&quot;, # The bucket&#x27;s default storage class, used whenever no storageClass is specified for a newly-created object. This defines how objects in the bucket are stored and determines the SLA and the cost of storage. Values include MULTI_REGIONAL, REGIONAL, STANDARD, NEARLINE, COLDLINE, ARCHIVE, and DURABLE_REDUCED_AVAILABILITY. If this value is not specified when the bucket is created, it will default to STANDARD. For more information, see storage classes.
@@ -705,9 +729,6 @@ Returns:
     &quot;mainPageSuffix&quot;: &quot;A String&quot;, # If the requested object path is missing, the service will ensure the path has a trailing &#x27;/&#x27;, append this suffix, and attempt to retrieve the resulting object. This allows the creation of index.html objects to represent directory pages.
     &quot;notFoundPage&quot;: &quot;A String&quot;, # If the requested object path is missing, and any mainPageSuffix object is missing, if applicable, the service will return the named object from this bucket as the content for a 404 Not Found result.
   },
-  &quot;zoneAffinity&quot;: [ # The zone or zones from which the bucket is intended to use zonal quota. Requests for data from outside the specified affinities are still allowed but won&#x27;t be able to use zonal quota. The zone or zones need to be within the bucket location otherwise the requests will fail with a 400 Bad Request response.
-    &quot;A String&quot;,
-  ],
 }</pre>
 </div>
 
@@ -762,6 +783,10 @@ Returns:
           &quot;selfLink&quot;: &quot;A String&quot;, # The link to this access-control entry.
         },
       ],
+      &quot;autoclass&quot;: { # The bucket&#x27;s Autoclass configuration.
+        &quot;enabled&quot;: True or False, # Whether or not Autoclass is enabled on this bucket
+        &quot;toggleTime&quot;: &quot;A String&quot;, # A date and time in RFC 3339 format representing the instant at which &quot;enabled&quot; was last toggled.
+      },
       &quot;billing&quot;: { # The bucket&#x27;s billing configuration.
         &quot;requesterPays&quot;: True or False, # When set to true, Requester Pays is enabled for this bucket.
       },
@@ -779,6 +804,11 @@ Returns:
           ],
         },
       ],
+      &quot;customPlacementConfig&quot;: { # The bucket&#x27;s custom placement configuration for Custom Dual Regions.
+        &quot;dataLocations&quot;: [ # The list of regional locations in which data is placed.
+          &quot;A String&quot;,
+        ],
+      },
       &quot;defaultEventBasedHold&quot;: True or False, # The default value for event-based hold on newly created objects in this bucket. Event-based hold is a way to retain objects indefinitely until an event occurs, signified by the hold&#x27;s release. After being released, such objects will be subject to bucket-level retention (if any). One sample use case of this flag is for banks to hold loan documents for at least 3 years after loan is paid in full. Here, bucket-level retention is 3 years and the event is loan being paid in full. In this example, these objects will be held intact for any number of years until the event has occurred (event-based hold on the object is released) and then 3 more years after that. That means retention duration of the objects begins from the moment event-based hold transitioned from true to false. Objects under event-based hold cannot be deleted, overwritten or archived until the hold is removed.
       &quot;defaultObjectAcl&quot;: [ # Default access controls to apply to new objects when no ACL is provided.
         { # An access-control entry.
@@ -820,7 +850,7 @@ Returns:
           &quot;enabled&quot;: True or False, # If set, access is controlled only by bucket-level or above IAM policies.
           &quot;lockedTime&quot;: &quot;A String&quot;, # The deadline for changing iamConfiguration.bucketPolicyOnly.enabled from true to false in RFC 3339 format. iamConfiguration.bucketPolicyOnly.enabled may be changed from true to false until the locked time, after which the field is immutable.
         },
-        &quot;publicAccessPrevention&quot;: &quot;A String&quot;, # The bucket&#x27;s Public Access Prevention configuration. Currently, &#x27;unspecified&#x27; and &#x27;enforced&#x27; are supported.
+        &quot;publicAccessPrevention&quot;: &quot;A String&quot;, # The bucket&#x27;s Public Access Prevention configuration. Currently, &#x27;inherited&#x27; and &#x27;enforced&#x27; are supported.
         &quot;uniformBucketLevelAccess&quot;: { # The bucket&#x27;s uniform bucket-level access configuration.
           &quot;enabled&quot;: True or False, # If set, access is controlled only by bucket-level or above IAM policies.
           &quot;lockedTime&quot;: &quot;A String&quot;, # The deadline for changing iamConfiguration.uniformBucketLevelAccess.enabled from true to false in RFC 3339  format. iamConfiguration.uniformBucketLevelAccess.enabled may be changed from true to false until the locked time, after which the field is immutable.
@@ -873,6 +903,7 @@ Returns:
         &quot;isLocked&quot;: True or False, # Once locked, an object retention policy cannot be modified.
         &quot;retentionPeriod&quot;: &quot;A String&quot;, # The duration in seconds that objects need to be retained. Retention duration must be greater than zero and less than 100 years. Note that enforcement of retention periods less than a day is not guaranteed. Such periods should only be used for testing purposes.
       },
+      &quot;rpo&quot;: &quot;A String&quot;, # The Recovery Point Objective (RPO) of this bucket. Set to ASYNC_TURBO to turn on Turbo Replication on a bucket.
       &quot;satisfiesPZS&quot;: True or False, # Reserved for future use.
       &quot;selfLink&quot;: &quot;A String&quot;, # The URI of this bucket.
       &quot;storageClass&quot;: &quot;A String&quot;, # The bucket&#x27;s default storage class, used whenever no storageClass is specified for a newly-created object. This defines how objects in the bucket are stored and determines the SLA and the cost of storage. Values include MULTI_REGIONAL, REGIONAL, STANDARD, NEARLINE, COLDLINE, ARCHIVE, and DURABLE_REDUCED_AVAILABILITY. If this value is not specified when the bucket is created, it will default to STANDARD. For more information, see storage classes.
@@ -885,9 +916,6 @@ Returns:
         &quot;mainPageSuffix&quot;: &quot;A String&quot;, # If the requested object path is missing, the service will ensure the path has a trailing &#x27;/&#x27;, append this suffix, and attempt to retrieve the resulting object. This allows the creation of index.html objects to represent directory pages.
         &quot;notFoundPage&quot;: &quot;A String&quot;, # If the requested object path is missing, and any mainPageSuffix object is missing, if applicable, the service will return the named object from this bucket as the content for a 404 Not Found result.
       },
-      &quot;zoneAffinity&quot;: [ # The zone or zones from which the bucket is intended to use zonal quota. Requests for data from outside the specified affinities are still allowed but won&#x27;t be able to use zonal quota. The zone or zones need to be within the bucket location otherwise the requests will fail with a 400 Bad Request response.
-        &quot;A String&quot;,
-      ],
     },
   ],
   &quot;kind&quot;: &quot;storage#buckets&quot;, # The kind of item this is. For lists of buckets, this is always storage#buckets.
@@ -952,6 +980,10 @@ Returns:
       &quot;selfLink&quot;: &quot;A String&quot;, # The link to this access-control entry.
     },
   ],
+  &quot;autoclass&quot;: { # The bucket&#x27;s Autoclass configuration.
+    &quot;enabled&quot;: True or False, # Whether or not Autoclass is enabled on this bucket
+    &quot;toggleTime&quot;: &quot;A String&quot;, # A date and time in RFC 3339 format representing the instant at which &quot;enabled&quot; was last toggled.
+  },
   &quot;billing&quot;: { # The bucket&#x27;s billing configuration.
     &quot;requesterPays&quot;: True or False, # When set to true, Requester Pays is enabled for this bucket.
   },
@@ -969,6 +1001,11 @@ Returns:
       ],
     },
   ],
+  &quot;customPlacementConfig&quot;: { # The bucket&#x27;s custom placement configuration for Custom Dual Regions.
+    &quot;dataLocations&quot;: [ # The list of regional locations in which data is placed.
+      &quot;A String&quot;,
+    ],
+  },
   &quot;defaultEventBasedHold&quot;: True or False, # The default value for event-based hold on newly created objects in this bucket. Event-based hold is a way to retain objects indefinitely until an event occurs, signified by the hold&#x27;s release. After being released, such objects will be subject to bucket-level retention (if any). One sample use case of this flag is for banks to hold loan documents for at least 3 years after loan is paid in full. Here, bucket-level retention is 3 years and the event is loan being paid in full. In this example, these objects will be held intact for any number of years until the event has occurred (event-based hold on the object is released) and then 3 more years after that. That means retention duration of the objects begins from the moment event-based hold transitioned from true to false. Objects under event-based hold cannot be deleted, overwritten or archived until the hold is removed.
   &quot;defaultObjectAcl&quot;: [ # Default access controls to apply to new objects when no ACL is provided.
     { # An access-control entry.
@@ -1010,7 +1047,7 @@ Returns:
       &quot;enabled&quot;: True or False, # If set, access is controlled only by bucket-level or above IAM policies.
       &quot;lockedTime&quot;: &quot;A String&quot;, # The deadline for changing iamConfiguration.bucketPolicyOnly.enabled from true to false in RFC 3339 format. iamConfiguration.bucketPolicyOnly.enabled may be changed from true to false until the locked time, after which the field is immutable.
     },
-    &quot;publicAccessPrevention&quot;: &quot;A String&quot;, # The bucket&#x27;s Public Access Prevention configuration. Currently, &#x27;unspecified&#x27; and &#x27;enforced&#x27; are supported.
+    &quot;publicAccessPrevention&quot;: &quot;A String&quot;, # The bucket&#x27;s Public Access Prevention configuration. Currently, &#x27;inherited&#x27; and &#x27;enforced&#x27; are supported.
     &quot;uniformBucketLevelAccess&quot;: { # The bucket&#x27;s uniform bucket-level access configuration.
       &quot;enabled&quot;: True or False, # If set, access is controlled only by bucket-level or above IAM policies.
       &quot;lockedTime&quot;: &quot;A String&quot;, # The deadline for changing iamConfiguration.uniformBucketLevelAccess.enabled from true to false in RFC 3339  format. iamConfiguration.uniformBucketLevelAccess.enabled may be changed from true to false until the locked time, after which the field is immutable.
@@ -1063,6 +1100,7 @@ Returns:
     &quot;isLocked&quot;: True or False, # Once locked, an object retention policy cannot be modified.
     &quot;retentionPeriod&quot;: &quot;A String&quot;, # The duration in seconds that objects need to be retained. Retention duration must be greater than zero and less than 100 years. Note that enforcement of retention periods less than a day is not guaranteed. Such periods should only be used for testing purposes.
   },
+  &quot;rpo&quot;: &quot;A String&quot;, # The Recovery Point Objective (RPO) of this bucket. Set to ASYNC_TURBO to turn on Turbo Replication on a bucket.
   &quot;satisfiesPZS&quot;: True or False, # Reserved for future use.
   &quot;selfLink&quot;: &quot;A String&quot;, # The URI of this bucket.
   &quot;storageClass&quot;: &quot;A String&quot;, # The bucket&#x27;s default storage class, used whenever no storageClass is specified for a newly-created object. This defines how objects in the bucket are stored and determines the SLA and the cost of storage. Values include MULTI_REGIONAL, REGIONAL, STANDARD, NEARLINE, COLDLINE, ARCHIVE, and DURABLE_REDUCED_AVAILABILITY. If this value is not specified when the bucket is created, it will default to STANDARD. For more information, see storage classes.
@@ -1075,9 +1113,6 @@ Returns:
     &quot;mainPageSuffix&quot;: &quot;A String&quot;, # If the requested object path is missing, the service will ensure the path has a trailing &#x27;/&#x27;, append this suffix, and attempt to retrieve the resulting object. This allows the creation of index.html objects to represent directory pages.
     &quot;notFoundPage&quot;: &quot;A String&quot;, # If the requested object path is missing, and any mainPageSuffix object is missing, if applicable, the service will return the named object from this bucket as the content for a 404 Not Found result.
   },
-  &quot;zoneAffinity&quot;: [ # The zone or zones from which the bucket is intended to use zonal quota. Requests for data from outside the specified affinities are still allowed but won&#x27;t be able to use zonal quota. The zone or zones need to be within the bucket location otherwise the requests will fail with a 400 Bad Request response.
-    &quot;A String&quot;,
-  ],
 }</pre>
 </div>
 
@@ -1120,6 +1155,10 @@ Args:
       &quot;selfLink&quot;: &quot;A String&quot;, # The link to this access-control entry.
     },
   ],
+  &quot;autoclass&quot;: { # The bucket&#x27;s Autoclass configuration.
+    &quot;enabled&quot;: True or False, # Whether or not Autoclass is enabled on this bucket
+    &quot;toggleTime&quot;: &quot;A String&quot;, # A date and time in RFC 3339 format representing the instant at which &quot;enabled&quot; was last toggled.
+  },
   &quot;billing&quot;: { # The bucket&#x27;s billing configuration.
     &quot;requesterPays&quot;: True or False, # When set to true, Requester Pays is enabled for this bucket.
   },
@@ -1137,6 +1176,11 @@ Args:
       ],
     },
   ],
+  &quot;customPlacementConfig&quot;: { # The bucket&#x27;s custom placement configuration for Custom Dual Regions.
+    &quot;dataLocations&quot;: [ # The list of regional locations in which data is placed.
+      &quot;A String&quot;,
+    ],
+  },
   &quot;defaultEventBasedHold&quot;: True or False, # The default value for event-based hold on newly created objects in this bucket. Event-based hold is a way to retain objects indefinitely until an event occurs, signified by the hold&#x27;s release. After being released, such objects will be subject to bucket-level retention (if any). One sample use case of this flag is for banks to hold loan documents for at least 3 years after loan is paid in full. Here, bucket-level retention is 3 years and the event is loan being paid in full. In this example, these objects will be held intact for any number of years until the event has occurred (event-based hold on the object is released) and then 3 more years after that. That means retention duration of the objects begins from the moment event-based hold transitioned from true to false. Objects under event-based hold cannot be deleted, overwritten or archived until the hold is removed.
   &quot;defaultObjectAcl&quot;: [ # Default access controls to apply to new objects when no ACL is provided.
     { # An access-control entry.
@@ -1178,7 +1222,7 @@ Args:
       &quot;enabled&quot;: True or False, # If set, access is controlled only by bucket-level or above IAM policies.
       &quot;lockedTime&quot;: &quot;A String&quot;, # The deadline for changing iamConfiguration.bucketPolicyOnly.enabled from true to false in RFC 3339 format. iamConfiguration.bucketPolicyOnly.enabled may be changed from true to false until the locked time, after which the field is immutable.
     },
-    &quot;publicAccessPrevention&quot;: &quot;A String&quot;, # The bucket&#x27;s Public Access Prevention configuration. Currently, &#x27;unspecified&#x27; and &#x27;enforced&#x27; are supported.
+    &quot;publicAccessPrevention&quot;: &quot;A String&quot;, # The bucket&#x27;s Public Access Prevention configuration. Currently, &#x27;inherited&#x27; and &#x27;enforced&#x27; are supported.
     &quot;uniformBucketLevelAccess&quot;: { # The bucket&#x27;s uniform bucket-level access configuration.
       &quot;enabled&quot;: True or False, # If set, access is controlled only by bucket-level or above IAM policies.
       &quot;lockedTime&quot;: &quot;A String&quot;, # The deadline for changing iamConfiguration.uniformBucketLevelAccess.enabled from true to false in RFC 3339  format. iamConfiguration.uniformBucketLevelAccess.enabled may be changed from true to false until the locked time, after which the field is immutable.
@@ -1231,6 +1275,7 @@ Args:
     &quot;isLocked&quot;: True or False, # Once locked, an object retention policy cannot be modified.
     &quot;retentionPeriod&quot;: &quot;A String&quot;, # The duration in seconds that objects need to be retained. Retention duration must be greater than zero and less than 100 years. Note that enforcement of retention periods less than a day is not guaranteed. Such periods should only be used for testing purposes.
   },
+  &quot;rpo&quot;: &quot;A String&quot;, # The Recovery Point Objective (RPO) of this bucket. Set to ASYNC_TURBO to turn on Turbo Replication on a bucket.
   &quot;satisfiesPZS&quot;: True or False, # Reserved for future use.
   &quot;selfLink&quot;: &quot;A String&quot;, # The URI of this bucket.
   &quot;storageClass&quot;: &quot;A String&quot;, # The bucket&#x27;s default storage class, used whenever no storageClass is specified for a newly-created object. This defines how objects in the bucket are stored and determines the SLA and the cost of storage. Values include MULTI_REGIONAL, REGIONAL, STANDARD, NEARLINE, COLDLINE, ARCHIVE, and DURABLE_REDUCED_AVAILABILITY. If this value is not specified when the bucket is created, it will default to STANDARD. For more information, see storage classes.
@@ -1243,9 +1288,6 @@ Args:
     &quot;mainPageSuffix&quot;: &quot;A String&quot;, # If the requested object path is missing, the service will ensure the path has a trailing &#x27;/&#x27;, append this suffix, and attempt to retrieve the resulting object. This allows the creation of index.html objects to represent directory pages.
     &quot;notFoundPage&quot;: &quot;A String&quot;, # If the requested object path is missing, and any mainPageSuffix object is missing, if applicable, the service will return the named object from this bucket as the content for a 404 Not Found result.
   },
-  &quot;zoneAffinity&quot;: [ # The zone or zones from which the bucket is intended to use zonal quota. Requests for data from outside the specified affinities are still allowed but won&#x27;t be able to use zonal quota. The zone or zones need to be within the bucket location otherwise the requests will fail with a 400 Bad Request response.
-    &quot;A String&quot;,
-  ],
 }
 
   ifMetagenerationMatch: string, Makes the return of the bucket metadata conditional on whether the bucket&#x27;s current metageneration matches the given value.
@@ -1305,6 +1347,10 @@ Returns:
       &quot;selfLink&quot;: &quot;A String&quot;, # The link to this access-control entry.
     },
   ],
+  &quot;autoclass&quot;: { # The bucket&#x27;s Autoclass configuration.
+    &quot;enabled&quot;: True or False, # Whether or not Autoclass is enabled on this bucket
+    &quot;toggleTime&quot;: &quot;A String&quot;, # A date and time in RFC 3339 format representing the instant at which &quot;enabled&quot; was last toggled.
+  },
   &quot;billing&quot;: { # The bucket&#x27;s billing configuration.
     &quot;requesterPays&quot;: True or False, # When set to true, Requester Pays is enabled for this bucket.
   },
@@ -1322,6 +1368,11 @@ Returns:
       ],
     },
   ],
+  &quot;customPlacementConfig&quot;: { # The bucket&#x27;s custom placement configuration for Custom Dual Regions.
+    &quot;dataLocations&quot;: [ # The list of regional locations in which data is placed.
+      &quot;A String&quot;,
+    ],
+  },
   &quot;defaultEventBasedHold&quot;: True or False, # The default value for event-based hold on newly created objects in this bucket. Event-based hold is a way to retain objects indefinitely until an event occurs, signified by the hold&#x27;s release. After being released, such objects will be subject to bucket-level retention (if any). One sample use case of this flag is for banks to hold loan documents for at least 3 years after loan is paid in full. Here, bucket-level retention is 3 years and the event is loan being paid in full. In this example, these objects will be held intact for any number of years until the event has occurred (event-based hold on the object is released) and then 3 more years after that. That means retention duration of the objects begins from the moment event-based hold transitioned from true to false. Objects under event-based hold cannot be deleted, overwritten or archived until the hold is removed.
   &quot;defaultObjectAcl&quot;: [ # Default access controls to apply to new objects when no ACL is provided.
     { # An access-control entry.
@@ -1363,7 +1414,7 @@ Returns:
       &quot;enabled&quot;: True or False, # If set, access is controlled only by bucket-level or above IAM policies.
       &quot;lockedTime&quot;: &quot;A String&quot;, # The deadline for changing iamConfiguration.bucketPolicyOnly.enabled from true to false in RFC 3339 format. iamConfiguration.bucketPolicyOnly.enabled may be changed from true to false until the locked time, after which the field is immutable.
     },
-    &quot;publicAccessPrevention&quot;: &quot;A String&quot;, # The bucket&#x27;s Public Access Prevention configuration. Currently, &#x27;unspecified&#x27; and &#x27;enforced&#x27; are supported.
+    &quot;publicAccessPrevention&quot;: &quot;A String&quot;, # The bucket&#x27;s Public Access Prevention configuration. Currently, &#x27;inherited&#x27; and &#x27;enforced&#x27; are supported.
     &quot;uniformBucketLevelAccess&quot;: { # The bucket&#x27;s uniform bucket-level access configuration.
       &quot;enabled&quot;: True or False, # If set, access is controlled only by bucket-level or above IAM policies.
       &quot;lockedTime&quot;: &quot;A String&quot;, # The deadline for changing iamConfiguration.uniformBucketLevelAccess.enabled from true to false in RFC 3339  format. iamConfiguration.uniformBucketLevelAccess.enabled may be changed from true to false until the locked time, after which the field is immutable.
@@ -1416,6 +1467,7 @@ Returns:
     &quot;isLocked&quot;: True or False, # Once locked, an object retention policy cannot be modified.
     &quot;retentionPeriod&quot;: &quot;A String&quot;, # The duration in seconds that objects need to be retained. Retention duration must be greater than zero and less than 100 years. Note that enforcement of retention periods less than a day is not guaranteed. Such periods should only be used for testing purposes.
   },
+  &quot;rpo&quot;: &quot;A String&quot;, # The Recovery Point Objective (RPO) of this bucket. Set to ASYNC_TURBO to turn on Turbo Replication on a bucket.
   &quot;satisfiesPZS&quot;: True or False, # Reserved for future use.
   &quot;selfLink&quot;: &quot;A String&quot;, # The URI of this bucket.
   &quot;storageClass&quot;: &quot;A String&quot;, # The bucket&#x27;s default storage class, used whenever no storageClass is specified for a newly-created object. This defines how objects in the bucket are stored and determines the SLA and the cost of storage. Values include MULTI_REGIONAL, REGIONAL, STANDARD, NEARLINE, COLDLINE, ARCHIVE, and DURABLE_REDUCED_AVAILABILITY. If this value is not specified when the bucket is created, it will default to STANDARD. For more information, see storage classes.
@@ -1428,9 +1480,6 @@ Returns:
     &quot;mainPageSuffix&quot;: &quot;A String&quot;, # If the requested object path is missing, the service will ensure the path has a trailing &#x27;/&#x27;, append this suffix, and attempt to retrieve the resulting object. This allows the creation of index.html objects to represent directory pages.
     &quot;notFoundPage&quot;: &quot;A String&quot;, # If the requested object path is missing, and any mainPageSuffix object is missing, if applicable, the service will return the named object from this bucket as the content for a 404 Not Found result.
   },
-  &quot;zoneAffinity&quot;: [ # The zone or zones from which the bucket is intended to use zonal quota. Requests for data from outside the specified affinities are still allowed but won&#x27;t be able to use zonal quota. The zone or zones need to be within the bucket location otherwise the requests will fail with a 400 Bad Request response.
-    &quot;A String&quot;,
-  ],
 }</pre>
 </div>
 
@@ -1604,6 +1653,10 @@ Args:
       &quot;selfLink&quot;: &quot;A String&quot;, # The link to this access-control entry.
     },
   ],
+  &quot;autoclass&quot;: { # The bucket&#x27;s Autoclass configuration.
+    &quot;enabled&quot;: True or False, # Whether or not Autoclass is enabled on this bucket
+    &quot;toggleTime&quot;: &quot;A String&quot;, # A date and time in RFC 3339 format representing the instant at which &quot;enabled&quot; was last toggled.
+  },
   &quot;billing&quot;: { # The bucket&#x27;s billing configuration.
     &quot;requesterPays&quot;: True or False, # When set to true, Requester Pays is enabled for this bucket.
   },
@@ -1621,6 +1674,11 @@ Args:
       ],
     },
   ],
+  &quot;customPlacementConfig&quot;: { # The bucket&#x27;s custom placement configuration for Custom Dual Regions.
+    &quot;dataLocations&quot;: [ # The list of regional locations in which data is placed.
+      &quot;A String&quot;,
+    ],
+  },
   &quot;defaultEventBasedHold&quot;: True or False, # The default value for event-based hold on newly created objects in this bucket. Event-based hold is a way to retain objects indefinitely until an event occurs, signified by the hold&#x27;s release. After being released, such objects will be subject to bucket-level retention (if any). One sample use case of this flag is for banks to hold loan documents for at least 3 years after loan is paid in full. Here, bucket-level retention is 3 years and the event is loan being paid in full. In this example, these objects will be held intact for any number of years until the event has occurred (event-based hold on the object is released) and then 3 more years after that. That means retention duration of the objects begins from the moment event-based hold transitioned from true to false. Objects under event-based hold cannot be deleted, overwritten or archived until the hold is removed.
   &quot;defaultObjectAcl&quot;: [ # Default access controls to apply to new objects when no ACL is provided.
     { # An access-control entry.
@@ -1662,7 +1720,7 @@ Args:
       &quot;enabled&quot;: True or False, # If set, access is controlled only by bucket-level or above IAM policies.
       &quot;lockedTime&quot;: &quot;A String&quot;, # The deadline for changing iamConfiguration.bucketPolicyOnly.enabled from true to false in RFC 3339 format. iamConfiguration.bucketPolicyOnly.enabled may be changed from true to false until the locked time, after which the field is immutable.
     },
-    &quot;publicAccessPrevention&quot;: &quot;A String&quot;, # The bucket&#x27;s Public Access Prevention configuration. Currently, &#x27;unspecified&#x27; and &#x27;enforced&#x27; are supported.
+    &quot;publicAccessPrevention&quot;: &quot;A String&quot;, # The bucket&#x27;s Public Access Prevention configuration. Currently, &#x27;inherited&#x27; and &#x27;enforced&#x27; are supported.
     &quot;uniformBucketLevelAccess&quot;: { # The bucket&#x27;s uniform bucket-level access configuration.
       &quot;enabled&quot;: True or False, # If set, access is controlled only by bucket-level or above IAM policies.
       &quot;lockedTime&quot;: &quot;A String&quot;, # The deadline for changing iamConfiguration.uniformBucketLevelAccess.enabled from true to false in RFC 3339  format. iamConfiguration.uniformBucketLevelAccess.enabled may be changed from true to false until the locked time, after which the field is immutable.
@@ -1715,6 +1773,7 @@ Args:
     &quot;isLocked&quot;: True or False, # Once locked, an object retention policy cannot be modified.
     &quot;retentionPeriod&quot;: &quot;A String&quot;, # The duration in seconds that objects need to be retained. Retention duration must be greater than zero and less than 100 years. Note that enforcement of retention periods less than a day is not guaranteed. Such periods should only be used for testing purposes.
   },
+  &quot;rpo&quot;: &quot;A String&quot;, # The Recovery Point Objective (RPO) of this bucket. Set to ASYNC_TURBO to turn on Turbo Replication on a bucket.
   &quot;satisfiesPZS&quot;: True or False, # Reserved for future use.
   &quot;selfLink&quot;: &quot;A String&quot;, # The URI of this bucket.
   &quot;storageClass&quot;: &quot;A String&quot;, # The bucket&#x27;s default storage class, used whenever no storageClass is specified for a newly-created object. This defines how objects in the bucket are stored and determines the SLA and the cost of storage. Values include MULTI_REGIONAL, REGIONAL, STANDARD, NEARLINE, COLDLINE, ARCHIVE, and DURABLE_REDUCED_AVAILABILITY. If this value is not specified when the bucket is created, it will default to STANDARD. For more information, see storage classes.
@@ -1727,9 +1786,6 @@ Args:
     &quot;mainPageSuffix&quot;: &quot;A String&quot;, # If the requested object path is missing, the service will ensure the path has a trailing &#x27;/&#x27;, append this suffix, and attempt to retrieve the resulting object. This allows the creation of index.html objects to represent directory pages.
     &quot;notFoundPage&quot;: &quot;A String&quot;, # If the requested object path is missing, and any mainPageSuffix object is missing, if applicable, the service will return the named object from this bucket as the content for a 404 Not Found result.
   },
-  &quot;zoneAffinity&quot;: [ # The zone or zones from which the bucket is intended to use zonal quota. Requests for data from outside the specified affinities are still allowed but won&#x27;t be able to use zonal quota. The zone or zones need to be within the bucket location otherwise the requests will fail with a 400 Bad Request response.
-    &quot;A String&quot;,
-  ],
 }
 
   ifMetagenerationMatch: string, Makes the return of the bucket metadata conditional on whether the bucket&#x27;s current metageneration matches the given value.
@@ -1789,6 +1845,10 @@ Returns:
       &quot;selfLink&quot;: &quot;A String&quot;, # The link to this access-control entry.
     },
   ],
+  &quot;autoclass&quot;: { # The bucket&#x27;s Autoclass configuration.
+    &quot;enabled&quot;: True or False, # Whether or not Autoclass is enabled on this bucket
+    &quot;toggleTime&quot;: &quot;A String&quot;, # A date and time in RFC 3339 format representing the instant at which &quot;enabled&quot; was last toggled.
+  },
   &quot;billing&quot;: { # The bucket&#x27;s billing configuration.
     &quot;requesterPays&quot;: True or False, # When set to true, Requester Pays is enabled for this bucket.
   },
@@ -1806,6 +1866,11 @@ Returns:
       ],
     },
   ],
+  &quot;customPlacementConfig&quot;: { # The bucket&#x27;s custom placement configuration for Custom Dual Regions.
+    &quot;dataLocations&quot;: [ # The list of regional locations in which data is placed.
+      &quot;A String&quot;,
+    ],
+  },
   &quot;defaultEventBasedHold&quot;: True or False, # The default value for event-based hold on newly created objects in this bucket. Event-based hold is a way to retain objects indefinitely until an event occurs, signified by the hold&#x27;s release. After being released, such objects will be subject to bucket-level retention (if any). One sample use case of this flag is for banks to hold loan documents for at least 3 years after loan is paid in full. Here, bucket-level retention is 3 years and the event is loan being paid in full. In this example, these objects will be held intact for any number of years until the event has occurred (event-based hold on the object is released) and then 3 more years after that. That means retention duration of the objects begins from the moment event-based hold transitioned from true to false. Objects under event-based hold cannot be deleted, overwritten or archived until the hold is removed.
   &quot;defaultObjectAcl&quot;: [ # Default access controls to apply to new objects when no ACL is provided.
     { # An access-control entry.
@@ -1847,7 +1912,7 @@ Returns:
       &quot;enabled&quot;: True or False, # If set, access is controlled only by bucket-level or above IAM policies.
       &quot;lockedTime&quot;: &quot;A String&quot;, # The deadline for changing iamConfiguration.bucketPolicyOnly.enabled from true to false in RFC 3339 format. iamConfiguration.bucketPolicyOnly.enabled may be changed from true to false until the locked time, after which the field is immutable.
     },
-    &quot;publicAccessPrevention&quot;: &quot;A String&quot;, # The bucket&#x27;s Public Access Prevention configuration. Currently, &#x27;unspecified&#x27; and &#x27;enforced&#x27; are supported.
+    &quot;publicAccessPrevention&quot;: &quot;A String&quot;, # The bucket&#x27;s Public Access Prevention configuration. Currently, &#x27;inherited&#x27; and &#x27;enforced&#x27; are supported.
     &quot;uniformBucketLevelAccess&quot;: { # The bucket&#x27;s uniform bucket-level access configuration.
       &quot;enabled&quot;: True or False, # If set, access is controlled only by bucket-level or above IAM policies.
       &quot;lockedTime&quot;: &quot;A String&quot;, # The deadline for changing iamConfiguration.uniformBucketLevelAccess.enabled from true to false in RFC 3339  format. iamConfiguration.uniformBucketLevelAccess.enabled may be changed from true to false until the locked time, after which the field is immutable.
@@ -1900,6 +1965,7 @@ Returns:
     &quot;isLocked&quot;: True or False, # Once locked, an object retention policy cannot be modified.
     &quot;retentionPeriod&quot;: &quot;A String&quot;, # The duration in seconds that objects need to be retained. Retention duration must be greater than zero and less than 100 years. Note that enforcement of retention periods less than a day is not guaranteed. Such periods should only be used for testing purposes.
   },
+  &quot;rpo&quot;: &quot;A String&quot;, # The Recovery Point Objective (RPO) of this bucket. Set to ASYNC_TURBO to turn on Turbo Replication on a bucket.
   &quot;satisfiesPZS&quot;: True or False, # Reserved for future use.
   &quot;selfLink&quot;: &quot;A String&quot;, # The URI of this bucket.
   &quot;storageClass&quot;: &quot;A String&quot;, # The bucket&#x27;s default storage class, used whenever no storageClass is specified for a newly-created object. This defines how objects in the bucket are stored and determines the SLA and the cost of storage. Values include MULTI_REGIONAL, REGIONAL, STANDARD, NEARLINE, COLDLINE, ARCHIVE, and DURABLE_REDUCED_AVAILABILITY. If this value is not specified when the bucket is created, it will default to STANDARD. For more information, see storage classes.
@@ -1912,9 +1978,6 @@ Returns:
     &quot;mainPageSuffix&quot;: &quot;A String&quot;, # If the requested object path is missing, the service will ensure the path has a trailing &#x27;/&#x27;, append this suffix, and attempt to retrieve the resulting object. This allows the creation of index.html objects to represent directory pages.
     &quot;notFoundPage&quot;: &quot;A String&quot;, # If the requested object path is missing, and any mainPageSuffix object is missing, if applicable, the service will return the named object from this bucket as the content for a 404 Not Found result.
   },
-  &quot;zoneAffinity&quot;: [ # The zone or zones from which the bucket is intended to use zonal quota. Requests for data from outside the specified affinities are still allowed but won&#x27;t be able to use zonal quota. The zone or zones need to be within the bucket location otherwise the requests will fail with a 400 Bad Request response.
-    &quot;A String&quot;,
-  ],
 }</pre>
 </div>
 

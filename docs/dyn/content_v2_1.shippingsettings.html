@@ -148,7 +148,7 @@ Args:
                 &quot;timezone&quot;: &quot;A String&quot;, # Timezone identifier for the cutoff time. A list of identifiers can be found in the AdWords API documentation. E.g. &quot;Europe/Zurich&quot;. Required.
               },
               &quot;handlingBusinessDayConfig&quot;: { # The business days during which orders can be handled. If not provided, Monday to Friday business days will be assumed.
-                &quot;businessDays&quot;: [ # Regular business days. May not be empty.
+                &quot;businessDays&quot;: [ # Regular business days, such as &#x27;&quot;monday&quot;&#x27;. May not be empty.
                   &quot;A String&quot;,
                 ],
               },
@@ -166,7 +166,7 @@ Args:
               &quot;minHandlingTimeInDays&quot;: 42, # Minimum number of business days spent before an order is shipped. 0 means same day shipped, 1 means next day shipped.
               &quot;minTransitTimeInDays&quot;: 42, # Minimum number of business days that is spent in transit. 0 means same day delivery, 1 means next day delivery. Either `{min,max}TransitTimeInDays` or `transitTimeTable` must be set, but not both.
               &quot;transitBusinessDayConfig&quot;: { # The business days during which orders can be in-transit. If not provided, Monday to Friday business days will be assumed.
-                &quot;businessDays&quot;: [ # Regular business days. May not be empty.
+                &quot;businessDays&quot;: [ # Regular business days, such as &#x27;&quot;monday&quot;&#x27;. May not be empty.
                   &quot;A String&quot;,
                 ],
               },
@@ -188,6 +188,18 @@ Args:
                   &quot;A String&quot;,
                 ],
               },
+              &quot;warehouseBasedDeliveryTimes&quot;: [ # Indicates that the delivery time should be calculated per warehouse (shipping origin location) based on the settings of the selected carrier. When set, no other transit time related field in DeliveryTime should be set.
+                {
+                  &quot;carrier&quot;: &quot;A String&quot;, # Required. Carrier, such as `&quot;UPS&quot;` or `&quot;Fedex&quot;`. The list of supported carriers can be retrieved via the `listSupportedCarriers` method.
+                  &quot;carrierService&quot;: &quot;A String&quot;, # Required. Carrier service, such as `&quot;ground&quot;` or `&quot;2 days&quot;`. The list of supported services for a carrier can be retrieved via the `listSupportedCarriers` method. The name of the service must be in the eddSupportedServices list.
+                  &quot;originAdministrativeArea&quot;: &quot;A String&quot;, # Shipping origin&#x27;s state.
+                  &quot;originCity&quot;: &quot;A String&quot;, # Shipping origin&#x27;s city.
+                  &quot;originCountry&quot;: &quot;A String&quot;, # Shipping origin&#x27;s country represented as a [CLDR territory code](http://www.unicode.org/repos/cldr/tags/latest/common/main/en.xml).
+                  &quot;originPostalCode&quot;: &quot;A String&quot;, # Shipping origin.
+                  &quot;originStreetAddress&quot;: &quot;A String&quot;, # Shipping origin&#x27;s street address.
+                  &quot;warehouseName&quot;: &quot;A String&quot;, # The name of the warehouse. Warehouse name need to be matched with name. If warehouseName is set, the below fields will be ignored. The warehouse info will be read from warehouse.
+                },
+              ],
             },
             &quot;eligibility&quot;: &quot;A String&quot;, # Eligibility for this service. Acceptable values are: - &quot;`All scenarios`&quot; - &quot;`All scenarios except Shopping Actions`&quot; - &quot;`Shopping Actions`&quot;
             &quot;minimumOrderValue&quot;: { # Minimum order value for this service. If set, indicates that customers will have to spend at least this amount. All prices within a service must have the same currency. Cannot be set together with minimum_order_value_table.
@@ -254,7 +266,7 @@ Args:
                     &quot;weights&quot;: [ # A list of inclusive order weight upper bounds. The last weight&#x27;s value can be `&quot;infinity&quot;`. For example `[{&quot;value&quot;: &quot;10&quot;, &quot;unit&quot;: &quot;kg&quot;}, {&quot;value&quot;: &quot;50&quot;, &quot;unit&quot;: &quot;kg&quot;}, {&quot;value&quot;: &quot;infinity&quot;, &quot;unit&quot;: &quot;kg&quot;}]` represents the headers &quot;&lt;= 10kg&quot;, &quot;&lt;= 50kg&quot;, and &quot;&gt; 50kg&quot;. All weights within a service must have the same unit. Must be non-empty. Can only be set if all other fields are not set.
                       {
                         &quot;unit&quot;: &quot;A String&quot;, # Required. The weight unit. Acceptable values are: - &quot;`kg`&quot; - &quot;`lb`&quot;
-                        &quot;value&quot;: &quot;A String&quot;, # Required. The weight represented as a number.
+                        &quot;value&quot;: &quot;A String&quot;, # Required. The weight represented as a number. The weight can have a maximum precision of four decimal places.
                       },
                     ],
                   },
@@ -282,7 +294,7 @@ Args:
                     &quot;weights&quot;: [ # A list of inclusive order weight upper bounds. The last weight&#x27;s value can be `&quot;infinity&quot;`. For example `[{&quot;value&quot;: &quot;10&quot;, &quot;unit&quot;: &quot;kg&quot;}, {&quot;value&quot;: &quot;50&quot;, &quot;unit&quot;: &quot;kg&quot;}, {&quot;value&quot;: &quot;infinity&quot;, &quot;unit&quot;: &quot;kg&quot;}]` represents the headers &quot;&lt;= 10kg&quot;, &quot;&lt;= 50kg&quot;, and &quot;&gt; 50kg&quot;. All weights within a service must have the same unit. Must be non-empty. Can only be set if all other fields are not set.
                       {
                         &quot;unit&quot;: &quot;A String&quot;, # Required. The weight unit. Acceptable values are: - &quot;`kg`&quot; - &quot;`lb`&quot;
-                        &quot;value&quot;: &quot;A String&quot;, # Required. The weight represented as a number.
+                        &quot;value&quot;: &quot;A String&quot;, # Required. The weight represented as a number. The weight can have a maximum precision of four decimal places.
                       },
                     ],
                   },
@@ -339,7 +351,7 @@ Args:
                       &quot;weights&quot;: [ # A list of inclusive order weight upper bounds. The last weight&#x27;s value can be `&quot;infinity&quot;`. For example `[{&quot;value&quot;: &quot;10&quot;, &quot;unit&quot;: &quot;kg&quot;}, {&quot;value&quot;: &quot;50&quot;, &quot;unit&quot;: &quot;kg&quot;}, {&quot;value&quot;: &quot;infinity&quot;, &quot;unit&quot;: &quot;kg&quot;}]` represents the headers &quot;&lt;= 10kg&quot;, &quot;&lt;= 50kg&quot;, and &quot;&gt; 50kg&quot;. All weights within a service must have the same unit. Must be non-empty. Can only be set if all other fields are not set.
                         {
                           &quot;unit&quot;: &quot;A String&quot;, # Required. The weight unit. Acceptable values are: - &quot;`kg`&quot; - &quot;`lb`&quot;
-                          &quot;value&quot;: &quot;A String&quot;, # Required. The weight represented as a number.
+                          &quot;value&quot;: &quot;A String&quot;, # Required. The weight represented as a number. The weight can have a maximum precision of four decimal places.
                         },
                       ],
                     },
@@ -367,7 +379,7 @@ Args:
                       &quot;weights&quot;: [ # A list of inclusive order weight upper bounds. The last weight&#x27;s value can be `&quot;infinity&quot;`. For example `[{&quot;value&quot;: &quot;10&quot;, &quot;unit&quot;: &quot;kg&quot;}, {&quot;value&quot;: &quot;50&quot;, &quot;unit&quot;: &quot;kg&quot;}, {&quot;value&quot;: &quot;infinity&quot;, &quot;unit&quot;: &quot;kg&quot;}]` represents the headers &quot;&lt;= 10kg&quot;, &quot;&lt;= 50kg&quot;, and &quot;&gt; 50kg&quot;. All weights within a service must have the same unit. Must be non-empty. Can only be set if all other fields are not set.
                         {
                           &quot;unit&quot;: &quot;A String&quot;, # Required. The weight unit. Acceptable values are: - &quot;`kg`&quot; - &quot;`lb`&quot;
-                          &quot;value&quot;: &quot;A String&quot;, # Required. The weight represented as a number.
+                          &quot;value&quot;: &quot;A String&quot;, # Required. The weight represented as a number. The weight can have a maximum precision of four decimal places.
                         },
                       ],
                     },
@@ -392,6 +404,28 @@ Args:
               },
             ],
             &quot;shipmentType&quot;: &quot;A String&quot;, # Type of locations this service ships orders to. Acceptable values are: - &quot;`delivery`&quot; - &quot;`pickup`&quot;
+          },
+        ],
+        &quot;warehouses&quot;: [ # Optional. A list of warehouses which can be referred to in `services`.
+          { # A fulfillment warehouse, which stores and handles inventory.
+            &quot;businessDayConfig&quot;: { # Business days of the warehouse. If not set, will be Monday to Friday by default.
+              &quot;businessDays&quot;: [ # Regular business days, such as &#x27;&quot;monday&quot;&#x27;. May not be empty.
+                &quot;A String&quot;,
+              ],
+            },
+            &quot;cutoffTime&quot;: { # Required. The latest time of day that an order can be accepted and begin processing. Later orders will be processed in the next day. The time is based on the warehouse postal code.
+              &quot;hour&quot;: 42, # Required. Hour (24-hour clock) of the cutoff time until which an order has to be placed to be processed in the same day by the warehouse. Hour is based on the timezone of warehouse.
+              &quot;minute&quot;: 42, # Required. Minute of the cutoff time until which an order has to be placed to be processed in the same day by the warehouse. Minute is based on the timezone of warehouse.
+            },
+            &quot;handlingDays&quot;: &quot;A String&quot;, # Required. The number of days it takes for this warehouse to pack up and ship an item. This is on the warehouse level, but can be overridden on the offer level based on the attributes of an item.
+            &quot;name&quot;: &quot;A String&quot;, # Required. The name of the warehouse. Must be unique within account.
+            &quot;shippingAddress&quot;: { # Required. Shipping address of the warehouse.
+              &quot;administrativeArea&quot;: &quot;A String&quot;, # Required. Top-level administrative subdivision of the country. For example, a state like California (&quot;CA&quot;) or a province like Quebec (&quot;QC&quot;).
+              &quot;city&quot;: &quot;A String&quot;, # Required. City, town or commune. May also include dependent localities or sublocalities (e.g. neighborhoods or suburbs).
+              &quot;country&quot;: &quot;A String&quot;, # Required. [CLDR country code](http://www.unicode.org/repos/cldr/tags/latest/common/main/en.xml) (e.g. &quot;US&quot;).
+              &quot;postalCode&quot;: &quot;A String&quot;, # Required. Postal code or ZIP (e.g. &quot;94043&quot;).
+              &quot;streetAddress&quot;: &quot;A String&quot;, # Street-level part of the address.
+            },
           },
         ],
       },
@@ -449,7 +483,7 @@ Returns:
                 &quot;timezone&quot;: &quot;A String&quot;, # Timezone identifier for the cutoff time. A list of identifiers can be found in the AdWords API documentation. E.g. &quot;Europe/Zurich&quot;. Required.
               },
               &quot;handlingBusinessDayConfig&quot;: { # The business days during which orders can be handled. If not provided, Monday to Friday business days will be assumed.
-                &quot;businessDays&quot;: [ # Regular business days. May not be empty.
+                &quot;businessDays&quot;: [ # Regular business days, such as &#x27;&quot;monday&quot;&#x27;. May not be empty.
                   &quot;A String&quot;,
                 ],
               },
@@ -467,7 +501,7 @@ Returns:
               &quot;minHandlingTimeInDays&quot;: 42, # Minimum number of business days spent before an order is shipped. 0 means same day shipped, 1 means next day shipped.
               &quot;minTransitTimeInDays&quot;: 42, # Minimum number of business days that is spent in transit. 0 means same day delivery, 1 means next day delivery. Either `{min,max}TransitTimeInDays` or `transitTimeTable` must be set, but not both.
               &quot;transitBusinessDayConfig&quot;: { # The business days during which orders can be in-transit. If not provided, Monday to Friday business days will be assumed.
-                &quot;businessDays&quot;: [ # Regular business days. May not be empty.
+                &quot;businessDays&quot;: [ # Regular business days, such as &#x27;&quot;monday&quot;&#x27;. May not be empty.
                   &quot;A String&quot;,
                 ],
               },
@@ -489,6 +523,18 @@ Returns:
                   &quot;A String&quot;,
                 ],
               },
+              &quot;warehouseBasedDeliveryTimes&quot;: [ # Indicates that the delivery time should be calculated per warehouse (shipping origin location) based on the settings of the selected carrier. When set, no other transit time related field in DeliveryTime should be set.
+                {
+                  &quot;carrier&quot;: &quot;A String&quot;, # Required. Carrier, such as `&quot;UPS&quot;` or `&quot;Fedex&quot;`. The list of supported carriers can be retrieved via the `listSupportedCarriers` method.
+                  &quot;carrierService&quot;: &quot;A String&quot;, # Required. Carrier service, such as `&quot;ground&quot;` or `&quot;2 days&quot;`. The list of supported services for a carrier can be retrieved via the `listSupportedCarriers` method. The name of the service must be in the eddSupportedServices list.
+                  &quot;originAdministrativeArea&quot;: &quot;A String&quot;, # Shipping origin&#x27;s state.
+                  &quot;originCity&quot;: &quot;A String&quot;, # Shipping origin&#x27;s city.
+                  &quot;originCountry&quot;: &quot;A String&quot;, # Shipping origin&#x27;s country represented as a [CLDR territory code](http://www.unicode.org/repos/cldr/tags/latest/common/main/en.xml).
+                  &quot;originPostalCode&quot;: &quot;A String&quot;, # Shipping origin.
+                  &quot;originStreetAddress&quot;: &quot;A String&quot;, # Shipping origin&#x27;s street address.
+                  &quot;warehouseName&quot;: &quot;A String&quot;, # The name of the warehouse. Warehouse name need to be matched with name. If warehouseName is set, the below fields will be ignored. The warehouse info will be read from warehouse.
+                },
+              ],
             },
             &quot;eligibility&quot;: &quot;A String&quot;, # Eligibility for this service. Acceptable values are: - &quot;`All scenarios`&quot; - &quot;`All scenarios except Shopping Actions`&quot; - &quot;`Shopping Actions`&quot;
             &quot;minimumOrderValue&quot;: { # Minimum order value for this service. If set, indicates that customers will have to spend at least this amount. All prices within a service must have the same currency. Cannot be set together with minimum_order_value_table.
@@ -555,7 +601,7 @@ Returns:
                     &quot;weights&quot;: [ # A list of inclusive order weight upper bounds. The last weight&#x27;s value can be `&quot;infinity&quot;`. For example `[{&quot;value&quot;: &quot;10&quot;, &quot;unit&quot;: &quot;kg&quot;}, {&quot;value&quot;: &quot;50&quot;, &quot;unit&quot;: &quot;kg&quot;}, {&quot;value&quot;: &quot;infinity&quot;, &quot;unit&quot;: &quot;kg&quot;}]` represents the headers &quot;&lt;= 10kg&quot;, &quot;&lt;= 50kg&quot;, and &quot;&gt; 50kg&quot;. All weights within a service must have the same unit. Must be non-empty. Can only be set if all other fields are not set.
                       {
                         &quot;unit&quot;: &quot;A String&quot;, # Required. The weight unit. Acceptable values are: - &quot;`kg`&quot; - &quot;`lb`&quot;
-                        &quot;value&quot;: &quot;A String&quot;, # Required. The weight represented as a number.
+                        &quot;value&quot;: &quot;A String&quot;, # Required. The weight represented as a number. The weight can have a maximum precision of four decimal places.
                       },
                     ],
                   },
@@ -583,7 +629,7 @@ Returns:
                     &quot;weights&quot;: [ # A list of inclusive order weight upper bounds. The last weight&#x27;s value can be `&quot;infinity&quot;`. For example `[{&quot;value&quot;: &quot;10&quot;, &quot;unit&quot;: &quot;kg&quot;}, {&quot;value&quot;: &quot;50&quot;, &quot;unit&quot;: &quot;kg&quot;}, {&quot;value&quot;: &quot;infinity&quot;, &quot;unit&quot;: &quot;kg&quot;}]` represents the headers &quot;&lt;= 10kg&quot;, &quot;&lt;= 50kg&quot;, and &quot;&gt; 50kg&quot;. All weights within a service must have the same unit. Must be non-empty. Can only be set if all other fields are not set.
                       {
                         &quot;unit&quot;: &quot;A String&quot;, # Required. The weight unit. Acceptable values are: - &quot;`kg`&quot; - &quot;`lb`&quot;
-                        &quot;value&quot;: &quot;A String&quot;, # Required. The weight represented as a number.
+                        &quot;value&quot;: &quot;A String&quot;, # Required. The weight represented as a number. The weight can have a maximum precision of four decimal places.
                       },
                     ],
                   },
@@ -640,7 +686,7 @@ Returns:
                       &quot;weights&quot;: [ # A list of inclusive order weight upper bounds. The last weight&#x27;s value can be `&quot;infinity&quot;`. For example `[{&quot;value&quot;: &quot;10&quot;, &quot;unit&quot;: &quot;kg&quot;}, {&quot;value&quot;: &quot;50&quot;, &quot;unit&quot;: &quot;kg&quot;}, {&quot;value&quot;: &quot;infinity&quot;, &quot;unit&quot;: &quot;kg&quot;}]` represents the headers &quot;&lt;= 10kg&quot;, &quot;&lt;= 50kg&quot;, and &quot;&gt; 50kg&quot;. All weights within a service must have the same unit. Must be non-empty. Can only be set if all other fields are not set.
                         {
                           &quot;unit&quot;: &quot;A String&quot;, # Required. The weight unit. Acceptable values are: - &quot;`kg`&quot; - &quot;`lb`&quot;
-                          &quot;value&quot;: &quot;A String&quot;, # Required. The weight represented as a number.
+                          &quot;value&quot;: &quot;A String&quot;, # Required. The weight represented as a number. The weight can have a maximum precision of four decimal places.
                         },
                       ],
                     },
@@ -668,7 +714,7 @@ Returns:
                       &quot;weights&quot;: [ # A list of inclusive order weight upper bounds. The last weight&#x27;s value can be `&quot;infinity&quot;`. For example `[{&quot;value&quot;: &quot;10&quot;, &quot;unit&quot;: &quot;kg&quot;}, {&quot;value&quot;: &quot;50&quot;, &quot;unit&quot;: &quot;kg&quot;}, {&quot;value&quot;: &quot;infinity&quot;, &quot;unit&quot;: &quot;kg&quot;}]` represents the headers &quot;&lt;= 10kg&quot;, &quot;&lt;= 50kg&quot;, and &quot;&gt; 50kg&quot;. All weights within a service must have the same unit. Must be non-empty. Can only be set if all other fields are not set.
                         {
                           &quot;unit&quot;: &quot;A String&quot;, # Required. The weight unit. Acceptable values are: - &quot;`kg`&quot; - &quot;`lb`&quot;
-                          &quot;value&quot;: &quot;A String&quot;, # Required. The weight represented as a number.
+                          &quot;value&quot;: &quot;A String&quot;, # Required. The weight represented as a number. The weight can have a maximum precision of four decimal places.
                         },
                       ],
                     },
@@ -695,10 +741,32 @@ Returns:
             &quot;shipmentType&quot;: &quot;A String&quot;, # Type of locations this service ships orders to. Acceptable values are: - &quot;`delivery`&quot; - &quot;`pickup`&quot;
           },
         ],
+        &quot;warehouses&quot;: [ # Optional. A list of warehouses which can be referred to in `services`.
+          { # A fulfillment warehouse, which stores and handles inventory.
+            &quot;businessDayConfig&quot;: { # Business days of the warehouse. If not set, will be Monday to Friday by default.
+              &quot;businessDays&quot;: [ # Regular business days, such as &#x27;&quot;monday&quot;&#x27;. May not be empty.
+                &quot;A String&quot;,
+              ],
+            },
+            &quot;cutoffTime&quot;: { # Required. The latest time of day that an order can be accepted and begin processing. Later orders will be processed in the next day. The time is based on the warehouse postal code.
+              &quot;hour&quot;: 42, # Required. Hour (24-hour clock) of the cutoff time until which an order has to be placed to be processed in the same day by the warehouse. Hour is based on the timezone of warehouse.
+              &quot;minute&quot;: 42, # Required. Minute of the cutoff time until which an order has to be placed to be processed in the same day by the warehouse. Minute is based on the timezone of warehouse.
+            },
+            &quot;handlingDays&quot;: &quot;A String&quot;, # Required. The number of days it takes for this warehouse to pack up and ship an item. This is on the warehouse level, but can be overridden on the offer level based on the attributes of an item.
+            &quot;name&quot;: &quot;A String&quot;, # Required. The name of the warehouse. Must be unique within account.
+            &quot;shippingAddress&quot;: { # Required. Shipping address of the warehouse.
+              &quot;administrativeArea&quot;: &quot;A String&quot;, # Required. Top-level administrative subdivision of the country. For example, a state like California (&quot;CA&quot;) or a province like Quebec (&quot;QC&quot;).
+              &quot;city&quot;: &quot;A String&quot;, # Required. City, town or commune. May also include dependent localities or sublocalities (e.g. neighborhoods or suburbs).
+              &quot;country&quot;: &quot;A String&quot;, # Required. [CLDR country code](http://www.unicode.org/repos/cldr/tags/latest/common/main/en.xml) (e.g. &quot;US&quot;).
+              &quot;postalCode&quot;: &quot;A String&quot;, # Required. Postal code or ZIP (e.g. &quot;94043&quot;).
+              &quot;streetAddress&quot;: &quot;A String&quot;, # Street-level part of the address.
+            },
+          },
+        ],
       },
     },
   ],
-  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;content#shippingsettingsCustomBatchResponse&quot;.
+  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;`content#shippingsettingsCustomBatchResponse`&quot;.
 }</pre>
 </div>
 
@@ -743,7 +811,7 @@ Returns:
           &quot;timezone&quot;: &quot;A String&quot;, # Timezone identifier for the cutoff time. A list of identifiers can be found in the AdWords API documentation. E.g. &quot;Europe/Zurich&quot;. Required.
         },
         &quot;handlingBusinessDayConfig&quot;: { # The business days during which orders can be handled. If not provided, Monday to Friday business days will be assumed.
-          &quot;businessDays&quot;: [ # Regular business days. May not be empty.
+          &quot;businessDays&quot;: [ # Regular business days, such as &#x27;&quot;monday&quot;&#x27;. May not be empty.
             &quot;A String&quot;,
           ],
         },
@@ -761,7 +829,7 @@ Returns:
         &quot;minHandlingTimeInDays&quot;: 42, # Minimum number of business days spent before an order is shipped. 0 means same day shipped, 1 means next day shipped.
         &quot;minTransitTimeInDays&quot;: 42, # Minimum number of business days that is spent in transit. 0 means same day delivery, 1 means next day delivery. Either `{min,max}TransitTimeInDays` or `transitTimeTable` must be set, but not both.
         &quot;transitBusinessDayConfig&quot;: { # The business days during which orders can be in-transit. If not provided, Monday to Friday business days will be assumed.
-          &quot;businessDays&quot;: [ # Regular business days. May not be empty.
+          &quot;businessDays&quot;: [ # Regular business days, such as &#x27;&quot;monday&quot;&#x27;. May not be empty.
             &quot;A String&quot;,
           ],
         },
@@ -783,6 +851,18 @@ Returns:
             &quot;A String&quot;,
           ],
         },
+        &quot;warehouseBasedDeliveryTimes&quot;: [ # Indicates that the delivery time should be calculated per warehouse (shipping origin location) based on the settings of the selected carrier. When set, no other transit time related field in DeliveryTime should be set.
+          {
+            &quot;carrier&quot;: &quot;A String&quot;, # Required. Carrier, such as `&quot;UPS&quot;` or `&quot;Fedex&quot;`. The list of supported carriers can be retrieved via the `listSupportedCarriers` method.
+            &quot;carrierService&quot;: &quot;A String&quot;, # Required. Carrier service, such as `&quot;ground&quot;` or `&quot;2 days&quot;`. The list of supported services for a carrier can be retrieved via the `listSupportedCarriers` method. The name of the service must be in the eddSupportedServices list.
+            &quot;originAdministrativeArea&quot;: &quot;A String&quot;, # Shipping origin&#x27;s state.
+            &quot;originCity&quot;: &quot;A String&quot;, # Shipping origin&#x27;s city.
+            &quot;originCountry&quot;: &quot;A String&quot;, # Shipping origin&#x27;s country represented as a [CLDR territory code](http://www.unicode.org/repos/cldr/tags/latest/common/main/en.xml).
+            &quot;originPostalCode&quot;: &quot;A String&quot;, # Shipping origin.
+            &quot;originStreetAddress&quot;: &quot;A String&quot;, # Shipping origin&#x27;s street address.
+            &quot;warehouseName&quot;: &quot;A String&quot;, # The name of the warehouse. Warehouse name need to be matched with name. If warehouseName is set, the below fields will be ignored. The warehouse info will be read from warehouse.
+          },
+        ],
       },
       &quot;eligibility&quot;: &quot;A String&quot;, # Eligibility for this service. Acceptable values are: - &quot;`All scenarios`&quot; - &quot;`All scenarios except Shopping Actions`&quot; - &quot;`Shopping Actions`&quot;
       &quot;minimumOrderValue&quot;: { # Minimum order value for this service. If set, indicates that customers will have to spend at least this amount. All prices within a service must have the same currency. Cannot be set together with minimum_order_value_table.
@@ -849,7 +929,7 @@ Returns:
               &quot;weights&quot;: [ # A list of inclusive order weight upper bounds. The last weight&#x27;s value can be `&quot;infinity&quot;`. For example `[{&quot;value&quot;: &quot;10&quot;, &quot;unit&quot;: &quot;kg&quot;}, {&quot;value&quot;: &quot;50&quot;, &quot;unit&quot;: &quot;kg&quot;}, {&quot;value&quot;: &quot;infinity&quot;, &quot;unit&quot;: &quot;kg&quot;}]` represents the headers &quot;&lt;= 10kg&quot;, &quot;&lt;= 50kg&quot;, and &quot;&gt; 50kg&quot;. All weights within a service must have the same unit. Must be non-empty. Can only be set if all other fields are not set.
                 {
                   &quot;unit&quot;: &quot;A String&quot;, # Required. The weight unit. Acceptable values are: - &quot;`kg`&quot; - &quot;`lb`&quot;
-                  &quot;value&quot;: &quot;A String&quot;, # Required. The weight represented as a number.
+                  &quot;value&quot;: &quot;A String&quot;, # Required. The weight represented as a number. The weight can have a maximum precision of four decimal places.
                 },
               ],
             },
@@ -877,7 +957,7 @@ Returns:
               &quot;weights&quot;: [ # A list of inclusive order weight upper bounds. The last weight&#x27;s value can be `&quot;infinity&quot;`. For example `[{&quot;value&quot;: &quot;10&quot;, &quot;unit&quot;: &quot;kg&quot;}, {&quot;value&quot;: &quot;50&quot;, &quot;unit&quot;: &quot;kg&quot;}, {&quot;value&quot;: &quot;infinity&quot;, &quot;unit&quot;: &quot;kg&quot;}]` represents the headers &quot;&lt;= 10kg&quot;, &quot;&lt;= 50kg&quot;, and &quot;&gt; 50kg&quot;. All weights within a service must have the same unit. Must be non-empty. Can only be set if all other fields are not set.
                 {
                   &quot;unit&quot;: &quot;A String&quot;, # Required. The weight unit. Acceptable values are: - &quot;`kg`&quot; - &quot;`lb`&quot;
-                  &quot;value&quot;: &quot;A String&quot;, # Required. The weight represented as a number.
+                  &quot;value&quot;: &quot;A String&quot;, # Required. The weight represented as a number. The weight can have a maximum precision of four decimal places.
                 },
               ],
             },
@@ -934,7 +1014,7 @@ Returns:
                 &quot;weights&quot;: [ # A list of inclusive order weight upper bounds. The last weight&#x27;s value can be `&quot;infinity&quot;`. For example `[{&quot;value&quot;: &quot;10&quot;, &quot;unit&quot;: &quot;kg&quot;}, {&quot;value&quot;: &quot;50&quot;, &quot;unit&quot;: &quot;kg&quot;}, {&quot;value&quot;: &quot;infinity&quot;, &quot;unit&quot;: &quot;kg&quot;}]` represents the headers &quot;&lt;= 10kg&quot;, &quot;&lt;= 50kg&quot;, and &quot;&gt; 50kg&quot;. All weights within a service must have the same unit. Must be non-empty. Can only be set if all other fields are not set.
                   {
                     &quot;unit&quot;: &quot;A String&quot;, # Required. The weight unit. Acceptable values are: - &quot;`kg`&quot; - &quot;`lb`&quot;
-                    &quot;value&quot;: &quot;A String&quot;, # Required. The weight represented as a number.
+                    &quot;value&quot;: &quot;A String&quot;, # Required. The weight represented as a number. The weight can have a maximum precision of four decimal places.
                   },
                 ],
               },
@@ -962,7 +1042,7 @@ Returns:
                 &quot;weights&quot;: [ # A list of inclusive order weight upper bounds. The last weight&#x27;s value can be `&quot;infinity&quot;`. For example `[{&quot;value&quot;: &quot;10&quot;, &quot;unit&quot;: &quot;kg&quot;}, {&quot;value&quot;: &quot;50&quot;, &quot;unit&quot;: &quot;kg&quot;}, {&quot;value&quot;: &quot;infinity&quot;, &quot;unit&quot;: &quot;kg&quot;}]` represents the headers &quot;&lt;= 10kg&quot;, &quot;&lt;= 50kg&quot;, and &quot;&gt; 50kg&quot;. All weights within a service must have the same unit. Must be non-empty. Can only be set if all other fields are not set.
                   {
                     &quot;unit&quot;: &quot;A String&quot;, # Required. The weight unit. Acceptable values are: - &quot;`kg`&quot; - &quot;`lb`&quot;
-                    &quot;value&quot;: &quot;A String&quot;, # Required. The weight represented as a number.
+                    &quot;value&quot;: &quot;A String&quot;, # Required. The weight represented as a number. The weight can have a maximum precision of four decimal places.
                   },
                 ],
               },
@@ -989,6 +1069,28 @@ Returns:
       &quot;shipmentType&quot;: &quot;A String&quot;, # Type of locations this service ships orders to. Acceptable values are: - &quot;`delivery`&quot; - &quot;`pickup`&quot;
     },
   ],
+  &quot;warehouses&quot;: [ # Optional. A list of warehouses which can be referred to in `services`.
+    { # A fulfillment warehouse, which stores and handles inventory.
+      &quot;businessDayConfig&quot;: { # Business days of the warehouse. If not set, will be Monday to Friday by default.
+        &quot;businessDays&quot;: [ # Regular business days, such as &#x27;&quot;monday&quot;&#x27;. May not be empty.
+          &quot;A String&quot;,
+        ],
+      },
+      &quot;cutoffTime&quot;: { # Required. The latest time of day that an order can be accepted and begin processing. Later orders will be processed in the next day. The time is based on the warehouse postal code.
+        &quot;hour&quot;: 42, # Required. Hour (24-hour clock) of the cutoff time until which an order has to be placed to be processed in the same day by the warehouse. Hour is based on the timezone of warehouse.
+        &quot;minute&quot;: 42, # Required. Minute of the cutoff time until which an order has to be placed to be processed in the same day by the warehouse. Minute is based on the timezone of warehouse.
+      },
+      &quot;handlingDays&quot;: &quot;A String&quot;, # Required. The number of days it takes for this warehouse to pack up and ship an item. This is on the warehouse level, but can be overridden on the offer level based on the attributes of an item.
+      &quot;name&quot;: &quot;A String&quot;, # Required. The name of the warehouse. Must be unique within account.
+      &quot;shippingAddress&quot;: { # Required. Shipping address of the warehouse.
+        &quot;administrativeArea&quot;: &quot;A String&quot;, # Required. Top-level administrative subdivision of the country. For example, a state like California (&quot;CA&quot;) or a province like Quebec (&quot;QC&quot;).
+        &quot;city&quot;: &quot;A String&quot;, # Required. City, town or commune. May also include dependent localities or sublocalities (e.g. neighborhoods or suburbs).
+        &quot;country&quot;: &quot;A String&quot;, # Required. [CLDR country code](http://www.unicode.org/repos/cldr/tags/latest/common/main/en.xml) (e.g. &quot;US&quot;).
+        &quot;postalCode&quot;: &quot;A String&quot;, # Required. Postal code or ZIP (e.g. &quot;94043&quot;).
+        &quot;streetAddress&quot;: &quot;A String&quot;, # Street-level part of the address.
+      },
+    },
+  ],
 }</pre>
 </div>
 
@@ -1010,13 +1112,16 @@ Returns:
   &quot;carriers&quot;: [ # A list of supported carriers. May be empty.
     {
       &quot;country&quot;: &quot;A String&quot;, # The CLDR country code of the carrier (e.g., &quot;US&quot;). Always present.
+      &quot;eddServices&quot;: [ # A list of services supported for EDD (Estimated Delivery Date) calculation. This is the list of valid values for WarehouseBasedDeliveryTime.carrierService.
+        &quot;A String&quot;,
+      ],
       &quot;name&quot;: &quot;A String&quot;, # The name of the carrier (e.g., `&quot;UPS&quot;`). Always present.
-      &quot;services&quot;: [ # A list of supported services (e.g., `&quot;ground&quot;`) for that carrier. Contains at least one service.
+      &quot;services&quot;: [ # A list of supported services (e.g., `&quot;ground&quot;`) for that carrier. Contains at least one service. This is the list of valid values for CarrierRate.carrierService.
         &quot;A String&quot;,
       ],
     },
   ],
-  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;content#shippingsettingsGetSupportedCarriersResponse&quot;.
+  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;`content#shippingsettingsGetSupportedCarriersResponse`&quot;.
 }</pre>
 </div>
 
@@ -1045,7 +1150,7 @@ Returns:
       &quot;type&quot;: &quot;A String&quot;, # The holiday type. Always present. Acceptable values are: - &quot;`Christmas`&quot; - &quot;`Easter`&quot; - &quot;`Father&#x27;s Day`&quot; - &quot;`Halloween`&quot; - &quot;`Independence Day (USA)`&quot; - &quot;`Mother&#x27;s Day`&quot; - &quot;`Thanksgiving`&quot; - &quot;`Valentine&#x27;s Day`&quot;
     },
   ],
-  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;content#shippingsettingsGetSupportedHolidaysResponse&quot;.
+  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;`content#shippingsettingsGetSupportedHolidaysResponse`&quot;.
 }</pre>
 </div>
 
@@ -1064,7 +1169,7 @@ Returns:
   An object of the form:
 
     {
-  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;content#shippingsettingsGetSupportedPickupServicesResponse&quot;.
+  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;`content#shippingsettingsGetSupportedPickupServicesResponse`&quot;.
   &quot;pickupServices&quot;: [ # A list of supported pickup services. May be empty.
     {
       &quot;carrierName&quot;: &quot;A String&quot;, # The name of the carrier (e.g., `&quot;UPS&quot;`). Always present.
@@ -1092,7 +1197,7 @@ Returns:
   An object of the form:
 
     {
-  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;content#shippingsettingsListResponse&quot;.
+  &quot;kind&quot;: &quot;A String&quot;, # Identifies what kind of resource this is. Value: the fixed string &quot;`content#shippingsettingsListResponse`&quot;.
   &quot;nextPageToken&quot;: &quot;A String&quot;, # The token for the retrieval of the next page of shipping settings.
   &quot;resources&quot;: [
     { # The merchant account&#x27;s shipping settings. All methods except getsupportedcarriers and getsupportedholidays require the admin role.
@@ -1121,7 +1226,7 @@ Returns:
               &quot;timezone&quot;: &quot;A String&quot;, # Timezone identifier for the cutoff time. A list of identifiers can be found in the AdWords API documentation. E.g. &quot;Europe/Zurich&quot;. Required.
             },
             &quot;handlingBusinessDayConfig&quot;: { # The business days during which orders can be handled. If not provided, Monday to Friday business days will be assumed.
-              &quot;businessDays&quot;: [ # Regular business days. May not be empty.
+              &quot;businessDays&quot;: [ # Regular business days, such as &#x27;&quot;monday&quot;&#x27;. May not be empty.
                 &quot;A String&quot;,
               ],
             },
@@ -1139,7 +1244,7 @@ Returns:
             &quot;minHandlingTimeInDays&quot;: 42, # Minimum number of business days spent before an order is shipped. 0 means same day shipped, 1 means next day shipped.
             &quot;minTransitTimeInDays&quot;: 42, # Minimum number of business days that is spent in transit. 0 means same day delivery, 1 means next day delivery. Either `{min,max}TransitTimeInDays` or `transitTimeTable` must be set, but not both.
             &quot;transitBusinessDayConfig&quot;: { # The business days during which orders can be in-transit. If not provided, Monday to Friday business days will be assumed.
-              &quot;businessDays&quot;: [ # Regular business days. May not be empty.
+              &quot;businessDays&quot;: [ # Regular business days, such as &#x27;&quot;monday&quot;&#x27;. May not be empty.
                 &quot;A String&quot;,
               ],
             },
@@ -1161,6 +1266,18 @@ Returns:
                 &quot;A String&quot;,
               ],
             },
+            &quot;warehouseBasedDeliveryTimes&quot;: [ # Indicates that the delivery time should be calculated per warehouse (shipping origin location) based on the settings of the selected carrier. When set, no other transit time related field in DeliveryTime should be set.
+              {
+                &quot;carrier&quot;: &quot;A String&quot;, # Required. Carrier, such as `&quot;UPS&quot;` or `&quot;Fedex&quot;`. The list of supported carriers can be retrieved via the `listSupportedCarriers` method.
+                &quot;carrierService&quot;: &quot;A String&quot;, # Required. Carrier service, such as `&quot;ground&quot;` or `&quot;2 days&quot;`. The list of supported services for a carrier can be retrieved via the `listSupportedCarriers` method. The name of the service must be in the eddSupportedServices list.
+                &quot;originAdministrativeArea&quot;: &quot;A String&quot;, # Shipping origin&#x27;s state.
+                &quot;originCity&quot;: &quot;A String&quot;, # Shipping origin&#x27;s city.
+                &quot;originCountry&quot;: &quot;A String&quot;, # Shipping origin&#x27;s country represented as a [CLDR territory code](http://www.unicode.org/repos/cldr/tags/latest/common/main/en.xml).
+                &quot;originPostalCode&quot;: &quot;A String&quot;, # Shipping origin.
+                &quot;originStreetAddress&quot;: &quot;A String&quot;, # Shipping origin&#x27;s street address.
+                &quot;warehouseName&quot;: &quot;A String&quot;, # The name of the warehouse. Warehouse name need to be matched with name. If warehouseName is set, the below fields will be ignored. The warehouse info will be read from warehouse.
+              },
+            ],
           },
           &quot;eligibility&quot;: &quot;A String&quot;, # Eligibility for this service. Acceptable values are: - &quot;`All scenarios`&quot; - &quot;`All scenarios except Shopping Actions`&quot; - &quot;`Shopping Actions`&quot;
           &quot;minimumOrderValue&quot;: { # Minimum order value for this service. If set, indicates that customers will have to spend at least this amount. All prices within a service must have the same currency. Cannot be set together with minimum_order_value_table.
@@ -1227,7 +1344,7 @@ Returns:
                   &quot;weights&quot;: [ # A list of inclusive order weight upper bounds. The last weight&#x27;s value can be `&quot;infinity&quot;`. For example `[{&quot;value&quot;: &quot;10&quot;, &quot;unit&quot;: &quot;kg&quot;}, {&quot;value&quot;: &quot;50&quot;, &quot;unit&quot;: &quot;kg&quot;}, {&quot;value&quot;: &quot;infinity&quot;, &quot;unit&quot;: &quot;kg&quot;}]` represents the headers &quot;&lt;= 10kg&quot;, &quot;&lt;= 50kg&quot;, and &quot;&gt; 50kg&quot;. All weights within a service must have the same unit. Must be non-empty. Can only be set if all other fields are not set.
                     {
                       &quot;unit&quot;: &quot;A String&quot;, # Required. The weight unit. Acceptable values are: - &quot;`kg`&quot; - &quot;`lb`&quot;
-                      &quot;value&quot;: &quot;A String&quot;, # Required. The weight represented as a number.
+                      &quot;value&quot;: &quot;A String&quot;, # Required. The weight represented as a number. The weight can have a maximum precision of four decimal places.
                     },
                   ],
                 },
@@ -1255,7 +1372,7 @@ Returns:
                   &quot;weights&quot;: [ # A list of inclusive order weight upper bounds. The last weight&#x27;s value can be `&quot;infinity&quot;`. For example `[{&quot;value&quot;: &quot;10&quot;, &quot;unit&quot;: &quot;kg&quot;}, {&quot;value&quot;: &quot;50&quot;, &quot;unit&quot;: &quot;kg&quot;}, {&quot;value&quot;: &quot;infinity&quot;, &quot;unit&quot;: &quot;kg&quot;}]` represents the headers &quot;&lt;= 10kg&quot;, &quot;&lt;= 50kg&quot;, and &quot;&gt; 50kg&quot;. All weights within a service must have the same unit. Must be non-empty. Can only be set if all other fields are not set.
                     {
                       &quot;unit&quot;: &quot;A String&quot;, # Required. The weight unit. Acceptable values are: - &quot;`kg`&quot; - &quot;`lb`&quot;
-                      &quot;value&quot;: &quot;A String&quot;, # Required. The weight represented as a number.
+                      &quot;value&quot;: &quot;A String&quot;, # Required. The weight represented as a number. The weight can have a maximum precision of four decimal places.
                     },
                   ],
                 },
@@ -1312,7 +1429,7 @@ Returns:
                     &quot;weights&quot;: [ # A list of inclusive order weight upper bounds. The last weight&#x27;s value can be `&quot;infinity&quot;`. For example `[{&quot;value&quot;: &quot;10&quot;, &quot;unit&quot;: &quot;kg&quot;}, {&quot;value&quot;: &quot;50&quot;, &quot;unit&quot;: &quot;kg&quot;}, {&quot;value&quot;: &quot;infinity&quot;, &quot;unit&quot;: &quot;kg&quot;}]` represents the headers &quot;&lt;= 10kg&quot;, &quot;&lt;= 50kg&quot;, and &quot;&gt; 50kg&quot;. All weights within a service must have the same unit. Must be non-empty. Can only be set if all other fields are not set.
                       {
                         &quot;unit&quot;: &quot;A String&quot;, # Required. The weight unit. Acceptable values are: - &quot;`kg`&quot; - &quot;`lb`&quot;
-                        &quot;value&quot;: &quot;A String&quot;, # Required. The weight represented as a number.
+                        &quot;value&quot;: &quot;A String&quot;, # Required. The weight represented as a number. The weight can have a maximum precision of four decimal places.
                       },
                     ],
                   },
@@ -1340,7 +1457,7 @@ Returns:
                     &quot;weights&quot;: [ # A list of inclusive order weight upper bounds. The last weight&#x27;s value can be `&quot;infinity&quot;`. For example `[{&quot;value&quot;: &quot;10&quot;, &quot;unit&quot;: &quot;kg&quot;}, {&quot;value&quot;: &quot;50&quot;, &quot;unit&quot;: &quot;kg&quot;}, {&quot;value&quot;: &quot;infinity&quot;, &quot;unit&quot;: &quot;kg&quot;}]` represents the headers &quot;&lt;= 10kg&quot;, &quot;&lt;= 50kg&quot;, and &quot;&gt; 50kg&quot;. All weights within a service must have the same unit. Must be non-empty. Can only be set if all other fields are not set.
                       {
                         &quot;unit&quot;: &quot;A String&quot;, # Required. The weight unit. Acceptable values are: - &quot;`kg`&quot; - &quot;`lb`&quot;
-                        &quot;value&quot;: &quot;A String&quot;, # Required. The weight represented as a number.
+                        &quot;value&quot;: &quot;A String&quot;, # Required. The weight represented as a number. The weight can have a maximum precision of four decimal places.
                       },
                     ],
                   },
@@ -1365,6 +1482,28 @@ Returns:
             },
           ],
           &quot;shipmentType&quot;: &quot;A String&quot;, # Type of locations this service ships orders to. Acceptable values are: - &quot;`delivery`&quot; - &quot;`pickup`&quot;
+        },
+      ],
+      &quot;warehouses&quot;: [ # Optional. A list of warehouses which can be referred to in `services`.
+        { # A fulfillment warehouse, which stores and handles inventory.
+          &quot;businessDayConfig&quot;: { # Business days of the warehouse. If not set, will be Monday to Friday by default.
+            &quot;businessDays&quot;: [ # Regular business days, such as &#x27;&quot;monday&quot;&#x27;. May not be empty.
+              &quot;A String&quot;,
+            ],
+          },
+          &quot;cutoffTime&quot;: { # Required. The latest time of day that an order can be accepted and begin processing. Later orders will be processed in the next day. The time is based on the warehouse postal code.
+            &quot;hour&quot;: 42, # Required. Hour (24-hour clock) of the cutoff time until which an order has to be placed to be processed in the same day by the warehouse. Hour is based on the timezone of warehouse.
+            &quot;minute&quot;: 42, # Required. Minute of the cutoff time until which an order has to be placed to be processed in the same day by the warehouse. Minute is based on the timezone of warehouse.
+          },
+          &quot;handlingDays&quot;: &quot;A String&quot;, # Required. The number of days it takes for this warehouse to pack up and ship an item. This is on the warehouse level, but can be overridden on the offer level based on the attributes of an item.
+          &quot;name&quot;: &quot;A String&quot;, # Required. The name of the warehouse. Must be unique within account.
+          &quot;shippingAddress&quot;: { # Required. Shipping address of the warehouse.
+            &quot;administrativeArea&quot;: &quot;A String&quot;, # Required. Top-level administrative subdivision of the country. For example, a state like California (&quot;CA&quot;) or a province like Quebec (&quot;QC&quot;).
+            &quot;city&quot;: &quot;A String&quot;, # Required. City, town or commune. May also include dependent localities or sublocalities (e.g. neighborhoods or suburbs).
+            &quot;country&quot;: &quot;A String&quot;, # Required. [CLDR country code](http://www.unicode.org/repos/cldr/tags/latest/common/main/en.xml) (e.g. &quot;US&quot;).
+            &quot;postalCode&quot;: &quot;A String&quot;, # Required. Postal code or ZIP (e.g. &quot;94043&quot;).
+            &quot;streetAddress&quot;: &quot;A String&quot;, # Street-level part of the address.
+          },
         },
       ],
     },
@@ -1422,7 +1561,7 @@ Args:
           &quot;timezone&quot;: &quot;A String&quot;, # Timezone identifier for the cutoff time. A list of identifiers can be found in the AdWords API documentation. E.g. &quot;Europe/Zurich&quot;. Required.
         },
         &quot;handlingBusinessDayConfig&quot;: { # The business days during which orders can be handled. If not provided, Monday to Friday business days will be assumed.
-          &quot;businessDays&quot;: [ # Regular business days. May not be empty.
+          &quot;businessDays&quot;: [ # Regular business days, such as &#x27;&quot;monday&quot;&#x27;. May not be empty.
             &quot;A String&quot;,
           ],
         },
@@ -1440,7 +1579,7 @@ Args:
         &quot;minHandlingTimeInDays&quot;: 42, # Minimum number of business days spent before an order is shipped. 0 means same day shipped, 1 means next day shipped.
         &quot;minTransitTimeInDays&quot;: 42, # Minimum number of business days that is spent in transit. 0 means same day delivery, 1 means next day delivery. Either `{min,max}TransitTimeInDays` or `transitTimeTable` must be set, but not both.
         &quot;transitBusinessDayConfig&quot;: { # The business days during which orders can be in-transit. If not provided, Monday to Friday business days will be assumed.
-          &quot;businessDays&quot;: [ # Regular business days. May not be empty.
+          &quot;businessDays&quot;: [ # Regular business days, such as &#x27;&quot;monday&quot;&#x27;. May not be empty.
             &quot;A String&quot;,
           ],
         },
@@ -1462,6 +1601,18 @@ Args:
             &quot;A String&quot;,
           ],
         },
+        &quot;warehouseBasedDeliveryTimes&quot;: [ # Indicates that the delivery time should be calculated per warehouse (shipping origin location) based on the settings of the selected carrier. When set, no other transit time related field in DeliveryTime should be set.
+          {
+            &quot;carrier&quot;: &quot;A String&quot;, # Required. Carrier, such as `&quot;UPS&quot;` or `&quot;Fedex&quot;`. The list of supported carriers can be retrieved via the `listSupportedCarriers` method.
+            &quot;carrierService&quot;: &quot;A String&quot;, # Required. Carrier service, such as `&quot;ground&quot;` or `&quot;2 days&quot;`. The list of supported services for a carrier can be retrieved via the `listSupportedCarriers` method. The name of the service must be in the eddSupportedServices list.
+            &quot;originAdministrativeArea&quot;: &quot;A String&quot;, # Shipping origin&#x27;s state.
+            &quot;originCity&quot;: &quot;A String&quot;, # Shipping origin&#x27;s city.
+            &quot;originCountry&quot;: &quot;A String&quot;, # Shipping origin&#x27;s country represented as a [CLDR territory code](http://www.unicode.org/repos/cldr/tags/latest/common/main/en.xml).
+            &quot;originPostalCode&quot;: &quot;A String&quot;, # Shipping origin.
+            &quot;originStreetAddress&quot;: &quot;A String&quot;, # Shipping origin&#x27;s street address.
+            &quot;warehouseName&quot;: &quot;A String&quot;, # The name of the warehouse. Warehouse name need to be matched with name. If warehouseName is set, the below fields will be ignored. The warehouse info will be read from warehouse.
+          },
+        ],
       },
       &quot;eligibility&quot;: &quot;A String&quot;, # Eligibility for this service. Acceptable values are: - &quot;`All scenarios`&quot; - &quot;`All scenarios except Shopping Actions`&quot; - &quot;`Shopping Actions`&quot;
       &quot;minimumOrderValue&quot;: { # Minimum order value for this service. If set, indicates that customers will have to spend at least this amount. All prices within a service must have the same currency. Cannot be set together with minimum_order_value_table.
@@ -1528,7 +1679,7 @@ Args:
               &quot;weights&quot;: [ # A list of inclusive order weight upper bounds. The last weight&#x27;s value can be `&quot;infinity&quot;`. For example `[{&quot;value&quot;: &quot;10&quot;, &quot;unit&quot;: &quot;kg&quot;}, {&quot;value&quot;: &quot;50&quot;, &quot;unit&quot;: &quot;kg&quot;}, {&quot;value&quot;: &quot;infinity&quot;, &quot;unit&quot;: &quot;kg&quot;}]` represents the headers &quot;&lt;= 10kg&quot;, &quot;&lt;= 50kg&quot;, and &quot;&gt; 50kg&quot;. All weights within a service must have the same unit. Must be non-empty. Can only be set if all other fields are not set.
                 {
                   &quot;unit&quot;: &quot;A String&quot;, # Required. The weight unit. Acceptable values are: - &quot;`kg`&quot; - &quot;`lb`&quot;
-                  &quot;value&quot;: &quot;A String&quot;, # Required. The weight represented as a number.
+                  &quot;value&quot;: &quot;A String&quot;, # Required. The weight represented as a number. The weight can have a maximum precision of four decimal places.
                 },
               ],
             },
@@ -1556,7 +1707,7 @@ Args:
               &quot;weights&quot;: [ # A list of inclusive order weight upper bounds. The last weight&#x27;s value can be `&quot;infinity&quot;`. For example `[{&quot;value&quot;: &quot;10&quot;, &quot;unit&quot;: &quot;kg&quot;}, {&quot;value&quot;: &quot;50&quot;, &quot;unit&quot;: &quot;kg&quot;}, {&quot;value&quot;: &quot;infinity&quot;, &quot;unit&quot;: &quot;kg&quot;}]` represents the headers &quot;&lt;= 10kg&quot;, &quot;&lt;= 50kg&quot;, and &quot;&gt; 50kg&quot;. All weights within a service must have the same unit. Must be non-empty. Can only be set if all other fields are not set.
                 {
                   &quot;unit&quot;: &quot;A String&quot;, # Required. The weight unit. Acceptable values are: - &quot;`kg`&quot; - &quot;`lb`&quot;
-                  &quot;value&quot;: &quot;A String&quot;, # Required. The weight represented as a number.
+                  &quot;value&quot;: &quot;A String&quot;, # Required. The weight represented as a number. The weight can have a maximum precision of four decimal places.
                 },
               ],
             },
@@ -1613,7 +1764,7 @@ Args:
                 &quot;weights&quot;: [ # A list of inclusive order weight upper bounds. The last weight&#x27;s value can be `&quot;infinity&quot;`. For example `[{&quot;value&quot;: &quot;10&quot;, &quot;unit&quot;: &quot;kg&quot;}, {&quot;value&quot;: &quot;50&quot;, &quot;unit&quot;: &quot;kg&quot;}, {&quot;value&quot;: &quot;infinity&quot;, &quot;unit&quot;: &quot;kg&quot;}]` represents the headers &quot;&lt;= 10kg&quot;, &quot;&lt;= 50kg&quot;, and &quot;&gt; 50kg&quot;. All weights within a service must have the same unit. Must be non-empty. Can only be set if all other fields are not set.
                   {
                     &quot;unit&quot;: &quot;A String&quot;, # Required. The weight unit. Acceptable values are: - &quot;`kg`&quot; - &quot;`lb`&quot;
-                    &quot;value&quot;: &quot;A String&quot;, # Required. The weight represented as a number.
+                    &quot;value&quot;: &quot;A String&quot;, # Required. The weight represented as a number. The weight can have a maximum precision of four decimal places.
                   },
                 ],
               },
@@ -1641,7 +1792,7 @@ Args:
                 &quot;weights&quot;: [ # A list of inclusive order weight upper bounds. The last weight&#x27;s value can be `&quot;infinity&quot;`. For example `[{&quot;value&quot;: &quot;10&quot;, &quot;unit&quot;: &quot;kg&quot;}, {&quot;value&quot;: &quot;50&quot;, &quot;unit&quot;: &quot;kg&quot;}, {&quot;value&quot;: &quot;infinity&quot;, &quot;unit&quot;: &quot;kg&quot;}]` represents the headers &quot;&lt;= 10kg&quot;, &quot;&lt;= 50kg&quot;, and &quot;&gt; 50kg&quot;. All weights within a service must have the same unit. Must be non-empty. Can only be set if all other fields are not set.
                   {
                     &quot;unit&quot;: &quot;A String&quot;, # Required. The weight unit. Acceptable values are: - &quot;`kg`&quot; - &quot;`lb`&quot;
-                    &quot;value&quot;: &quot;A String&quot;, # Required. The weight represented as a number.
+                    &quot;value&quot;: &quot;A String&quot;, # Required. The weight represented as a number. The weight can have a maximum precision of four decimal places.
                   },
                 ],
               },
@@ -1666,6 +1817,28 @@ Args:
         },
       ],
       &quot;shipmentType&quot;: &quot;A String&quot;, # Type of locations this service ships orders to. Acceptable values are: - &quot;`delivery`&quot; - &quot;`pickup`&quot;
+    },
+  ],
+  &quot;warehouses&quot;: [ # Optional. A list of warehouses which can be referred to in `services`.
+    { # A fulfillment warehouse, which stores and handles inventory.
+      &quot;businessDayConfig&quot;: { # Business days of the warehouse. If not set, will be Monday to Friday by default.
+        &quot;businessDays&quot;: [ # Regular business days, such as &#x27;&quot;monday&quot;&#x27;. May not be empty.
+          &quot;A String&quot;,
+        ],
+      },
+      &quot;cutoffTime&quot;: { # Required. The latest time of day that an order can be accepted and begin processing. Later orders will be processed in the next day. The time is based on the warehouse postal code.
+        &quot;hour&quot;: 42, # Required. Hour (24-hour clock) of the cutoff time until which an order has to be placed to be processed in the same day by the warehouse. Hour is based on the timezone of warehouse.
+        &quot;minute&quot;: 42, # Required. Minute of the cutoff time until which an order has to be placed to be processed in the same day by the warehouse. Minute is based on the timezone of warehouse.
+      },
+      &quot;handlingDays&quot;: &quot;A String&quot;, # Required. The number of days it takes for this warehouse to pack up and ship an item. This is on the warehouse level, but can be overridden on the offer level based on the attributes of an item.
+      &quot;name&quot;: &quot;A String&quot;, # Required. The name of the warehouse. Must be unique within account.
+      &quot;shippingAddress&quot;: { # Required. Shipping address of the warehouse.
+        &quot;administrativeArea&quot;: &quot;A String&quot;, # Required. Top-level administrative subdivision of the country. For example, a state like California (&quot;CA&quot;) or a province like Quebec (&quot;QC&quot;).
+        &quot;city&quot;: &quot;A String&quot;, # Required. City, town or commune. May also include dependent localities or sublocalities (e.g. neighborhoods or suburbs).
+        &quot;country&quot;: &quot;A String&quot;, # Required. [CLDR country code](http://www.unicode.org/repos/cldr/tags/latest/common/main/en.xml) (e.g. &quot;US&quot;).
+        &quot;postalCode&quot;: &quot;A String&quot;, # Required. Postal code or ZIP (e.g. &quot;94043&quot;).
+        &quot;streetAddress&quot;: &quot;A String&quot;, # Street-level part of the address.
+      },
     },
   ],
 }
@@ -1704,7 +1877,7 @@ Returns:
           &quot;timezone&quot;: &quot;A String&quot;, # Timezone identifier for the cutoff time. A list of identifiers can be found in the AdWords API documentation. E.g. &quot;Europe/Zurich&quot;. Required.
         },
         &quot;handlingBusinessDayConfig&quot;: { # The business days during which orders can be handled. If not provided, Monday to Friday business days will be assumed.
-          &quot;businessDays&quot;: [ # Regular business days. May not be empty.
+          &quot;businessDays&quot;: [ # Regular business days, such as &#x27;&quot;monday&quot;&#x27;. May not be empty.
             &quot;A String&quot;,
           ],
         },
@@ -1722,7 +1895,7 @@ Returns:
         &quot;minHandlingTimeInDays&quot;: 42, # Minimum number of business days spent before an order is shipped. 0 means same day shipped, 1 means next day shipped.
         &quot;minTransitTimeInDays&quot;: 42, # Minimum number of business days that is spent in transit. 0 means same day delivery, 1 means next day delivery. Either `{min,max}TransitTimeInDays` or `transitTimeTable` must be set, but not both.
         &quot;transitBusinessDayConfig&quot;: { # The business days during which orders can be in-transit. If not provided, Monday to Friday business days will be assumed.
-          &quot;businessDays&quot;: [ # Regular business days. May not be empty.
+          &quot;businessDays&quot;: [ # Regular business days, such as &#x27;&quot;monday&quot;&#x27;. May not be empty.
             &quot;A String&quot;,
           ],
         },
@@ -1744,6 +1917,18 @@ Returns:
             &quot;A String&quot;,
           ],
         },
+        &quot;warehouseBasedDeliveryTimes&quot;: [ # Indicates that the delivery time should be calculated per warehouse (shipping origin location) based on the settings of the selected carrier. When set, no other transit time related field in DeliveryTime should be set.
+          {
+            &quot;carrier&quot;: &quot;A String&quot;, # Required. Carrier, such as `&quot;UPS&quot;` or `&quot;Fedex&quot;`. The list of supported carriers can be retrieved via the `listSupportedCarriers` method.
+            &quot;carrierService&quot;: &quot;A String&quot;, # Required. Carrier service, such as `&quot;ground&quot;` or `&quot;2 days&quot;`. The list of supported services for a carrier can be retrieved via the `listSupportedCarriers` method. The name of the service must be in the eddSupportedServices list.
+            &quot;originAdministrativeArea&quot;: &quot;A String&quot;, # Shipping origin&#x27;s state.
+            &quot;originCity&quot;: &quot;A String&quot;, # Shipping origin&#x27;s city.
+            &quot;originCountry&quot;: &quot;A String&quot;, # Shipping origin&#x27;s country represented as a [CLDR territory code](http://www.unicode.org/repos/cldr/tags/latest/common/main/en.xml).
+            &quot;originPostalCode&quot;: &quot;A String&quot;, # Shipping origin.
+            &quot;originStreetAddress&quot;: &quot;A String&quot;, # Shipping origin&#x27;s street address.
+            &quot;warehouseName&quot;: &quot;A String&quot;, # The name of the warehouse. Warehouse name need to be matched with name. If warehouseName is set, the below fields will be ignored. The warehouse info will be read from warehouse.
+          },
+        ],
       },
       &quot;eligibility&quot;: &quot;A String&quot;, # Eligibility for this service. Acceptable values are: - &quot;`All scenarios`&quot; - &quot;`All scenarios except Shopping Actions`&quot; - &quot;`Shopping Actions`&quot;
       &quot;minimumOrderValue&quot;: { # Minimum order value for this service. If set, indicates that customers will have to spend at least this amount. All prices within a service must have the same currency. Cannot be set together with minimum_order_value_table.
@@ -1810,7 +1995,7 @@ Returns:
               &quot;weights&quot;: [ # A list of inclusive order weight upper bounds. The last weight&#x27;s value can be `&quot;infinity&quot;`. For example `[{&quot;value&quot;: &quot;10&quot;, &quot;unit&quot;: &quot;kg&quot;}, {&quot;value&quot;: &quot;50&quot;, &quot;unit&quot;: &quot;kg&quot;}, {&quot;value&quot;: &quot;infinity&quot;, &quot;unit&quot;: &quot;kg&quot;}]` represents the headers &quot;&lt;= 10kg&quot;, &quot;&lt;= 50kg&quot;, and &quot;&gt; 50kg&quot;. All weights within a service must have the same unit. Must be non-empty. Can only be set if all other fields are not set.
                 {
                   &quot;unit&quot;: &quot;A String&quot;, # Required. The weight unit. Acceptable values are: - &quot;`kg`&quot; - &quot;`lb`&quot;
-                  &quot;value&quot;: &quot;A String&quot;, # Required. The weight represented as a number.
+                  &quot;value&quot;: &quot;A String&quot;, # Required. The weight represented as a number. The weight can have a maximum precision of four decimal places.
                 },
               ],
             },
@@ -1838,7 +2023,7 @@ Returns:
               &quot;weights&quot;: [ # A list of inclusive order weight upper bounds. The last weight&#x27;s value can be `&quot;infinity&quot;`. For example `[{&quot;value&quot;: &quot;10&quot;, &quot;unit&quot;: &quot;kg&quot;}, {&quot;value&quot;: &quot;50&quot;, &quot;unit&quot;: &quot;kg&quot;}, {&quot;value&quot;: &quot;infinity&quot;, &quot;unit&quot;: &quot;kg&quot;}]` represents the headers &quot;&lt;= 10kg&quot;, &quot;&lt;= 50kg&quot;, and &quot;&gt; 50kg&quot;. All weights within a service must have the same unit. Must be non-empty. Can only be set if all other fields are not set.
                 {
                   &quot;unit&quot;: &quot;A String&quot;, # Required. The weight unit. Acceptable values are: - &quot;`kg`&quot; - &quot;`lb`&quot;
-                  &quot;value&quot;: &quot;A String&quot;, # Required. The weight represented as a number.
+                  &quot;value&quot;: &quot;A String&quot;, # Required. The weight represented as a number. The weight can have a maximum precision of four decimal places.
                 },
               ],
             },
@@ -1895,7 +2080,7 @@ Returns:
                 &quot;weights&quot;: [ # A list of inclusive order weight upper bounds. The last weight&#x27;s value can be `&quot;infinity&quot;`. For example `[{&quot;value&quot;: &quot;10&quot;, &quot;unit&quot;: &quot;kg&quot;}, {&quot;value&quot;: &quot;50&quot;, &quot;unit&quot;: &quot;kg&quot;}, {&quot;value&quot;: &quot;infinity&quot;, &quot;unit&quot;: &quot;kg&quot;}]` represents the headers &quot;&lt;= 10kg&quot;, &quot;&lt;= 50kg&quot;, and &quot;&gt; 50kg&quot;. All weights within a service must have the same unit. Must be non-empty. Can only be set if all other fields are not set.
                   {
                     &quot;unit&quot;: &quot;A String&quot;, # Required. The weight unit. Acceptable values are: - &quot;`kg`&quot; - &quot;`lb`&quot;
-                    &quot;value&quot;: &quot;A String&quot;, # Required. The weight represented as a number.
+                    &quot;value&quot;: &quot;A String&quot;, # Required. The weight represented as a number. The weight can have a maximum precision of four decimal places.
                   },
                 ],
               },
@@ -1923,7 +2108,7 @@ Returns:
                 &quot;weights&quot;: [ # A list of inclusive order weight upper bounds. The last weight&#x27;s value can be `&quot;infinity&quot;`. For example `[{&quot;value&quot;: &quot;10&quot;, &quot;unit&quot;: &quot;kg&quot;}, {&quot;value&quot;: &quot;50&quot;, &quot;unit&quot;: &quot;kg&quot;}, {&quot;value&quot;: &quot;infinity&quot;, &quot;unit&quot;: &quot;kg&quot;}]` represents the headers &quot;&lt;= 10kg&quot;, &quot;&lt;= 50kg&quot;, and &quot;&gt; 50kg&quot;. All weights within a service must have the same unit. Must be non-empty. Can only be set if all other fields are not set.
                   {
                     &quot;unit&quot;: &quot;A String&quot;, # Required. The weight unit. Acceptable values are: - &quot;`kg`&quot; - &quot;`lb`&quot;
-                    &quot;value&quot;: &quot;A String&quot;, # Required. The weight represented as a number.
+                    &quot;value&quot;: &quot;A String&quot;, # Required. The weight represented as a number. The weight can have a maximum precision of four decimal places.
                   },
                 ],
               },
@@ -1948,6 +2133,28 @@ Returns:
         },
       ],
       &quot;shipmentType&quot;: &quot;A String&quot;, # Type of locations this service ships orders to. Acceptable values are: - &quot;`delivery`&quot; - &quot;`pickup`&quot;
+    },
+  ],
+  &quot;warehouses&quot;: [ # Optional. A list of warehouses which can be referred to in `services`.
+    { # A fulfillment warehouse, which stores and handles inventory.
+      &quot;businessDayConfig&quot;: { # Business days of the warehouse. If not set, will be Monday to Friday by default.
+        &quot;businessDays&quot;: [ # Regular business days, such as &#x27;&quot;monday&quot;&#x27;. May not be empty.
+          &quot;A String&quot;,
+        ],
+      },
+      &quot;cutoffTime&quot;: { # Required. The latest time of day that an order can be accepted and begin processing. Later orders will be processed in the next day. The time is based on the warehouse postal code.
+        &quot;hour&quot;: 42, # Required. Hour (24-hour clock) of the cutoff time until which an order has to be placed to be processed in the same day by the warehouse. Hour is based on the timezone of warehouse.
+        &quot;minute&quot;: 42, # Required. Minute of the cutoff time until which an order has to be placed to be processed in the same day by the warehouse. Minute is based on the timezone of warehouse.
+      },
+      &quot;handlingDays&quot;: &quot;A String&quot;, # Required. The number of days it takes for this warehouse to pack up and ship an item. This is on the warehouse level, but can be overridden on the offer level based on the attributes of an item.
+      &quot;name&quot;: &quot;A String&quot;, # Required. The name of the warehouse. Must be unique within account.
+      &quot;shippingAddress&quot;: { # Required. Shipping address of the warehouse.
+        &quot;administrativeArea&quot;: &quot;A String&quot;, # Required. Top-level administrative subdivision of the country. For example, a state like California (&quot;CA&quot;) or a province like Quebec (&quot;QC&quot;).
+        &quot;city&quot;: &quot;A String&quot;, # Required. City, town or commune. May also include dependent localities or sublocalities (e.g. neighborhoods or suburbs).
+        &quot;country&quot;: &quot;A String&quot;, # Required. [CLDR country code](http://www.unicode.org/repos/cldr/tags/latest/common/main/en.xml) (e.g. &quot;US&quot;).
+        &quot;postalCode&quot;: &quot;A String&quot;, # Required. Postal code or ZIP (e.g. &quot;94043&quot;).
+        &quot;streetAddress&quot;: &quot;A String&quot;, # Street-level part of the address.
+      },
     },
   ],
 }</pre>

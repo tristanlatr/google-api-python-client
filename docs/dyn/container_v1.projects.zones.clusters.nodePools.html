@@ -121,8 +121,8 @@ Args:
   &quot;autoscaling&quot;: { # NodePoolAutoscaling contains information required by cluster autoscaler to adjust the size of the node pool to the current cluster usage. # Required. Autoscaling configuration for the node pool.
     &quot;autoprovisioned&quot;: True or False, # Can this node pool be deleted automatically.
     &quot;enabled&quot;: True or False, # Is autoscaling enabled for this node pool.
-    &quot;maxNodeCount&quot;: 42, # Maximum number of nodes in the NodePool. Must be &gt;= min_node_count. There has to enough quota to scale up the cluster.
-    &quot;minNodeCount&quot;: 42, # Minimum number of nodes in the NodePool. Must be &gt;= 1 and &lt;= max_node_count.
+    &quot;maxNodeCount&quot;: 42, # Maximum number of nodes for one location in the NodePool. Must be &gt;= min_node_count. There has to be enough quota to scale up the cluster.
+    &quot;minNodeCount&quot;: 42, # Minimum number of nodes for one location in the NodePool. Must be &gt;= 1 and &lt;= max_node_count.
   },
   &quot;clusterId&quot;: &quot;A String&quot;, # Deprecated. The name of the cluster to upgrade. This field has been deprecated and replaced by the name field.
   &quot;name&quot;: &quot;A String&quot;, # The name (project, location, cluster, node pool) of the node pool to set autoscaler settings. Specified in the format `projects/*/locations/*/clusters/*/nodePools/*`.
@@ -140,19 +140,30 @@ Returns:
   An object of the form:
 
     { # This operation resource represents operations that may have happened or are happening on the cluster. All fields are output only.
-  &quot;clusterConditions&quot;: [ # Which conditions caused the current cluster state.
+  &quot;clusterConditions&quot;: [ # Which conditions caused the current cluster state. Deprecated. Use field error instead.
     { # StatusCondition describes why a cluster or a node pool has a certain status (e.g., ERROR or DEGRADED).
-      &quot;code&quot;: &quot;A String&quot;, # Machine-friendly representation of the condition
+      &quot;canonicalCode&quot;: &quot;A String&quot;, # Canonical code of the condition.
+      &quot;code&quot;: &quot;A String&quot;, # Machine-friendly representation of the condition Deprecated. Use canonical_code instead.
       &quot;message&quot;: &quot;A String&quot;, # Human-friendly representation of the condition
     },
   ],
   &quot;detail&quot;: &quot;A String&quot;, # Detailed operation progress, if available.
   &quot;endTime&quot;: &quot;A String&quot;, # [Output only] The time the operation completed, in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format.
+  &quot;error&quot;: { # The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). Each `Status` message contains three pieces of data: error code, error message, and error details. You can find out more about this error model and how to work with it in the [API Design Guide](https://cloud.google.com/apis/design/errors). # The error result of the operation in case of failure.
+    &quot;code&quot;: 42, # The status code, which should be an enum value of google.rpc.Code.
+    &quot;details&quot;: [ # A list of messages that carry the error details. There is a common set of message types for APIs to use.
+      {
+        &quot;a_key&quot;: &quot;&quot;, # Properties of the object. Contains field @type with type URL.
+      },
+    ],
+    &quot;message&quot;: &quot;A String&quot;, # A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the google.rpc.Status.details field, or localized by the client.
+  },
   &quot;location&quot;: &quot;A String&quot;, # [Output only] The name of the Google Compute Engine [zone](https://cloud.google.com/compute/docs/regions-zones/regions-zones#available) or [region](https://cloud.google.com/compute/docs/regions-zones/regions-zones#available) in which the cluster resides.
   &quot;name&quot;: &quot;A String&quot;, # The server-assigned ID for the operation.
-  &quot;nodepoolConditions&quot;: [ # Which conditions caused the current node pool state.
+  &quot;nodepoolConditions&quot;: [ # Which conditions caused the current node pool state. Deprecated. Use field error instead.
     { # StatusCondition describes why a cluster or a node pool has a certain status (e.g., ERROR or DEGRADED).
-      &quot;code&quot;: &quot;A String&quot;, # Machine-friendly representation of the condition
+      &quot;canonicalCode&quot;: &quot;A String&quot;, # Canonical code of the condition.
+      &quot;code&quot;: &quot;A String&quot;, # Machine-friendly representation of the condition Deprecated. Use canonical_code instead.
       &quot;message&quot;: &quot;A String&quot;, # Human-friendly representation of the condition
     },
   ],
@@ -175,7 +186,7 @@ Returns:
   &quot;selfLink&quot;: &quot;A String&quot;, # Server-defined URL for the resource.
   &quot;startTime&quot;: &quot;A String&quot;, # [Output only] The time the operation started, in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format.
   &quot;status&quot;: &quot;A String&quot;, # The current status of the operation.
-  &quot;statusMessage&quot;: &quot;A String&quot;, # Output only. If an error has occurred, a textual description of the error.
+  &quot;statusMessage&quot;: &quot;A String&quot;, # Output only. If an error has occurred, a textual description of the error. Deprecated. Use the field error instead.
   &quot;targetLink&quot;: &quot;A String&quot;, # Server-defined URL for the target of the operation.
   &quot;zone&quot;: &quot;A String&quot;, # The name of the Google Compute Engine [zone](https://cloud.google.com/compute/docs/zones#available) in which the operation is taking place. This field is deprecated, use location instead.
 }</pre>
@@ -203,12 +214,13 @@ Args:
     &quot;autoscaling&quot;: { # NodePoolAutoscaling contains information required by cluster autoscaler to adjust the size of the node pool to the current cluster usage. # Autoscaler configuration for this NodePool. Autoscaler is enabled only if a valid configuration is present.
       &quot;autoprovisioned&quot;: True or False, # Can this node pool be deleted automatically.
       &quot;enabled&quot;: True or False, # Is autoscaling enabled for this node pool.
-      &quot;maxNodeCount&quot;: 42, # Maximum number of nodes in the NodePool. Must be &gt;= min_node_count. There has to enough quota to scale up the cluster.
-      &quot;minNodeCount&quot;: 42, # Minimum number of nodes in the NodePool. Must be &gt;= 1 and &lt;= max_node_count.
+      &quot;maxNodeCount&quot;: 42, # Maximum number of nodes for one location in the NodePool. Must be &gt;= min_node_count. There has to be enough quota to scale up the cluster.
+      &quot;minNodeCount&quot;: 42, # Minimum number of nodes for one location in the NodePool. Must be &gt;= 1 and &lt;= max_node_count.
     },
     &quot;conditions&quot;: [ # Which conditions caused the current node pool state.
       { # StatusCondition describes why a cluster or a node pool has a certain status (e.g., ERROR or DEGRADED).
-        &quot;code&quot;: &quot;A String&quot;, # Machine-friendly representation of the condition
+        &quot;canonicalCode&quot;: &quot;A String&quot;, # Canonical code of the condition.
+        &quot;code&quot;: &quot;A String&quot;, # Machine-friendly representation of the condition Deprecated. Use canonical_code instead.
         &quot;message&quot;: &quot;A String&quot;, # Human-friendly representation of the condition
       },
     ],
@@ -217,16 +229,26 @@ Args:
         { # AcceleratorConfig represents a Hardware Accelerator request.
           &quot;acceleratorCount&quot;: &quot;A String&quot;, # The number of the accelerator cards exposed to an instance.
           &quot;acceleratorType&quot;: &quot;A String&quot;, # The accelerator type resource name. List of supported accelerators [here](https://cloud.google.com/compute/docs/gpus)
+          &quot;gpuPartitionSize&quot;: &quot;A String&quot;, # Size of partitions to create on the GPU. Valid values are described in the NVIDIA [mig user guide](https://docs.nvidia.com/datacenter/tesla/mig-user-guide/#partitioning).
         },
       ],
+      &quot;advancedMachineFeatures&quot;: { # Specifies options for controlling advanced machine features. # Advanced features for the Compute Engine VM.
+        &quot;threadsPerCore&quot;: &quot;A String&quot;, # The number of threads per physical core. To disable simultaneous multithreading (SMT) set this to 1. If unset, the maximum number of threads supported per core by the underlying processor is assumed.
+      },
       &quot;bootDiskKmsKey&quot;: &quot;A String&quot;, #  The Customer Managed Encryption Key used to encrypt the boot disk attached to each node in the node pool. This should be of the form projects/[KEY_PROJECT_ID]/locations/[LOCATION]/keyRings/[RING_NAME]/cryptoKeys/[KEY_NAME]. For more information about protecting resources with Cloud KMS Keys please see: https://cloud.google.com/compute/docs/disks/customer-managed-encryption
       &quot;diskSizeGb&quot;: 42, # Size of the disk attached to each node, specified in GB. The smallest allowed disk size is 10GB. If unspecified, the default disk size is 100GB.
       &quot;diskType&quot;: &quot;A String&quot;, # Type of the disk attached to each node (e.g. &#x27;pd-standard&#x27;, &#x27;pd-ssd&#x27; or &#x27;pd-balanced&#x27;) If unspecified, the default disk type is &#x27;pd-standard&#x27;
+      &quot;gcfsConfig&quot;: { # GcfsConfig contains configurations of Google Container File System (image streaming). # Google Container File System (image streaming) configs.
+        &quot;enabled&quot;: True or False, # Whether to use GCFS.
+      },
+      &quot;gvnic&quot;: { # Configuration of gVNIC feature. # Enable or disable gvnic in the node pool.
+        &quot;enabled&quot;: True or False, # Whether gVNIC features are enabled in the node pool.
+      },
       &quot;imageType&quot;: &quot;A String&quot;, # The image type to use for this node. Note that for a given image type, the latest version of it will be used.
       &quot;kubeletConfig&quot;: { # Node kubelet configs. # Node kubelet configs.
         &quot;cpuCfsQuota&quot;: True or False, # Enable CPU CFS quota enforcement for containers that specify CPU limits. This option is enabled by default which makes kubelet use CFS quota (https://www.kernel.org/doc/Documentation/scheduler/sched-bwc.txt) to enforce container CPU limits. Otherwise, CPU limits will not be enforced at all. Disable this option to mitigate CPU throttling problems while still having your pods to be in Guaranteed QoS class by specifying the CPU limits. The default value is &#x27;true&#x27; if unspecified.
         &quot;cpuCfsQuotaPeriod&quot;: &quot;A String&quot;, # Set the CPU CFS quota period value &#x27;cpu.cfs_period_us&#x27;. The string must be a sequence of decimal numbers, each with optional fraction and a unit suffix, such as &quot;300ms&quot;. Valid time units are &quot;ns&quot;, &quot;us&quot; (or &quot;µs&quot;), &quot;ms&quot;, &quot;s&quot;, &quot;m&quot;, &quot;h&quot;. The value must be a positive duration.
-        &quot;cpuManagerPolicy&quot;: &quot;A String&quot;, # Control the CPU management policy on the node. See https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/ The following values are allowed. - &quot;none&quot;: the default, which represents the existing scheduling behavior. - &quot;static&quot;: allows pods with certain resource characteristics to be granted increased CPU affinity and exclusivity on the node. The default value is &#x27;none&#x27; if unspecified.
+        &quot;cpuManagerPolicy&quot;: &quot;A String&quot;, # Control the CPU management policy on the node. See https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/ The following values are allowed. * &quot;none&quot;: the default, which represents the existing scheduling behavior. * &quot;static&quot;: allows pods with certain resource characteristics to be granted increased CPU affinity and exclusivity on the node. The default value is &#x27;none&#x27; if unspecified.
       },
       &quot;labels&quot;: { # The map of Kubernetes labels (key/value pairs) to be applied to each node. These will added in addition to any default label(s) that Kubernetes may apply to the node. In case of conflict in label keys, the applied set may differ depending on the Kubernetes version -- it&#x27;s best to assume the behavior is undefined and conflicts should be avoided. For more information, including usage and the valid values, see: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
         &quot;a_key&quot;: &quot;A String&quot;,
@@ -238,7 +260,7 @@ Args:
       },
       &quot;localSsdCount&quot;: 42, # The number of local SSD disks to be attached to the node. The limit for this value is dependent upon the maximum number of disks available on a machine per zone. See: https://cloud.google.com/compute/docs/disks/local-ssd for more information.
       &quot;machineType&quot;: &quot;A String&quot;, # The name of a Google Compute Engine [machine type](https://cloud.google.com/compute/docs/machine-types) If unspecified, the default machine type is `e2-medium`.
-      &quot;metadata&quot;: { # The metadata key/value pairs assigned to instances in the cluster. Keys must conform to the regexp `[a-zA-Z0-9-_]+` and be less than 128 bytes in length. These are reflected as part of a URL in the metadata server. Additionally, to avoid ambiguity, keys must not conflict with any other metadata keys for the project or be one of the reserved keys: - &quot;cluster-location&quot; - &quot;cluster-name&quot; - &quot;cluster-uid&quot; - &quot;configure-sh&quot; - &quot;containerd-configure-sh&quot; - &quot;enable-os-login&quot; - &quot;gci-ensure-gke-docker&quot; - &quot;gci-metrics-enabled&quot; - &quot;gci-update-strategy&quot; - &quot;instance-template&quot; - &quot;kube-env&quot; - &quot;startup-script&quot; - &quot;user-data&quot; - &quot;disable-address-manager&quot; - &quot;windows-startup-script-ps1&quot; - &quot;common-psm1&quot; - &quot;k8s-node-setup-psm1&quot; - &quot;install-ssh-psm1&quot; - &quot;user-profile-psm1&quot; The following keys are reserved for Windows nodes: - &quot;serial-port-logging-enable&quot; Values are free-form strings, and only have meaning as interpreted by the image running in the instance. The only restriction placed on them is that each value&#x27;s size must be less than or equal to 32 KB. The total size of all keys and values must be less than 512 KB.
+      &quot;metadata&quot;: { # The metadata key/value pairs assigned to instances in the cluster. Keys must conform to the regexp `[a-zA-Z0-9-_]+` and be less than 128 bytes in length. These are reflected as part of a URL in the metadata server. Additionally, to avoid ambiguity, keys must not conflict with any other metadata keys for the project or be one of the reserved keys: - &quot;cluster-location&quot; - &quot;cluster-name&quot; - &quot;cluster-uid&quot; - &quot;configure-sh&quot; - &quot;containerd-configure-sh&quot; - &quot;enable-os-login&quot; - &quot;gci-ensure-gke-docker&quot; - &quot;gci-metrics-enabled&quot; - &quot;gci-update-strategy&quot; - &quot;instance-template&quot; - &quot;kube-env&quot; - &quot;startup-script&quot; - &quot;user-data&quot; - &quot;disable-address-manager&quot; - &quot;windows-startup-script-ps1&quot; - &quot;common-psm1&quot; - &quot;k8s-node-setup-psm1&quot; - &quot;install-ssh-psm1&quot; - &quot;user-profile-psm1&quot; Values are free-form strings, and only have meaning as interpreted by the image running in the instance. The only restriction placed on them is that each value&#x27;s size must be less than or equal to 32 KB. The total size of all keys and values must be less than 512 KB.
         &quot;a_key&quot;: &quot;A String&quot;,
       },
       &quot;minCpuPlatform&quot;: &quot;A String&quot;, # Minimum CPU platform to be used by this instance. The instance may be scheduled on the specified or newer CPU platform. Applicable values are the friendly names of CPU platforms, such as `minCpuPlatform: &quot;Intel Haswell&quot;` or `minCpuPlatform: &quot;Intel Sandy Bridge&quot;`. For more information, read [how to specify min CPU platform](https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform)
@@ -295,6 +317,11 @@ Args:
       &quot;maxPodsPerNode&quot;: &quot;A String&quot;, # Constraint enforced on the max num of pods per node.
     },
     &quot;name&quot;: &quot;A String&quot;, # The name of the node pool.
+    &quot;networkConfig&quot;: { # Parameters for node pool-level network config. # Networking configuration for this NodePool. If specified, it overrides the cluster-level defaults.
+      &quot;createPodRange&quot;: True or False, # Input only. Whether to create a new range for pod IPs in this node pool. Defaults are provided for `pod_range` and `pod_ipv4_cidr_block` if they are not specified. If neither `create_pod_range` or `pod_range` are specified, the cluster-level default (`ip_allocation_policy.cluster_ipv4_cidr_block`) is used. Only applicable if `ip_allocation_policy.use_ip_aliases` is true. This field cannot be changed after the node pool has been created.
+      &quot;podIpv4CidrBlock&quot;: &quot;A String&quot;, # The IP address range for pod IPs in this node pool. Only applicable if `create_pod_range` is true. Set to blank to have a range chosen with the default size. Set to /netmask (e.g. `/14`) to have a range chosen with a specific netmask. Set to a [CIDR](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing) notation (e.g. `10.96.0.0/14`) to pick a specific range to use. Only applicable if `ip_allocation_policy.use_ip_aliases` is true. This field cannot be changed after the node pool has been created.
+      &quot;podRange&quot;: &quot;A String&quot;, # The ID of the secondary range for pod IPs. If `create_pod_range` is true, this ID is used for the new range. If `create_pod_range` is false, uses an existing secondary range with this ID. Only applicable if `ip_allocation_policy.use_ip_aliases` is true. This field cannot be changed after the node pool has been created.
+    },
     &quot;podIpv4CidrSize&quot;: 42, # [Output only] The pod CIDR block size per node in this node pool.
     &quot;selfLink&quot;: &quot;A String&quot;, # [Output only] Server-defined URL for the resource.
     &quot;status&quot;: &quot;A String&quot;, # [Output only] The status of the nodes in this pool instance.
@@ -319,19 +346,30 @@ Returns:
   An object of the form:
 
     { # This operation resource represents operations that may have happened or are happening on the cluster. All fields are output only.
-  &quot;clusterConditions&quot;: [ # Which conditions caused the current cluster state.
+  &quot;clusterConditions&quot;: [ # Which conditions caused the current cluster state. Deprecated. Use field error instead.
     { # StatusCondition describes why a cluster or a node pool has a certain status (e.g., ERROR or DEGRADED).
-      &quot;code&quot;: &quot;A String&quot;, # Machine-friendly representation of the condition
+      &quot;canonicalCode&quot;: &quot;A String&quot;, # Canonical code of the condition.
+      &quot;code&quot;: &quot;A String&quot;, # Machine-friendly representation of the condition Deprecated. Use canonical_code instead.
       &quot;message&quot;: &quot;A String&quot;, # Human-friendly representation of the condition
     },
   ],
   &quot;detail&quot;: &quot;A String&quot;, # Detailed operation progress, if available.
   &quot;endTime&quot;: &quot;A String&quot;, # [Output only] The time the operation completed, in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format.
+  &quot;error&quot;: { # The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). Each `Status` message contains three pieces of data: error code, error message, and error details. You can find out more about this error model and how to work with it in the [API Design Guide](https://cloud.google.com/apis/design/errors). # The error result of the operation in case of failure.
+    &quot;code&quot;: 42, # The status code, which should be an enum value of google.rpc.Code.
+    &quot;details&quot;: [ # A list of messages that carry the error details. There is a common set of message types for APIs to use.
+      {
+        &quot;a_key&quot;: &quot;&quot;, # Properties of the object. Contains field @type with type URL.
+      },
+    ],
+    &quot;message&quot;: &quot;A String&quot;, # A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the google.rpc.Status.details field, or localized by the client.
+  },
   &quot;location&quot;: &quot;A String&quot;, # [Output only] The name of the Google Compute Engine [zone](https://cloud.google.com/compute/docs/regions-zones/regions-zones#available) or [region](https://cloud.google.com/compute/docs/regions-zones/regions-zones#available) in which the cluster resides.
   &quot;name&quot;: &quot;A String&quot;, # The server-assigned ID for the operation.
-  &quot;nodepoolConditions&quot;: [ # Which conditions caused the current node pool state.
+  &quot;nodepoolConditions&quot;: [ # Which conditions caused the current node pool state. Deprecated. Use field error instead.
     { # StatusCondition describes why a cluster or a node pool has a certain status (e.g., ERROR or DEGRADED).
-      &quot;code&quot;: &quot;A String&quot;, # Machine-friendly representation of the condition
+      &quot;canonicalCode&quot;: &quot;A String&quot;, # Canonical code of the condition.
+      &quot;code&quot;: &quot;A String&quot;, # Machine-friendly representation of the condition Deprecated. Use canonical_code instead.
       &quot;message&quot;: &quot;A String&quot;, # Human-friendly representation of the condition
     },
   ],
@@ -354,7 +392,7 @@ Returns:
   &quot;selfLink&quot;: &quot;A String&quot;, # Server-defined URL for the resource.
   &quot;startTime&quot;: &quot;A String&quot;, # [Output only] The time the operation started, in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format.
   &quot;status&quot;: &quot;A String&quot;, # The current status of the operation.
-  &quot;statusMessage&quot;: &quot;A String&quot;, # Output only. If an error has occurred, a textual description of the error.
+  &quot;statusMessage&quot;: &quot;A String&quot;, # Output only. If an error has occurred, a textual description of the error. Deprecated. Use the field error instead.
   &quot;targetLink&quot;: &quot;A String&quot;, # Server-defined URL for the target of the operation.
   &quot;zone&quot;: &quot;A String&quot;, # The name of the Google Compute Engine [zone](https://cloud.google.com/compute/docs/zones#available) in which the operation is taking place. This field is deprecated, use location instead.
 }</pre>
@@ -379,19 +417,30 @@ Returns:
   An object of the form:
 
     { # This operation resource represents operations that may have happened or are happening on the cluster. All fields are output only.
-  &quot;clusterConditions&quot;: [ # Which conditions caused the current cluster state.
+  &quot;clusterConditions&quot;: [ # Which conditions caused the current cluster state. Deprecated. Use field error instead.
     { # StatusCondition describes why a cluster or a node pool has a certain status (e.g., ERROR or DEGRADED).
-      &quot;code&quot;: &quot;A String&quot;, # Machine-friendly representation of the condition
+      &quot;canonicalCode&quot;: &quot;A String&quot;, # Canonical code of the condition.
+      &quot;code&quot;: &quot;A String&quot;, # Machine-friendly representation of the condition Deprecated. Use canonical_code instead.
       &quot;message&quot;: &quot;A String&quot;, # Human-friendly representation of the condition
     },
   ],
   &quot;detail&quot;: &quot;A String&quot;, # Detailed operation progress, if available.
   &quot;endTime&quot;: &quot;A String&quot;, # [Output only] The time the operation completed, in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format.
+  &quot;error&quot;: { # The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). Each `Status` message contains three pieces of data: error code, error message, and error details. You can find out more about this error model and how to work with it in the [API Design Guide](https://cloud.google.com/apis/design/errors). # The error result of the operation in case of failure.
+    &quot;code&quot;: 42, # The status code, which should be an enum value of google.rpc.Code.
+    &quot;details&quot;: [ # A list of messages that carry the error details. There is a common set of message types for APIs to use.
+      {
+        &quot;a_key&quot;: &quot;&quot;, # Properties of the object. Contains field @type with type URL.
+      },
+    ],
+    &quot;message&quot;: &quot;A String&quot;, # A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the google.rpc.Status.details field, or localized by the client.
+  },
   &quot;location&quot;: &quot;A String&quot;, # [Output only] The name of the Google Compute Engine [zone](https://cloud.google.com/compute/docs/regions-zones/regions-zones#available) or [region](https://cloud.google.com/compute/docs/regions-zones/regions-zones#available) in which the cluster resides.
   &quot;name&quot;: &quot;A String&quot;, # The server-assigned ID for the operation.
-  &quot;nodepoolConditions&quot;: [ # Which conditions caused the current node pool state.
+  &quot;nodepoolConditions&quot;: [ # Which conditions caused the current node pool state. Deprecated. Use field error instead.
     { # StatusCondition describes why a cluster or a node pool has a certain status (e.g., ERROR or DEGRADED).
-      &quot;code&quot;: &quot;A String&quot;, # Machine-friendly representation of the condition
+      &quot;canonicalCode&quot;: &quot;A String&quot;, # Canonical code of the condition.
+      &quot;code&quot;: &quot;A String&quot;, # Machine-friendly representation of the condition Deprecated. Use canonical_code instead.
       &quot;message&quot;: &quot;A String&quot;, # Human-friendly representation of the condition
     },
   ],
@@ -414,7 +463,7 @@ Returns:
   &quot;selfLink&quot;: &quot;A String&quot;, # Server-defined URL for the resource.
   &quot;startTime&quot;: &quot;A String&quot;, # [Output only] The time the operation started, in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format.
   &quot;status&quot;: &quot;A String&quot;, # The current status of the operation.
-  &quot;statusMessage&quot;: &quot;A String&quot;, # Output only. If an error has occurred, a textual description of the error.
+  &quot;statusMessage&quot;: &quot;A String&quot;, # Output only. If an error has occurred, a textual description of the error. Deprecated. Use the field error instead.
   &quot;targetLink&quot;: &quot;A String&quot;, # Server-defined URL for the target of the operation.
   &quot;zone&quot;: &quot;A String&quot;, # The name of the Google Compute Engine [zone](https://cloud.google.com/compute/docs/zones#available) in which the operation is taking place. This field is deprecated, use location instead.
 }</pre>
@@ -442,12 +491,13 @@ Returns:
   &quot;autoscaling&quot;: { # NodePoolAutoscaling contains information required by cluster autoscaler to adjust the size of the node pool to the current cluster usage. # Autoscaler configuration for this NodePool. Autoscaler is enabled only if a valid configuration is present.
     &quot;autoprovisioned&quot;: True or False, # Can this node pool be deleted automatically.
     &quot;enabled&quot;: True or False, # Is autoscaling enabled for this node pool.
-    &quot;maxNodeCount&quot;: 42, # Maximum number of nodes in the NodePool. Must be &gt;= min_node_count. There has to enough quota to scale up the cluster.
-    &quot;minNodeCount&quot;: 42, # Minimum number of nodes in the NodePool. Must be &gt;= 1 and &lt;= max_node_count.
+    &quot;maxNodeCount&quot;: 42, # Maximum number of nodes for one location in the NodePool. Must be &gt;= min_node_count. There has to be enough quota to scale up the cluster.
+    &quot;minNodeCount&quot;: 42, # Minimum number of nodes for one location in the NodePool. Must be &gt;= 1 and &lt;= max_node_count.
   },
   &quot;conditions&quot;: [ # Which conditions caused the current node pool state.
     { # StatusCondition describes why a cluster or a node pool has a certain status (e.g., ERROR or DEGRADED).
-      &quot;code&quot;: &quot;A String&quot;, # Machine-friendly representation of the condition
+      &quot;canonicalCode&quot;: &quot;A String&quot;, # Canonical code of the condition.
+      &quot;code&quot;: &quot;A String&quot;, # Machine-friendly representation of the condition Deprecated. Use canonical_code instead.
       &quot;message&quot;: &quot;A String&quot;, # Human-friendly representation of the condition
     },
   ],
@@ -456,16 +506,26 @@ Returns:
       { # AcceleratorConfig represents a Hardware Accelerator request.
         &quot;acceleratorCount&quot;: &quot;A String&quot;, # The number of the accelerator cards exposed to an instance.
         &quot;acceleratorType&quot;: &quot;A String&quot;, # The accelerator type resource name. List of supported accelerators [here](https://cloud.google.com/compute/docs/gpus)
+        &quot;gpuPartitionSize&quot;: &quot;A String&quot;, # Size of partitions to create on the GPU. Valid values are described in the NVIDIA [mig user guide](https://docs.nvidia.com/datacenter/tesla/mig-user-guide/#partitioning).
       },
     ],
+    &quot;advancedMachineFeatures&quot;: { # Specifies options for controlling advanced machine features. # Advanced features for the Compute Engine VM.
+      &quot;threadsPerCore&quot;: &quot;A String&quot;, # The number of threads per physical core. To disable simultaneous multithreading (SMT) set this to 1. If unset, the maximum number of threads supported per core by the underlying processor is assumed.
+    },
     &quot;bootDiskKmsKey&quot;: &quot;A String&quot;, #  The Customer Managed Encryption Key used to encrypt the boot disk attached to each node in the node pool. This should be of the form projects/[KEY_PROJECT_ID]/locations/[LOCATION]/keyRings/[RING_NAME]/cryptoKeys/[KEY_NAME]. For more information about protecting resources with Cloud KMS Keys please see: https://cloud.google.com/compute/docs/disks/customer-managed-encryption
     &quot;diskSizeGb&quot;: 42, # Size of the disk attached to each node, specified in GB. The smallest allowed disk size is 10GB. If unspecified, the default disk size is 100GB.
     &quot;diskType&quot;: &quot;A String&quot;, # Type of the disk attached to each node (e.g. &#x27;pd-standard&#x27;, &#x27;pd-ssd&#x27; or &#x27;pd-balanced&#x27;) If unspecified, the default disk type is &#x27;pd-standard&#x27;
+    &quot;gcfsConfig&quot;: { # GcfsConfig contains configurations of Google Container File System (image streaming). # Google Container File System (image streaming) configs.
+      &quot;enabled&quot;: True or False, # Whether to use GCFS.
+    },
+    &quot;gvnic&quot;: { # Configuration of gVNIC feature. # Enable or disable gvnic in the node pool.
+      &quot;enabled&quot;: True or False, # Whether gVNIC features are enabled in the node pool.
+    },
     &quot;imageType&quot;: &quot;A String&quot;, # The image type to use for this node. Note that for a given image type, the latest version of it will be used.
     &quot;kubeletConfig&quot;: { # Node kubelet configs. # Node kubelet configs.
       &quot;cpuCfsQuota&quot;: True or False, # Enable CPU CFS quota enforcement for containers that specify CPU limits. This option is enabled by default which makes kubelet use CFS quota (https://www.kernel.org/doc/Documentation/scheduler/sched-bwc.txt) to enforce container CPU limits. Otherwise, CPU limits will not be enforced at all. Disable this option to mitigate CPU throttling problems while still having your pods to be in Guaranteed QoS class by specifying the CPU limits. The default value is &#x27;true&#x27; if unspecified.
       &quot;cpuCfsQuotaPeriod&quot;: &quot;A String&quot;, # Set the CPU CFS quota period value &#x27;cpu.cfs_period_us&#x27;. The string must be a sequence of decimal numbers, each with optional fraction and a unit suffix, such as &quot;300ms&quot;. Valid time units are &quot;ns&quot;, &quot;us&quot; (or &quot;µs&quot;), &quot;ms&quot;, &quot;s&quot;, &quot;m&quot;, &quot;h&quot;. The value must be a positive duration.
-      &quot;cpuManagerPolicy&quot;: &quot;A String&quot;, # Control the CPU management policy on the node. See https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/ The following values are allowed. - &quot;none&quot;: the default, which represents the existing scheduling behavior. - &quot;static&quot;: allows pods with certain resource characteristics to be granted increased CPU affinity and exclusivity on the node. The default value is &#x27;none&#x27; if unspecified.
+      &quot;cpuManagerPolicy&quot;: &quot;A String&quot;, # Control the CPU management policy on the node. See https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/ The following values are allowed. * &quot;none&quot;: the default, which represents the existing scheduling behavior. * &quot;static&quot;: allows pods with certain resource characteristics to be granted increased CPU affinity and exclusivity on the node. The default value is &#x27;none&#x27; if unspecified.
     },
     &quot;labels&quot;: { # The map of Kubernetes labels (key/value pairs) to be applied to each node. These will added in addition to any default label(s) that Kubernetes may apply to the node. In case of conflict in label keys, the applied set may differ depending on the Kubernetes version -- it&#x27;s best to assume the behavior is undefined and conflicts should be avoided. For more information, including usage and the valid values, see: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
       &quot;a_key&quot;: &quot;A String&quot;,
@@ -477,7 +537,7 @@ Returns:
     },
     &quot;localSsdCount&quot;: 42, # The number of local SSD disks to be attached to the node. The limit for this value is dependent upon the maximum number of disks available on a machine per zone. See: https://cloud.google.com/compute/docs/disks/local-ssd for more information.
     &quot;machineType&quot;: &quot;A String&quot;, # The name of a Google Compute Engine [machine type](https://cloud.google.com/compute/docs/machine-types) If unspecified, the default machine type is `e2-medium`.
-    &quot;metadata&quot;: { # The metadata key/value pairs assigned to instances in the cluster. Keys must conform to the regexp `[a-zA-Z0-9-_]+` and be less than 128 bytes in length. These are reflected as part of a URL in the metadata server. Additionally, to avoid ambiguity, keys must not conflict with any other metadata keys for the project or be one of the reserved keys: - &quot;cluster-location&quot; - &quot;cluster-name&quot; - &quot;cluster-uid&quot; - &quot;configure-sh&quot; - &quot;containerd-configure-sh&quot; - &quot;enable-os-login&quot; - &quot;gci-ensure-gke-docker&quot; - &quot;gci-metrics-enabled&quot; - &quot;gci-update-strategy&quot; - &quot;instance-template&quot; - &quot;kube-env&quot; - &quot;startup-script&quot; - &quot;user-data&quot; - &quot;disable-address-manager&quot; - &quot;windows-startup-script-ps1&quot; - &quot;common-psm1&quot; - &quot;k8s-node-setup-psm1&quot; - &quot;install-ssh-psm1&quot; - &quot;user-profile-psm1&quot; The following keys are reserved for Windows nodes: - &quot;serial-port-logging-enable&quot; Values are free-form strings, and only have meaning as interpreted by the image running in the instance. The only restriction placed on them is that each value&#x27;s size must be less than or equal to 32 KB. The total size of all keys and values must be less than 512 KB.
+    &quot;metadata&quot;: { # The metadata key/value pairs assigned to instances in the cluster. Keys must conform to the regexp `[a-zA-Z0-9-_]+` and be less than 128 bytes in length. These are reflected as part of a URL in the metadata server. Additionally, to avoid ambiguity, keys must not conflict with any other metadata keys for the project or be one of the reserved keys: - &quot;cluster-location&quot; - &quot;cluster-name&quot; - &quot;cluster-uid&quot; - &quot;configure-sh&quot; - &quot;containerd-configure-sh&quot; - &quot;enable-os-login&quot; - &quot;gci-ensure-gke-docker&quot; - &quot;gci-metrics-enabled&quot; - &quot;gci-update-strategy&quot; - &quot;instance-template&quot; - &quot;kube-env&quot; - &quot;startup-script&quot; - &quot;user-data&quot; - &quot;disable-address-manager&quot; - &quot;windows-startup-script-ps1&quot; - &quot;common-psm1&quot; - &quot;k8s-node-setup-psm1&quot; - &quot;install-ssh-psm1&quot; - &quot;user-profile-psm1&quot; Values are free-form strings, and only have meaning as interpreted by the image running in the instance. The only restriction placed on them is that each value&#x27;s size must be less than or equal to 32 KB. The total size of all keys and values must be less than 512 KB.
       &quot;a_key&quot;: &quot;A String&quot;,
     },
     &quot;minCpuPlatform&quot;: &quot;A String&quot;, # Minimum CPU platform to be used by this instance. The instance may be scheduled on the specified or newer CPU platform. Applicable values are the friendly names of CPU platforms, such as `minCpuPlatform: &quot;Intel Haswell&quot;` or `minCpuPlatform: &quot;Intel Sandy Bridge&quot;`. For more information, read [how to specify min CPU platform](https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform)
@@ -534,6 +594,11 @@ Returns:
     &quot;maxPodsPerNode&quot;: &quot;A String&quot;, # Constraint enforced on the max num of pods per node.
   },
   &quot;name&quot;: &quot;A String&quot;, # The name of the node pool.
+  &quot;networkConfig&quot;: { # Parameters for node pool-level network config. # Networking configuration for this NodePool. If specified, it overrides the cluster-level defaults.
+    &quot;createPodRange&quot;: True or False, # Input only. Whether to create a new range for pod IPs in this node pool. Defaults are provided for `pod_range` and `pod_ipv4_cidr_block` if they are not specified. If neither `create_pod_range` or `pod_range` are specified, the cluster-level default (`ip_allocation_policy.cluster_ipv4_cidr_block`) is used. Only applicable if `ip_allocation_policy.use_ip_aliases` is true. This field cannot be changed after the node pool has been created.
+    &quot;podIpv4CidrBlock&quot;: &quot;A String&quot;, # The IP address range for pod IPs in this node pool. Only applicable if `create_pod_range` is true. Set to blank to have a range chosen with the default size. Set to /netmask (e.g. `/14`) to have a range chosen with a specific netmask. Set to a [CIDR](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing) notation (e.g. `10.96.0.0/14`) to pick a specific range to use. Only applicable if `ip_allocation_policy.use_ip_aliases` is true. This field cannot be changed after the node pool has been created.
+    &quot;podRange&quot;: &quot;A String&quot;, # The ID of the secondary range for pod IPs. If `create_pod_range` is true, this ID is used for the new range. If `create_pod_range` is false, uses an existing secondary range with this ID. Only applicable if `ip_allocation_policy.use_ip_aliases` is true. This field cannot be changed after the node pool has been created.
+  },
   &quot;podIpv4CidrSize&quot;: 42, # [Output only] The pod CIDR block size per node in this node pool.
   &quot;selfLink&quot;: &quot;A String&quot;, # [Output only] Server-defined URL for the resource.
   &quot;status&quot;: &quot;A String&quot;, # [Output only] The status of the nodes in this pool instance.
@@ -569,12 +634,13 @@ Returns:
       &quot;autoscaling&quot;: { # NodePoolAutoscaling contains information required by cluster autoscaler to adjust the size of the node pool to the current cluster usage. # Autoscaler configuration for this NodePool. Autoscaler is enabled only if a valid configuration is present.
         &quot;autoprovisioned&quot;: True or False, # Can this node pool be deleted automatically.
         &quot;enabled&quot;: True or False, # Is autoscaling enabled for this node pool.
-        &quot;maxNodeCount&quot;: 42, # Maximum number of nodes in the NodePool. Must be &gt;= min_node_count. There has to enough quota to scale up the cluster.
-        &quot;minNodeCount&quot;: 42, # Minimum number of nodes in the NodePool. Must be &gt;= 1 and &lt;= max_node_count.
+        &quot;maxNodeCount&quot;: 42, # Maximum number of nodes for one location in the NodePool. Must be &gt;= min_node_count. There has to be enough quota to scale up the cluster.
+        &quot;minNodeCount&quot;: 42, # Minimum number of nodes for one location in the NodePool. Must be &gt;= 1 and &lt;= max_node_count.
       },
       &quot;conditions&quot;: [ # Which conditions caused the current node pool state.
         { # StatusCondition describes why a cluster or a node pool has a certain status (e.g., ERROR or DEGRADED).
-          &quot;code&quot;: &quot;A String&quot;, # Machine-friendly representation of the condition
+          &quot;canonicalCode&quot;: &quot;A String&quot;, # Canonical code of the condition.
+          &quot;code&quot;: &quot;A String&quot;, # Machine-friendly representation of the condition Deprecated. Use canonical_code instead.
           &quot;message&quot;: &quot;A String&quot;, # Human-friendly representation of the condition
         },
       ],
@@ -583,16 +649,26 @@ Returns:
           { # AcceleratorConfig represents a Hardware Accelerator request.
             &quot;acceleratorCount&quot;: &quot;A String&quot;, # The number of the accelerator cards exposed to an instance.
             &quot;acceleratorType&quot;: &quot;A String&quot;, # The accelerator type resource name. List of supported accelerators [here](https://cloud.google.com/compute/docs/gpus)
+            &quot;gpuPartitionSize&quot;: &quot;A String&quot;, # Size of partitions to create on the GPU. Valid values are described in the NVIDIA [mig user guide](https://docs.nvidia.com/datacenter/tesla/mig-user-guide/#partitioning).
           },
         ],
+        &quot;advancedMachineFeatures&quot;: { # Specifies options for controlling advanced machine features. # Advanced features for the Compute Engine VM.
+          &quot;threadsPerCore&quot;: &quot;A String&quot;, # The number of threads per physical core. To disable simultaneous multithreading (SMT) set this to 1. If unset, the maximum number of threads supported per core by the underlying processor is assumed.
+        },
         &quot;bootDiskKmsKey&quot;: &quot;A String&quot;, #  The Customer Managed Encryption Key used to encrypt the boot disk attached to each node in the node pool. This should be of the form projects/[KEY_PROJECT_ID]/locations/[LOCATION]/keyRings/[RING_NAME]/cryptoKeys/[KEY_NAME]. For more information about protecting resources with Cloud KMS Keys please see: https://cloud.google.com/compute/docs/disks/customer-managed-encryption
         &quot;diskSizeGb&quot;: 42, # Size of the disk attached to each node, specified in GB. The smallest allowed disk size is 10GB. If unspecified, the default disk size is 100GB.
         &quot;diskType&quot;: &quot;A String&quot;, # Type of the disk attached to each node (e.g. &#x27;pd-standard&#x27;, &#x27;pd-ssd&#x27; or &#x27;pd-balanced&#x27;) If unspecified, the default disk type is &#x27;pd-standard&#x27;
+        &quot;gcfsConfig&quot;: { # GcfsConfig contains configurations of Google Container File System (image streaming). # Google Container File System (image streaming) configs.
+          &quot;enabled&quot;: True or False, # Whether to use GCFS.
+        },
+        &quot;gvnic&quot;: { # Configuration of gVNIC feature. # Enable or disable gvnic in the node pool.
+          &quot;enabled&quot;: True or False, # Whether gVNIC features are enabled in the node pool.
+        },
         &quot;imageType&quot;: &quot;A String&quot;, # The image type to use for this node. Note that for a given image type, the latest version of it will be used.
         &quot;kubeletConfig&quot;: { # Node kubelet configs. # Node kubelet configs.
           &quot;cpuCfsQuota&quot;: True or False, # Enable CPU CFS quota enforcement for containers that specify CPU limits. This option is enabled by default which makes kubelet use CFS quota (https://www.kernel.org/doc/Documentation/scheduler/sched-bwc.txt) to enforce container CPU limits. Otherwise, CPU limits will not be enforced at all. Disable this option to mitigate CPU throttling problems while still having your pods to be in Guaranteed QoS class by specifying the CPU limits. The default value is &#x27;true&#x27; if unspecified.
           &quot;cpuCfsQuotaPeriod&quot;: &quot;A String&quot;, # Set the CPU CFS quota period value &#x27;cpu.cfs_period_us&#x27;. The string must be a sequence of decimal numbers, each with optional fraction and a unit suffix, such as &quot;300ms&quot;. Valid time units are &quot;ns&quot;, &quot;us&quot; (or &quot;µs&quot;), &quot;ms&quot;, &quot;s&quot;, &quot;m&quot;, &quot;h&quot;. The value must be a positive duration.
-          &quot;cpuManagerPolicy&quot;: &quot;A String&quot;, # Control the CPU management policy on the node. See https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/ The following values are allowed. - &quot;none&quot;: the default, which represents the existing scheduling behavior. - &quot;static&quot;: allows pods with certain resource characteristics to be granted increased CPU affinity and exclusivity on the node. The default value is &#x27;none&#x27; if unspecified.
+          &quot;cpuManagerPolicy&quot;: &quot;A String&quot;, # Control the CPU management policy on the node. See https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/ The following values are allowed. * &quot;none&quot;: the default, which represents the existing scheduling behavior. * &quot;static&quot;: allows pods with certain resource characteristics to be granted increased CPU affinity and exclusivity on the node. The default value is &#x27;none&#x27; if unspecified.
         },
         &quot;labels&quot;: { # The map of Kubernetes labels (key/value pairs) to be applied to each node. These will added in addition to any default label(s) that Kubernetes may apply to the node. In case of conflict in label keys, the applied set may differ depending on the Kubernetes version -- it&#x27;s best to assume the behavior is undefined and conflicts should be avoided. For more information, including usage and the valid values, see: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
           &quot;a_key&quot;: &quot;A String&quot;,
@@ -604,7 +680,7 @@ Returns:
         },
         &quot;localSsdCount&quot;: 42, # The number of local SSD disks to be attached to the node. The limit for this value is dependent upon the maximum number of disks available on a machine per zone. See: https://cloud.google.com/compute/docs/disks/local-ssd for more information.
         &quot;machineType&quot;: &quot;A String&quot;, # The name of a Google Compute Engine [machine type](https://cloud.google.com/compute/docs/machine-types) If unspecified, the default machine type is `e2-medium`.
-        &quot;metadata&quot;: { # The metadata key/value pairs assigned to instances in the cluster. Keys must conform to the regexp `[a-zA-Z0-9-_]+` and be less than 128 bytes in length. These are reflected as part of a URL in the metadata server. Additionally, to avoid ambiguity, keys must not conflict with any other metadata keys for the project or be one of the reserved keys: - &quot;cluster-location&quot; - &quot;cluster-name&quot; - &quot;cluster-uid&quot; - &quot;configure-sh&quot; - &quot;containerd-configure-sh&quot; - &quot;enable-os-login&quot; - &quot;gci-ensure-gke-docker&quot; - &quot;gci-metrics-enabled&quot; - &quot;gci-update-strategy&quot; - &quot;instance-template&quot; - &quot;kube-env&quot; - &quot;startup-script&quot; - &quot;user-data&quot; - &quot;disable-address-manager&quot; - &quot;windows-startup-script-ps1&quot; - &quot;common-psm1&quot; - &quot;k8s-node-setup-psm1&quot; - &quot;install-ssh-psm1&quot; - &quot;user-profile-psm1&quot; The following keys are reserved for Windows nodes: - &quot;serial-port-logging-enable&quot; Values are free-form strings, and only have meaning as interpreted by the image running in the instance. The only restriction placed on them is that each value&#x27;s size must be less than or equal to 32 KB. The total size of all keys and values must be less than 512 KB.
+        &quot;metadata&quot;: { # The metadata key/value pairs assigned to instances in the cluster. Keys must conform to the regexp `[a-zA-Z0-9-_]+` and be less than 128 bytes in length. These are reflected as part of a URL in the metadata server. Additionally, to avoid ambiguity, keys must not conflict with any other metadata keys for the project or be one of the reserved keys: - &quot;cluster-location&quot; - &quot;cluster-name&quot; - &quot;cluster-uid&quot; - &quot;configure-sh&quot; - &quot;containerd-configure-sh&quot; - &quot;enable-os-login&quot; - &quot;gci-ensure-gke-docker&quot; - &quot;gci-metrics-enabled&quot; - &quot;gci-update-strategy&quot; - &quot;instance-template&quot; - &quot;kube-env&quot; - &quot;startup-script&quot; - &quot;user-data&quot; - &quot;disable-address-manager&quot; - &quot;windows-startup-script-ps1&quot; - &quot;common-psm1&quot; - &quot;k8s-node-setup-psm1&quot; - &quot;install-ssh-psm1&quot; - &quot;user-profile-psm1&quot; Values are free-form strings, and only have meaning as interpreted by the image running in the instance. The only restriction placed on them is that each value&#x27;s size must be less than or equal to 32 KB. The total size of all keys and values must be less than 512 KB.
           &quot;a_key&quot;: &quot;A String&quot;,
         },
         &quot;minCpuPlatform&quot;: &quot;A String&quot;, # Minimum CPU platform to be used by this instance. The instance may be scheduled on the specified or newer CPU platform. Applicable values are the friendly names of CPU platforms, such as `minCpuPlatform: &quot;Intel Haswell&quot;` or `minCpuPlatform: &quot;Intel Sandy Bridge&quot;`. For more information, read [how to specify min CPU platform](https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform)
@@ -661,6 +737,11 @@ Returns:
         &quot;maxPodsPerNode&quot;: &quot;A String&quot;, # Constraint enforced on the max num of pods per node.
       },
       &quot;name&quot;: &quot;A String&quot;, # The name of the node pool.
+      &quot;networkConfig&quot;: { # Parameters for node pool-level network config. # Networking configuration for this NodePool. If specified, it overrides the cluster-level defaults.
+        &quot;createPodRange&quot;: True or False, # Input only. Whether to create a new range for pod IPs in this node pool. Defaults are provided for `pod_range` and `pod_ipv4_cidr_block` if they are not specified. If neither `create_pod_range` or `pod_range` are specified, the cluster-level default (`ip_allocation_policy.cluster_ipv4_cidr_block`) is used. Only applicable if `ip_allocation_policy.use_ip_aliases` is true. This field cannot be changed after the node pool has been created.
+        &quot;podIpv4CidrBlock&quot;: &quot;A String&quot;, # The IP address range for pod IPs in this node pool. Only applicable if `create_pod_range` is true. Set to blank to have a range chosen with the default size. Set to /netmask (e.g. `/14`) to have a range chosen with a specific netmask. Set to a [CIDR](https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing) notation (e.g. `10.96.0.0/14`) to pick a specific range to use. Only applicable if `ip_allocation_policy.use_ip_aliases` is true. This field cannot be changed after the node pool has been created.
+        &quot;podRange&quot;: &quot;A String&quot;, # The ID of the secondary range for pod IPs. If `create_pod_range` is true, this ID is used for the new range. If `create_pod_range` is false, uses an existing secondary range with this ID. Only applicable if `ip_allocation_policy.use_ip_aliases` is true. This field cannot be changed after the node pool has been created.
+      },
       &quot;podIpv4CidrSize&quot;: 42, # [Output only] The pod CIDR block size per node in this node pool.
       &quot;selfLink&quot;: &quot;A String&quot;, # [Output only] Server-defined URL for the resource.
       &quot;status&quot;: &quot;A String&quot;, # [Output only] The status of the nodes in this pool instance.
@@ -704,19 +785,30 @@ Returns:
   An object of the form:
 
     { # This operation resource represents operations that may have happened or are happening on the cluster. All fields are output only.
-  &quot;clusterConditions&quot;: [ # Which conditions caused the current cluster state.
+  &quot;clusterConditions&quot;: [ # Which conditions caused the current cluster state. Deprecated. Use field error instead.
     { # StatusCondition describes why a cluster or a node pool has a certain status (e.g., ERROR or DEGRADED).
-      &quot;code&quot;: &quot;A String&quot;, # Machine-friendly representation of the condition
+      &quot;canonicalCode&quot;: &quot;A String&quot;, # Canonical code of the condition.
+      &quot;code&quot;: &quot;A String&quot;, # Machine-friendly representation of the condition Deprecated. Use canonical_code instead.
       &quot;message&quot;: &quot;A String&quot;, # Human-friendly representation of the condition
     },
   ],
   &quot;detail&quot;: &quot;A String&quot;, # Detailed operation progress, if available.
   &quot;endTime&quot;: &quot;A String&quot;, # [Output only] The time the operation completed, in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format.
+  &quot;error&quot;: { # The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). Each `Status` message contains three pieces of data: error code, error message, and error details. You can find out more about this error model and how to work with it in the [API Design Guide](https://cloud.google.com/apis/design/errors). # The error result of the operation in case of failure.
+    &quot;code&quot;: 42, # The status code, which should be an enum value of google.rpc.Code.
+    &quot;details&quot;: [ # A list of messages that carry the error details. There is a common set of message types for APIs to use.
+      {
+        &quot;a_key&quot;: &quot;&quot;, # Properties of the object. Contains field @type with type URL.
+      },
+    ],
+    &quot;message&quot;: &quot;A String&quot;, # A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the google.rpc.Status.details field, or localized by the client.
+  },
   &quot;location&quot;: &quot;A String&quot;, # [Output only] The name of the Google Compute Engine [zone](https://cloud.google.com/compute/docs/regions-zones/regions-zones#available) or [region](https://cloud.google.com/compute/docs/regions-zones/regions-zones#available) in which the cluster resides.
   &quot;name&quot;: &quot;A String&quot;, # The server-assigned ID for the operation.
-  &quot;nodepoolConditions&quot;: [ # Which conditions caused the current node pool state.
+  &quot;nodepoolConditions&quot;: [ # Which conditions caused the current node pool state. Deprecated. Use field error instead.
     { # StatusCondition describes why a cluster or a node pool has a certain status (e.g., ERROR or DEGRADED).
-      &quot;code&quot;: &quot;A String&quot;, # Machine-friendly representation of the condition
+      &quot;canonicalCode&quot;: &quot;A String&quot;, # Canonical code of the condition.
+      &quot;code&quot;: &quot;A String&quot;, # Machine-friendly representation of the condition Deprecated. Use canonical_code instead.
       &quot;message&quot;: &quot;A String&quot;, # Human-friendly representation of the condition
     },
   ],
@@ -739,7 +831,7 @@ Returns:
   &quot;selfLink&quot;: &quot;A String&quot;, # Server-defined URL for the resource.
   &quot;startTime&quot;: &quot;A String&quot;, # [Output only] The time the operation started, in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format.
   &quot;status&quot;: &quot;A String&quot;, # The current status of the operation.
-  &quot;statusMessage&quot;: &quot;A String&quot;, # Output only. If an error has occurred, a textual description of the error.
+  &quot;statusMessage&quot;: &quot;A String&quot;, # Output only. If an error has occurred, a textual description of the error. Deprecated. Use the field error instead.
   &quot;targetLink&quot;: &quot;A String&quot;, # Server-defined URL for the target of the operation.
   &quot;zone&quot;: &quot;A String&quot;, # The name of the Google Compute Engine [zone](https://cloud.google.com/compute/docs/zones#available) in which the operation is taking place. This field is deprecated, use location instead.
 }</pre>
@@ -782,19 +874,30 @@ Returns:
   An object of the form:
 
     { # This operation resource represents operations that may have happened or are happening on the cluster. All fields are output only.
-  &quot;clusterConditions&quot;: [ # Which conditions caused the current cluster state.
+  &quot;clusterConditions&quot;: [ # Which conditions caused the current cluster state. Deprecated. Use field error instead.
     { # StatusCondition describes why a cluster or a node pool has a certain status (e.g., ERROR or DEGRADED).
-      &quot;code&quot;: &quot;A String&quot;, # Machine-friendly representation of the condition
+      &quot;canonicalCode&quot;: &quot;A String&quot;, # Canonical code of the condition.
+      &quot;code&quot;: &quot;A String&quot;, # Machine-friendly representation of the condition Deprecated. Use canonical_code instead.
       &quot;message&quot;: &quot;A String&quot;, # Human-friendly representation of the condition
     },
   ],
   &quot;detail&quot;: &quot;A String&quot;, # Detailed operation progress, if available.
   &quot;endTime&quot;: &quot;A String&quot;, # [Output only] The time the operation completed, in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format.
+  &quot;error&quot;: { # The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). Each `Status` message contains three pieces of data: error code, error message, and error details. You can find out more about this error model and how to work with it in the [API Design Guide](https://cloud.google.com/apis/design/errors). # The error result of the operation in case of failure.
+    &quot;code&quot;: 42, # The status code, which should be an enum value of google.rpc.Code.
+    &quot;details&quot;: [ # A list of messages that carry the error details. There is a common set of message types for APIs to use.
+      {
+        &quot;a_key&quot;: &quot;&quot;, # Properties of the object. Contains field @type with type URL.
+      },
+    ],
+    &quot;message&quot;: &quot;A String&quot;, # A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the google.rpc.Status.details field, or localized by the client.
+  },
   &quot;location&quot;: &quot;A String&quot;, # [Output only] The name of the Google Compute Engine [zone](https://cloud.google.com/compute/docs/regions-zones/regions-zones#available) or [region](https://cloud.google.com/compute/docs/regions-zones/regions-zones#available) in which the cluster resides.
   &quot;name&quot;: &quot;A String&quot;, # The server-assigned ID for the operation.
-  &quot;nodepoolConditions&quot;: [ # Which conditions caused the current node pool state.
+  &quot;nodepoolConditions&quot;: [ # Which conditions caused the current node pool state. Deprecated. Use field error instead.
     { # StatusCondition describes why a cluster or a node pool has a certain status (e.g., ERROR or DEGRADED).
-      &quot;code&quot;: &quot;A String&quot;, # Machine-friendly representation of the condition
+      &quot;canonicalCode&quot;: &quot;A String&quot;, # Canonical code of the condition.
+      &quot;code&quot;: &quot;A String&quot;, # Machine-friendly representation of the condition Deprecated. Use canonical_code instead.
       &quot;message&quot;: &quot;A String&quot;, # Human-friendly representation of the condition
     },
   ],
@@ -817,7 +920,7 @@ Returns:
   &quot;selfLink&quot;: &quot;A String&quot;, # Server-defined URL for the resource.
   &quot;startTime&quot;: &quot;A String&quot;, # [Output only] The time the operation started, in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format.
   &quot;status&quot;: &quot;A String&quot;, # The current status of the operation.
-  &quot;statusMessage&quot;: &quot;A String&quot;, # Output only. If an error has occurred, a textual description of the error.
+  &quot;statusMessage&quot;: &quot;A String&quot;, # Output only. If an error has occurred, a textual description of the error. Deprecated. Use the field error instead.
   &quot;targetLink&quot;: &quot;A String&quot;, # Server-defined URL for the target of the operation.
   &quot;zone&quot;: &quot;A String&quot;, # The name of the Google Compute Engine [zone](https://cloud.google.com/compute/docs/zones#available) in which the operation is taking place. This field is deprecated, use location instead.
 }</pre>
@@ -853,19 +956,30 @@ Returns:
   An object of the form:
 
     { # This operation resource represents operations that may have happened or are happening on the cluster. All fields are output only.
-  &quot;clusterConditions&quot;: [ # Which conditions caused the current cluster state.
+  &quot;clusterConditions&quot;: [ # Which conditions caused the current cluster state. Deprecated. Use field error instead.
     { # StatusCondition describes why a cluster or a node pool has a certain status (e.g., ERROR or DEGRADED).
-      &quot;code&quot;: &quot;A String&quot;, # Machine-friendly representation of the condition
+      &quot;canonicalCode&quot;: &quot;A String&quot;, # Canonical code of the condition.
+      &quot;code&quot;: &quot;A String&quot;, # Machine-friendly representation of the condition Deprecated. Use canonical_code instead.
       &quot;message&quot;: &quot;A String&quot;, # Human-friendly representation of the condition
     },
   ],
   &quot;detail&quot;: &quot;A String&quot;, # Detailed operation progress, if available.
   &quot;endTime&quot;: &quot;A String&quot;, # [Output only] The time the operation completed, in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format.
+  &quot;error&quot;: { # The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). Each `Status` message contains three pieces of data: error code, error message, and error details. You can find out more about this error model and how to work with it in the [API Design Guide](https://cloud.google.com/apis/design/errors). # The error result of the operation in case of failure.
+    &quot;code&quot;: 42, # The status code, which should be an enum value of google.rpc.Code.
+    &quot;details&quot;: [ # A list of messages that carry the error details. There is a common set of message types for APIs to use.
+      {
+        &quot;a_key&quot;: &quot;&quot;, # Properties of the object. Contains field @type with type URL.
+      },
+    ],
+    &quot;message&quot;: &quot;A String&quot;, # A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the google.rpc.Status.details field, or localized by the client.
+  },
   &quot;location&quot;: &quot;A String&quot;, # [Output only] The name of the Google Compute Engine [zone](https://cloud.google.com/compute/docs/regions-zones/regions-zones#available) or [region](https://cloud.google.com/compute/docs/regions-zones/regions-zones#available) in which the cluster resides.
   &quot;name&quot;: &quot;A String&quot;, # The server-assigned ID for the operation.
-  &quot;nodepoolConditions&quot;: [ # Which conditions caused the current node pool state.
+  &quot;nodepoolConditions&quot;: [ # Which conditions caused the current node pool state. Deprecated. Use field error instead.
     { # StatusCondition describes why a cluster or a node pool has a certain status (e.g., ERROR or DEGRADED).
-      &quot;code&quot;: &quot;A String&quot;, # Machine-friendly representation of the condition
+      &quot;canonicalCode&quot;: &quot;A String&quot;, # Canonical code of the condition.
+      &quot;code&quot;: &quot;A String&quot;, # Machine-friendly representation of the condition Deprecated. Use canonical_code instead.
       &quot;message&quot;: &quot;A String&quot;, # Human-friendly representation of the condition
     },
   ],
@@ -888,7 +1002,7 @@ Returns:
   &quot;selfLink&quot;: &quot;A String&quot;, # Server-defined URL for the resource.
   &quot;startTime&quot;: &quot;A String&quot;, # [Output only] The time the operation started, in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format.
   &quot;status&quot;: &quot;A String&quot;, # The current status of the operation.
-  &quot;statusMessage&quot;: &quot;A String&quot;, # Output only. If an error has occurred, a textual description of the error.
+  &quot;statusMessage&quot;: &quot;A String&quot;, # Output only. If an error has occurred, a textual description of the error. Deprecated. Use the field error instead.
   &quot;targetLink&quot;: &quot;A String&quot;, # Server-defined URL for the target of the operation.
   &quot;zone&quot;: &quot;A String&quot;, # The name of the Google Compute Engine [zone](https://cloud.google.com/compute/docs/zones#available) in which the operation is taking place. This field is deprecated, use location instead.
 }</pre>
@@ -908,11 +1022,17 @@ Args:
 
 { # UpdateNodePoolRequests update a node pool&#x27;s image and/or version.
   &quot;clusterId&quot;: &quot;A String&quot;, # Deprecated. The name of the cluster to upgrade. This field has been deprecated and replaced by the name field.
+  &quot;gcfsConfig&quot;: { # GcfsConfig contains configurations of Google Container File System (image streaming). # GCFS config.
+    &quot;enabled&quot;: True or False, # Whether to use GCFS.
+  },
+  &quot;gvnic&quot;: { # Configuration of gVNIC feature. # Enable or disable gvnic on the node pool.
+    &quot;enabled&quot;: True or False, # Whether gVNIC features are enabled in the node pool.
+  },
   &quot;imageType&quot;: &quot;A String&quot;, # Required. The desired image type for the node pool.
   &quot;kubeletConfig&quot;: { # Node kubelet configs. # Node kubelet configs.
     &quot;cpuCfsQuota&quot;: True or False, # Enable CPU CFS quota enforcement for containers that specify CPU limits. This option is enabled by default which makes kubelet use CFS quota (https://www.kernel.org/doc/Documentation/scheduler/sched-bwc.txt) to enforce container CPU limits. Otherwise, CPU limits will not be enforced at all. Disable this option to mitigate CPU throttling problems while still having your pods to be in Guaranteed QoS class by specifying the CPU limits. The default value is &#x27;true&#x27; if unspecified.
     &quot;cpuCfsQuotaPeriod&quot;: &quot;A String&quot;, # Set the CPU CFS quota period value &#x27;cpu.cfs_period_us&#x27;. The string must be a sequence of decimal numbers, each with optional fraction and a unit suffix, such as &quot;300ms&quot;. Valid time units are &quot;ns&quot;, &quot;us&quot; (or &quot;µs&quot;), &quot;ms&quot;, &quot;s&quot;, &quot;m&quot;, &quot;h&quot;. The value must be a positive duration.
-    &quot;cpuManagerPolicy&quot;: &quot;A String&quot;, # Control the CPU management policy on the node. See https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/ The following values are allowed. - &quot;none&quot;: the default, which represents the existing scheduling behavior. - &quot;static&quot;: allows pods with certain resource characteristics to be granted increased CPU affinity and exclusivity on the node. The default value is &#x27;none&#x27; if unspecified.
+    &quot;cpuManagerPolicy&quot;: &quot;A String&quot;, # Control the CPU management policy on the node. See https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/ The following values are allowed. * &quot;none&quot;: the default, which represents the existing scheduling behavior. * &quot;static&quot;: allows pods with certain resource characteristics to be granted increased CPU affinity and exclusivity on the node. The default value is &#x27;none&#x27; if unspecified.
   },
   &quot;linuxNodeConfig&quot;: { # Parameters that can be configured on Linux nodes. # Parameters that can be configured on Linux nodes.
     &quot;sysctls&quot;: { # The Linux kernel parameters to be applied to the nodes and all pods running on the nodes. The following parameters are supported. net.core.netdev_max_backlog net.core.rmem_max net.core.wmem_default net.core.wmem_max net.core.optmem_max net.core.somaxconn net.ipv4.tcp_rmem net.ipv4.tcp_wmem net.ipv4.tcp_tw_reuse
@@ -945,19 +1065,30 @@ Returns:
   An object of the form:
 
     { # This operation resource represents operations that may have happened or are happening on the cluster. All fields are output only.
-  &quot;clusterConditions&quot;: [ # Which conditions caused the current cluster state.
+  &quot;clusterConditions&quot;: [ # Which conditions caused the current cluster state. Deprecated. Use field error instead.
     { # StatusCondition describes why a cluster or a node pool has a certain status (e.g., ERROR or DEGRADED).
-      &quot;code&quot;: &quot;A String&quot;, # Machine-friendly representation of the condition
+      &quot;canonicalCode&quot;: &quot;A String&quot;, # Canonical code of the condition.
+      &quot;code&quot;: &quot;A String&quot;, # Machine-friendly representation of the condition Deprecated. Use canonical_code instead.
       &quot;message&quot;: &quot;A String&quot;, # Human-friendly representation of the condition
     },
   ],
   &quot;detail&quot;: &quot;A String&quot;, # Detailed operation progress, if available.
   &quot;endTime&quot;: &quot;A String&quot;, # [Output only] The time the operation completed, in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format.
+  &quot;error&quot;: { # The `Status` type defines a logical error model that is suitable for different programming environments, including REST APIs and RPC APIs. It is used by [gRPC](https://github.com/grpc). Each `Status` message contains three pieces of data: error code, error message, and error details. You can find out more about this error model and how to work with it in the [API Design Guide](https://cloud.google.com/apis/design/errors). # The error result of the operation in case of failure.
+    &quot;code&quot;: 42, # The status code, which should be an enum value of google.rpc.Code.
+    &quot;details&quot;: [ # A list of messages that carry the error details. There is a common set of message types for APIs to use.
+      {
+        &quot;a_key&quot;: &quot;&quot;, # Properties of the object. Contains field @type with type URL.
+      },
+    ],
+    &quot;message&quot;: &quot;A String&quot;, # A developer-facing error message, which should be in English. Any user-facing error message should be localized and sent in the google.rpc.Status.details field, or localized by the client.
+  },
   &quot;location&quot;: &quot;A String&quot;, # [Output only] The name of the Google Compute Engine [zone](https://cloud.google.com/compute/docs/regions-zones/regions-zones#available) or [region](https://cloud.google.com/compute/docs/regions-zones/regions-zones#available) in which the cluster resides.
   &quot;name&quot;: &quot;A String&quot;, # The server-assigned ID for the operation.
-  &quot;nodepoolConditions&quot;: [ # Which conditions caused the current node pool state.
+  &quot;nodepoolConditions&quot;: [ # Which conditions caused the current node pool state. Deprecated. Use field error instead.
     { # StatusCondition describes why a cluster or a node pool has a certain status (e.g., ERROR or DEGRADED).
-      &quot;code&quot;: &quot;A String&quot;, # Machine-friendly representation of the condition
+      &quot;canonicalCode&quot;: &quot;A String&quot;, # Canonical code of the condition.
+      &quot;code&quot;: &quot;A String&quot;, # Machine-friendly representation of the condition Deprecated. Use canonical_code instead.
       &quot;message&quot;: &quot;A String&quot;, # Human-friendly representation of the condition
     },
   ],
@@ -980,7 +1111,7 @@ Returns:
   &quot;selfLink&quot;: &quot;A String&quot;, # Server-defined URL for the resource.
   &quot;startTime&quot;: &quot;A String&quot;, # [Output only] The time the operation started, in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format.
   &quot;status&quot;: &quot;A String&quot;, # The current status of the operation.
-  &quot;statusMessage&quot;: &quot;A String&quot;, # Output only. If an error has occurred, a textual description of the error.
+  &quot;statusMessage&quot;: &quot;A String&quot;, # Output only. If an error has occurred, a textual description of the error. Deprecated. Use the field error instead.
   &quot;targetLink&quot;: &quot;A String&quot;, # Server-defined URL for the target of the operation.
   &quot;zone&quot;: &quot;A String&quot;, # The name of the Google Compute Engine [zone](https://cloud.google.com/compute/docs/zones#available) in which the operation is taking place. This field is deprecated, use location instead.
 }</pre>

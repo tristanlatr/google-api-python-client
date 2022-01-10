@@ -76,14 +76,14 @@ h1, h2, h3 {
 <h2>Instance Methods</h2>
 <p class="toc_element">
   <code><a href="#analyzeEntities">analyzeEntities(nlpService, body=None, x__xgafv=None)</a></code></p>
-<p class="firstline">Analyze heathcare entity in a document. Its response includes the recognized entity mentions and the relationships between them. AnalyzeEntities uses context aware models to detect entities.</p>
+<p class="firstline">Analyze heathcare entity in a document. Its response includes the recognized entity mentions and the relationships between them. AnalyzeEntities uses context aware models to detect entities. This method can only analyze documents written in English.</p>
 <p class="toc_element">
   <code><a href="#close">close()</a></code></p>
 <p class="firstline">Close httplib2 connections.</p>
 <h3>Method Details</h3>
 <div class="method">
     <code class="details" id="analyzeEntities">analyzeEntities(nlpService, body=None, x__xgafv=None)</code>
-  <pre>Analyze heathcare entity in a document. Its response includes the recognized entity mentions and the relationships between them. AnalyzeEntities uses context aware models to detect entities.
+  <pre>Analyze heathcare entity in a document. Its response includes the recognized entity mentions and the relationships between them. AnalyzeEntities uses context aware models to detect entities. This method can only analyze documents written in English.
 
 Args:
   nlpService: string, The resource name of the service of the form: &quot;projects/{project_id}/locations/{location_id}/services/nlp&quot;. (required)
@@ -92,6 +92,9 @@ Args:
 
 { # The request to analyze healthcare entities in a document.
   &quot;documentContent&quot;: &quot;A String&quot;, # document_content is a document to be annotated.
+  &quot;licensedVocabularies&quot;: [ # A list of licensed vocabularies to use in the request, in addition to the default unlicensed vocabularies.
+    &quot;A String&quot;,
+  ],
 }
 
   x__xgafv: string, V1 error format.
@@ -112,7 +115,7 @@ Returns:
       ],
     },
   ],
-  &quot;entityMentions&quot;: [ # entity_mentions contains all the annotated medical entities that were were mentioned in the provided document.
+  &quot;entityMentions&quot;: [ # entity_mentions contains all the annotated medical entities that were mentioned in the provided document.
     { # An entity mention in the document.
       &quot;certaintyAssessment&quot;: { # A feature of an entity mention. # The certainty assessment of the entity mention. Its value is one of: LIKELY, SOMEWHAT_LIKELY, UNCERTAIN, SOMEWHAT_UNLIKELY, UNLIKELY, CONDITIONAL
         &quot;confidence&quot;: 3.14, # The model&#x27;s confidence in this feature annotation. A number between 0 and 1.

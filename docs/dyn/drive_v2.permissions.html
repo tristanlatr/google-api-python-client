@@ -152,6 +152,7 @@ Returns:
   &quot;id&quot;: &quot;A String&quot;, # The ID of the user this permission refers to, and identical to the permissionId in the About and Files resources. When making a drive.permissions.insert request, exactly one of the id or value fields must be specified unless the permission type is anyone, in which case both id and value are ignored.
   &quot;kind&quot;: &quot;drive#permission&quot;, # This is always drive#permission.
   &quot;name&quot;: &quot;A String&quot;, # The name for this permission.
+  &quot;pendingOwner&quot;: True or False, # Whether the account associated with this permission is a pending owner. Only populated for user type permissions for files that are not in a shared drive.
   &quot;permissionDetails&quot;: [ # Details of whether the permissions on this shared drive item are inherited or directly on this item. This is an output-only field which is present only for shared drive items.
     {
       &quot;additionalRoles&quot;: [ # Additional roles for this user. Only commenter is currently possible, though more may be supported in the future.
@@ -242,6 +243,7 @@ Args:
   &quot;id&quot;: &quot;A String&quot;, # The ID of the user this permission refers to, and identical to the permissionId in the About and Files resources. When making a drive.permissions.insert request, exactly one of the id or value fields must be specified unless the permission type is anyone, in which case both id and value are ignored.
   &quot;kind&quot;: &quot;drive#permission&quot;, # This is always drive#permission.
   &quot;name&quot;: &quot;A String&quot;, # The name for this permission.
+  &quot;pendingOwner&quot;: True or False, # Whether the account associated with this permission is a pending owner. Only populated for user type permissions for files that are not in a shared drive.
   &quot;permissionDetails&quot;: [ # Details of whether the permissions on this shared drive item are inherited or directly on this item. This is an output-only field which is present only for shared drive items.
     {
       &quot;additionalRoles&quot;: [ # Additional roles for this user. Only commenter is currently possible, though more may be supported in the future.
@@ -317,6 +319,7 @@ Returns:
   &quot;id&quot;: &quot;A String&quot;, # The ID of the user this permission refers to, and identical to the permissionId in the About and Files resources. When making a drive.permissions.insert request, exactly one of the id or value fields must be specified unless the permission type is anyone, in which case both id and value are ignored.
   &quot;kind&quot;: &quot;drive#permission&quot;, # This is always drive#permission.
   &quot;name&quot;: &quot;A String&quot;, # The name for this permission.
+  &quot;pendingOwner&quot;: True or False, # Whether the account associated with this permission is a pending owner. Only populated for user type permissions for files that are not in a shared drive.
   &quot;permissionDetails&quot;: [ # Details of whether the permissions on this shared drive item are inherited or directly on this item. This is an output-only field which is present only for shared drive items.
     {
       &quot;additionalRoles&quot;: [ # Additional roles for this user. Only commenter is currently possible, though more may be supported in the future.
@@ -401,6 +404,7 @@ Returns:
       &quot;id&quot;: &quot;A String&quot;, # The ID of the user this permission refers to, and identical to the permissionId in the About and Files resources. When making a drive.permissions.insert request, exactly one of the id or value fields must be specified unless the permission type is anyone, in which case both id and value are ignored.
       &quot;kind&quot;: &quot;drive#permission&quot;, # This is always drive#permission.
       &quot;name&quot;: &quot;A String&quot;, # The name for this permission.
+      &quot;pendingOwner&quot;: True or False, # Whether the account associated with this permission is a pending owner. Only populated for user type permissions for files that are not in a shared drive.
       &quot;permissionDetails&quot;: [ # Details of whether the permissions on this shared drive item are inherited or directly on this item. This is an output-only field which is present only for shared drive items.
         {
           &quot;additionalRoles&quot;: [ # Additional roles for this user. Only commenter is currently possible, though more may be supported in the future.
@@ -495,6 +499,7 @@ Args:
   &quot;id&quot;: &quot;A String&quot;, # The ID of the user this permission refers to, and identical to the permissionId in the About and Files resources. When making a drive.permissions.insert request, exactly one of the id or value fields must be specified unless the permission type is anyone, in which case both id and value are ignored.
   &quot;kind&quot;: &quot;drive#permission&quot;, # This is always drive#permission.
   &quot;name&quot;: &quot;A String&quot;, # The name for this permission.
+  &quot;pendingOwner&quot;: True or False, # Whether the account associated with this permission is a pending owner. Only populated for user type permissions for files that are not in a shared drive.
   &quot;permissionDetails&quot;: [ # Details of whether the permissions on this shared drive item are inherited or directly on this item. This is an output-only field which is present only for shared drive items.
     {
       &quot;additionalRoles&quot;: [ # Additional roles for this user. Only commenter is currently possible, though more may be supported in the future.
@@ -568,6 +573,7 @@ Returns:
   &quot;id&quot;: &quot;A String&quot;, # The ID of the user this permission refers to, and identical to the permissionId in the About and Files resources. When making a drive.permissions.insert request, exactly one of the id or value fields must be specified unless the permission type is anyone, in which case both id and value are ignored.
   &quot;kind&quot;: &quot;drive#permission&quot;, # This is always drive#permission.
   &quot;name&quot;: &quot;A String&quot;, # The name for this permission.
+  &quot;pendingOwner&quot;: True or False, # Whether the account associated with this permission is a pending owner. Only populated for user type permissions for files that are not in a shared drive.
   &quot;permissionDetails&quot;: [ # Details of whether the permissions on this shared drive item are inherited or directly on this item. This is an output-only field which is present only for shared drive items.
     {
       &quot;additionalRoles&quot;: [ # Additional roles for this user. Only commenter is currently possible, though more may be supported in the future.
@@ -643,6 +649,7 @@ Args:
   &quot;id&quot;: &quot;A String&quot;, # The ID of the user this permission refers to, and identical to the permissionId in the About and Files resources. When making a drive.permissions.insert request, exactly one of the id or value fields must be specified unless the permission type is anyone, in which case both id and value are ignored.
   &quot;kind&quot;: &quot;drive#permission&quot;, # This is always drive#permission.
   &quot;name&quot;: &quot;A String&quot;, # The name for this permission.
+  &quot;pendingOwner&quot;: True or False, # Whether the account associated with this permission is a pending owner. Only populated for user type permissions for files that are not in a shared drive.
   &quot;permissionDetails&quot;: [ # Details of whether the permissions on this shared drive item are inherited or directly on this item. This is an output-only field which is present only for shared drive items.
     {
       &quot;additionalRoles&quot;: [ # Additional roles for this user. Only commenter is currently possible, though more may be supported in the future.
@@ -692,7 +699,7 @@ Args:
   removeExpiration: boolean, Whether to remove the expiration date.
   supportsAllDrives: boolean, Whether the requesting application supports both My Drives and shared drives.
   supportsTeamDrives: boolean, Deprecated use supportsAllDrives instead.
-  transferOwnership: boolean, Whether changing a role to &#x27;owner&#x27; downgrades the current owners to writers. Does nothing if the specified role is not &#x27;owner&#x27;.
+  transferOwnership: boolean, Whether to transfer ownership to the specified user and downgrade the current owner to a writer. This parameter is required as an acknowledgement of the side effect. File owners can only transfer ownership of files existing on My Drive. Files existing in a shared drive are owned by the organization that owns that shared drive. Ownership transfers are not supported for files and folders in shared drives. Organizers of a shared drive can move items from that shared drive into their My Drive which transfers the ownership to them.
   useDomainAdminAccess: boolean, Issue the request as a domain administrator; if set to true, then the requester will be granted access if the file ID parameter refers to a shared drive and the requester is an administrator of the domain to which the shared drive belongs.
 
 Returns:
@@ -716,6 +723,7 @@ Returns:
   &quot;id&quot;: &quot;A String&quot;, # The ID of the user this permission refers to, and identical to the permissionId in the About and Files resources. When making a drive.permissions.insert request, exactly one of the id or value fields must be specified unless the permission type is anyone, in which case both id and value are ignored.
   &quot;kind&quot;: &quot;drive#permission&quot;, # This is always drive#permission.
   &quot;name&quot;: &quot;A String&quot;, # The name for this permission.
+  &quot;pendingOwner&quot;: True or False, # Whether the account associated with this permission is a pending owner. Only populated for user type permissions for files that are not in a shared drive.
   &quot;permissionDetails&quot;: [ # Details of whether the permissions on this shared drive item are inherited or directly on this item. This is an output-only field which is present only for shared drive items.
     {
       &quot;additionalRoles&quot;: [ # Additional roles for this user. Only commenter is currently possible, though more may be supported in the future.

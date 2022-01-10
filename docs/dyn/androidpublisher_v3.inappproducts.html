@@ -88,12 +88,12 @@ h1, h2, h3 {
 <p class="firstline">Creates an in-app product (i.e. a managed product or a subscriptions).</p>
 <p class="toc_element">
   <code><a href="#list">list(packageName, maxResults=None, startIndex=None, token=None, x__xgafv=None)</a></code></p>
-<p class="firstline">Lists all in-app products - both managed products and subscriptions.</p>
+<p class="firstline">Lists all in-app products - both managed products and subscriptions. If an app has a large number of in-app products, the response may be paginated. In this case the response field `tokenPagination.nextPageToken` will be set and the caller should provide its value as a `token` request parameter to retrieve the next page.</p>
 <p class="toc_element">
   <code><a href="#patch">patch(packageName, sku, autoConvertMissingPrices=None, body=None, x__xgafv=None)</a></code></p>
 <p class="firstline">Patches an in-app product (i.e. a managed product or a subscriptions).</p>
 <p class="toc_element">
-  <code><a href="#update">update(packageName, sku, autoConvertMissingPrices=None, body=None, x__xgafv=None)</a></code></p>
+  <code><a href="#update">update(packageName, sku, allowMissing=None, autoConvertMissingPrices=None, body=None, x__xgafv=None)</a></code></p>
 <p class="firstline">Updates an in-app product (i.e. a managed product or a subscriptions).</p>
 <h3>Method Details</h3>
 <div class="method">
@@ -146,6 +146,15 @@ Returns:
       &quot;title&quot;: &quot;A String&quot;, # Title for the store listing.
     },
   },
+  &quot;managedProductTaxesAndComplianceSettings&quot;: { # Details about taxation and legal compliance for managed products. # Details about taxes and legal compliance. Only applicable to managed products.
+    &quot;eeaWithdrawalRightType&quot;: &quot;A String&quot;, # Digital content or service classification for products distributed to users in the European Economic Area (EEA). The withdrawal regime under EEA consumer laws depends on this classification. Refer to the [Help Center article](https://support.google.com/googleplay/android-developer/answer/10463498) for more information.
+    &quot;taxRateInfoByRegionCode&quot;: { # A mapping from region code to tax rate details. The keys are region codes as defined by Unicode&#x27;s &quot;CLDR&quot;.
+      &quot;a_key&quot;: { # Specified details about taxation in a given geographical region.
+        &quot;eligibleForStreamingServiceTaxRate&quot;: True or False, # You must tell us if your app contains streaming products to correctly charge US state and local sales tax. Field only supported in United States.
+        &quot;taxTier&quot;: &quot;A String&quot;, # Tax tier to specify reduced tax rate. Developers who sell digital news, magazines, newspapers, books, or audiobooks in various regions may be eligible for reduced tax rates. [Learn more](https://support.google.com/googleplay/android-developer/answer/10463498).
+      },
+    },
+  },
   &quot;packageName&quot;: &quot;A String&quot;, # Package name of the parent app.
   &quot;prices&quot;: { # Prices per buyer region. None of these can be zero, as in-app products are never free. Map key is region code, as defined by ISO 3166-2.
     &quot;a_key&quot;: { # Definition of a price, i.e. currency and units.
@@ -157,6 +166,15 @@ Returns:
   &quot;sku&quot;: &quot;A String&quot;, # Stock-keeping-unit (SKU) of the product, unique within an app.
   &quot;status&quot;: &quot;A String&quot;, # The status of the product, e.g. whether it&#x27;s active.
   &quot;subscriptionPeriod&quot;: &quot;A String&quot;, # Subscription period, specified in ISO 8601 format. Acceptable values are P1W (one week), P1M (one month), P3M (three months), P6M (six months), and P1Y (one year).
+  &quot;subscriptionTaxesAndComplianceSettings&quot;: { # Details about taxation, Google Play policy and legal compliance for subscription products. # Details about taxes and legal compliance. Only applicable to subscription products.
+    &quot;eeaWithdrawalRightType&quot;: &quot;A String&quot;, # Digital content or service classification for products distributed to users in the European Economic Area (EEA). The withdrawal regime under EEA consumer laws depends on this classification. Refer to the [Help Center article](https://support.google.com/googleplay/android-developer/answer/10463498) for more information.
+    &quot;taxRateInfoByRegionCode&quot;: { # A mapping from region code to tax rate details. The keys are region codes as defined by Unicode&#x27;s &quot;CLDR&quot;.
+      &quot;a_key&quot;: { # Specified details about taxation in a given geographical region.
+        &quot;eligibleForStreamingServiceTaxRate&quot;: True or False, # You must tell us if your app contains streaming products to correctly charge US state and local sales tax. Field only supported in United States.
+        &quot;taxTier&quot;: &quot;A String&quot;, # Tax tier to specify reduced tax rate. Developers who sell digital news, magazines, newspapers, books, or audiobooks in various regions may be eligible for reduced tax rates. [Learn more](https://support.google.com/googleplay/android-developer/answer/10463498).
+      },
+    },
+  },
   &quot;trialPeriod&quot;: &quot;A String&quot;, # Trial period, specified in ISO 8601 format. Acceptable values are anything between P7D (seven days) and P999D (999 days).
 }</pre>
 </div>
@@ -186,6 +204,15 @@ Args:
       &quot;title&quot;: &quot;A String&quot;, # Title for the store listing.
     },
   },
+  &quot;managedProductTaxesAndComplianceSettings&quot;: { # Details about taxation and legal compliance for managed products. # Details about taxes and legal compliance. Only applicable to managed products.
+    &quot;eeaWithdrawalRightType&quot;: &quot;A String&quot;, # Digital content or service classification for products distributed to users in the European Economic Area (EEA). The withdrawal regime under EEA consumer laws depends on this classification. Refer to the [Help Center article](https://support.google.com/googleplay/android-developer/answer/10463498) for more information.
+    &quot;taxRateInfoByRegionCode&quot;: { # A mapping from region code to tax rate details. The keys are region codes as defined by Unicode&#x27;s &quot;CLDR&quot;.
+      &quot;a_key&quot;: { # Specified details about taxation in a given geographical region.
+        &quot;eligibleForStreamingServiceTaxRate&quot;: True or False, # You must tell us if your app contains streaming products to correctly charge US state and local sales tax. Field only supported in United States.
+        &quot;taxTier&quot;: &quot;A String&quot;, # Tax tier to specify reduced tax rate. Developers who sell digital news, magazines, newspapers, books, or audiobooks in various regions may be eligible for reduced tax rates. [Learn more](https://support.google.com/googleplay/android-developer/answer/10463498).
+      },
+    },
+  },
   &quot;packageName&quot;: &quot;A String&quot;, # Package name of the parent app.
   &quot;prices&quot;: { # Prices per buyer region. None of these can be zero, as in-app products are never free. Map key is region code, as defined by ISO 3166-2.
     &quot;a_key&quot;: { # Definition of a price, i.e. currency and units.
@@ -197,6 +224,15 @@ Args:
   &quot;sku&quot;: &quot;A String&quot;, # Stock-keeping-unit (SKU) of the product, unique within an app.
   &quot;status&quot;: &quot;A String&quot;, # The status of the product, e.g. whether it&#x27;s active.
   &quot;subscriptionPeriod&quot;: &quot;A String&quot;, # Subscription period, specified in ISO 8601 format. Acceptable values are P1W (one week), P1M (one month), P3M (three months), P6M (six months), and P1Y (one year).
+  &quot;subscriptionTaxesAndComplianceSettings&quot;: { # Details about taxation, Google Play policy and legal compliance for subscription products. # Details about taxes and legal compliance. Only applicable to subscription products.
+    &quot;eeaWithdrawalRightType&quot;: &quot;A String&quot;, # Digital content or service classification for products distributed to users in the European Economic Area (EEA). The withdrawal regime under EEA consumer laws depends on this classification. Refer to the [Help Center article](https://support.google.com/googleplay/android-developer/answer/10463498) for more information.
+    &quot;taxRateInfoByRegionCode&quot;: { # A mapping from region code to tax rate details. The keys are region codes as defined by Unicode&#x27;s &quot;CLDR&quot;.
+      &quot;a_key&quot;: { # Specified details about taxation in a given geographical region.
+        &quot;eligibleForStreamingServiceTaxRate&quot;: True or False, # You must tell us if your app contains streaming products to correctly charge US state and local sales tax. Field only supported in United States.
+        &quot;taxTier&quot;: &quot;A String&quot;, # Tax tier to specify reduced tax rate. Developers who sell digital news, magazines, newspapers, books, or audiobooks in various regions may be eligible for reduced tax rates. [Learn more](https://support.google.com/googleplay/android-developer/answer/10463498).
+      },
+    },
+  },
   &quot;trialPeriod&quot;: &quot;A String&quot;, # Trial period, specified in ISO 8601 format. Acceptable values are anything between P7D (seven days) and P999D (999 days).
 }
 
@@ -225,6 +261,15 @@ Returns:
       &quot;title&quot;: &quot;A String&quot;, # Title for the store listing.
     },
   },
+  &quot;managedProductTaxesAndComplianceSettings&quot;: { # Details about taxation and legal compliance for managed products. # Details about taxes and legal compliance. Only applicable to managed products.
+    &quot;eeaWithdrawalRightType&quot;: &quot;A String&quot;, # Digital content or service classification for products distributed to users in the European Economic Area (EEA). The withdrawal regime under EEA consumer laws depends on this classification. Refer to the [Help Center article](https://support.google.com/googleplay/android-developer/answer/10463498) for more information.
+    &quot;taxRateInfoByRegionCode&quot;: { # A mapping from region code to tax rate details. The keys are region codes as defined by Unicode&#x27;s &quot;CLDR&quot;.
+      &quot;a_key&quot;: { # Specified details about taxation in a given geographical region.
+        &quot;eligibleForStreamingServiceTaxRate&quot;: True or False, # You must tell us if your app contains streaming products to correctly charge US state and local sales tax. Field only supported in United States.
+        &quot;taxTier&quot;: &quot;A String&quot;, # Tax tier to specify reduced tax rate. Developers who sell digital news, magazines, newspapers, books, or audiobooks in various regions may be eligible for reduced tax rates. [Learn more](https://support.google.com/googleplay/android-developer/answer/10463498).
+      },
+    },
+  },
   &quot;packageName&quot;: &quot;A String&quot;, # Package name of the parent app.
   &quot;prices&quot;: { # Prices per buyer region. None of these can be zero, as in-app products are never free. Map key is region code, as defined by ISO 3166-2.
     &quot;a_key&quot;: { # Definition of a price, i.e. currency and units.
@@ -236,18 +281,27 @@ Returns:
   &quot;sku&quot;: &quot;A String&quot;, # Stock-keeping-unit (SKU) of the product, unique within an app.
   &quot;status&quot;: &quot;A String&quot;, # The status of the product, e.g. whether it&#x27;s active.
   &quot;subscriptionPeriod&quot;: &quot;A String&quot;, # Subscription period, specified in ISO 8601 format. Acceptable values are P1W (one week), P1M (one month), P3M (three months), P6M (six months), and P1Y (one year).
+  &quot;subscriptionTaxesAndComplianceSettings&quot;: { # Details about taxation, Google Play policy and legal compliance for subscription products. # Details about taxes and legal compliance. Only applicable to subscription products.
+    &quot;eeaWithdrawalRightType&quot;: &quot;A String&quot;, # Digital content or service classification for products distributed to users in the European Economic Area (EEA). The withdrawal regime under EEA consumer laws depends on this classification. Refer to the [Help Center article](https://support.google.com/googleplay/android-developer/answer/10463498) for more information.
+    &quot;taxRateInfoByRegionCode&quot;: { # A mapping from region code to tax rate details. The keys are region codes as defined by Unicode&#x27;s &quot;CLDR&quot;.
+      &quot;a_key&quot;: { # Specified details about taxation in a given geographical region.
+        &quot;eligibleForStreamingServiceTaxRate&quot;: True or False, # You must tell us if your app contains streaming products to correctly charge US state and local sales tax. Field only supported in United States.
+        &quot;taxTier&quot;: &quot;A String&quot;, # Tax tier to specify reduced tax rate. Developers who sell digital news, magazines, newspapers, books, or audiobooks in various regions may be eligible for reduced tax rates. [Learn more](https://support.google.com/googleplay/android-developer/answer/10463498).
+      },
+    },
+  },
   &quot;trialPeriod&quot;: &quot;A String&quot;, # Trial period, specified in ISO 8601 format. Acceptable values are anything between P7D (seven days) and P999D (999 days).
 }</pre>
 </div>
 
 <div class="method">
     <code class="details" id="list">list(packageName, maxResults=None, startIndex=None, token=None, x__xgafv=None)</code>
-  <pre>Lists all in-app products - both managed products and subscriptions.
+  <pre>Lists all in-app products - both managed products and subscriptions. If an app has a large number of in-app products, the response may be paginated. In this case the response field `tokenPagination.nextPageToken` will be set and the caller should provide its value as a `token` request parameter to retrieve the next page.
 
 Args:
   packageName: string, Package name of the app. (required)
-  maxResults: integer, How many results the list operation should return.
-  startIndex: integer, The index of the first element to return.
+  maxResults: integer, Deprecated and ignored. The page size is determined by the server.
+  startIndex: integer, Deprecated and ignored. Set the `token` parameter to rertieve the next page.
   token: string, Pagination token. If empty, list starts at the first product.
   x__xgafv: string, V1 error format.
     Allowed values
@@ -275,6 +329,15 @@ Returns:
           &quot;title&quot;: &quot;A String&quot;, # Title for the store listing.
         },
       },
+      &quot;managedProductTaxesAndComplianceSettings&quot;: { # Details about taxation and legal compliance for managed products. # Details about taxes and legal compliance. Only applicable to managed products.
+        &quot;eeaWithdrawalRightType&quot;: &quot;A String&quot;, # Digital content or service classification for products distributed to users in the European Economic Area (EEA). The withdrawal regime under EEA consumer laws depends on this classification. Refer to the [Help Center article](https://support.google.com/googleplay/android-developer/answer/10463498) for more information.
+        &quot;taxRateInfoByRegionCode&quot;: { # A mapping from region code to tax rate details. The keys are region codes as defined by Unicode&#x27;s &quot;CLDR&quot;.
+          &quot;a_key&quot;: { # Specified details about taxation in a given geographical region.
+            &quot;eligibleForStreamingServiceTaxRate&quot;: True or False, # You must tell us if your app contains streaming products to correctly charge US state and local sales tax. Field only supported in United States.
+            &quot;taxTier&quot;: &quot;A String&quot;, # Tax tier to specify reduced tax rate. Developers who sell digital news, magazines, newspapers, books, or audiobooks in various regions may be eligible for reduced tax rates. [Learn more](https://support.google.com/googleplay/android-developer/answer/10463498).
+          },
+        },
+      },
       &quot;packageName&quot;: &quot;A String&quot;, # Package name of the parent app.
       &quot;prices&quot;: { # Prices per buyer region. None of these can be zero, as in-app products are never free. Map key is region code, as defined by ISO 3166-2.
         &quot;a_key&quot;: { # Definition of a price, i.e. currency and units.
@@ -286,11 +349,20 @@ Returns:
       &quot;sku&quot;: &quot;A String&quot;, # Stock-keeping-unit (SKU) of the product, unique within an app.
       &quot;status&quot;: &quot;A String&quot;, # The status of the product, e.g. whether it&#x27;s active.
       &quot;subscriptionPeriod&quot;: &quot;A String&quot;, # Subscription period, specified in ISO 8601 format. Acceptable values are P1W (one week), P1M (one month), P3M (three months), P6M (six months), and P1Y (one year).
+      &quot;subscriptionTaxesAndComplianceSettings&quot;: { # Details about taxation, Google Play policy and legal compliance for subscription products. # Details about taxes and legal compliance. Only applicable to subscription products.
+        &quot;eeaWithdrawalRightType&quot;: &quot;A String&quot;, # Digital content or service classification for products distributed to users in the European Economic Area (EEA). The withdrawal regime under EEA consumer laws depends on this classification. Refer to the [Help Center article](https://support.google.com/googleplay/android-developer/answer/10463498) for more information.
+        &quot;taxRateInfoByRegionCode&quot;: { # A mapping from region code to tax rate details. The keys are region codes as defined by Unicode&#x27;s &quot;CLDR&quot;.
+          &quot;a_key&quot;: { # Specified details about taxation in a given geographical region.
+            &quot;eligibleForStreamingServiceTaxRate&quot;: True or False, # You must tell us if your app contains streaming products to correctly charge US state and local sales tax. Field only supported in United States.
+            &quot;taxTier&quot;: &quot;A String&quot;, # Tax tier to specify reduced tax rate. Developers who sell digital news, magazines, newspapers, books, or audiobooks in various regions may be eligible for reduced tax rates. [Learn more](https://support.google.com/googleplay/android-developer/answer/10463498).
+          },
+        },
+      },
       &quot;trialPeriod&quot;: &quot;A String&quot;, # Trial period, specified in ISO 8601 format. Acceptable values are anything between P7D (seven days) and P999D (999 days).
     },
   ],
   &quot;kind&quot;: &quot;A String&quot;, # The kind of this response (&quot;androidpublisher#inappproductsListResponse&quot;).
-  &quot;pageInfo&quot;: { # Information about the current page. List operations that supports paging return only one &quot;page&quot; of results. This protocol buffer message describes the page that has been returned. # Information about the current page.
+  &quot;pageInfo&quot;: { # Information about the current page. List operations that supports paging return only one &quot;page&quot; of results. This protocol buffer message describes the page that has been returned. # Deprecated and unset.
     &quot;resultPerPage&quot;: 42, # Maximum number of results returned in one page. ! The number of results included in the API response.
     &quot;startIndex&quot;: 42, # Index of the first result returned in the current page.
     &quot;totalResults&quot;: 42, # Total number of results available on the backend ! The total number of results in the result set.
@@ -328,6 +400,15 @@ Args:
       &quot;title&quot;: &quot;A String&quot;, # Title for the store listing.
     },
   },
+  &quot;managedProductTaxesAndComplianceSettings&quot;: { # Details about taxation and legal compliance for managed products. # Details about taxes and legal compliance. Only applicable to managed products.
+    &quot;eeaWithdrawalRightType&quot;: &quot;A String&quot;, # Digital content or service classification for products distributed to users in the European Economic Area (EEA). The withdrawal regime under EEA consumer laws depends on this classification. Refer to the [Help Center article](https://support.google.com/googleplay/android-developer/answer/10463498) for more information.
+    &quot;taxRateInfoByRegionCode&quot;: { # A mapping from region code to tax rate details. The keys are region codes as defined by Unicode&#x27;s &quot;CLDR&quot;.
+      &quot;a_key&quot;: { # Specified details about taxation in a given geographical region.
+        &quot;eligibleForStreamingServiceTaxRate&quot;: True or False, # You must tell us if your app contains streaming products to correctly charge US state and local sales tax. Field only supported in United States.
+        &quot;taxTier&quot;: &quot;A String&quot;, # Tax tier to specify reduced tax rate. Developers who sell digital news, magazines, newspapers, books, or audiobooks in various regions may be eligible for reduced tax rates. [Learn more](https://support.google.com/googleplay/android-developer/answer/10463498).
+      },
+    },
+  },
   &quot;packageName&quot;: &quot;A String&quot;, # Package name of the parent app.
   &quot;prices&quot;: { # Prices per buyer region. None of these can be zero, as in-app products are never free. Map key is region code, as defined by ISO 3166-2.
     &quot;a_key&quot;: { # Definition of a price, i.e. currency and units.
@@ -339,6 +420,15 @@ Args:
   &quot;sku&quot;: &quot;A String&quot;, # Stock-keeping-unit (SKU) of the product, unique within an app.
   &quot;status&quot;: &quot;A String&quot;, # The status of the product, e.g. whether it&#x27;s active.
   &quot;subscriptionPeriod&quot;: &quot;A String&quot;, # Subscription period, specified in ISO 8601 format. Acceptable values are P1W (one week), P1M (one month), P3M (three months), P6M (six months), and P1Y (one year).
+  &quot;subscriptionTaxesAndComplianceSettings&quot;: { # Details about taxation, Google Play policy and legal compliance for subscription products. # Details about taxes and legal compliance. Only applicable to subscription products.
+    &quot;eeaWithdrawalRightType&quot;: &quot;A String&quot;, # Digital content or service classification for products distributed to users in the European Economic Area (EEA). The withdrawal regime under EEA consumer laws depends on this classification. Refer to the [Help Center article](https://support.google.com/googleplay/android-developer/answer/10463498) for more information.
+    &quot;taxRateInfoByRegionCode&quot;: { # A mapping from region code to tax rate details. The keys are region codes as defined by Unicode&#x27;s &quot;CLDR&quot;.
+      &quot;a_key&quot;: { # Specified details about taxation in a given geographical region.
+        &quot;eligibleForStreamingServiceTaxRate&quot;: True or False, # You must tell us if your app contains streaming products to correctly charge US state and local sales tax. Field only supported in United States.
+        &quot;taxTier&quot;: &quot;A String&quot;, # Tax tier to specify reduced tax rate. Developers who sell digital news, magazines, newspapers, books, or audiobooks in various regions may be eligible for reduced tax rates. [Learn more](https://support.google.com/googleplay/android-developer/answer/10463498).
+      },
+    },
+  },
   &quot;trialPeriod&quot;: &quot;A String&quot;, # Trial period, specified in ISO 8601 format. Acceptable values are anything between P7D (seven days) and P999D (999 days).
 }
 
@@ -367,6 +457,15 @@ Returns:
       &quot;title&quot;: &quot;A String&quot;, # Title for the store listing.
     },
   },
+  &quot;managedProductTaxesAndComplianceSettings&quot;: { # Details about taxation and legal compliance for managed products. # Details about taxes and legal compliance. Only applicable to managed products.
+    &quot;eeaWithdrawalRightType&quot;: &quot;A String&quot;, # Digital content or service classification for products distributed to users in the European Economic Area (EEA). The withdrawal regime under EEA consumer laws depends on this classification. Refer to the [Help Center article](https://support.google.com/googleplay/android-developer/answer/10463498) for more information.
+    &quot;taxRateInfoByRegionCode&quot;: { # A mapping from region code to tax rate details. The keys are region codes as defined by Unicode&#x27;s &quot;CLDR&quot;.
+      &quot;a_key&quot;: { # Specified details about taxation in a given geographical region.
+        &quot;eligibleForStreamingServiceTaxRate&quot;: True or False, # You must tell us if your app contains streaming products to correctly charge US state and local sales tax. Field only supported in United States.
+        &quot;taxTier&quot;: &quot;A String&quot;, # Tax tier to specify reduced tax rate. Developers who sell digital news, magazines, newspapers, books, or audiobooks in various regions may be eligible for reduced tax rates. [Learn more](https://support.google.com/googleplay/android-developer/answer/10463498).
+      },
+    },
+  },
   &quot;packageName&quot;: &quot;A String&quot;, # Package name of the parent app.
   &quot;prices&quot;: { # Prices per buyer region. None of these can be zero, as in-app products are never free. Map key is region code, as defined by ISO 3166-2.
     &quot;a_key&quot;: { # Definition of a price, i.e. currency and units.
@@ -378,12 +477,21 @@ Returns:
   &quot;sku&quot;: &quot;A String&quot;, # Stock-keeping-unit (SKU) of the product, unique within an app.
   &quot;status&quot;: &quot;A String&quot;, # The status of the product, e.g. whether it&#x27;s active.
   &quot;subscriptionPeriod&quot;: &quot;A String&quot;, # Subscription period, specified in ISO 8601 format. Acceptable values are P1W (one week), P1M (one month), P3M (three months), P6M (six months), and P1Y (one year).
+  &quot;subscriptionTaxesAndComplianceSettings&quot;: { # Details about taxation, Google Play policy and legal compliance for subscription products. # Details about taxes and legal compliance. Only applicable to subscription products.
+    &quot;eeaWithdrawalRightType&quot;: &quot;A String&quot;, # Digital content or service classification for products distributed to users in the European Economic Area (EEA). The withdrawal regime under EEA consumer laws depends on this classification. Refer to the [Help Center article](https://support.google.com/googleplay/android-developer/answer/10463498) for more information.
+    &quot;taxRateInfoByRegionCode&quot;: { # A mapping from region code to tax rate details. The keys are region codes as defined by Unicode&#x27;s &quot;CLDR&quot;.
+      &quot;a_key&quot;: { # Specified details about taxation in a given geographical region.
+        &quot;eligibleForStreamingServiceTaxRate&quot;: True or False, # You must tell us if your app contains streaming products to correctly charge US state and local sales tax. Field only supported in United States.
+        &quot;taxTier&quot;: &quot;A String&quot;, # Tax tier to specify reduced tax rate. Developers who sell digital news, magazines, newspapers, books, or audiobooks in various regions may be eligible for reduced tax rates. [Learn more](https://support.google.com/googleplay/android-developer/answer/10463498).
+      },
+    },
+  },
   &quot;trialPeriod&quot;: &quot;A String&quot;, # Trial period, specified in ISO 8601 format. Acceptable values are anything between P7D (seven days) and P999D (999 days).
 }</pre>
 </div>
 
 <div class="method">
-    <code class="details" id="update">update(packageName, sku, autoConvertMissingPrices=None, body=None, x__xgafv=None)</code>
+    <code class="details" id="update">update(packageName, sku, allowMissing=None, autoConvertMissingPrices=None, body=None, x__xgafv=None)</code>
   <pre>Updates an in-app product (i.e. a managed product or a subscriptions).
 
 Args:
@@ -408,6 +516,15 @@ Args:
       &quot;title&quot;: &quot;A String&quot;, # Title for the store listing.
     },
   },
+  &quot;managedProductTaxesAndComplianceSettings&quot;: { # Details about taxation and legal compliance for managed products. # Details about taxes and legal compliance. Only applicable to managed products.
+    &quot;eeaWithdrawalRightType&quot;: &quot;A String&quot;, # Digital content or service classification for products distributed to users in the European Economic Area (EEA). The withdrawal regime under EEA consumer laws depends on this classification. Refer to the [Help Center article](https://support.google.com/googleplay/android-developer/answer/10463498) for more information.
+    &quot;taxRateInfoByRegionCode&quot;: { # A mapping from region code to tax rate details. The keys are region codes as defined by Unicode&#x27;s &quot;CLDR&quot;.
+      &quot;a_key&quot;: { # Specified details about taxation in a given geographical region.
+        &quot;eligibleForStreamingServiceTaxRate&quot;: True or False, # You must tell us if your app contains streaming products to correctly charge US state and local sales tax. Field only supported in United States.
+        &quot;taxTier&quot;: &quot;A String&quot;, # Tax tier to specify reduced tax rate. Developers who sell digital news, magazines, newspapers, books, or audiobooks in various regions may be eligible for reduced tax rates. [Learn more](https://support.google.com/googleplay/android-developer/answer/10463498).
+      },
+    },
+  },
   &quot;packageName&quot;: &quot;A String&quot;, # Package name of the parent app.
   &quot;prices&quot;: { # Prices per buyer region. None of these can be zero, as in-app products are never free. Map key is region code, as defined by ISO 3166-2.
     &quot;a_key&quot;: { # Definition of a price, i.e. currency and units.
@@ -419,9 +536,19 @@ Args:
   &quot;sku&quot;: &quot;A String&quot;, # Stock-keeping-unit (SKU) of the product, unique within an app.
   &quot;status&quot;: &quot;A String&quot;, # The status of the product, e.g. whether it&#x27;s active.
   &quot;subscriptionPeriod&quot;: &quot;A String&quot;, # Subscription period, specified in ISO 8601 format. Acceptable values are P1W (one week), P1M (one month), P3M (three months), P6M (six months), and P1Y (one year).
+  &quot;subscriptionTaxesAndComplianceSettings&quot;: { # Details about taxation, Google Play policy and legal compliance for subscription products. # Details about taxes and legal compliance. Only applicable to subscription products.
+    &quot;eeaWithdrawalRightType&quot;: &quot;A String&quot;, # Digital content or service classification for products distributed to users in the European Economic Area (EEA). The withdrawal regime under EEA consumer laws depends on this classification. Refer to the [Help Center article](https://support.google.com/googleplay/android-developer/answer/10463498) for more information.
+    &quot;taxRateInfoByRegionCode&quot;: { # A mapping from region code to tax rate details. The keys are region codes as defined by Unicode&#x27;s &quot;CLDR&quot;.
+      &quot;a_key&quot;: { # Specified details about taxation in a given geographical region.
+        &quot;eligibleForStreamingServiceTaxRate&quot;: True or False, # You must tell us if your app contains streaming products to correctly charge US state and local sales tax. Field only supported in United States.
+        &quot;taxTier&quot;: &quot;A String&quot;, # Tax tier to specify reduced tax rate. Developers who sell digital news, magazines, newspapers, books, or audiobooks in various regions may be eligible for reduced tax rates. [Learn more](https://support.google.com/googleplay/android-developer/answer/10463498).
+      },
+    },
+  },
   &quot;trialPeriod&quot;: &quot;A String&quot;, # Trial period, specified in ISO 8601 format. Acceptable values are anything between P7D (seven days) and P999D (999 days).
 }
 
+  allowMissing: boolean, If set to true, and the in-app product with the given package_name and sku doesn&#x27;t exist, the in-app product will be created.
   autoConvertMissingPrices: boolean, If true the prices for all regions targeted by the parent app that don&#x27;t have a price specified for this in-app product will be auto converted to the target currency based on the default price. Defaults to false.
   x__xgafv: string, V1 error format.
     Allowed values
@@ -447,6 +574,15 @@ Returns:
       &quot;title&quot;: &quot;A String&quot;, # Title for the store listing.
     },
   },
+  &quot;managedProductTaxesAndComplianceSettings&quot;: { # Details about taxation and legal compliance for managed products. # Details about taxes and legal compliance. Only applicable to managed products.
+    &quot;eeaWithdrawalRightType&quot;: &quot;A String&quot;, # Digital content or service classification for products distributed to users in the European Economic Area (EEA). The withdrawal regime under EEA consumer laws depends on this classification. Refer to the [Help Center article](https://support.google.com/googleplay/android-developer/answer/10463498) for more information.
+    &quot;taxRateInfoByRegionCode&quot;: { # A mapping from region code to tax rate details. The keys are region codes as defined by Unicode&#x27;s &quot;CLDR&quot;.
+      &quot;a_key&quot;: { # Specified details about taxation in a given geographical region.
+        &quot;eligibleForStreamingServiceTaxRate&quot;: True or False, # You must tell us if your app contains streaming products to correctly charge US state and local sales tax. Field only supported in United States.
+        &quot;taxTier&quot;: &quot;A String&quot;, # Tax tier to specify reduced tax rate. Developers who sell digital news, magazines, newspapers, books, or audiobooks in various regions may be eligible for reduced tax rates. [Learn more](https://support.google.com/googleplay/android-developer/answer/10463498).
+      },
+    },
+  },
   &quot;packageName&quot;: &quot;A String&quot;, # Package name of the parent app.
   &quot;prices&quot;: { # Prices per buyer region. None of these can be zero, as in-app products are never free. Map key is region code, as defined by ISO 3166-2.
     &quot;a_key&quot;: { # Definition of a price, i.e. currency and units.
@@ -458,6 +594,15 @@ Returns:
   &quot;sku&quot;: &quot;A String&quot;, # Stock-keeping-unit (SKU) of the product, unique within an app.
   &quot;status&quot;: &quot;A String&quot;, # The status of the product, e.g. whether it&#x27;s active.
   &quot;subscriptionPeriod&quot;: &quot;A String&quot;, # Subscription period, specified in ISO 8601 format. Acceptable values are P1W (one week), P1M (one month), P3M (three months), P6M (six months), and P1Y (one year).
+  &quot;subscriptionTaxesAndComplianceSettings&quot;: { # Details about taxation, Google Play policy and legal compliance for subscription products. # Details about taxes and legal compliance. Only applicable to subscription products.
+    &quot;eeaWithdrawalRightType&quot;: &quot;A String&quot;, # Digital content or service classification for products distributed to users in the European Economic Area (EEA). The withdrawal regime under EEA consumer laws depends on this classification. Refer to the [Help Center article](https://support.google.com/googleplay/android-developer/answer/10463498) for more information.
+    &quot;taxRateInfoByRegionCode&quot;: { # A mapping from region code to tax rate details. The keys are region codes as defined by Unicode&#x27;s &quot;CLDR&quot;.
+      &quot;a_key&quot;: { # Specified details about taxation in a given geographical region.
+        &quot;eligibleForStreamingServiceTaxRate&quot;: True or False, # You must tell us if your app contains streaming products to correctly charge US state and local sales tax. Field only supported in United States.
+        &quot;taxTier&quot;: &quot;A String&quot;, # Tax tier to specify reduced tax rate. Developers who sell digital news, magazines, newspapers, books, or audiobooks in various regions may be eligible for reduced tax rates. [Learn more](https://support.google.com/googleplay/android-developer/answer/10463498).
+      },
+    },
+  },
   &quot;trialPeriod&quot;: &quot;A String&quot;, # Trial period, specified in ISO 8601 format. Acceptable values are anything between P7D (seven days) and P999D (999 days).
 }</pre>
 </div>

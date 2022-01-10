@@ -117,10 +117,9 @@ Args:
 
 { # A reservation is a mechanism used to guarantee slots to users.
   &quot;creationTime&quot;: &quot;A String&quot;, # Output only. Creation time of the reservation.
-  &quot;ignoreIdleSlots&quot;: True or False, # If false, any query using this reservation will use idle slots from other reservations within the same admin project. If true, a query using this reservation will execute with the slot capacity specified above at most.
-  &quot;maxConcurrency&quot;: &quot;A String&quot;, # Maximum number of queries that are allowed to run concurrently in this reservation. Default value is 0 which means that maximum concurrency will be automatically set based on the reservation size.
+  &quot;ignoreIdleSlots&quot;: True or False, # If false, any query or pipeline job using this reservation will use idle slots from other reservations within the same admin project. If true, a query or pipeline job using this reservation will execute with the slot capacity specified in the slot_capacity field at most.
   &quot;name&quot;: &quot;A String&quot;, # The resource name of the reservation, e.g., `projects/*/locations/*/reservations/team1-prod`.
-  &quot;slotCapacity&quot;: &quot;A String&quot;, # Minimum slots available to this reservation. A slot is a unit of computational power in BigQuery, and serves as the unit of parallelism. Queries using this reservation might use more slots during runtime if ignore_idle_slots is set to false. If the new reservation&#x27;s slot capacity exceed the parent&#x27;s slot capacity or if total slot capacity of the new reservation and its siblings exceeds the parent&#x27;s slot capacity, the request will fail with `google.rpc.Code.RESOURCE_EXHAUSTED`.
+  &quot;slotCapacity&quot;: &quot;A String&quot;, # Minimum slots available to this reservation. A slot is a unit of computational power in BigQuery, and serves as the unit of parallelism. Queries using this reservation might use more slots during runtime if ignore_idle_slots is set to false. If the new reservation&#x27;s slot capacity exceed the project&#x27;s slot capacity or if total slot capacity of the new reservation and its siblings exceeds the project&#x27;s slot capacity, the request will fail with `google.rpc.Code.RESOURCE_EXHAUSTED`. NOTE: for reservations in US or EU multi-regions slot capacity constraints are checked separately for default and auxiliary regions. See multi_region_auxiliary flag for more details.
   &quot;updateTime&quot;: &quot;A String&quot;, # Output only. Last update time of the reservation.
 }
 
@@ -135,10 +134,9 @@ Returns:
 
     { # A reservation is a mechanism used to guarantee slots to users.
   &quot;creationTime&quot;: &quot;A String&quot;, # Output only. Creation time of the reservation.
-  &quot;ignoreIdleSlots&quot;: True or False, # If false, any query using this reservation will use idle slots from other reservations within the same admin project. If true, a query using this reservation will execute with the slot capacity specified above at most.
-  &quot;maxConcurrency&quot;: &quot;A String&quot;, # Maximum number of queries that are allowed to run concurrently in this reservation. Default value is 0 which means that maximum concurrency will be automatically set based on the reservation size.
+  &quot;ignoreIdleSlots&quot;: True or False, # If false, any query or pipeline job using this reservation will use idle slots from other reservations within the same admin project. If true, a query or pipeline job using this reservation will execute with the slot capacity specified in the slot_capacity field at most.
   &quot;name&quot;: &quot;A String&quot;, # The resource name of the reservation, e.g., `projects/*/locations/*/reservations/team1-prod`.
-  &quot;slotCapacity&quot;: &quot;A String&quot;, # Minimum slots available to this reservation. A slot is a unit of computational power in BigQuery, and serves as the unit of parallelism. Queries using this reservation might use more slots during runtime if ignore_idle_slots is set to false. If the new reservation&#x27;s slot capacity exceed the parent&#x27;s slot capacity or if total slot capacity of the new reservation and its siblings exceeds the parent&#x27;s slot capacity, the request will fail with `google.rpc.Code.RESOURCE_EXHAUSTED`.
+  &quot;slotCapacity&quot;: &quot;A String&quot;, # Minimum slots available to this reservation. A slot is a unit of computational power in BigQuery, and serves as the unit of parallelism. Queries using this reservation might use more slots during runtime if ignore_idle_slots is set to false. If the new reservation&#x27;s slot capacity exceed the project&#x27;s slot capacity or if total slot capacity of the new reservation and its siblings exceeds the project&#x27;s slot capacity, the request will fail with `google.rpc.Code.RESOURCE_EXHAUSTED`. NOTE: for reservations in US or EU multi-regions slot capacity constraints are checked separately for default and auxiliary regions. See multi_region_auxiliary flag for more details.
   &quot;updateTime&quot;: &quot;A String&quot;, # Output only. Last update time of the reservation.
 }</pre>
 </div>
@@ -177,10 +175,9 @@ Returns:
 
     { # A reservation is a mechanism used to guarantee slots to users.
   &quot;creationTime&quot;: &quot;A String&quot;, # Output only. Creation time of the reservation.
-  &quot;ignoreIdleSlots&quot;: True or False, # If false, any query using this reservation will use idle slots from other reservations within the same admin project. If true, a query using this reservation will execute with the slot capacity specified above at most.
-  &quot;maxConcurrency&quot;: &quot;A String&quot;, # Maximum number of queries that are allowed to run concurrently in this reservation. Default value is 0 which means that maximum concurrency will be automatically set based on the reservation size.
+  &quot;ignoreIdleSlots&quot;: True or False, # If false, any query or pipeline job using this reservation will use idle slots from other reservations within the same admin project. If true, a query or pipeline job using this reservation will execute with the slot capacity specified in the slot_capacity field at most.
   &quot;name&quot;: &quot;A String&quot;, # The resource name of the reservation, e.g., `projects/*/locations/*/reservations/team1-prod`.
-  &quot;slotCapacity&quot;: &quot;A String&quot;, # Minimum slots available to this reservation. A slot is a unit of computational power in BigQuery, and serves as the unit of parallelism. Queries using this reservation might use more slots during runtime if ignore_idle_slots is set to false. If the new reservation&#x27;s slot capacity exceed the parent&#x27;s slot capacity or if total slot capacity of the new reservation and its siblings exceeds the parent&#x27;s slot capacity, the request will fail with `google.rpc.Code.RESOURCE_EXHAUSTED`.
+  &quot;slotCapacity&quot;: &quot;A String&quot;, # Minimum slots available to this reservation. A slot is a unit of computational power in BigQuery, and serves as the unit of parallelism. Queries using this reservation might use more slots during runtime if ignore_idle_slots is set to false. If the new reservation&#x27;s slot capacity exceed the project&#x27;s slot capacity or if total slot capacity of the new reservation and its siblings exceeds the project&#x27;s slot capacity, the request will fail with `google.rpc.Code.RESOURCE_EXHAUSTED`. NOTE: for reservations in US or EU multi-regions slot capacity constraints are checked separately for default and auxiliary regions. See multi_region_auxiliary flag for more details.
   &quot;updateTime&quot;: &quot;A String&quot;, # Output only. Last update time of the reservation.
 }</pre>
 </div>
@@ -207,10 +204,9 @@ Returns:
   &quot;reservations&quot;: [ # List of reservations visible to the user.
     { # A reservation is a mechanism used to guarantee slots to users.
       &quot;creationTime&quot;: &quot;A String&quot;, # Output only. Creation time of the reservation.
-      &quot;ignoreIdleSlots&quot;: True or False, # If false, any query using this reservation will use idle slots from other reservations within the same admin project. If true, a query using this reservation will execute with the slot capacity specified above at most.
-      &quot;maxConcurrency&quot;: &quot;A String&quot;, # Maximum number of queries that are allowed to run concurrently in this reservation. Default value is 0 which means that maximum concurrency will be automatically set based on the reservation size.
+      &quot;ignoreIdleSlots&quot;: True or False, # If false, any query or pipeline job using this reservation will use idle slots from other reservations within the same admin project. If true, a query or pipeline job using this reservation will execute with the slot capacity specified in the slot_capacity field at most.
       &quot;name&quot;: &quot;A String&quot;, # The resource name of the reservation, e.g., `projects/*/locations/*/reservations/team1-prod`.
-      &quot;slotCapacity&quot;: &quot;A String&quot;, # Minimum slots available to this reservation. A slot is a unit of computational power in BigQuery, and serves as the unit of parallelism. Queries using this reservation might use more slots during runtime if ignore_idle_slots is set to false. If the new reservation&#x27;s slot capacity exceed the parent&#x27;s slot capacity or if total slot capacity of the new reservation and its siblings exceeds the parent&#x27;s slot capacity, the request will fail with `google.rpc.Code.RESOURCE_EXHAUSTED`.
+      &quot;slotCapacity&quot;: &quot;A String&quot;, # Minimum slots available to this reservation. A slot is a unit of computational power in BigQuery, and serves as the unit of parallelism. Queries using this reservation might use more slots during runtime if ignore_idle_slots is set to false. If the new reservation&#x27;s slot capacity exceed the project&#x27;s slot capacity or if total slot capacity of the new reservation and its siblings exceeds the project&#x27;s slot capacity, the request will fail with `google.rpc.Code.RESOURCE_EXHAUSTED`. NOTE: for reservations in US or EU multi-regions slot capacity constraints are checked separately for default and auxiliary regions. See multi_region_auxiliary flag for more details.
       &quot;updateTime&quot;: &quot;A String&quot;, # Output only. Last update time of the reservation.
     },
   ],
@@ -242,10 +238,9 @@ Args:
 
 { # A reservation is a mechanism used to guarantee slots to users.
   &quot;creationTime&quot;: &quot;A String&quot;, # Output only. Creation time of the reservation.
-  &quot;ignoreIdleSlots&quot;: True or False, # If false, any query using this reservation will use idle slots from other reservations within the same admin project. If true, a query using this reservation will execute with the slot capacity specified above at most.
-  &quot;maxConcurrency&quot;: &quot;A String&quot;, # Maximum number of queries that are allowed to run concurrently in this reservation. Default value is 0 which means that maximum concurrency will be automatically set based on the reservation size.
+  &quot;ignoreIdleSlots&quot;: True or False, # If false, any query or pipeline job using this reservation will use idle slots from other reservations within the same admin project. If true, a query or pipeline job using this reservation will execute with the slot capacity specified in the slot_capacity field at most.
   &quot;name&quot;: &quot;A String&quot;, # The resource name of the reservation, e.g., `projects/*/locations/*/reservations/team1-prod`.
-  &quot;slotCapacity&quot;: &quot;A String&quot;, # Minimum slots available to this reservation. A slot is a unit of computational power in BigQuery, and serves as the unit of parallelism. Queries using this reservation might use more slots during runtime if ignore_idle_slots is set to false. If the new reservation&#x27;s slot capacity exceed the parent&#x27;s slot capacity or if total slot capacity of the new reservation and its siblings exceeds the parent&#x27;s slot capacity, the request will fail with `google.rpc.Code.RESOURCE_EXHAUSTED`.
+  &quot;slotCapacity&quot;: &quot;A String&quot;, # Minimum slots available to this reservation. A slot is a unit of computational power in BigQuery, and serves as the unit of parallelism. Queries using this reservation might use more slots during runtime if ignore_idle_slots is set to false. If the new reservation&#x27;s slot capacity exceed the project&#x27;s slot capacity or if total slot capacity of the new reservation and its siblings exceeds the project&#x27;s slot capacity, the request will fail with `google.rpc.Code.RESOURCE_EXHAUSTED`. NOTE: for reservations in US or EU multi-regions slot capacity constraints are checked separately for default and auxiliary regions. See multi_region_auxiliary flag for more details.
   &quot;updateTime&quot;: &quot;A String&quot;, # Output only. Last update time of the reservation.
 }
 
@@ -260,10 +255,9 @@ Returns:
 
     { # A reservation is a mechanism used to guarantee slots to users.
   &quot;creationTime&quot;: &quot;A String&quot;, # Output only. Creation time of the reservation.
-  &quot;ignoreIdleSlots&quot;: True or False, # If false, any query using this reservation will use idle slots from other reservations within the same admin project. If true, a query using this reservation will execute with the slot capacity specified above at most.
-  &quot;maxConcurrency&quot;: &quot;A String&quot;, # Maximum number of queries that are allowed to run concurrently in this reservation. Default value is 0 which means that maximum concurrency will be automatically set based on the reservation size.
+  &quot;ignoreIdleSlots&quot;: True or False, # If false, any query or pipeline job using this reservation will use idle slots from other reservations within the same admin project. If true, a query or pipeline job using this reservation will execute with the slot capacity specified in the slot_capacity field at most.
   &quot;name&quot;: &quot;A String&quot;, # The resource name of the reservation, e.g., `projects/*/locations/*/reservations/team1-prod`.
-  &quot;slotCapacity&quot;: &quot;A String&quot;, # Minimum slots available to this reservation. A slot is a unit of computational power in BigQuery, and serves as the unit of parallelism. Queries using this reservation might use more slots during runtime if ignore_idle_slots is set to false. If the new reservation&#x27;s slot capacity exceed the parent&#x27;s slot capacity or if total slot capacity of the new reservation and its siblings exceeds the parent&#x27;s slot capacity, the request will fail with `google.rpc.Code.RESOURCE_EXHAUSTED`.
+  &quot;slotCapacity&quot;: &quot;A String&quot;, # Minimum slots available to this reservation. A slot is a unit of computational power in BigQuery, and serves as the unit of parallelism. Queries using this reservation might use more slots during runtime if ignore_idle_slots is set to false. If the new reservation&#x27;s slot capacity exceed the project&#x27;s slot capacity or if total slot capacity of the new reservation and its siblings exceeds the project&#x27;s slot capacity, the request will fail with `google.rpc.Code.RESOURCE_EXHAUSTED`. NOTE: for reservations in US or EU multi-regions slot capacity constraints are checked separately for default and auxiliary regions. See multi_region_auxiliary flag for more details.
   &quot;updateTime&quot;: &quot;A String&quot;, # Output only. Last update time of the reservation.
 }</pre>
 </div>

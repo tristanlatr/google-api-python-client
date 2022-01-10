@@ -4,7 +4,7 @@
 
 This is the [Google API Python client library](https://cloud.google.com/apis/docs/client-libraries-explained#google_api_client_libraries)
 for Google's discovery based APIs. To get started, please see the
-[docs folder](https://github.com/googleapis/google-api-python-client/blob/master/docs/README.md).
+[docs folder](https://github.com/googleapis/google-api-python-client/blob/main/docs/README.md).
 
 This library is considered complete and is in maintenance mode. This means
 that we will address critical bugs and security issues but will not add any
@@ -16,14 +16,26 @@ where possible, for new code development. For more information, please visit
 [Client Libraries Explained](https://cloud.google.com/apis/docs/client-libraries-explained).
 
 ## Version 2.0 Release
-The 2.0 release of `google-api-python-client` is a significant upgrade compared
-to v1. Please see the [Migration Guide](https://github.com/googleapis/google-api-python-client/blob/master/UPGRADING.md) for more information.
-As a result of caching the discovery documents, the size of this package is at
-least 50 MB larger compared to the previous version.
+The 2.0 release of `google-api-python-client` includes a substantial reliability 
+improvement, compared with 1.x, as discovery documents are now cached in the library 
+rather than fetched dynamically. It is highly recommended to upgrade from v1.x to v2.x.
+
+Only python 3.6 and newer is supported. If you are not able to upgrade python, then
+please continue to use version 1.x as we will continue supporting python 2.7+ in
+[v1](https://github.com/googleapis/google-api-python-client/tree/v1).
+
+Discovery documents will no longer be retrieved dynamically when
+you call `discovery.build()`. The discovery documents will instead be retrieved
+from the client library directly. New versions of this library are released weekly.
+As a result of caching the discovery documents, the size of this package is at least 
+50 MB larger compared to the previous version. 
+
+Please see the [Migration Guide](https://github.com/googleapis/google-api-python-client/blob/main/UPGRADING.md)
+for more information.
 
 ## Documentation
 
-See the [docs folder](https://github.com/googleapis/google-api-python-client/blob/master/docs/README.md) for more detailed instructions and additional documentation.
+See the [docs folder](https://github.com/googleapis/google-api-python-client/blob/main/docs/README.md) for more detailed instructions and additional documentation.
 
 ## Other Google API libraries
 
@@ -85,7 +97,7 @@ virtualenv <your-env>
 
 ## Supported Python Versions
 
-Python 3.6, 3.7, 3.8, and 3.9 are fully supported and tested. This library may work on later versions of 3, but we do not currently run tests against those versions.
+Python 3.6, 3.7, 3.8, 3.9 and 3.10 are fully supported and tested. This library may work on later versions of 3, but we do not currently run tests against those versions.
 
 ## Unsupported Python Versions
 
@@ -103,6 +115,6 @@ For development you will also need the following libraries:
 
 ## Contributing
 
-Please see our [Contribution Guide](https://github.com/googleapis/google-api-python-client/blob/master/CONTRIBUTING.rst).
+Please see our [Contribution Guide](https://github.com/googleapis/google-api-python-client/blob/main/CONTRIBUTING.rst).
 In particular, we love pull requests - but please make sure to sign
 the contributor license agreement.

@@ -79,7 +79,7 @@ h1, h2, h3 {
 <p class="firstline">Close httplib2 connections.</p>
 <p class="toc_element">
   <code><a href="#list">list(resourceName, pageSize=None, pageToken=None, personFields=None, requestMask_includeField=None, requestSyncToken=None, sortOrder=None, sources=None, syncToken=None, x__xgafv=None)</a></code></p>
-<p class="firstline">Provides a list of the authenticated user's contacts. The request returns a 400 error if `personFields` is not specified. The request returns a 410 error if `sync_token` is specified and is expired. Sync tokens expire after 7 days to prevent data drift between clients and the server. To handle a sync token expired error, a request should be sent without `sync_token` to get all contacts.</p>
+<p class="firstline">Provides a list of the authenticated user's contacts. Sync tokens expire 7 days after the full sync. A request with an expired sync token will result in a 410 error. In the case of such an error clients should make a full sync request without a `sync_token`. The first page of a full sync request has an additional quota. If the quota is exceeded, a 429 error will be returned. This quota is fixed and can not be increased. When the `sync_token` is specified, resources deleted since the last sync will be returned as a person with `PersonMetadata.deleted` set to true. When the `page_token` or `sync_token` is specified, all other request parameters must match the first call. Writes may have a propagation delay of several minutes for sync requests. Incremental syncs are not intended for read-after-write use cases. See example usage at [List the user's contacts that have changed](/people/v1/contacts#list_the_users_contacts_that_have_changed).</p>
 <p class="toc_element">
   <code><a href="#list_next">list_next(previous_request, previous_response)</a></code></p>
 <p class="firstline">Retrieves the next page of results.</p>
@@ -91,15 +91,15 @@ h1, h2, h3 {
 
 <div class="method">
     <code class="details" id="list">list(resourceName, pageSize=None, pageToken=None, personFields=None, requestMask_includeField=None, requestSyncToken=None, sortOrder=None, sources=None, syncToken=None, x__xgafv=None)</code>
-  <pre>Provides a list of the authenticated user&#x27;s contacts. The request returns a 400 error if `personFields` is not specified. The request returns a 410 error if `sync_token` is specified and is expired. Sync tokens expire after 7 days to prevent data drift between clients and the server. To handle a sync token expired error, a request should be sent without `sync_token` to get all contacts.
+  <pre>Provides a list of the authenticated user&#x27;s contacts. Sync tokens expire 7 days after the full sync. A request with an expired sync token will result in a 410 error. In the case of such an error clients should make a full sync request without a `sync_token`. The first page of a full sync request has an additional quota. If the quota is exceeded, a 429 error will be returned. This quota is fixed and can not be increased. When the `sync_token` is specified, resources deleted since the last sync will be returned as a person with `PersonMetadata.deleted` set to true. When the `page_token` or `sync_token` is specified, all other request parameters must match the first call. Writes may have a propagation delay of several minutes for sync requests. Incremental syncs are not intended for read-after-write use cases. See example usage at [List the user&#x27;s contacts that have changed](/people/v1/contacts#list_the_users_contacts_that_have_changed).
 
 Args:
   resourceName: string, Required. The resource name to return connections for. Only `people/me` is valid. (required)
   pageSize: integer, Optional. The number of connections to include in the response. Valid values are between 1 and 1000, inclusive. Defaults to 100 if not set or set to 0.
-  pageToken: string, Optional. A page token, received from a previous `ListConnections` call. Provide this to retrieve the subsequent page. When paginating, all other parameters provided to `ListConnections` must match the call that provided the page token.
+  pageToken: string, Optional. A page token, received from a previous response `next_page_token`. Provide this to retrieve the subsequent page. When paginating, all other parameters provided to `people.connections.list` must match the first call that provided the page token.
   personFields: string, Required. A field mask to restrict which fields on each person are returned. Multiple fields can be specified by separating them with commas. Valid values are: * addresses * ageRanges * biographies * birthdays * calendarUrls * clientData * coverPhotos * emailAddresses * events * externalIds * genders * imClients * interests * locales * locations * memberships * metadata * miscKeywords * names * nicknames * occupations * organizations * phoneNumbers * photos * relations * sipAddresses * skills * urls * userDefined
   requestMask_includeField: string, Required. Comma-separated list of person fields to be included in the response. Each path should start with `person.`: for example, `person.names` or `person.photos`.
-  requestSyncToken: boolean, Optional. Whether the response should include `next_sync_token` on the last page, which can be used to get all changes since the last request. For subsequent sync requests use the `sync_token` param instead. Initial full sync requests that specify `request_sync_token` and do not specify `sync_token` have an additional rate limit per user. Each client should generally only be doing a full sync once every few days per user and so should not hit this limit.
+  requestSyncToken: boolean, Optional. Whether the response should return `next_sync_token` on the last page of results. It can be used to get incremental changes since the last request by setting it on the request `sync_token`. More details about sync behavior at `people.connections.list`.
   sortOrder: string, Optional. The order in which the connections should be sorted. Defaults to `LAST_MODIFIED_ASCENDING`.
     Allowed values
       LAST_MODIFIED_ASCENDING - Sort people by when they were changed; older entries first.
@@ -112,7 +112,7 @@ Args:
       READ_SOURCE_TYPE_PROFILE - Returns SourceType.ACCOUNT, SourceType.DOMAIN_PROFILE, and SourceType.PROFILE.
       READ_SOURCE_TYPE_CONTACT - Returns SourceType.CONTACT.
       READ_SOURCE_TYPE_DOMAIN_CONTACT - Returns SourceType.DOMAIN_CONTACT.
-  syncToken: string, Optional. A sync token, received from a previous `ListConnections` call. Provide this to retrieve only the resources changed since the last request. When syncing, all other parameters provided to `ListConnections` except `page_size` and `page_token` must match the initial call that provided the sync token. Sync tokens expire after seven days, after which a full sync request without a `sync_token` should be made.
+  syncToken: string, Optional. A sync token, received from a previous response `next_sync_token` Provide this to retrieve only the resources changed since the last request. When syncing, all other parameters provided to `people.connections.list` must match the first call that provided the sync token. More details about sync behavior at `people.connections.list`.
   x__xgafv: string, V1 error format.
     Allowed values
       1 - v1 error format
@@ -133,7 +133,7 @@ Returns:
           &quot;formattedType&quot;: &quot;A String&quot;, # Output only. The type of the address translated and formatted in the viewer&#x27;s account locale or the `Accept-Language` HTTP header locale.
           &quot;formattedValue&quot;: &quot;A String&quot;, # The unstructured value of the address. If this is not set by the user it will be automatically constructed from structured values.
           &quot;metadata&quot;: { # Metadata about a field. # Metadata about the address.
-            &quot;primary&quot;: True or False, # True if the field is the primary field; false if the field is a secondary field.
+            &quot;primary&quot;: True or False, # Output only. True if the field is the primary field for all sources in the person. Each person will have at most one field with `primary` set to true.
             &quot;source&quot;: { # The source of a field. # The source of the field.
               &quot;etag&quot;: &quot;A String&quot;, # **Only populated in `person.metadata.sources`.** The [HTTP entity tag](https://en.wikipedia.org/wiki/HTTP_ETag) of the source. Used for web cache validation.
               &quot;id&quot;: &quot;A String&quot;, # The unique identifier within the source type generated by the server.
@@ -146,6 +146,7 @@ Returns:
               &quot;type&quot;: &quot;A String&quot;, # The source type.
               &quot;updateTime&quot;: &quot;A String&quot;, # Output only. **Only populated in `person.metadata.sources`.** Last update timestamp of this source.
             },
+            &quot;sourcePrimary&quot;: True or False, # True if the field is the primary field for the source. Each source must have at most one field with `source_primary` set to true.
             &quot;verified&quot;: True or False, # Output only. True if the field is verified; false if the field is unverified. A verified field is typically a name, email address, phone number, or website that has been confirmed to be owned by the person.
           },
           &quot;poBox&quot;: &quot;A String&quot;, # The P.O. box of the address.
@@ -160,7 +161,7 @@ Returns:
         { # A person&#x27;s age range.
           &quot;ageRange&quot;: &quot;A String&quot;, # The age range.
           &quot;metadata&quot;: { # Metadata about a field. # Metadata about the age range.
-            &quot;primary&quot;: True or False, # True if the field is the primary field; false if the field is a secondary field.
+            &quot;primary&quot;: True or False, # Output only. True if the field is the primary field for all sources in the person. Each person will have at most one field with `primary` set to true.
             &quot;source&quot;: { # The source of a field. # The source of the field.
               &quot;etag&quot;: &quot;A String&quot;, # **Only populated in `person.metadata.sources`.** The [HTTP entity tag](https://en.wikipedia.org/wiki/HTTP_ETag) of the source. Used for web cache validation.
               &quot;id&quot;: &quot;A String&quot;, # The unique identifier within the source type generated by the server.
@@ -173,6 +174,7 @@ Returns:
               &quot;type&quot;: &quot;A String&quot;, # The source type.
               &quot;updateTime&quot;: &quot;A String&quot;, # Output only. **Only populated in `person.metadata.sources`.** Last update timestamp of this source.
             },
+            &quot;sourcePrimary&quot;: True or False, # True if the field is the primary field for the source. Each source must have at most one field with `source_primary` set to true.
             &quot;verified&quot;: True or False, # Output only. True if the field is verified; false if the field is unverified. A verified field is typically a name, email address, phone number, or website that has been confirmed to be owned by the person.
           },
         },
@@ -181,7 +183,7 @@ Returns:
         { # A person&#x27;s short biography.
           &quot;contentType&quot;: &quot;A String&quot;, # The content type of the biography.
           &quot;metadata&quot;: { # Metadata about a field. # Metadata about the biography.
-            &quot;primary&quot;: True or False, # True if the field is the primary field; false if the field is a secondary field.
+            &quot;primary&quot;: True or False, # Output only. True if the field is the primary field for all sources in the person. Each person will have at most one field with `primary` set to true.
             &quot;source&quot;: { # The source of a field. # The source of the field.
               &quot;etag&quot;: &quot;A String&quot;, # **Only populated in `person.metadata.sources`.** The [HTTP entity tag](https://en.wikipedia.org/wiki/HTTP_ETag) of the source. Used for web cache validation.
               &quot;id&quot;: &quot;A String&quot;, # The unique identifier within the source type generated by the server.
@@ -194,6 +196,7 @@ Returns:
               &quot;type&quot;: &quot;A String&quot;, # The source type.
               &quot;updateTime&quot;: &quot;A String&quot;, # Output only. **Only populated in `person.metadata.sources`.** Last update timestamp of this source.
             },
+            &quot;sourcePrimary&quot;: True or False, # True if the field is the primary field for the source. Each source must have at most one field with `source_primary` set to true.
             &quot;verified&quot;: True or False, # Output only. True if the field is verified; false if the field is unverified. A verified field is typically a name, email address, phone number, or website that has been confirmed to be owned by the person.
           },
           &quot;value&quot;: &quot;A String&quot;, # The short biography.
@@ -207,7 +210,7 @@ Returns:
             &quot;year&quot;: 42, # Year of the date. Must be from 1 to 9999, or 0 to specify a date without a year.
           },
           &quot;metadata&quot;: { # Metadata about a field. # Metadata about the birthday.
-            &quot;primary&quot;: True or False, # True if the field is the primary field; false if the field is a secondary field.
+            &quot;primary&quot;: True or False, # Output only. True if the field is the primary field for all sources in the person. Each person will have at most one field with `primary` set to true.
             &quot;source&quot;: { # The source of a field. # The source of the field.
               &quot;etag&quot;: &quot;A String&quot;, # **Only populated in `person.metadata.sources`.** The [HTTP entity tag](https://en.wikipedia.org/wiki/HTTP_ETag) of the source. Used for web cache validation.
               &quot;id&quot;: &quot;A String&quot;, # The unique identifier within the source type generated by the server.
@@ -220,6 +223,7 @@ Returns:
               &quot;type&quot;: &quot;A String&quot;, # The source type.
               &quot;updateTime&quot;: &quot;A String&quot;, # Output only. **Only populated in `person.metadata.sources`.** Last update timestamp of this source.
             },
+            &quot;sourcePrimary&quot;: True or False, # True if the field is the primary field for the source. Each source must have at most one field with `source_primary` set to true.
             &quot;verified&quot;: True or False, # Output only. True if the field is verified; false if the field is unverified. A verified field is typically a name, email address, phone number, or website that has been confirmed to be owned by the person.
           },
           &quot;text&quot;: &quot;A String&quot;, # A free-form string representing the user&#x27;s birthday.
@@ -228,7 +232,7 @@ Returns:
       &quot;braggingRights&quot;: [ # **DEPRECATED**: No data will be returned The person&#x27;s bragging rights.
         { # **DEPRECATED**: No data will be returned A person&#x27;s bragging rights.
           &quot;metadata&quot;: { # Metadata about a field. # Metadata about the bragging rights.
-            &quot;primary&quot;: True or False, # True if the field is the primary field; false if the field is a secondary field.
+            &quot;primary&quot;: True or False, # Output only. True if the field is the primary field for all sources in the person. Each person will have at most one field with `primary` set to true.
             &quot;source&quot;: { # The source of a field. # The source of the field.
               &quot;etag&quot;: &quot;A String&quot;, # **Only populated in `person.metadata.sources`.** The [HTTP entity tag](https://en.wikipedia.org/wiki/HTTP_ETag) of the source. Used for web cache validation.
               &quot;id&quot;: &quot;A String&quot;, # The unique identifier within the source type generated by the server.
@@ -241,6 +245,7 @@ Returns:
               &quot;type&quot;: &quot;A String&quot;, # The source type.
               &quot;updateTime&quot;: &quot;A String&quot;, # Output only. **Only populated in `person.metadata.sources`.** Last update timestamp of this source.
             },
+            &quot;sourcePrimary&quot;: True or False, # True if the field is the primary field for the source. Each source must have at most one field with `source_primary` set to true.
             &quot;verified&quot;: True or False, # Output only. True if the field is verified; false if the field is unverified. A verified field is typically a name, email address, phone number, or website that has been confirmed to be owned by the person.
           },
           &quot;value&quot;: &quot;A String&quot;, # The bragging rights; for example, `climbed mount everest`.
@@ -250,7 +255,7 @@ Returns:
         { # A person&#x27;s calendar URL.
           &quot;formattedType&quot;: &quot;A String&quot;, # Output only. The type of the calendar URL translated and formatted in the viewer&#x27;s account locale or the `Accept-Language` HTTP header locale.
           &quot;metadata&quot;: { # Metadata about a field. # Metadata about the calendar URL.
-            &quot;primary&quot;: True or False, # True if the field is the primary field; false if the field is a secondary field.
+            &quot;primary&quot;: True or False, # Output only. True if the field is the primary field for all sources in the person. Each person will have at most one field with `primary` set to true.
             &quot;source&quot;: { # The source of a field. # The source of the field.
               &quot;etag&quot;: &quot;A String&quot;, # **Only populated in `person.metadata.sources`.** The [HTTP entity tag](https://en.wikipedia.org/wiki/HTTP_ETag) of the source. Used for web cache validation.
               &quot;id&quot;: &quot;A String&quot;, # The unique identifier within the source type generated by the server.
@@ -263,6 +268,7 @@ Returns:
               &quot;type&quot;: &quot;A String&quot;, # The source type.
               &quot;updateTime&quot;: &quot;A String&quot;, # Output only. **Only populated in `person.metadata.sources`.** Last update timestamp of this source.
             },
+            &quot;sourcePrimary&quot;: True or False, # True if the field is the primary field for the source. Each source must have at most one field with `source_primary` set to true.
             &quot;verified&quot;: True or False, # Output only. True if the field is verified; false if the field is unverified. A verified field is typically a name, email address, phone number, or website that has been confirmed to be owned by the person.
           },
           &quot;type&quot;: &quot;A String&quot;, # The type of the calendar URL. The type can be custom or one of these predefined values: * `home` * `freeBusy` * `work`
@@ -273,7 +279,7 @@ Returns:
         { # Arbitrary client data that is populated by clients. Duplicate keys and values are allowed.
           &quot;key&quot;: &quot;A String&quot;, # The client specified key of the client data.
           &quot;metadata&quot;: { # Metadata about a field. # Metadata about the client data.
-            &quot;primary&quot;: True or False, # True if the field is the primary field; false if the field is a secondary field.
+            &quot;primary&quot;: True or False, # Output only. True if the field is the primary field for all sources in the person. Each person will have at most one field with `primary` set to true.
             &quot;source&quot;: { # The source of a field. # The source of the field.
               &quot;etag&quot;: &quot;A String&quot;, # **Only populated in `person.metadata.sources`.** The [HTTP entity tag](https://en.wikipedia.org/wiki/HTTP_ETag) of the source. Used for web cache validation.
               &quot;id&quot;: &quot;A String&quot;, # The unique identifier within the source type generated by the server.
@@ -286,6 +292,7 @@ Returns:
               &quot;type&quot;: &quot;A String&quot;, # The source type.
               &quot;updateTime&quot;: &quot;A String&quot;, # Output only. **Only populated in `person.metadata.sources`.** Last update timestamp of this source.
             },
+            &quot;sourcePrimary&quot;: True or False, # True if the field is the primary field for the source. Each source must have at most one field with `source_primary` set to true.
             &quot;verified&quot;: True or False, # Output only. True if the field is verified; false if the field is unverified. A verified field is typically a name, email address, phone number, or website that has been confirmed to be owned by the person.
           },
           &quot;value&quot;: &quot;A String&quot;, # The client specified value of the client data.
@@ -295,7 +302,7 @@ Returns:
         { # A person&#x27;s cover photo. A large image shown on the person&#x27;s profile page that represents who they are or what they care about.
           &quot;default&quot;: True or False, # True if the cover photo is the default cover photo; false if the cover photo is a user-provided cover photo.
           &quot;metadata&quot;: { # Metadata about a field. # Metadata about the cover photo.
-            &quot;primary&quot;: True or False, # True if the field is the primary field; false if the field is a secondary field.
+            &quot;primary&quot;: True or False, # Output only. True if the field is the primary field for all sources in the person. Each person will have at most one field with `primary` set to true.
             &quot;source&quot;: { # The source of a field. # The source of the field.
               &quot;etag&quot;: &quot;A String&quot;, # **Only populated in `person.metadata.sources`.** The [HTTP entity tag](https://en.wikipedia.org/wiki/HTTP_ETag) of the source. Used for web cache validation.
               &quot;id&quot;: &quot;A String&quot;, # The unique identifier within the source type generated by the server.
@@ -308,17 +315,18 @@ Returns:
               &quot;type&quot;: &quot;A String&quot;, # The source type.
               &quot;updateTime&quot;: &quot;A String&quot;, # Output only. **Only populated in `person.metadata.sources`.** Last update timestamp of this source.
             },
+            &quot;sourcePrimary&quot;: True or False, # True if the field is the primary field for the source. Each source must have at most one field with `source_primary` set to true.
             &quot;verified&quot;: True or False, # Output only. True if the field is verified; false if the field is unverified. A verified field is typically a name, email address, phone number, or website that has been confirmed to be owned by the person.
           },
           &quot;url&quot;: &quot;A String&quot;, # The URL of the cover photo.
         },
       ],
-      &quot;emailAddresses&quot;: [ # The person&#x27;s email addresses.
+      &quot;emailAddresses&quot;: [ # The person&#x27;s email addresses. For `people.connections.list` and `otherContacts.list` the number of email addresses is limited to 100. If a Person has more email addresses the entire set can be obtained by calling GetPeople.
         { # A person&#x27;s email address.
           &quot;displayName&quot;: &quot;A String&quot;, # The display name of the email.
           &quot;formattedType&quot;: &quot;A String&quot;, # Output only. The type of the email address translated and formatted in the viewer&#x27;s account locale or the `Accept-Language` HTTP header locale.
           &quot;metadata&quot;: { # Metadata about a field. # Metadata about the email address.
-            &quot;primary&quot;: True or False, # True if the field is the primary field; false if the field is a secondary field.
+            &quot;primary&quot;: True or False, # Output only. True if the field is the primary field for all sources in the person. Each person will have at most one field with `primary` set to true.
             &quot;source&quot;: { # The source of a field. # The source of the field.
               &quot;etag&quot;: &quot;A String&quot;, # **Only populated in `person.metadata.sources`.** The [HTTP entity tag](https://en.wikipedia.org/wiki/HTTP_ETag) of the source. Used for web cache validation.
               &quot;id&quot;: &quot;A String&quot;, # The unique identifier within the source type generated by the server.
@@ -331,6 +339,7 @@ Returns:
               &quot;type&quot;: &quot;A String&quot;, # The source type.
               &quot;updateTime&quot;: &quot;A String&quot;, # Output only. **Only populated in `person.metadata.sources`.** Last update timestamp of this source.
             },
+            &quot;sourcePrimary&quot;: True or False, # True if the field is the primary field for the source. Each source must have at most one field with `source_primary` set to true.
             &quot;verified&quot;: True or False, # Output only. True if the field is verified; false if the field is unverified. A verified field is typically a name, email address, phone number, or website that has been confirmed to be owned by the person.
           },
           &quot;type&quot;: &quot;A String&quot;, # The type of the email address. The type can be custom or one of these predefined values: * `home` * `work` * `other`
@@ -347,7 +356,7 @@ Returns:
           },
           &quot;formattedType&quot;: &quot;A String&quot;, # Output only. The type of the event translated and formatted in the viewer&#x27;s account locale or the `Accept-Language` HTTP header locale.
           &quot;metadata&quot;: { # Metadata about a field. # Metadata about the event.
-            &quot;primary&quot;: True or False, # True if the field is the primary field; false if the field is a secondary field.
+            &quot;primary&quot;: True or False, # Output only. True if the field is the primary field for all sources in the person. Each person will have at most one field with `primary` set to true.
             &quot;source&quot;: { # The source of a field. # The source of the field.
               &quot;etag&quot;: &quot;A String&quot;, # **Only populated in `person.metadata.sources`.** The [HTTP entity tag](https://en.wikipedia.org/wiki/HTTP_ETag) of the source. Used for web cache validation.
               &quot;id&quot;: &quot;A String&quot;, # The unique identifier within the source type generated by the server.
@@ -360,6 +369,7 @@ Returns:
               &quot;type&quot;: &quot;A String&quot;, # The source type.
               &quot;updateTime&quot;: &quot;A String&quot;, # Output only. **Only populated in `person.metadata.sources`.** Last update timestamp of this source.
             },
+            &quot;sourcePrimary&quot;: True or False, # True if the field is the primary field for the source. Each source must have at most one field with `source_primary` set to true.
             &quot;verified&quot;: True or False, # Output only. True if the field is verified; false if the field is unverified. A verified field is typically a name, email address, phone number, or website that has been confirmed to be owned by the person.
           },
           &quot;type&quot;: &quot;A String&quot;, # The type of the event. The type can be custom or one of these predefined values: * `anniversary` * `other`
@@ -369,7 +379,7 @@ Returns:
         { # An identifier from an external entity related to the person.
           &quot;formattedType&quot;: &quot;A String&quot;, # Output only. The type of the event translated and formatted in the viewer&#x27;s account locale or the `Accept-Language` HTTP header locale.
           &quot;metadata&quot;: { # Metadata about a field. # Metadata about the external ID.
-            &quot;primary&quot;: True or False, # True if the field is the primary field; false if the field is a secondary field.
+            &quot;primary&quot;: True or False, # Output only. True if the field is the primary field for all sources in the person. Each person will have at most one field with `primary` set to true.
             &quot;source&quot;: { # The source of a field. # The source of the field.
               &quot;etag&quot;: &quot;A String&quot;, # **Only populated in `person.metadata.sources`.** The [HTTP entity tag](https://en.wikipedia.org/wiki/HTTP_ETag) of the source. Used for web cache validation.
               &quot;id&quot;: &quot;A String&quot;, # The unique identifier within the source type generated by the server.
@@ -382,6 +392,7 @@ Returns:
               &quot;type&quot;: &quot;A String&quot;, # The source type.
               &quot;updateTime&quot;: &quot;A String&quot;, # Output only. **Only populated in `person.metadata.sources`.** Last update timestamp of this source.
             },
+            &quot;sourcePrimary&quot;: True or False, # True if the field is the primary field for the source. Each source must have at most one field with `source_primary` set to true.
             &quot;verified&quot;: True or False, # Output only. True if the field is verified; false if the field is unverified. A verified field is typically a name, email address, phone number, or website that has been confirmed to be owned by the person.
           },
           &quot;type&quot;: &quot;A String&quot;, # The type of the external ID. The type can be custom or one of these predefined values: * `account` * `customer` * `loginId` * `network` * `organization`
@@ -391,7 +402,7 @@ Returns:
       &quot;fileAses&quot;: [ # The person&#x27;s file-ases.
         { # The name that should be used to sort the person in a list.
           &quot;metadata&quot;: { # Metadata about a field. # Metadata about the file-as.
-            &quot;primary&quot;: True or False, # True if the field is the primary field; false if the field is a secondary field.
+            &quot;primary&quot;: True or False, # Output only. True if the field is the primary field for all sources in the person. Each person will have at most one field with `primary` set to true.
             &quot;source&quot;: { # The source of a field. # The source of the field.
               &quot;etag&quot;: &quot;A String&quot;, # **Only populated in `person.metadata.sources`.** The [HTTP entity tag](https://en.wikipedia.org/wiki/HTTP_ETag) of the source. Used for web cache validation.
               &quot;id&quot;: &quot;A String&quot;, # The unique identifier within the source type generated by the server.
@@ -404,6 +415,7 @@ Returns:
               &quot;type&quot;: &quot;A String&quot;, # The source type.
               &quot;updateTime&quot;: &quot;A String&quot;, # Output only. **Only populated in `person.metadata.sources`.** Last update timestamp of this source.
             },
+            &quot;sourcePrimary&quot;: True or False, # True if the field is the primary field for the source. Each source must have at most one field with `source_primary` set to true.
             &quot;verified&quot;: True or False, # Output only. True if the field is verified; false if the field is unverified. A verified field is typically a name, email address, phone number, or website that has been confirmed to be owned by the person.
           },
           &quot;value&quot;: &quot;A String&quot;, # The file-as value
@@ -411,10 +423,10 @@ Returns:
       ],
       &quot;genders&quot;: [ # The person&#x27;s genders. This field is a singleton for contact sources.
         { # A person&#x27;s gender.
-          &quot;addressMeAs&quot;: &quot;A String&quot;, # The type of pronouns that should be used to address the person. The value can be custom or one of these predefined values: * `male` * `female` * `other`
+          &quot;addressMeAs&quot;: &quot;A String&quot;, # Free form text field for pronouns that should be used to address the person. Common values are: * `he`/`him` * `she`/`her` * `they`/`them`
           &quot;formattedValue&quot;: &quot;A String&quot;, # Output only. The value of the gender translated and formatted in the viewer&#x27;s account locale or the `Accept-Language` HTTP header locale. Unspecified or custom value are not localized.
           &quot;metadata&quot;: { # Metadata about a field. # Metadata about the gender.
-            &quot;primary&quot;: True or False, # True if the field is the primary field; false if the field is a secondary field.
+            &quot;primary&quot;: True or False, # Output only. True if the field is the primary field for all sources in the person. Each person will have at most one field with `primary` set to true.
             &quot;source&quot;: { # The source of a field. # The source of the field.
               &quot;etag&quot;: &quot;A String&quot;, # **Only populated in `person.metadata.sources`.** The [HTTP entity tag](https://en.wikipedia.org/wiki/HTTP_ETag) of the source. Used for web cache validation.
               &quot;id&quot;: &quot;A String&quot;, # The unique identifier within the source type generated by the server.
@@ -427,6 +439,7 @@ Returns:
               &quot;type&quot;: &quot;A String&quot;, # The source type.
               &quot;updateTime&quot;: &quot;A String&quot;, # Output only. **Only populated in `person.metadata.sources`.** Last update timestamp of this source.
             },
+            &quot;sourcePrimary&quot;: True or False, # True if the field is the primary field for the source. Each source must have at most one field with `source_primary` set to true.
             &quot;verified&quot;: True or False, # Output only. True if the field is verified; false if the field is unverified. A verified field is typically a name, email address, phone number, or website that has been confirmed to be owned by the person.
           },
           &quot;value&quot;: &quot;A String&quot;, # The gender for the person. The gender can be custom or one of these predefined values: * `male` * `female` * `unspecified`
@@ -437,7 +450,7 @@ Returns:
           &quot;formattedProtocol&quot;: &quot;A String&quot;, # Output only. The protocol of the IM client formatted in the viewer&#x27;s account locale or the `Accept-Language` HTTP header locale.
           &quot;formattedType&quot;: &quot;A String&quot;, # Output only. The type of the IM client translated and formatted in the viewer&#x27;s account locale or the `Accept-Language` HTTP header locale.
           &quot;metadata&quot;: { # Metadata about a field. # Metadata about the IM client.
-            &quot;primary&quot;: True or False, # True if the field is the primary field; false if the field is a secondary field.
+            &quot;primary&quot;: True or False, # Output only. True if the field is the primary field for all sources in the person. Each person will have at most one field with `primary` set to true.
             &quot;source&quot;: { # The source of a field. # The source of the field.
               &quot;etag&quot;: &quot;A String&quot;, # **Only populated in `person.metadata.sources`.** The [HTTP entity tag](https://en.wikipedia.org/wiki/HTTP_ETag) of the source. Used for web cache validation.
               &quot;id&quot;: &quot;A String&quot;, # The unique identifier within the source type generated by the server.
@@ -450,6 +463,7 @@ Returns:
               &quot;type&quot;: &quot;A String&quot;, # The source type.
               &quot;updateTime&quot;: &quot;A String&quot;, # Output only. **Only populated in `person.metadata.sources`.** Last update timestamp of this source.
             },
+            &quot;sourcePrimary&quot;: True or False, # True if the field is the primary field for the source. Each source must have at most one field with `source_primary` set to true.
             &quot;verified&quot;: True or False, # Output only. True if the field is verified; false if the field is unverified. A verified field is typically a name, email address, phone number, or website that has been confirmed to be owned by the person.
           },
           &quot;protocol&quot;: &quot;A String&quot;, # The protocol of the IM client. The protocol can be custom or one of these predefined values: * `aim` * `msn` * `yahoo` * `skype` * `qq` * `googleTalk` * `icq` * `jabber` * `netMeeting`
@@ -460,7 +474,7 @@ Returns:
       &quot;interests&quot;: [ # The person&#x27;s interests.
         { # One of the person&#x27;s interests.
           &quot;metadata&quot;: { # Metadata about a field. # Metadata about the interest.
-            &quot;primary&quot;: True or False, # True if the field is the primary field; false if the field is a secondary field.
+            &quot;primary&quot;: True or False, # Output only. True if the field is the primary field for all sources in the person. Each person will have at most one field with `primary` set to true.
             &quot;source&quot;: { # The source of a field. # The source of the field.
               &quot;etag&quot;: &quot;A String&quot;, # **Only populated in `person.metadata.sources`.** The [HTTP entity tag](https://en.wikipedia.org/wiki/HTTP_ETag) of the source. Used for web cache validation.
               &quot;id&quot;: &quot;A String&quot;, # The unique identifier within the source type generated by the server.
@@ -473,6 +487,7 @@ Returns:
               &quot;type&quot;: &quot;A String&quot;, # The source type.
               &quot;updateTime&quot;: &quot;A String&quot;, # Output only. **Only populated in `person.metadata.sources`.** Last update timestamp of this source.
             },
+            &quot;sourcePrimary&quot;: True or False, # True if the field is the primary field for the source. Each source must have at most one field with `source_primary` set to true.
             &quot;verified&quot;: True or False, # Output only. True if the field is verified; false if the field is unverified. A verified field is typically a name, email address, phone number, or website that has been confirmed to be owned by the person.
           },
           &quot;value&quot;: &quot;A String&quot;, # The interest; for example, `stargazing`.
@@ -481,7 +496,7 @@ Returns:
       &quot;locales&quot;: [ # The person&#x27;s locale preferences.
         { # A person&#x27;s locale preference.
           &quot;metadata&quot;: { # Metadata about a field. # Metadata about the locale.
-            &quot;primary&quot;: True or False, # True if the field is the primary field; false if the field is a secondary field.
+            &quot;primary&quot;: True or False, # Output only. True if the field is the primary field for all sources in the person. Each person will have at most one field with `primary` set to true.
             &quot;source&quot;: { # The source of a field. # The source of the field.
               &quot;etag&quot;: &quot;A String&quot;, # **Only populated in `person.metadata.sources`.** The [HTTP entity tag](https://en.wikipedia.org/wiki/HTTP_ETag) of the source. Used for web cache validation.
               &quot;id&quot;: &quot;A String&quot;, # The unique identifier within the source type generated by the server.
@@ -494,6 +509,7 @@ Returns:
               &quot;type&quot;: &quot;A String&quot;, # The source type.
               &quot;updateTime&quot;: &quot;A String&quot;, # Output only. **Only populated in `person.metadata.sources`.** Last update timestamp of this source.
             },
+            &quot;sourcePrimary&quot;: True or False, # True if the field is the primary field for the source. Each source must have at most one field with `source_primary` set to true.
             &quot;verified&quot;: True or False, # Output only. True if the field is verified; false if the field is unverified. A verified field is typically a name, email address, phone number, or website that has been confirmed to be owned by the person.
           },
           &quot;value&quot;: &quot;A String&quot;, # The well-formed [IETF BCP 47](https://tools.ietf.org/html/bcp47) language tag representing the locale.
@@ -507,7 +523,7 @@ Returns:
           &quot;floor&quot;: &quot;A String&quot;, # The floor name or number.
           &quot;floorSection&quot;: &quot;A String&quot;, # The floor section in `floor_name`.
           &quot;metadata&quot;: { # Metadata about a field. # Metadata about the location.
-            &quot;primary&quot;: True or False, # True if the field is the primary field; false if the field is a secondary field.
+            &quot;primary&quot;: True or False, # Output only. True if the field is the primary field for all sources in the person. Each person will have at most one field with `primary` set to true.
             &quot;source&quot;: { # The source of a field. # The source of the field.
               &quot;etag&quot;: &quot;A String&quot;, # **Only populated in `person.metadata.sources`.** The [HTTP entity tag](https://en.wikipedia.org/wiki/HTTP_ETag) of the source. Used for web cache validation.
               &quot;id&quot;: &quot;A String&quot;, # The unique identifier within the source type generated by the server.
@@ -520,6 +536,7 @@ Returns:
               &quot;type&quot;: &quot;A String&quot;, # The source type.
               &quot;updateTime&quot;: &quot;A String&quot;, # Output only. **Only populated in `person.metadata.sources`.** Last update timestamp of this source.
             },
+            &quot;sourcePrimary&quot;: True or False, # True if the field is the primary field for the source. Each source must have at most one field with `source_primary` set to true.
             &quot;verified&quot;: True or False, # Output only. True if the field is verified; false if the field is unverified. A verified field is typically a name, email address, phone number, or website that has been confirmed to be owned by the person.
           },
           &quot;type&quot;: &quot;A String&quot;, # The type of the location. The type can be custom or one of these predefined values: * `desk` * `grewUp`
@@ -532,11 +549,11 @@ Returns:
             &quot;contactGroupId&quot;: &quot;A String&quot;, # Output only. The contact group ID for the contact group membership.
             &quot;contactGroupResourceName&quot;: &quot;A String&quot;, # The resource name for the contact group, assigned by the server. An ASCII string, in the form of `contactGroups/{contact_group_id}`. Only contact_group_resource_name can be used for modifying memberships. Any contact group membership can be removed, but only user group or &quot;myContacts&quot; or &quot;starred&quot; system groups memberships can be added. A contact must always have at least one contact group membership.
           },
-          &quot;domainMembership&quot;: { # A G Suite Domain membership. # Output only. The domain membership.
-            &quot;inViewerDomain&quot;: True or False, # True if the person is in the viewer&#x27;s G Suite domain.
+          &quot;domainMembership&quot;: { # A Google Workspace Domain membership. # Output only. The domain membership.
+            &quot;inViewerDomain&quot;: True or False, # True if the person is in the viewer&#x27;s Google Workspace domain.
           },
           &quot;metadata&quot;: { # Metadata about a field. # Metadata about the membership.
-            &quot;primary&quot;: True or False, # True if the field is the primary field; false if the field is a secondary field.
+            &quot;primary&quot;: True or False, # Output only. True if the field is the primary field for all sources in the person. Each person will have at most one field with `primary` set to true.
             &quot;source&quot;: { # The source of a field. # The source of the field.
               &quot;etag&quot;: &quot;A String&quot;, # **Only populated in `person.metadata.sources`.** The [HTTP entity tag](https://en.wikipedia.org/wiki/HTTP_ETag) of the source. Used for web cache validation.
               &quot;id&quot;: &quot;A String&quot;, # The unique identifier within the source type generated by the server.
@@ -549,17 +566,18 @@ Returns:
               &quot;type&quot;: &quot;A String&quot;, # The source type.
               &quot;updateTime&quot;: &quot;A String&quot;, # Output only. **Only populated in `person.metadata.sources`.** Last update timestamp of this source.
             },
+            &quot;sourcePrimary&quot;: True or False, # True if the field is the primary field for the source. Each source must have at most one field with `source_primary` set to true.
             &quot;verified&quot;: True or False, # Output only. True if the field is verified; false if the field is unverified. A verified field is typically a name, email address, phone number, or website that has been confirmed to be owned by the person.
           },
         },
       ],
       &quot;metadata&quot;: { # The metadata about a person. # Output only. Metadata about the person.
-        &quot;deleted&quot;: True or False, # Output only. True if the person resource has been deleted. Populated only for [`connections.list`](/people/api/rest/v1/people.connections/list) requests that include a sync token.
+        &quot;deleted&quot;: True or False, # Output only. True if the person resource has been deleted. Populated only for `people.connections.list` and `otherContacts.list` sync requests.
         &quot;linkedPeopleResourceNames&quot;: [ # Output only. Resource names of people linked to this resource.
           &quot;A String&quot;,
         ],
         &quot;objectType&quot;: &quot;A String&quot;, # Output only. **DEPRECATED** (Please use `person.metadata.sources.profileMetadata.objectType` instead) The type of the person object.
-        &quot;previousResourceNames&quot;: [ # Output only. Any former resource names this person has had. Populated only for [`connections.list`](/people/api/rest/v1/people.connections/list) requests that include a sync token. The resource name may change when adding or removing fields that link a contact and profile such as a verified email, verified phone number, or profile URL.
+        &quot;previousResourceNames&quot;: [ # Output only. Any former resource names this person has had. Populated only for `people.connections.list` requests that include a sync token. The resource name may change when adding or removing fields that link a contact and profile such as a verified email, verified phone number, or profile URL.
           &quot;A String&quot;,
         ],
         &quot;sources&quot;: [ # The sources of data for the person.
@@ -581,7 +599,7 @@ Returns:
         { # A person&#x27;s miscellaneous keyword.
           &quot;formattedType&quot;: &quot;A String&quot;, # Output only. The type of the miscellaneous keyword translated and formatted in the viewer&#x27;s account locale or the `Accept-Language` HTTP header locale.
           &quot;metadata&quot;: { # Metadata about a field. # Metadata about the miscellaneous keyword.
-            &quot;primary&quot;: True or False, # True if the field is the primary field; false if the field is a secondary field.
+            &quot;primary&quot;: True or False, # Output only. True if the field is the primary field for all sources in the person. Each person will have at most one field with `primary` set to true.
             &quot;source&quot;: { # The source of a field. # The source of the field.
               &quot;etag&quot;: &quot;A String&quot;, # **Only populated in `person.metadata.sources`.** The [HTTP entity tag](https://en.wikipedia.org/wiki/HTTP_ETag) of the source. Used for web cache validation.
               &quot;id&quot;: &quot;A String&quot;, # The unique identifier within the source type generated by the server.
@@ -594,6 +612,7 @@ Returns:
               &quot;type&quot;: &quot;A String&quot;, # The source type.
               &quot;updateTime&quot;: &quot;A String&quot;, # Output only. **Only populated in `person.metadata.sources`.** Last update timestamp of this source.
             },
+            &quot;sourcePrimary&quot;: True or False, # True if the field is the primary field for the source. Each source must have at most one field with `source_primary` set to true.
             &quot;verified&quot;: True or False, # Output only. True if the field is verified; false if the field is unverified. A verified field is typically a name, email address, phone number, or website that has been confirmed to be owned by the person.
           },
           &quot;type&quot;: &quot;A String&quot;, # The miscellaneous keyword type.
@@ -609,7 +628,7 @@ Returns:
           &quot;honorificPrefix&quot;: &quot;A String&quot;, # The honorific prefixes, such as `Mrs.` or `Dr.`
           &quot;honorificSuffix&quot;: &quot;A String&quot;, # The honorific suffixes, such as `Jr.`
           &quot;metadata&quot;: { # Metadata about a field. # Metadata about the name.
-            &quot;primary&quot;: True or False, # True if the field is the primary field; false if the field is a secondary field.
+            &quot;primary&quot;: True or False, # Output only. True if the field is the primary field for all sources in the person. Each person will have at most one field with `primary` set to true.
             &quot;source&quot;: { # The source of a field. # The source of the field.
               &quot;etag&quot;: &quot;A String&quot;, # **Only populated in `person.metadata.sources`.** The [HTTP entity tag](https://en.wikipedia.org/wiki/HTTP_ETag) of the source. Used for web cache validation.
               &quot;id&quot;: &quot;A String&quot;, # The unique identifier within the source type generated by the server.
@@ -622,6 +641,7 @@ Returns:
               &quot;type&quot;: &quot;A String&quot;, # The source type.
               &quot;updateTime&quot;: &quot;A String&quot;, # Output only. **Only populated in `person.metadata.sources`.** Last update timestamp of this source.
             },
+            &quot;sourcePrimary&quot;: True or False, # True if the field is the primary field for the source. Each source must have at most one field with `source_primary` set to true.
             &quot;verified&quot;: True or False, # Output only. True if the field is verified; false if the field is unverified. A verified field is typically a name, email address, phone number, or website that has been confirmed to be owned by the person.
           },
           &quot;middleName&quot;: &quot;A String&quot;, # The middle name(s).
@@ -637,7 +657,7 @@ Returns:
       &quot;nicknames&quot;: [ # The person&#x27;s nicknames.
         { # A person&#x27;s nickname.
           &quot;metadata&quot;: { # Metadata about a field. # Metadata about the nickname.
-            &quot;primary&quot;: True or False, # True if the field is the primary field; false if the field is a secondary field.
+            &quot;primary&quot;: True or False, # Output only. True if the field is the primary field for all sources in the person. Each person will have at most one field with `primary` set to true.
             &quot;source&quot;: { # The source of a field. # The source of the field.
               &quot;etag&quot;: &quot;A String&quot;, # **Only populated in `person.metadata.sources`.** The [HTTP entity tag](https://en.wikipedia.org/wiki/HTTP_ETag) of the source. Used for web cache validation.
               &quot;id&quot;: &quot;A String&quot;, # The unique identifier within the source type generated by the server.
@@ -650,6 +670,7 @@ Returns:
               &quot;type&quot;: &quot;A String&quot;, # The source type.
               &quot;updateTime&quot;: &quot;A String&quot;, # Output only. **Only populated in `person.metadata.sources`.** Last update timestamp of this source.
             },
+            &quot;sourcePrimary&quot;: True or False, # True if the field is the primary field for the source. Each source must have at most one field with `source_primary` set to true.
             &quot;verified&quot;: True or False, # Output only. True if the field is verified; false if the field is unverified. A verified field is typically a name, email address, phone number, or website that has been confirmed to be owned by the person.
           },
           &quot;type&quot;: &quot;A String&quot;, # The type of the nickname.
@@ -659,7 +680,7 @@ Returns:
       &quot;occupations&quot;: [ # The person&#x27;s occupations.
         { # A person&#x27;s occupation.
           &quot;metadata&quot;: { # Metadata about a field. # Metadata about the occupation.
-            &quot;primary&quot;: True or False, # True if the field is the primary field; false if the field is a secondary field.
+            &quot;primary&quot;: True or False, # Output only. True if the field is the primary field for all sources in the person. Each person will have at most one field with `primary` set to true.
             &quot;source&quot;: { # The source of a field. # The source of the field.
               &quot;etag&quot;: &quot;A String&quot;, # **Only populated in `person.metadata.sources`.** The [HTTP entity tag](https://en.wikipedia.org/wiki/HTTP_ETag) of the source. Used for web cache validation.
               &quot;id&quot;: &quot;A String&quot;, # The unique identifier within the source type generated by the server.
@@ -672,6 +693,7 @@ Returns:
               &quot;type&quot;: &quot;A String&quot;, # The source type.
               &quot;updateTime&quot;: &quot;A String&quot;, # Output only. **Only populated in `person.metadata.sources`.** Last update timestamp of this source.
             },
+            &quot;sourcePrimary&quot;: True or False, # True if the field is the primary field for the source. Each source must have at most one field with `source_primary` set to true.
             &quot;verified&quot;: True or False, # Output only. True if the field is verified; false if the field is unverified. A verified field is typically a name, email address, phone number, or website that has been confirmed to be owned by the person.
           },
           &quot;value&quot;: &quot;A String&quot;, # The occupation; for example, `carpenter`.
@@ -679,6 +701,7 @@ Returns:
       ],
       &quot;organizations&quot;: [ # The person&#x27;s past or current organizations.
         { # A person&#x27;s past or current organization. Overlapping date ranges are permitted.
+          &quot;costCenter&quot;: &quot;A String&quot;, # The person&#x27;s cost center at the organization.
           &quot;current&quot;: True or False, # True if the organization is the person&#x27;s current organization; false if the organization is a past organization.
           &quot;department&quot;: &quot;A String&quot;, # The person&#x27;s department at the organization.
           &quot;domain&quot;: &quot;A String&quot;, # The domain name associated with the organization; for example, `google.com`.
@@ -688,10 +711,11 @@ Returns:
             &quot;year&quot;: 42, # Year of the date. Must be from 1 to 9999, or 0 to specify a date without a year.
           },
           &quot;formattedType&quot;: &quot;A String&quot;, # Output only. The type of the organization translated and formatted in the viewer&#x27;s account locale or the `Accept-Language` HTTP header locale.
+          &quot;fullTimeEquivalentMillipercent&quot;: 42, # The person&#x27;s full-time equivalent millipercent within the organization (100000 = 100%).
           &quot;jobDescription&quot;: &quot;A String&quot;, # The person&#x27;s job description at the organization.
           &quot;location&quot;: &quot;A String&quot;, # The location of the organization office the person works at.
           &quot;metadata&quot;: { # Metadata about a field. # Metadata about the organization.
-            &quot;primary&quot;: True or False, # True if the field is the primary field; false if the field is a secondary field.
+            &quot;primary&quot;: True or False, # Output only. True if the field is the primary field for all sources in the person. Each person will have at most one field with `primary` set to true.
             &quot;source&quot;: { # The source of a field. # The source of the field.
               &quot;etag&quot;: &quot;A String&quot;, # **Only populated in `person.metadata.sources`.** The [HTTP entity tag](https://en.wikipedia.org/wiki/HTTP_ETag) of the source. Used for web cache validation.
               &quot;id&quot;: &quot;A String&quot;, # The unique identifier within the source type generated by the server.
@@ -704,6 +728,7 @@ Returns:
               &quot;type&quot;: &quot;A String&quot;, # The source type.
               &quot;updateTime&quot;: &quot;A String&quot;, # Output only. **Only populated in `person.metadata.sources`.** Last update timestamp of this source.
             },
+            &quot;sourcePrimary&quot;: True or False, # True if the field is the primary field for the source. Each source must have at most one field with `source_primary` set to true.
             &quot;verified&quot;: True or False, # Output only. True if the field is verified; false if the field is unverified. A verified field is typically a name, email address, phone number, or website that has been confirmed to be owned by the person.
           },
           &quot;name&quot;: &quot;A String&quot;, # The name of the organization.
@@ -718,12 +743,12 @@ Returns:
           &quot;type&quot;: &quot;A String&quot;, # The type of the organization. The type can be custom or one of these predefined values: * `work` * `school`
         },
       ],
-      &quot;phoneNumbers&quot;: [ # The person&#x27;s phone numbers.
+      &quot;phoneNumbers&quot;: [ # The person&#x27;s phone numbers. For `people.connections.list` and `otherContacts.list` the number of phone numbers is limited to 100. If a Person has more phone numbers the entire set can be obtained by calling GetPeople.
         { # A person&#x27;s phone number.
           &quot;canonicalForm&quot;: &quot;A String&quot;, # Output only. The canonicalized [ITU-T E.164](https://law.resource.org/pub/us/cfr/ibr/004/itu-t.E.164.1.2008.pdf) form of the phone number.
           &quot;formattedType&quot;: &quot;A String&quot;, # Output only. The type of the phone number translated and formatted in the viewer&#x27;s account locale or the `Accept-Language` HTTP header locale.
           &quot;metadata&quot;: { # Metadata about a field. # Metadata about the phone number.
-            &quot;primary&quot;: True or False, # True if the field is the primary field; false if the field is a secondary field.
+            &quot;primary&quot;: True or False, # Output only. True if the field is the primary field for all sources in the person. Each person will have at most one field with `primary` set to true.
             &quot;source&quot;: { # The source of a field. # The source of the field.
               &quot;etag&quot;: &quot;A String&quot;, # **Only populated in `person.metadata.sources`.** The [HTTP entity tag](https://en.wikipedia.org/wiki/HTTP_ETag) of the source. Used for web cache validation.
               &quot;id&quot;: &quot;A String&quot;, # The unique identifier within the source type generated by the server.
@@ -736,6 +761,7 @@ Returns:
               &quot;type&quot;: &quot;A String&quot;, # The source type.
               &quot;updateTime&quot;: &quot;A String&quot;, # Output only. **Only populated in `person.metadata.sources`.** Last update timestamp of this source.
             },
+            &quot;sourcePrimary&quot;: True or False, # True if the field is the primary field for the source. Each source must have at most one field with `source_primary` set to true.
             &quot;verified&quot;: True or False, # Output only. True if the field is verified; false if the field is unverified. A verified field is typically a name, email address, phone number, or website that has been confirmed to be owned by the person.
           },
           &quot;type&quot;: &quot;A String&quot;, # The type of the phone number. The type can be custom or one of these predefined values: * `home` * `work` * `mobile` * `homeFax` * `workFax` * `otherFax` * `pager` * `workMobile` * `workPager` * `main` * `googleVoice` * `other`
@@ -746,7 +772,7 @@ Returns:
         { # A person&#x27;s photo. A picture shown next to the person&#x27;s name to help others recognize the person.
           &quot;default&quot;: True or False, # True if the photo is a default photo; false if the photo is a user-provided photo.
           &quot;metadata&quot;: { # Metadata about a field. # Metadata about the photo.
-            &quot;primary&quot;: True or False, # True if the field is the primary field; false if the field is a secondary field.
+            &quot;primary&quot;: True or False, # Output only. True if the field is the primary field for all sources in the person. Each person will have at most one field with `primary` set to true.
             &quot;source&quot;: { # The source of a field. # The source of the field.
               &quot;etag&quot;: &quot;A String&quot;, # **Only populated in `person.metadata.sources`.** The [HTTP entity tag](https://en.wikipedia.org/wiki/HTTP_ETag) of the source. Used for web cache validation.
               &quot;id&quot;: &quot;A String&quot;, # The unique identifier within the source type generated by the server.
@@ -759,6 +785,7 @@ Returns:
               &quot;type&quot;: &quot;A String&quot;, # The source type.
               &quot;updateTime&quot;: &quot;A String&quot;, # Output only. **Only populated in `person.metadata.sources`.** Last update timestamp of this source.
             },
+            &quot;sourcePrimary&quot;: True or False, # True if the field is the primary field for the source. Each source must have at most one field with `source_primary` set to true.
             &quot;verified&quot;: True or False, # Output only. True if the field is verified; false if the field is unverified. A verified field is typically a name, email address, phone number, or website that has been confirmed to be owned by the person.
           },
           &quot;url&quot;: &quot;A String&quot;, # The URL of the photo. You can change the desired size by appending a query parameter `sz={size}` at the end of the url, where {size} is the size in pixels. Example: https://lh3.googleusercontent.com/-T_wVWLlmg7w/AAAAAAAAAAI/AAAAAAAABa8/00gzXvDBYqw/s100/photo.jpg?sz=50
@@ -768,7 +795,7 @@ Returns:
         { # A person&#x27;s relation to another person.
           &quot;formattedType&quot;: &quot;A String&quot;, # Output only. The type of the relation translated and formatted in the viewer&#x27;s account locale or the locale specified in the Accept-Language HTTP header.
           &quot;metadata&quot;: { # Metadata about a field. # Metadata about the relation.
-            &quot;primary&quot;: True or False, # True if the field is the primary field; false if the field is a secondary field.
+            &quot;primary&quot;: True or False, # Output only. True if the field is the primary field for all sources in the person. Each person will have at most one field with `primary` set to true.
             &quot;source&quot;: { # The source of a field. # The source of the field.
               &quot;etag&quot;: &quot;A String&quot;, # **Only populated in `person.metadata.sources`.** The [HTTP entity tag](https://en.wikipedia.org/wiki/HTTP_ETag) of the source. Used for web cache validation.
               &quot;id&quot;: &quot;A String&quot;, # The unique identifier within the source type generated by the server.
@@ -781,6 +808,7 @@ Returns:
               &quot;type&quot;: &quot;A String&quot;, # The source type.
               &quot;updateTime&quot;: &quot;A String&quot;, # Output only. **Only populated in `person.metadata.sources`.** Last update timestamp of this source.
             },
+            &quot;sourcePrimary&quot;: True or False, # True if the field is the primary field for the source. Each source must have at most one field with `source_primary` set to true.
             &quot;verified&quot;: True or False, # Output only. True if the field is verified; false if the field is unverified. A verified field is typically a name, email address, phone number, or website that has been confirmed to be owned by the person.
           },
           &quot;person&quot;: &quot;A String&quot;, # The name of the other person this relation refers to.
@@ -791,7 +819,7 @@ Returns:
         { # **DEPRECATED**: No data will be returned A person&#x27;s relationship interest .
           &quot;formattedValue&quot;: &quot;A String&quot;, # Output only. The value of the relationship interest translated and formatted in the viewer&#x27;s account locale or the locale specified in the Accept-Language HTTP header.
           &quot;metadata&quot;: { # Metadata about a field. # Metadata about the relationship interest.
-            &quot;primary&quot;: True or False, # True if the field is the primary field; false if the field is a secondary field.
+            &quot;primary&quot;: True or False, # Output only. True if the field is the primary field for all sources in the person. Each person will have at most one field with `primary` set to true.
             &quot;source&quot;: { # The source of a field. # The source of the field.
               &quot;etag&quot;: &quot;A String&quot;, # **Only populated in `person.metadata.sources`.** The [HTTP entity tag](https://en.wikipedia.org/wiki/HTTP_ETag) of the source. Used for web cache validation.
               &quot;id&quot;: &quot;A String&quot;, # The unique identifier within the source type generated by the server.
@@ -804,6 +832,7 @@ Returns:
               &quot;type&quot;: &quot;A String&quot;, # The source type.
               &quot;updateTime&quot;: &quot;A String&quot;, # Output only. **Only populated in `person.metadata.sources`.** Last update timestamp of this source.
             },
+            &quot;sourcePrimary&quot;: True or False, # True if the field is the primary field for the source. Each source must have at most one field with `source_primary` set to true.
             &quot;verified&quot;: True or False, # Output only. True if the field is verified; false if the field is unverified. A verified field is typically a name, email address, phone number, or website that has been confirmed to be owned by the person.
           },
           &quot;value&quot;: &quot;A String&quot;, # The kind of relationship the person is looking for. The value can be custom or one of these predefined values: * `friend` * `date` * `relationship` * `networking`
@@ -813,7 +842,7 @@ Returns:
         { # **DEPRECATED**: No data will be returned A person&#x27;s relationship status.
           &quot;formattedValue&quot;: &quot;A String&quot;, # Output only. The value of the relationship status translated and formatted in the viewer&#x27;s account locale or the `Accept-Language` HTTP header locale.
           &quot;metadata&quot;: { # Metadata about a field. # Metadata about the relationship status.
-            &quot;primary&quot;: True or False, # True if the field is the primary field; false if the field is a secondary field.
+            &quot;primary&quot;: True or False, # Output only. True if the field is the primary field for all sources in the person. Each person will have at most one field with `primary` set to true.
             &quot;source&quot;: { # The source of a field. # The source of the field.
               &quot;etag&quot;: &quot;A String&quot;, # **Only populated in `person.metadata.sources`.** The [HTTP entity tag](https://en.wikipedia.org/wiki/HTTP_ETag) of the source. Used for web cache validation.
               &quot;id&quot;: &quot;A String&quot;, # The unique identifier within the source type generated by the server.
@@ -826,6 +855,7 @@ Returns:
               &quot;type&quot;: &quot;A String&quot;, # The source type.
               &quot;updateTime&quot;: &quot;A String&quot;, # Output only. **Only populated in `person.metadata.sources`.** Last update timestamp of this source.
             },
+            &quot;sourcePrimary&quot;: True or False, # True if the field is the primary field for the source. Each source must have at most one field with `source_primary` set to true.
             &quot;verified&quot;: True or False, # Output only. True if the field is verified; false if the field is unverified. A verified field is typically a name, email address, phone number, or website that has been confirmed to be owned by the person.
           },
           &quot;value&quot;: &quot;A String&quot;, # The relationship status. The value can be custom or one of these predefined values: * `single` * `inARelationship` * `engaged` * `married` * `itsComplicated` * `openRelationship` * `widowed` * `inDomesticPartnership` * `inCivilUnion`
@@ -835,7 +865,7 @@ Returns:
         { # **DEPRECATED**: Please use `person.locations` instead. A person&#x27;s past or current residence.
           &quot;current&quot;: True or False, # True if the residence is the person&#x27;s current residence; false if the residence is a past residence.
           &quot;metadata&quot;: { # Metadata about a field. # Metadata about the residence.
-            &quot;primary&quot;: True or False, # True if the field is the primary field; false if the field is a secondary field.
+            &quot;primary&quot;: True or False, # Output only. True if the field is the primary field for all sources in the person. Each person will have at most one field with `primary` set to true.
             &quot;source&quot;: { # The source of a field. # The source of the field.
               &quot;etag&quot;: &quot;A String&quot;, # **Only populated in `person.metadata.sources`.** The [HTTP entity tag](https://en.wikipedia.org/wiki/HTTP_ETag) of the source. Used for web cache validation.
               &quot;id&quot;: &quot;A String&quot;, # The unique identifier within the source type generated by the server.
@@ -848,6 +878,7 @@ Returns:
               &quot;type&quot;: &quot;A String&quot;, # The source type.
               &quot;updateTime&quot;: &quot;A String&quot;, # Output only. **Only populated in `person.metadata.sources`.** Last update timestamp of this source.
             },
+            &quot;sourcePrimary&quot;: True or False, # True if the field is the primary field for the source. Each source must have at most one field with `source_primary` set to true.
             &quot;verified&quot;: True or False, # Output only. True if the field is verified; false if the field is unverified. A verified field is typically a name, email address, phone number, or website that has been confirmed to be owned by the person.
           },
           &quot;value&quot;: &quot;A String&quot;, # The address of the residence.
@@ -858,7 +889,7 @@ Returns:
         { # A person&#x27;s SIP address. Session Initial Protocol addresses are used for VoIP communications to make voice or video calls over the internet.
           &quot;formattedType&quot;: &quot;A String&quot;, # Output only. The type of the SIP address translated and formatted in the viewer&#x27;s account locale or the `Accept-Language` HTTP header locale.
           &quot;metadata&quot;: { # Metadata about a field. # Metadata about the SIP address.
-            &quot;primary&quot;: True or False, # True if the field is the primary field; false if the field is a secondary field.
+            &quot;primary&quot;: True or False, # Output only. True if the field is the primary field for all sources in the person. Each person will have at most one field with `primary` set to true.
             &quot;source&quot;: { # The source of a field. # The source of the field.
               &quot;etag&quot;: &quot;A String&quot;, # **Only populated in `person.metadata.sources`.** The [HTTP entity tag](https://en.wikipedia.org/wiki/HTTP_ETag) of the source. Used for web cache validation.
               &quot;id&quot;: &quot;A String&quot;, # The unique identifier within the source type generated by the server.
@@ -871,6 +902,7 @@ Returns:
               &quot;type&quot;: &quot;A String&quot;, # The source type.
               &quot;updateTime&quot;: &quot;A String&quot;, # Output only. **Only populated in `person.metadata.sources`.** Last update timestamp of this source.
             },
+            &quot;sourcePrimary&quot;: True or False, # True if the field is the primary field for the source. Each source must have at most one field with `source_primary` set to true.
             &quot;verified&quot;: True or False, # Output only. True if the field is verified; false if the field is unverified. A verified field is typically a name, email address, phone number, or website that has been confirmed to be owned by the person.
           },
           &quot;type&quot;: &quot;A String&quot;, # The type of the SIP address. The type can be custom or or one of these predefined values: * `home` * `work` * `mobile` * `other`
@@ -880,7 +912,7 @@ Returns:
       &quot;skills&quot;: [ # The person&#x27;s skills.
         { # A skill that the person has.
           &quot;metadata&quot;: { # Metadata about a field. # Metadata about the skill.
-            &quot;primary&quot;: True or False, # True if the field is the primary field; false if the field is a secondary field.
+            &quot;primary&quot;: True or False, # Output only. True if the field is the primary field for all sources in the person. Each person will have at most one field with `primary` set to true.
             &quot;source&quot;: { # The source of a field. # The source of the field.
               &quot;etag&quot;: &quot;A String&quot;, # **Only populated in `person.metadata.sources`.** The [HTTP entity tag](https://en.wikipedia.org/wiki/HTTP_ETag) of the source. Used for web cache validation.
               &quot;id&quot;: &quot;A String&quot;, # The unique identifier within the source type generated by the server.
@@ -893,6 +925,7 @@ Returns:
               &quot;type&quot;: &quot;A String&quot;, # The source type.
               &quot;updateTime&quot;: &quot;A String&quot;, # Output only. **Only populated in `person.metadata.sources`.** Last update timestamp of this source.
             },
+            &quot;sourcePrimary&quot;: True or False, # True if the field is the primary field for the source. Each source must have at most one field with `source_primary` set to true.
             &quot;verified&quot;: True or False, # Output only. True if the field is verified; false if the field is unverified. A verified field is typically a name, email address, phone number, or website that has been confirmed to be owned by the person.
           },
           &quot;value&quot;: &quot;A String&quot;, # The skill; for example, `underwater basket weaving`.
@@ -901,7 +934,7 @@ Returns:
       &quot;taglines&quot;: [ # Output only. **DEPRECATED**: No data will be returned The person&#x27;s taglines.
         { # **DEPRECATED**: No data will be returned A brief one-line description of the person.
           &quot;metadata&quot;: { # Metadata about a field. # Metadata about the tagline.
-            &quot;primary&quot;: True or False, # True if the field is the primary field; false if the field is a secondary field.
+            &quot;primary&quot;: True or False, # Output only. True if the field is the primary field for all sources in the person. Each person will have at most one field with `primary` set to true.
             &quot;source&quot;: { # The source of a field. # The source of the field.
               &quot;etag&quot;: &quot;A String&quot;, # **Only populated in `person.metadata.sources`.** The [HTTP entity tag](https://en.wikipedia.org/wiki/HTTP_ETag) of the source. Used for web cache validation.
               &quot;id&quot;: &quot;A String&quot;, # The unique identifier within the source type generated by the server.
@@ -914,6 +947,7 @@ Returns:
               &quot;type&quot;: &quot;A String&quot;, # The source type.
               &quot;updateTime&quot;: &quot;A String&quot;, # Output only. **Only populated in `person.metadata.sources`.** Last update timestamp of this source.
             },
+            &quot;sourcePrimary&quot;: True or False, # True if the field is the primary field for the source. Each source must have at most one field with `source_primary` set to true.
             &quot;verified&quot;: True or False, # Output only. True if the field is verified; false if the field is unverified. A verified field is typically a name, email address, phone number, or website that has been confirmed to be owned by the person.
           },
           &quot;value&quot;: &quot;A String&quot;, # The tagline.
@@ -923,7 +957,7 @@ Returns:
         { # A person&#x27;s associated URLs.
           &quot;formattedType&quot;: &quot;A String&quot;, # Output only. The type of the URL translated and formatted in the viewer&#x27;s account locale or the `Accept-Language` HTTP header locale.
           &quot;metadata&quot;: { # Metadata about a field. # Metadata about the URL.
-            &quot;primary&quot;: True or False, # True if the field is the primary field; false if the field is a secondary field.
+            &quot;primary&quot;: True or False, # Output only. True if the field is the primary field for all sources in the person. Each person will have at most one field with `primary` set to true.
             &quot;source&quot;: { # The source of a field. # The source of the field.
               &quot;etag&quot;: &quot;A String&quot;, # **Only populated in `person.metadata.sources`.** The [HTTP entity tag](https://en.wikipedia.org/wiki/HTTP_ETag) of the source. Used for web cache validation.
               &quot;id&quot;: &quot;A String&quot;, # The unique identifier within the source type generated by the server.
@@ -936,6 +970,7 @@ Returns:
               &quot;type&quot;: &quot;A String&quot;, # The source type.
               &quot;updateTime&quot;: &quot;A String&quot;, # Output only. **Only populated in `person.metadata.sources`.** Last update timestamp of this source.
             },
+            &quot;sourcePrimary&quot;: True or False, # True if the field is the primary field for the source. Each source must have at most one field with `source_primary` set to true.
             &quot;verified&quot;: True or False, # Output only. True if the field is verified; false if the field is unverified. A verified field is typically a name, email address, phone number, or website that has been confirmed to be owned by the person.
           },
           &quot;type&quot;: &quot;A String&quot;, # The type of the URL. The type can be custom or one of these predefined values: * `home` * `work` * `blog` * `profile` * `homePage` * `ftp` * `reservations` * `appInstallPage`: website for a Currents application. * `other`
@@ -946,7 +981,7 @@ Returns:
         { # Arbitrary user data that is populated by the end users.
           &quot;key&quot;: &quot;A String&quot;, # The end user specified key of the user defined data.
           &quot;metadata&quot;: { # Metadata about a field. # Metadata about the user defined data.
-            &quot;primary&quot;: True or False, # True if the field is the primary field; false if the field is a secondary field.
+            &quot;primary&quot;: True or False, # Output only. True if the field is the primary field for all sources in the person. Each person will have at most one field with `primary` set to true.
             &quot;source&quot;: { # The source of a field. # The source of the field.
               &quot;etag&quot;: &quot;A String&quot;, # **Only populated in `person.metadata.sources`.** The [HTTP entity tag](https://en.wikipedia.org/wiki/HTTP_ETag) of the source. Used for web cache validation.
               &quot;id&quot;: &quot;A String&quot;, # The unique identifier within the source type generated by the server.
@@ -959,6 +994,7 @@ Returns:
               &quot;type&quot;: &quot;A String&quot;, # The source type.
               &quot;updateTime&quot;: &quot;A String&quot;, # Output only. **Only populated in `person.metadata.sources`.** Last update timestamp of this source.
             },
+            &quot;sourcePrimary&quot;: True or False, # True if the field is the primary field for the source. Each source must have at most one field with `source_primary` set to true.
             &quot;verified&quot;: True or False, # Output only. True if the field is verified; false if the field is unverified. A verified field is typically a name, email address, phone number, or website that has been confirmed to be owned by the person.
           },
           &quot;value&quot;: &quot;A String&quot;, # The end user specified value of the user defined data.

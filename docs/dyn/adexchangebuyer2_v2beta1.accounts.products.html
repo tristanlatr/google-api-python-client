@@ -107,7 +107,7 @@ Args:
 Returns:
   An object of the form:
 
-    { # Note: this resource requires whitelisting for access. Please contact your account manager for access to Marketplace resources. A product is a segment of inventory that a seller wishes to sell. It is associated with certain terms and targeting information which helps the buyer know more about the inventory.
+    { # A product is a segment of inventory that a seller wishes to sell. It is associated with certain terms and targeting information which helps the buyer know more about the inventory.
   &quot;availableEndTime&quot;: &quot;A String&quot;, # The proposed end time for the deal. The field will be truncated to the order of seconds during serving.
   &quot;availableStartTime&quot;: &quot;A String&quot;, # Inventory availability dates. The start time will be truncated to seconds during serving. Thus, a field specified as 3:23:34.456 (HH:mm:ss.SSS) will be truncated to 3:23:34 when serving.
   &quot;createTime&quot;: &quot;A String&quot;, # Creation time.
@@ -124,7 +124,7 @@ Returns:
   &quot;publisherProfileId&quot;: &quot;A String&quot;, # An ID which can be used by the Publisher Profile API to get more information about the seller that created this product.
   &quot;seller&quot;: { # Represents a seller of inventory. Each seller is identified by a unique Ad Manager account ID. # Information about the seller that created this product.
     &quot;accountId&quot;: &quot;A String&quot;, # The unique ID for the seller. The seller fills in this field. The seller account ID is then available to buyer in the product.
-    &quot;subAccountId&quot;: &quot;A String&quot;, # Optional sub-account ID for the seller.
+    &quot;subAccountId&quot;: &quot;A String&quot;, # Output only. Ad manager network code for the seller.
   },
   &quot;syndicationProduct&quot;: &quot;A String&quot;, # The syndication product associated with the deal.
   &quot;targetingCriterion&quot;: [ # Targeting that is shared between the buyer and the seller. Each targeting criterion has a specified key and for each key there is a list of inclusion value or exclusion values.
@@ -253,7 +253,10 @@ Returns:
       ],
       &quot;guaranteedImpressions&quot;: &quot;A String&quot;, # Guaranteed impressions as a percentage. This is the percentage of guaranteed looks that the buyer is guaranteeing to buy.
       &quot;guaranteedLooks&quot;: &quot;A String&quot;, # Count of guaranteed looks. Required for deal, optional for product.
+      &quot;impressionCap&quot;: &quot;A String&quot;, # The lifetime impression cap for CPM sponsorship deals. The deal will stop serving when the cap is reached.
       &quot;minimumDailyLooks&quot;: &quot;A String&quot;, # Daily minimum looks for CPD deal types.
+      &quot;percentShareOfVoice&quot;: &quot;A String&quot;, # For sponsorship deals, this is the percentage of the seller&#x27;s eligible impressions that the deal will serve until the cap is reached.
+      &quot;reservationType&quot;: &quot;A String&quot;, # The reservation type for a Programmatic Guaranteed deal. This indicates whether the number of impressions is fixed, or a percent of available impressions. If not specified, the default reservation type is STANDARD.
     },
     &quot;nonGuaranteedAuctionTerms&quot;: { # Terms for Private Auctions. Note that Private Auctions can be created only by the seller, but they can be returned in a get or list request. # The terms for non-guaranteed auction deals.
       &quot;autoOptimizePrivateAuction&quot;: True or False, # True if open auction buyers are allowed to compete with invited buyers in this private auction.
@@ -276,7 +279,7 @@ Returns:
         },
       ],
     },
-    &quot;nonGuaranteedFixedPriceTerms&quot;: { # Terms for Preferred Deals. Note that Preferred Deals cannot be created via the API at this time, but can be returned in a get or list request. # The terms for non-guaranteed fixed price deals.
+    &quot;nonGuaranteedFixedPriceTerms&quot;: { # Terms for Preferred Deals. # The terms for non-guaranteed fixed price deals.
       &quot;fixedPrices&quot;: [ # Fixed price for the specified buyer.
         { # Used to specify pricing rules for buyers/advertisers. Each PricePerBuyer in a product can become 0 or 1 deals. To check if there is a PricePerBuyer for a particular buyer or buyer/advertiser pair, we look for the most specific matching rule - we first look for a rule matching the buyer and advertiser, next a rule with the buyer but an empty advertiser list, and otherwise look for a matching rule where no buyer is set.
           &quot;advertiserIds&quot;: [ # The list of advertisers for this price when associated with this buyer. If empty, all advertisers with this buyer pay this price.
@@ -323,7 +326,7 @@ Returns:
     { # Response message for listing products visible to the buyer.
   &quot;nextPageToken&quot;: &quot;A String&quot;, # List pagination support.
   &quot;products&quot;: [ # The list of matching products at their head revision number.
-    { # Note: this resource requires whitelisting for access. Please contact your account manager for access to Marketplace resources. A product is a segment of inventory that a seller wishes to sell. It is associated with certain terms and targeting information which helps the buyer know more about the inventory.
+    { # A product is a segment of inventory that a seller wishes to sell. It is associated with certain terms and targeting information which helps the buyer know more about the inventory.
       &quot;availableEndTime&quot;: &quot;A String&quot;, # The proposed end time for the deal. The field will be truncated to the order of seconds during serving.
       &quot;availableStartTime&quot;: &quot;A String&quot;, # Inventory availability dates. The start time will be truncated to seconds during serving. Thus, a field specified as 3:23:34.456 (HH:mm:ss.SSS) will be truncated to 3:23:34 when serving.
       &quot;createTime&quot;: &quot;A String&quot;, # Creation time.
@@ -340,7 +343,7 @@ Returns:
       &quot;publisherProfileId&quot;: &quot;A String&quot;, # An ID which can be used by the Publisher Profile API to get more information about the seller that created this product.
       &quot;seller&quot;: { # Represents a seller of inventory. Each seller is identified by a unique Ad Manager account ID. # Information about the seller that created this product.
         &quot;accountId&quot;: &quot;A String&quot;, # The unique ID for the seller. The seller fills in this field. The seller account ID is then available to buyer in the product.
-        &quot;subAccountId&quot;: &quot;A String&quot;, # Optional sub-account ID for the seller.
+        &quot;subAccountId&quot;: &quot;A String&quot;, # Output only. Ad manager network code for the seller.
       },
       &quot;syndicationProduct&quot;: &quot;A String&quot;, # The syndication product associated with the deal.
       &quot;targetingCriterion&quot;: [ # Targeting that is shared between the buyer and the seller. Each targeting criterion has a specified key and for each key there is a list of inclusion value or exclusion values.
@@ -469,7 +472,10 @@ Returns:
           ],
           &quot;guaranteedImpressions&quot;: &quot;A String&quot;, # Guaranteed impressions as a percentage. This is the percentage of guaranteed looks that the buyer is guaranteeing to buy.
           &quot;guaranteedLooks&quot;: &quot;A String&quot;, # Count of guaranteed looks. Required for deal, optional for product.
+          &quot;impressionCap&quot;: &quot;A String&quot;, # The lifetime impression cap for CPM sponsorship deals. The deal will stop serving when the cap is reached.
           &quot;minimumDailyLooks&quot;: &quot;A String&quot;, # Daily minimum looks for CPD deal types.
+          &quot;percentShareOfVoice&quot;: &quot;A String&quot;, # For sponsorship deals, this is the percentage of the seller&#x27;s eligible impressions that the deal will serve until the cap is reached.
+          &quot;reservationType&quot;: &quot;A String&quot;, # The reservation type for a Programmatic Guaranteed deal. This indicates whether the number of impressions is fixed, or a percent of available impressions. If not specified, the default reservation type is STANDARD.
         },
         &quot;nonGuaranteedAuctionTerms&quot;: { # Terms for Private Auctions. Note that Private Auctions can be created only by the seller, but they can be returned in a get or list request. # The terms for non-guaranteed auction deals.
           &quot;autoOptimizePrivateAuction&quot;: True or False, # True if open auction buyers are allowed to compete with invited buyers in this private auction.
@@ -492,7 +498,7 @@ Returns:
             },
           ],
         },
-        &quot;nonGuaranteedFixedPriceTerms&quot;: { # Terms for Preferred Deals. Note that Preferred Deals cannot be created via the API at this time, but can be returned in a get or list request. # The terms for non-guaranteed fixed price deals.
+        &quot;nonGuaranteedFixedPriceTerms&quot;: { # Terms for Preferred Deals. # The terms for non-guaranteed fixed price deals.
           &quot;fixedPrices&quot;: [ # Fixed price for the specified buyer.
             { # Used to specify pricing rules for buyers/advertisers. Each PricePerBuyer in a product can become 0 or 1 deals. To check if there is a PricePerBuyer for a particular buyer or buyer/advertiser pair, we look for the most specific matching rule - we first look for a rule matching the buyer and advertiser, next a rule with the buyer but an empty advertiser list, and otherwise look for a matching rule where no buyer is set.
               &quot;advertiserIds&quot;: [ # The list of advertisers for this price when associated with this buyer. If empty, all advertisers with this buyer pay this price.

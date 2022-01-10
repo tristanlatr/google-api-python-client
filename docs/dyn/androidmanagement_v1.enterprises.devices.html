@@ -177,6 +177,23 @@ Returns:
       &quot;versionName&quot;: &quot;A String&quot;, # The app version as displayed to the user.
     },
   ],
+  &quot;appliedPasswordPolicies&quot;: [ # The password requirements currently applied to the device. The applied requirements may be slightly different from those specified in passwordPolicies in some cases. fieldPath is set based on passwordPolicies.
+    { # Requirements for the password used to unlock a device.
+      &quot;maximumFailedPasswordsForWipe&quot;: 42, # Number of incorrect device-unlock passwords that can be entered before a device is wiped. A value of 0 means there is no restriction.
+      &quot;passwordExpirationTimeout&quot;: &quot;A String&quot;, # Password expiration timeout.
+      &quot;passwordHistoryLength&quot;: 42, # The length of the password history. After setting this field, the user won&#x27;t be able to enter a new password that is the same as any password in the history. A value of 0 means there is no restriction.
+      &quot;passwordMinimumLength&quot;: 42, # The minimum allowed password length. A value of 0 means there is no restriction. Only enforced when password_quality is NUMERIC, NUMERIC_COMPLEX, ALPHABETIC, ALPHANUMERIC, or COMPLEX.
+      &quot;passwordMinimumLetters&quot;: 42, # Minimum number of letters required in the password. Only enforced when password_quality is COMPLEX.
+      &quot;passwordMinimumLowerCase&quot;: 42, # Minimum number of lower case letters required in the password. Only enforced when password_quality is COMPLEX.
+      &quot;passwordMinimumNonLetter&quot;: 42, # Minimum number of non-letter characters (numerical digits or symbols) required in the password. Only enforced when password_quality is COMPLEX.
+      &quot;passwordMinimumNumeric&quot;: 42, # Minimum number of numerical digits required in the password. Only enforced when password_quality is COMPLEX.
+      &quot;passwordMinimumSymbols&quot;: 42, # Minimum number of symbols required in the password. Only enforced when password_quality is COMPLEX.
+      &quot;passwordMinimumUpperCase&quot;: 42, # Minimum number of upper case letters required in the password. Only enforced when password_quality is COMPLEX.
+      &quot;passwordQuality&quot;: &quot;A String&quot;, # The required password quality.
+      &quot;passwordScope&quot;: &quot;A String&quot;, # The scope that the password requirement applies to.
+      &quot;requirePasswordUnlock&quot;: &quot;A String&quot;, # The length of time after a device or work profile is unlocked using a strong form of authentication (password, PIN, pattern) that it can be unlocked using any other authentication method (e.g. fingerprint, trust agents, face). After the specified time period elapses, only strong forms of authentication can be used to unlock the device or work profile.
+    },
+  ],
   &quot;appliedPolicyName&quot;: &quot;A String&quot;, # The name of the policy currently applied to the device.
   &quot;appliedPolicyVersion&quot;: &quot;A String&quot;, # The version of the policy currently applied to the device.
   &quot;appliedState&quot;: &quot;A String&quot;, # The state currently applied to the device.
@@ -190,7 +207,7 @@ Returns:
     &quot;isDeviceSecure&quot;: True or False, # Whether the device is secured with PIN/password.
     &quot;isEncrypted&quot;: True or False, # Whether the storage encryption is enabled.
     &quot;unknownSourcesEnabled&quot;: True or False, # Whether installing apps from unknown sources is enabled.
-    &quot;verifyAppsEnabled&quot;: True or False, # Whether Verify Apps (Google Play Protect (https://support.google.com/googleplay/answer/2812853)) is enabled on the device.
+    &quot;verifyAppsEnabled&quot;: True or False, # Whether Google Play Protect verification (https://support.google.com/accounts/answer/2812853) is enforced on the device.
   },
   &quot;disabledReason&quot;: { # Provides a user-facing message with locale info. The maximum message length is 4096 characters. # If the device state is DISABLED, an optional message that is displayed on the device indicating the reason the device is disabled. This field can be modified by a patch request.
     &quot;defaultMessage&quot;: &quot;A String&quot;, # The default message displayed if no localized message is specified or the user&#x27;s locale doesn&#x27;t match with any of the localized messages. A default message must be provided if any localized messages are provided.
@@ -227,6 +244,7 @@ Returns:
       3.14,
     ],
     &quot;deviceBasebandVersion&quot;: &quot;A String&quot;, # Baseband version. For example, MDM9625_104662.22.05.34p.
+    &quot;enterpriseSpecificId&quot;: &quot;A String&quot;, # Output only. ID that uniquely identifies a personally-owned device in a particular organization. On the same physical device when enrolled with the same organization, this ID persists across setups and even factory resets. This ID is available on personally-owned devices with a work profile on devices running Android 12 and above.
     &quot;gpuShutdownTemperatures&quot;: [ # GPU shutdown temperature thresholds in Celsius for each GPU on the device.
       3.14,
     ],
@@ -278,7 +296,7 @@ Returns:
       &quot;eventType&quot;: &quot;A String&quot;, # Event type.
     },
   ],
-  &quot;memoryInfo&quot;: { # Information about device memory and storage. # Memory information. This information is only available if memoryInfoEnabled is true in the device&#x27;s policy.
+  &quot;memoryInfo&quot;: { # Information about device memory and storage. # Memory information: contains information about device memory and storage.
     &quot;totalInternalStorage&quot;: &quot;A String&quot;, # Total internal storage on device in bytes.
     &quot;totalRam&quot;: &quot;A String&quot;, # Total RAM on device in bytes.
   },
@@ -462,6 +480,23 @@ Returns:
           &quot;versionName&quot;: &quot;A String&quot;, # The app version as displayed to the user.
         },
       ],
+      &quot;appliedPasswordPolicies&quot;: [ # The password requirements currently applied to the device. The applied requirements may be slightly different from those specified in passwordPolicies in some cases. fieldPath is set based on passwordPolicies.
+        { # Requirements for the password used to unlock a device.
+          &quot;maximumFailedPasswordsForWipe&quot;: 42, # Number of incorrect device-unlock passwords that can be entered before a device is wiped. A value of 0 means there is no restriction.
+          &quot;passwordExpirationTimeout&quot;: &quot;A String&quot;, # Password expiration timeout.
+          &quot;passwordHistoryLength&quot;: 42, # The length of the password history. After setting this field, the user won&#x27;t be able to enter a new password that is the same as any password in the history. A value of 0 means there is no restriction.
+          &quot;passwordMinimumLength&quot;: 42, # The minimum allowed password length. A value of 0 means there is no restriction. Only enforced when password_quality is NUMERIC, NUMERIC_COMPLEX, ALPHABETIC, ALPHANUMERIC, or COMPLEX.
+          &quot;passwordMinimumLetters&quot;: 42, # Minimum number of letters required in the password. Only enforced when password_quality is COMPLEX.
+          &quot;passwordMinimumLowerCase&quot;: 42, # Minimum number of lower case letters required in the password. Only enforced when password_quality is COMPLEX.
+          &quot;passwordMinimumNonLetter&quot;: 42, # Minimum number of non-letter characters (numerical digits or symbols) required in the password. Only enforced when password_quality is COMPLEX.
+          &quot;passwordMinimumNumeric&quot;: 42, # Minimum number of numerical digits required in the password. Only enforced when password_quality is COMPLEX.
+          &quot;passwordMinimumSymbols&quot;: 42, # Minimum number of symbols required in the password. Only enforced when password_quality is COMPLEX.
+          &quot;passwordMinimumUpperCase&quot;: 42, # Minimum number of upper case letters required in the password. Only enforced when password_quality is COMPLEX.
+          &quot;passwordQuality&quot;: &quot;A String&quot;, # The required password quality.
+          &quot;passwordScope&quot;: &quot;A String&quot;, # The scope that the password requirement applies to.
+          &quot;requirePasswordUnlock&quot;: &quot;A String&quot;, # The length of time after a device or work profile is unlocked using a strong form of authentication (password, PIN, pattern) that it can be unlocked using any other authentication method (e.g. fingerprint, trust agents, face). After the specified time period elapses, only strong forms of authentication can be used to unlock the device or work profile.
+        },
+      ],
       &quot;appliedPolicyName&quot;: &quot;A String&quot;, # The name of the policy currently applied to the device.
       &quot;appliedPolicyVersion&quot;: &quot;A String&quot;, # The version of the policy currently applied to the device.
       &quot;appliedState&quot;: &quot;A String&quot;, # The state currently applied to the device.
@@ -475,7 +510,7 @@ Returns:
         &quot;isDeviceSecure&quot;: True or False, # Whether the device is secured with PIN/password.
         &quot;isEncrypted&quot;: True or False, # Whether the storage encryption is enabled.
         &quot;unknownSourcesEnabled&quot;: True or False, # Whether installing apps from unknown sources is enabled.
-        &quot;verifyAppsEnabled&quot;: True or False, # Whether Verify Apps (Google Play Protect (https://support.google.com/googleplay/answer/2812853)) is enabled on the device.
+        &quot;verifyAppsEnabled&quot;: True or False, # Whether Google Play Protect verification (https://support.google.com/accounts/answer/2812853) is enforced on the device.
       },
       &quot;disabledReason&quot;: { # Provides a user-facing message with locale info. The maximum message length is 4096 characters. # If the device state is DISABLED, an optional message that is displayed on the device indicating the reason the device is disabled. This field can be modified by a patch request.
         &quot;defaultMessage&quot;: &quot;A String&quot;, # The default message displayed if no localized message is specified or the user&#x27;s locale doesn&#x27;t match with any of the localized messages. A default message must be provided if any localized messages are provided.
@@ -512,6 +547,7 @@ Returns:
           3.14,
         ],
         &quot;deviceBasebandVersion&quot;: &quot;A String&quot;, # Baseband version. For example, MDM9625_104662.22.05.34p.
+        &quot;enterpriseSpecificId&quot;: &quot;A String&quot;, # Output only. ID that uniquely identifies a personally-owned device in a particular organization. On the same physical device when enrolled with the same organization, this ID persists across setups and even factory resets. This ID is available on personally-owned devices with a work profile on devices running Android 12 and above.
         &quot;gpuShutdownTemperatures&quot;: [ # GPU shutdown temperature thresholds in Celsius for each GPU on the device.
           3.14,
         ],
@@ -563,7 +599,7 @@ Returns:
           &quot;eventType&quot;: &quot;A String&quot;, # Event type.
         },
       ],
-      &quot;memoryInfo&quot;: { # Information about device memory and storage. # Memory information. This information is only available if memoryInfoEnabled is true in the device&#x27;s policy.
+      &quot;memoryInfo&quot;: { # Information about device memory and storage. # Memory information: contains information about device memory and storage.
         &quot;totalInternalStorage&quot;: &quot;A String&quot;, # Total internal storage on device in bytes.
         &quot;totalRam&quot;: &quot;A String&quot;, # Total RAM on device in bytes.
       },
@@ -705,6 +741,23 @@ Args:
       &quot;versionName&quot;: &quot;A String&quot;, # The app version as displayed to the user.
     },
   ],
+  &quot;appliedPasswordPolicies&quot;: [ # The password requirements currently applied to the device. The applied requirements may be slightly different from those specified in passwordPolicies in some cases. fieldPath is set based on passwordPolicies.
+    { # Requirements for the password used to unlock a device.
+      &quot;maximumFailedPasswordsForWipe&quot;: 42, # Number of incorrect device-unlock passwords that can be entered before a device is wiped. A value of 0 means there is no restriction.
+      &quot;passwordExpirationTimeout&quot;: &quot;A String&quot;, # Password expiration timeout.
+      &quot;passwordHistoryLength&quot;: 42, # The length of the password history. After setting this field, the user won&#x27;t be able to enter a new password that is the same as any password in the history. A value of 0 means there is no restriction.
+      &quot;passwordMinimumLength&quot;: 42, # The minimum allowed password length. A value of 0 means there is no restriction. Only enforced when password_quality is NUMERIC, NUMERIC_COMPLEX, ALPHABETIC, ALPHANUMERIC, or COMPLEX.
+      &quot;passwordMinimumLetters&quot;: 42, # Minimum number of letters required in the password. Only enforced when password_quality is COMPLEX.
+      &quot;passwordMinimumLowerCase&quot;: 42, # Minimum number of lower case letters required in the password. Only enforced when password_quality is COMPLEX.
+      &quot;passwordMinimumNonLetter&quot;: 42, # Minimum number of non-letter characters (numerical digits or symbols) required in the password. Only enforced when password_quality is COMPLEX.
+      &quot;passwordMinimumNumeric&quot;: 42, # Minimum number of numerical digits required in the password. Only enforced when password_quality is COMPLEX.
+      &quot;passwordMinimumSymbols&quot;: 42, # Minimum number of symbols required in the password. Only enforced when password_quality is COMPLEX.
+      &quot;passwordMinimumUpperCase&quot;: 42, # Minimum number of upper case letters required in the password. Only enforced when password_quality is COMPLEX.
+      &quot;passwordQuality&quot;: &quot;A String&quot;, # The required password quality.
+      &quot;passwordScope&quot;: &quot;A String&quot;, # The scope that the password requirement applies to.
+      &quot;requirePasswordUnlock&quot;: &quot;A String&quot;, # The length of time after a device or work profile is unlocked using a strong form of authentication (password, PIN, pattern) that it can be unlocked using any other authentication method (e.g. fingerprint, trust agents, face). After the specified time period elapses, only strong forms of authentication can be used to unlock the device or work profile.
+    },
+  ],
   &quot;appliedPolicyName&quot;: &quot;A String&quot;, # The name of the policy currently applied to the device.
   &quot;appliedPolicyVersion&quot;: &quot;A String&quot;, # The version of the policy currently applied to the device.
   &quot;appliedState&quot;: &quot;A String&quot;, # The state currently applied to the device.
@@ -718,7 +771,7 @@ Args:
     &quot;isDeviceSecure&quot;: True or False, # Whether the device is secured with PIN/password.
     &quot;isEncrypted&quot;: True or False, # Whether the storage encryption is enabled.
     &quot;unknownSourcesEnabled&quot;: True or False, # Whether installing apps from unknown sources is enabled.
-    &quot;verifyAppsEnabled&quot;: True or False, # Whether Verify Apps (Google Play Protect (https://support.google.com/googleplay/answer/2812853)) is enabled on the device.
+    &quot;verifyAppsEnabled&quot;: True or False, # Whether Google Play Protect verification (https://support.google.com/accounts/answer/2812853) is enforced on the device.
   },
   &quot;disabledReason&quot;: { # Provides a user-facing message with locale info. The maximum message length is 4096 characters. # If the device state is DISABLED, an optional message that is displayed on the device indicating the reason the device is disabled. This field can be modified by a patch request.
     &quot;defaultMessage&quot;: &quot;A String&quot;, # The default message displayed if no localized message is specified or the user&#x27;s locale doesn&#x27;t match with any of the localized messages. A default message must be provided if any localized messages are provided.
@@ -755,6 +808,7 @@ Args:
       3.14,
     ],
     &quot;deviceBasebandVersion&quot;: &quot;A String&quot;, # Baseband version. For example, MDM9625_104662.22.05.34p.
+    &quot;enterpriseSpecificId&quot;: &quot;A String&quot;, # Output only. ID that uniquely identifies a personally-owned device in a particular organization. On the same physical device when enrolled with the same organization, this ID persists across setups and even factory resets. This ID is available on personally-owned devices with a work profile on devices running Android 12 and above.
     &quot;gpuShutdownTemperatures&quot;: [ # GPU shutdown temperature thresholds in Celsius for each GPU on the device.
       3.14,
     ],
@@ -806,7 +860,7 @@ Args:
       &quot;eventType&quot;: &quot;A String&quot;, # Event type.
     },
   ],
-  &quot;memoryInfo&quot;: { # Information about device memory and storage. # Memory information. This information is only available if memoryInfoEnabled is true in the device&#x27;s policy.
+  &quot;memoryInfo&quot;: { # Information about device memory and storage. # Memory information: contains information about device memory and storage.
     &quot;totalInternalStorage&quot;: &quot;A String&quot;, # Total internal storage on device in bytes.
     &quot;totalRam&quot;: &quot;A String&quot;, # Total RAM on device in bytes.
   },
@@ -930,6 +984,23 @@ Returns:
       &quot;versionName&quot;: &quot;A String&quot;, # The app version as displayed to the user.
     },
   ],
+  &quot;appliedPasswordPolicies&quot;: [ # The password requirements currently applied to the device. The applied requirements may be slightly different from those specified in passwordPolicies in some cases. fieldPath is set based on passwordPolicies.
+    { # Requirements for the password used to unlock a device.
+      &quot;maximumFailedPasswordsForWipe&quot;: 42, # Number of incorrect device-unlock passwords that can be entered before a device is wiped. A value of 0 means there is no restriction.
+      &quot;passwordExpirationTimeout&quot;: &quot;A String&quot;, # Password expiration timeout.
+      &quot;passwordHistoryLength&quot;: 42, # The length of the password history. After setting this field, the user won&#x27;t be able to enter a new password that is the same as any password in the history. A value of 0 means there is no restriction.
+      &quot;passwordMinimumLength&quot;: 42, # The minimum allowed password length. A value of 0 means there is no restriction. Only enforced when password_quality is NUMERIC, NUMERIC_COMPLEX, ALPHABETIC, ALPHANUMERIC, or COMPLEX.
+      &quot;passwordMinimumLetters&quot;: 42, # Minimum number of letters required in the password. Only enforced when password_quality is COMPLEX.
+      &quot;passwordMinimumLowerCase&quot;: 42, # Minimum number of lower case letters required in the password. Only enforced when password_quality is COMPLEX.
+      &quot;passwordMinimumNonLetter&quot;: 42, # Minimum number of non-letter characters (numerical digits or symbols) required in the password. Only enforced when password_quality is COMPLEX.
+      &quot;passwordMinimumNumeric&quot;: 42, # Minimum number of numerical digits required in the password. Only enforced when password_quality is COMPLEX.
+      &quot;passwordMinimumSymbols&quot;: 42, # Minimum number of symbols required in the password. Only enforced when password_quality is COMPLEX.
+      &quot;passwordMinimumUpperCase&quot;: 42, # Minimum number of upper case letters required in the password. Only enforced when password_quality is COMPLEX.
+      &quot;passwordQuality&quot;: &quot;A String&quot;, # The required password quality.
+      &quot;passwordScope&quot;: &quot;A String&quot;, # The scope that the password requirement applies to.
+      &quot;requirePasswordUnlock&quot;: &quot;A String&quot;, # The length of time after a device or work profile is unlocked using a strong form of authentication (password, PIN, pattern) that it can be unlocked using any other authentication method (e.g. fingerprint, trust agents, face). After the specified time period elapses, only strong forms of authentication can be used to unlock the device or work profile.
+    },
+  ],
   &quot;appliedPolicyName&quot;: &quot;A String&quot;, # The name of the policy currently applied to the device.
   &quot;appliedPolicyVersion&quot;: &quot;A String&quot;, # The version of the policy currently applied to the device.
   &quot;appliedState&quot;: &quot;A String&quot;, # The state currently applied to the device.
@@ -943,7 +1014,7 @@ Returns:
     &quot;isDeviceSecure&quot;: True or False, # Whether the device is secured with PIN/password.
     &quot;isEncrypted&quot;: True or False, # Whether the storage encryption is enabled.
     &quot;unknownSourcesEnabled&quot;: True or False, # Whether installing apps from unknown sources is enabled.
-    &quot;verifyAppsEnabled&quot;: True or False, # Whether Verify Apps (Google Play Protect (https://support.google.com/googleplay/answer/2812853)) is enabled on the device.
+    &quot;verifyAppsEnabled&quot;: True or False, # Whether Google Play Protect verification (https://support.google.com/accounts/answer/2812853) is enforced on the device.
   },
   &quot;disabledReason&quot;: { # Provides a user-facing message with locale info. The maximum message length is 4096 characters. # If the device state is DISABLED, an optional message that is displayed on the device indicating the reason the device is disabled. This field can be modified by a patch request.
     &quot;defaultMessage&quot;: &quot;A String&quot;, # The default message displayed if no localized message is specified or the user&#x27;s locale doesn&#x27;t match with any of the localized messages. A default message must be provided if any localized messages are provided.
@@ -980,6 +1051,7 @@ Returns:
       3.14,
     ],
     &quot;deviceBasebandVersion&quot;: &quot;A String&quot;, # Baseband version. For example, MDM9625_104662.22.05.34p.
+    &quot;enterpriseSpecificId&quot;: &quot;A String&quot;, # Output only. ID that uniquely identifies a personally-owned device in a particular organization. On the same physical device when enrolled with the same organization, this ID persists across setups and even factory resets. This ID is available on personally-owned devices with a work profile on devices running Android 12 and above.
     &quot;gpuShutdownTemperatures&quot;: [ # GPU shutdown temperature thresholds in Celsius for each GPU on the device.
       3.14,
     ],
@@ -1031,7 +1103,7 @@ Returns:
       &quot;eventType&quot;: &quot;A String&quot;, # Event type.
     },
   ],
-  &quot;memoryInfo&quot;: { # Information about device memory and storage. # Memory information. This information is only available if memoryInfoEnabled is true in the device&#x27;s policy.
+  &quot;memoryInfo&quot;: { # Information about device memory and storage. # Memory information: contains information about device memory and storage.
     &quot;totalInternalStorage&quot;: &quot;A String&quot;, # Total internal storage on device in bytes.
     &quot;totalRam&quot;: &quot;A String&quot;, # Total RAM on device in bytes.
   },
