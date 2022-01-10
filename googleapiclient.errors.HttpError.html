@@ -64,7 +64,7 @@
       </div>
 
       <div class="extrasDocstring">
-        <p><code><span class="py-keyword">class</span> <span class="py-defname">HttpError</span>(<a href="googleapiclient.errors.Error.html" title="googleapiclient.errors.Error">Error</a>): <a href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/errors.py#L35" class="sourceLink">(source)</a></code></p><p>Known subclasses: <code><a href="googleapiclient.errors.BatchError.html">googleapiclient.errors.BatchError</a></code>, <code><a href="googleapiclient.errors.ResumableUploadError.html">googleapiclient.errors.ResumableUploadError</a></code></p>
+        <p><code><span class="py-keyword">class</span> <span class="py-defname">HttpError</span>(<a href="googleapiclient.errors.Error.html" title="googleapiclient.errors.Error">Error</a>): <a href="https://github.com/tristanlatr/google-api-python-client/tree/ea2334c98137118f762a23abeabf08ff8d451ff7/googleapiclient/errors.py#L35" class="sourceLink">(source)</a></code></p><p>Known subclasses: <code><a href="googleapiclient.errors.BatchError.html">googleapiclient.errors.BatchError</a></code>, <code><a href="googleapiclient.errors.ResumableUploadError.html">googleapiclient.errors.ResumableUploadError</a></code></p>
         <p><a href="classIndex.html#googleapiclient.errors.HttpError">View In Hierarchy</a></p>
       </div>
 
@@ -100,6 +100,11 @@
     
     <td>Instance Variable</td>
     <td><code><a href="#error_details">error_details</a></code></td>
+    <td><span class="undocumented">Undocumented</span></td>
+  </tr><tr class="instancevariable">
+    
+    <td>Instance Variable</td>
+    <td><code><a href="#reason">reason</a></code></td>
     <td><span class="undocumented">Undocumented</span></td>
   </tr><tr class="property">
     
@@ -137,7 +142,7 @@
   <div class="functionHeader">
     @util.positional(3)<br />
     <span class="py-keyword">def</span> <span class="py-defname">__init__</span>(self, resp, content, uri=None):
-    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/errors.py#L38">
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/ea2334c98137118f762a23abeabf08ff8d451ff7/googleapiclient/errors.py#L38">
       
       (source)
     </a>
@@ -159,7 +164,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">resp</span> =
-    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/errors.py#L40">
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/ea2334c98137118f762a23abeabf08ff8d451ff7/googleapiclient/errors.py#L40">
       
       (source)
     </a>
@@ -181,7 +186,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">content</span> =
-    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/errors.py#L43">
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/ea2334c98137118f762a23abeabf08ff8d451ff7/googleapiclient/errors.py#L43">
       
       (source)
     </a>
@@ -203,7 +208,7 @@
   <div class="functionHeader">
     
     <span class="py-defname">uri</span> =
-    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/errors.py#L44">
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/ea2334c98137118f762a23abeabf08ff8d451ff7/googleapiclient/errors.py#L44">
       
       (source)
     </a>
@@ -225,13 +230,35 @@
   <div class="functionHeader">
     
     <span class="py-defname">error_details</span> =
-    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/errors.py#L45">
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/ea2334c98137118f762a23abeabf08ff8d451ff7/googleapiclient/errors.py#L45">
       
       (source)
     </a>
   </div>
   <div class="functionBody">
     
+    
+    <div><p class="undocumented">Undocumented</p></div>
+  </div>
+</div><div class="baseinstancevariable">
+  
+  
+  <a name="googleapiclient.errors.HttpError.reason">
+    
+  </a>
+  <a name="reason">
+    
+  </a>
+  <div class="functionHeader">
+    
+    <span class="py-defname">reason</span> =
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/ea2334c98137118f762a23abeabf08ff8d451ff7/googleapiclient/errors.py#L46">
+      
+      (source)
+    </a>
+  </div>
+  <div class="functionBody">
+    <div class="interfaceinfo">overridden in <code><a href="googleapiclient.errors.BatchError.html">googleapiclient.errors.BatchError</a></code></div>
     
     <div><p class="undocumented">Undocumented</p></div>
   </div>
@@ -247,7 +274,7 @@
   <div class="functionHeader">
     @property<br />
     <span class="py-defname">status_code</span> =
-    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/errors.py#L48">
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/ea2334c98137118f762a23abeabf08ff8d451ff7/googleapiclient/errors.py#L48">
       
       (source)
     </a>
@@ -269,7 +296,7 @@
   <div class="functionHeader">
     
     <span class="py-keyword">def</span> <span class="py-defname">_get_reason</span>(self):
-    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/errors.py#L53">
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/ea2334c98137118f762a23abeabf08ff8d451ff7/googleapiclient/errors.py#L53">
       
       (source)
     </a>
@@ -291,7 +318,7 @@
   <div class="functionHeader">
     
     <span class="py-keyword">def</span> <span class="py-defname">__repr__</span>(self):
-    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/026464d3c37df86a9ae0810622f0dab8da94ef16/googleapiclient/errors.py#L80">
+    <a class="sourceLink" href="https://github.com/tristanlatr/google-api-python-client/tree/ea2334c98137118f762a23abeabf08ff8d451ff7/googleapiclient/errors.py#L80">
       
       (source)
     </a>
@@ -305,7 +332,7 @@
 
       </div>
       <address>
-        <a href="index.html">API Documentation</a> for Google API Python Client, generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a> 20.12.1 at 2021-03-19 02:02:03.
+        <a href="index.html">API Documentation</a> for Google API Python Client, generated by <a href="https://github.com/twisted/pydoctor/">pydoctor</a> 20.12.1 at 2022-01-10 19:53:48.
       </address>
 
     </div>
